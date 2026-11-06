@@ -163,14 +163,15 @@ BAYF = np.kron(np.tile(np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [
 # ---------------------------------------------------------------- overlay
 F = lambda w, s: ImageFont.truetype(f'/usr/share/fonts/opentype/inter/Inter-{w}.otf', s)
 YEL, WHITE, DARK = (255, 216, 74), (255, 255, 255), (14, 10, 26)
+PURPLE = (139, 92, 246)      # logo TU CONF.IA
 BRAND = Image.new('RGBA', (VW, VH), (0, 0, 0, 0))
 bd = ImageDraw.Draw(BRAND)
 fb = F('Black', 50)
 w1 = bd.textlength('TU CONF', font=fb); w2 = bd.textlength('.IA', font=fb)
 bx = (VW - (w1 + w2)) / 2
 bd.text((bx + 3, 103), 'TU CONF', font=fb, fill=(0, 0, 0, 160)); bd.text((bx, 100), 'TU CONF', font=fb, fill=WHITE)
-bd.rounded_rectangle([bx + w1 - 2, 98, bx + w1 + w2 + 10, 162], radius=8, fill=YEL)
-bd.text((bx + w1 + 4, 100), '.IA', font=fb, fill=DARK)
+bd.rounded_rectangle([bx + w1 - 2, 98, bx + w1 + w2 + 10, 162], radius=8, fill=PURPLE)
+bd.text((bx + w1 + 4, 100), '.IA', font=fb, fill=WHITE)
 MASC = Image.open(f'{ROOT}/assets/mascota_retrato.png').convert('RGBA')
 MASC = MASC.resize((MASC.width * 5, MASC.height * 5), Image.NEAREST)
 
