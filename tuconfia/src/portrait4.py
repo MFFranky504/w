@@ -10,7 +10,7 @@ from sprites import Paint
 W, H, CX = 96, 112, 48
 HERE = os.path.dirname(os.path.abspath(__file__))
 EYES = json.load(open(os.path.join(HERE, 'eye_templates.json')))
-SKULL = (CX, 38, 25, 23)            # centro x, y, rx, ry del cráneo (el pelo se genera desde aquí)
+SKULL = (CX, 38, 22, 22)            # centro x, y, rx, ry del cráneo (el pelo se genera desde aquí)
 
 # flequillo: puntas (dx, y) de derecha a izquierda; lado = longitud de las patillas / pelo lateral
 STYLES = {
@@ -44,9 +44,10 @@ def fringe_y(fr, dx):
 def hair_polygon(style):
     st = STYLES[style]; fr = st['fringe']; cx, cy, rx, ry = SKULL; side = st['side']
     arc = pts_ellipse(cx, cy, rx + 1, ry + 1, 0, 180)
-    left = [(cx - rx - 1, side), (cx - 21, side), (cx - 21, fr[-1][1])]
-    inner = [(cx + dx, y) for dx, y in fr[::-1]]
-    right = [(cx + 21, side), (cx + rx + 1, side)]
+    k = .88                                                  # el flequillo se ajusta al cráneo más estrecho
+    left = [(cx - rx - 1, side), (cx - 19, side), (cx - 19, fr[-1][1])]
+    inner = [(cx + dx * k, y) for dx, y in fr[::-1]]
+    right = [(cx + 19, side), (cx + rx + 1, side)]
     return arc + left + inner + right
 
 
@@ -102,25 +103,25 @@ def build(who='you', expr='n', blink=False, outfit=None, gesture='fists', turn=2
         P.rect(30, 100, 66, 100, td)
 
     # ------------------------------------------------ cuello
-    poly([(40, 64), (56, 64), (58, 84), (38, 84)], skd, sh=False, hi=False, edge_k=.55)
+    poly([(41, 64), (55, 64), (57, 84), (39, 84)], skd, sh=False, hi=False, edge_k=.55)
     neck_sh = P.mask(lambda d: d.polygon([(40, 68), (56, 68), (57, 78), (48, 82), (39, 78)], fill=255))
     P.a[neck_sh & (yy < 74)] = (*skdd, 255); P.a[neck_sh & (yy >= 74)] = (*shade(sk, .76), 255)
     if outfit in ('hoodie', 'grey', 'cardigan', 'plaid', 'tux'):
         pass
 
     # ------------------------------------------------ cabeza: cráneo + mandíbula en V (3/4)
-    FP = [(26, 38), (28, 28), (36, 20), (48, 17), (60, 20), (68, 28), (70, 38), (70, 50), (67, 58), (61, 65), (54, 70), (fc + 1, 74), (fc - 6, 70), (36, 65), (30, 58), (27, 50)]
-    if CS['strong']: FP = [(26, 38), (28, 28), (36, 20), (48, 17), (60, 20), (68, 28), (70, 38), (71, 50), (69, 60), (63, 68), (55, 73), (fc + 1, 76), (fc - 7, 73), (35, 68), (29, 60), (26, 50)]
-    for ex in (25, 69):                                                                # orejas
+    FP = [(28, 38), (30, 28), (37, 20), (48, 17), (59, 20), (66, 28), (68, 38), (68, 50), (65, 58), (60, 65), (54, 70), (fc + 1, 74), (fc - 5, 70), (37, 65), (31, 58), (28, 50)]
+    if CS['strong']: FP = [(28, 38), (30, 28), (37, 20), (48, 17), (59, 20), (66, 28), (68, 38), (69, 50), (67, 60), (62, 68), (55, 73), (fc + 1, 76), (fc - 6, 73), (36, 68), (30, 60), (27, 50)]
+    for ex in (27, 67):                                                                # orejas
         P.add(lambda d, ex=ex: d.ellipse([ex - 2, 42, ex + 4, 54], fill=255), sk if ex < 48 else skd, sh=False, hi=False, edge_k=.5)
     fm = poly(FP, sk, sh=False, hi=False, edge_k=.42)
     def face_fill(pts, col):
         P.a[P.mask(lambda d: d.polygon([(float(x), float(y)) for x, y in pts], fill=255)) & fm] = (*col, 255)
-    face_fill([(58, 24), (70, 38), (70, 50), (67, 58), (61, 65), (54, 70), (fc + 1, 74), (fc + 1, 68), (60, 60), (62, 48)], skd)     # lado en sombra (cel)
-    face_fill([(30, 38), (36, 30), (40, 34), (34, 46)], skl)                                                                         # luz en la frente/sien
-    face_fill([(32, 52), (38, 50), (36, 60), (32, 58)], skl)                                                                         # luz en el pómulo
+    face_fill([(57, 24), (68, 38), (68, 50), (65, 58), (60, 65), (54, 70), (fc + 1, 74), (fc + 1, 68), (59, 60), (61, 48)], skd)     # lado en sombra (cel)
+    face_fill([(31, 38), (37, 30), (41, 34), (35, 46)], skl)                                                                         # luz en la frente/sien
+    face_fill([(33, 52), (39, 50), (37, 60), (33, 58)], skl)                                                                         # luz en el pómulo
     if style in ('tab', 'you'):                                                                                                      # rubor
-        P.rect(30, 56, 35, 57, (244, 160, 156)); P.rect(31, 58, 34, 58, (244, 160, 156)); P.rect(60, 56, 65, 57, (236, 150, 146))
+        P.rect(31, 57, 36, 58, (244, 160, 156)); P.rect(32, 59, 35, 59, (244, 160, 156)); P.rect(59, 57, 64, 58, (236, 150, 146))
     if CS['stubble']:
         stub = tuple(int(a * .8 + b * .2) for a, b in zip(sk, hc['b']))
         face_fill([(29, 58), (35, 63), (42, 69), (fc - 4, 73), (fc + 1, 74), (54, 70), (62, 64), (67, 58), (64, 56), (58, 60), (44, 62), (34, 58)], stub)
@@ -131,19 +132,23 @@ def build(who='you', expr='n', blink=False, outfit=None, gesture='fists', turn=2
           'H': (255, 240, 222), 'E': tuple(min(255, int(v * 1.25 + 10)) for v in CS['iris'])}
     mood = 'sleepy' if CS['sleepy'] else {'sad': 'sad', 'worry': 'sad', 'wow': 'flat'}.get(expr, 'n')
     left, right = EYES['m_' + mood]
+    def up(rows, fx=1.3, fy=1.25):                      # reescala por filas/columnas repetidas (mantiene el píxel nítido)
+        nh, nw = int(round(len(rows) * fy)), int(round(len(rows[0]) * fx))
+        return [''.join(rows[min(len(rows) - 1, int(r / fy))][min(len(rows[0]) - 1, int(c / fx))] for c in range(nw)) for r in range(nh)]
+    left, right = up(left), up(right)
     def stamp(rows, x0, y0, pal):
         for r, row in enumerate(rows):
             for c, ch in enumerate(row):
                 if ch != '.' and ch in pal: P.a[y0 + r, x0 + c] = (*pal[ch], 255)
-    ey = 41
+    ey = 39
     if closed:
-        for xs in ((fc - 15, fc - 5), (fc + 5, fc + 15)):
+        for xs in ((fc - 17, fc - 6), (fc + 6, fc + 17)):
             P.line([(xs[0], ey + 8), (xs[0] + 4, ey + 6), (xs[1] - 2, ey + 6), (xs[1], ey + 8)], (40, 44, 58))
             P.line([(xs[0], ey + 9), (xs[1], ey + 9)], (40, 44, 58))
     else:
-        stamp(left, fc - 4 - len(left[0]), ey, ep); stamp(right, fc + 4, ey, ep)
+        stamp(left, fc - 5 - len(left[0]), ey, ep); stamp(right, fc + 5, ey, ep)
     if style == 'tab' and not closed:                                                                                                  # pestañas exteriores
-        for (x, y) in [(fc - 4 - len(left[0]) - 1, ey + 5), (fc - 4 - len(left[0]) - 2, ey + 4), (fc + 4 + len(right[0]), ey + 5), (fc + 4 + len(right[0]) + 1, ey + 4)]:
+        for (x, y) in [(fc - 5 - len(left[0]) - 1, ey + 6), (fc - 5 - len(left[0]) - 2, ey + 5), (fc + 5 + len(right[0]), ey + 6), (fc + 5 + len(right[0]) + 1, ey + 5)]:
             P.px(x, y, (40, 44, 58))
     # nariz y boca mínimos
     P.rect(fc, 54, fc, 56, skdd); P.rect(fc - 1, 57, fc + 1, 57, skdd)
@@ -160,10 +165,10 @@ def build(who='you', expr='n', blink=False, outfit=None, gesture='fists', turn=2
     # gafas siguiendo a los ojos
     if CS['glasses']:
         g = (34, 30, 48)
-        for x0 in (fc - 4 - len(left[0]) - 2, fc + 2):
+        for x0 in (fc - 5 - len(left[0]) - 2, fc + 3):
             P.add(lambda d, x0=x0: d.rounded_rectangle([x0, ey + 3, x0 + 14, ey + 16], radius=3, outline=255, width=2), g, edge=False, sh=False, hi=False)
             P.rect(x0 + 2, ey + 13, x0 + 4, ey + 13, (210, 232, 255))
-        P.rect(fc - 4, ey + 8, fc + 3, ey + 9, g)
+        P.rect(fc - 5, ey + 9, fc + 4, ey + 10, g)
 
     # ------------------------------------------------ pelo desde el cráneo (alineado): base + sombra + reflejo + mechones
     hp = hair_polygon(style)
@@ -197,15 +202,16 @@ def build(who='you', expr='n', blink=False, outfit=None, gesture='fists', turn=2
             P.line([(sx_(20), 87), (sx_(11), 96), (sx_(7), 106)], hi_)                                # costura / luz
             P.line([(sx_(17), 98), (sx_(21), 104)], lo_); P.line([(sx_(13), 100), (sx_(15), 106)], lo_)   # pliegues del codo
     if gesture == 'fists':
-        for fx, flip in ((11, 0), (85, 1)):
-            fy = 97
+        for fx, flip in ((14, 0), (82, 1)):
+            fy = 92
             base = sk if not flip else skd
-            poly([(fx - 8, fy + 9), (fx + 8, fy + 9), (fx + 9, H), (fx - 9, H)], tb if not flip else td, edge_k=.45)             # puño de la manga
-            P.rect(fx - 8, fy + 10, fx + 8, fy + 11, tl if not flip else tb)
-            P.add(lambda d, fx=fx: d.rounded_rectangle([fx - 7, fy, fx + 7, fy + 10], radius=3, fill=255), base, edge_k=.45)
-            for k in range(3):                                                                                                         # nudillos
-                P.add(lambda d, fx=fx, k=k: d.rounded_rectangle([fx - 7 + k * 5, fy - 3, fx - 3 + k * 5, fy + 4], radius=2, fill=255), base, edge_k=.45)
-            P.add(lambda d, fx=fx, flip=flip: d.rounded_rectangle([fx - 5 + (3 if flip else -3), fy + 5, fx + 5 + (3 if flip else -3), fy + 10], radius=2, fill=255), shade(sk, 1.04), edge_k=.45)
+            sg = 1 if not flip else -1
+            poly([(fx - 7, fy + 12), (fx + 7, fy + 12), (fx + 9, H), (fx - 9, H)], tb if not flip else td, edge_k=.45)           # puño de la manga
+            P.rect(fx - 7, fy + 13, fx + 7, fy + 14, tl if not flip else tb)
+            poly([(fx - 9, fy + 3), (fx - 7, fy - 2), (fx - 1, fy - 5), (fx + 6, fy - 4), (fx + 9, fy + 1), (fx + 9, fy + 6), (fx + 6, fy + 12), (fx - 5, fy + 13), (fx - 9, fy + 9)], base, edge_k=.45)   # masa del puño
+            for k, wdt in enumerate((14, 14, 11)):                                                                                 # pliegues de los dedos (horizontales)
+                P.rect(fx - 8 + (0 if not flip else 2), fy + 1 + k * 3, fx - 8 + wdt - (0 if not flip else 2) + (0 if not flip else 0), fy + 1 + k * 3, skdd)
+            poly([(fx - sg * 6, fy - 3), (fx + sg * 3, fy - 5), (fx + sg * 5, fy - 1), (fx - sg * 1, fy + 1), (fx - sg * 6, fy)], shade(sk, 1.05), edge_k=.45)   # pulgar cruzando por arriba
     return P.final()
 
 
