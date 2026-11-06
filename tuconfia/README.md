@@ -52,5 +52,5 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 
 ## Video 5 — Steve Jobs (del despido al regreso)
 - `src/build_jobs.py` + `src/scenes5.py`, guion `guion_jobs.md`, caption `caption_jobs.txt` (formato de `src/captions.py`).
-- Voz George/eleven_v3, música "Every Living Breathing Moment" (piano), 42 s, bucle (última escena → primer fotograma).
+- Voz Liam (joven, energética) eleven_v3 con `language_code=es`; el campo `tts` de `script_jobs.json` escribe años en palabras y marcas en fonética española (los subtítulos usan el texto normal). Música a -27 dB bajo la voz (-17 dB), con ducking.
 - Zona segura para IG/TikTok: logo en y=230, subtítulos centrados en x=500 (máx. 840 px) a y≈1170–1390; contenido clave entre y≈320 y 1400 (arriba ~250 px y abajo ~450 px quedan libres para la interfaz).

@@ -5,55 +5,64 @@
    "id": "L1",
    "t": "¿Sabías que *Steve Jobs* transformó su despido de Apple... en el regreso más grande de la tecnología?",
    "p": 0.5,
-   "tag": "[curious]"
+   "tag": "[curious]",
+   "tts": "¿Sabías que Estiv Yobs transformó su despido de Ápel... en el regreso más grande de la tecnología?"
   },
   {
    "id": "L2",
    "t": "1985. Tiene *treinta años*... y la junta de Apple le quita el control de su propia empresa.",
    "p": 0.5,
-   "tag": "[serious]"
+   "tag": "[serious]",
+   "tts": "Mil novecientos ochenta y cinco. Tiene treinta años... y la junta de Ápel le quita el control de su propia empresa."
   },
   {
    "id": "L3",
    "t": "Sale de allí con sus cosas en una *caja*.",
    "p": 0.45,
-   "tag": "[sad]"
+   "tag": "[sad]",
+   "tts": "Sale de allí con sus cosas en una caja."
   },
   {
    "id": "L4",
    "t": "Pero no se rinde. *Empieza de cero*: funda NeXT y compra *Pixar*.",
    "p": 0.5,
-   "tag": "[determined]"
+   "tag": "[determined]",
+   "tts": "Pero no se rinde. Empieza de cero: funda Néxt y compra Pixar."
   },
   {
    "id": "L5",
    "t": "Mientras tanto... Apple casi *quiebra*.",
    "p": 0.5,
-   "tag": "[tense]"
+   "tag": "[tense]",
+   "tts": "Mientras tanto... Ápel casi quiebra."
   },
   {
    "id": "L6",
    "t": "1997. Apple lo vuelve a *llamar*.",
    "p": 0.5,
-   "tag": "[intense]"
+   "tag": "[intense]",
+   "tts": "Mil novecientos noventa y siete. Ápel lo vuelve a llamar."
   },
   {
    "id": "L7",
    "t": "Y llegan el iMac, el iPod... el *iPhone*.",
    "p": 0.5,
-   "tag": "[excited]"
+   "tag": "[excited]",
+   "tts": "Y llegan el ái-Mac, el ái-Pod... el ái-Fon."
   },
   {
    "id": "L8",
    "t": "Años después diría que ser despedido fue lo *mejor* que le pasó.",
    "p": 0.5,
-   "tag": "[warmly]"
+   "tag": "[warmly]",
+   "tts": "Años después diría que ser despedido fue lo mejor que le pasó."
   },
   {
    "id": "L9",
    "t": "Tu rechazo de hoy... puede ser tu *regreso* de mañana. ¿Qué vas a empezar *hoy* para demostrarte que *sí puedes*?",
    "p": 0.5,
-   "tag": "[softly]"
+   "tag": "[softly]",
+   "tts": "Tu rechazo de hoy... puede ser tu regreso de mañana. ¿Qué vas a empezar hoy para demostrarte que sí puedes?"
   }
  ]
 }

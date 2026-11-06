@@ -361,7 +361,7 @@ def synth_audio():
     T0 = next(i for i in range(0, len(e0) - hw, hw) if e0[i:i + hw].max() > .02) / SR - .02
     T0 = max(0, T0)
     seg = song[int((T0 - 0.0) * SR):int(T0 * SR) + N].copy()
-    seg *= .11 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)
+    seg *= .045 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)     # música baja: la voz manda
     v = np.arange(len(seg)) / SR
     dip = np.where((v > G - SIL - .05) & (v < G - .012), np.clip(1 - (v - (G - SIL - .05)) / .12, 0, 1), 1.0)   # el piano se apaga ...
     dip = np.where(v >= G - .012, 1.0, dip)                                                                   # ... y vuelve con el golpe
@@ -378,11 +378,13 @@ def synth_audio():
         env = np.sqrt(np.convolve(voice[:, 0] ** 2, np.ones(int(.08 * SR)) / int(.08 * SR), 'same'))
         env = np.convolve(env, np.ones(int(.25 * SR)) / int(.25 * SR), 'same')
         gate = np.clip(env / (env.max() * .12 + 1e-9), 0, 1)
-        m *= (1 - .5 * gate)[:, None]
-    mix = m + sfx
+        m *= (1 - .7 * gate)[:, None]
+        voice *= .14 / (np.sqrt((voice[voice[:, 0] ** 2 > 1e-4] ** 2).mean()) + 1e-9)   # voz al frente (rms hablado ≈ -17 dB)
+    mix = m + sfx * .8
     if voice is not None: mix = mix + voice
+    mix = np.tanh(mix * 1.15) / np.tanh(1.15) * .92        # limitador suave
     pk = np.abs(mix).max()
-    mix = mix / pk * .9 if pk > .9 else mix
+    mix = mix / pk * .92 if pk > .92 else mix
     out = (np.clip(mix, -1, 1) * 32767).astype('<i2')
     with wave.open(f'{ROOT}/audio/mezcla.wav', 'wb') as wf:
         wf.setnchannels(2); wf.setsampwidth(2); wf.setframerate(SR); wf.writeframes(out.tobytes())
