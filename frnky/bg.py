@@ -13,8 +13,8 @@ def sh(c, f):
 
 
 def _font(size):
-    from PIL import ImageFont
-    return ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", size)
+    from .engine import pf
+    return pf(size)
 
 
 def txt(d, xy, s, size, fill, outline=OL, anchor="mm"):
