@@ -9,9 +9,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 from . import audio
 from .config import CTA_SECONDS, HOOK_SECONDS
-from .pixel import W, H
+from PIL import ImageChops, ImageFilter
+from .bg import W, H
 
-FPS, SCALE = 24, 4
+FPS, SCALE = 24, 3
 OUT = (W * SCALE, H * SCALE)
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
@@ -33,7 +34,7 @@ def cam_at(keys, t):
 
 
 def apply_cam(img, k, fx, fy, shake=0, t=0):
-    k = max(15, min(30, round(k)))
+    k = max(20, min(40, round(k)))
     w, h = 9 * k, 16 * k
     ox = round(math.sin(t * 70) * shake) if shake else 0
     oy = round(math.cos(t * 53) * shake) if shake else 0
@@ -61,6 +62,61 @@ def text_block(img, text, cy, size, fill, stroke=10, width=940, line_gap=1.12, s
     for ln in lines:
         d.text((OUT[0] / 2, y), ln, font=f, fill=fill, anchor="mm", stroke_width=stroke, stroke_fill=stroke_fill)
         y += size * line_gap
+
+
+_VIG = None
+
+
+def post_fx(img):
+    """Bloom suave + viñeta + ligero contraste, para el look 'HD pixel' tipo SNES."""
+    global _VIG
+    small = img.resize((OUT[0] // 4, OUT[1] // 4), Image.BILINEAR).filter(ImageFilter.GaussianBlur(3))
+    bloom = small.resize(OUT, Image.BILINEAR)
+    img = Image.blend(img, ImageChops.screen(img, bloom), 0.32)
+    if _VIG is None:
+        yy, xx = np.mgrid[0:OUT[1], 0:OUT[0]]
+        r = np.sqrt(((xx - OUT[0] / 2) / (OUT[0] / 2)) ** 2 + ((yy - OUT[1] / 2) / (OUT[1] / 2)) ** 2)
+        _VIG = (1 - 0.38 * np.clip(r - 0.55, 0, 1) ** 1.6)[..., None].astype("float32")
+    a = np.asarray(img, dtype="float32") * _VIG
+    return Image.fromarray(np.clip(a, 0, 255).astype("uint8"))
+
+
+def rpg_box(img, who_label, color, text, shown, y0=1255, y1=1465, gold=False):
+    """Caja de diálogo estilo JRPG con etiqueta de nombre y texto que se escribe solo."""
+    layer = Image.new("RGBA", OUT, (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    fill, edge = ((46, 36, 8, 245), (255, 214, 70, 255)) if gold else ((26, 30, 104, 240), (236, 240, 255, 255))
+    d.rounded_rectangle([70, y0, 1010, y1], radius=26, fill=fill, outline=edge, width=7)
+    d.rounded_rectangle([86, y0 + 16, 994, y1 - 16], radius=18, outline=(120, 130, 230, 255) if not gold else (190, 140, 30, 255), width=3)
+    if who_label:
+        f = ImageFont.truetype(FONT, 34)
+        tw = d.textlength(who_label, font=f) + 44
+        d.rounded_rectangle([86, y0 - 40, 86 + tw, y0 + 10], radius=12, fill=color + (255,), outline=(20, 16, 40, 255), width=5)
+        d.text((86 + tw / 2, y0 - 15), who_label, font=f, fill=(30, 20, 40), anchor="mm")
+    img.paste(Image.alpha_composite(img.convert("RGBA"), layer).convert("RGB"))
+    d2 = ImageDraw.Draw(img)
+    f = ImageFont.truetype(FONT, 70 if gold else 56)
+    vis = text[:shown]
+    lines = _wrap(d2, text, f, 860)
+    # respeta el salto de línea de la frase completa para que no "baile" al escribirse
+    y = (y0 + y1) / 2 - (len(lines) - 1) * (42 if gold else 34)
+    left = shown
+    for ln in lines:
+        d2.text((540 if gold else 120, y), ln[:max(0, left)], font=f,
+                fill=(255, 255, 255) if not gold else (255, 236, 130), anchor="mm" if gold else "lm")
+        left -= len(ln) + 1
+        y += 84 if gold else 68
+
+
+def hud(img, level, vibe):
+    d = ImageDraw.Draw(img)
+    f = ImageFont.truetype(FONT, 36)
+    for k, (label, val, col) in enumerate((("NIVEL DE BRO", f"{level}", (255, 214, 70)), ("BUENA ONDA", f"{vibe}%", (255, 120, 170)))):
+        s = f"{label}: {val}"
+        w = d.textlength(s, font=f) + 40
+        y = 262 + k * 68
+        d.rounded_rectangle([36, y, 36 + w, y + 54], radius=12, fill=(24, 20, 60), outline=col, width=4)
+        d.text((56, y + 27), s, font=f, fill=col, anchor="lm")
 
 
 def render_video(ep, cta, out_mp4, workdir):
@@ -98,33 +154,33 @@ def render_video(ep, cta, out_mp4, workdir):
     for i in range(n):
         t = i / FPS
         canvas, cam, shake = ep["frame"](t)
-        img = apply_cam(canvas, *cam, shake=shake, t=t)
-        # subtítulo
+        img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t))
+        if "banner" in ep and ep["banner"](t):
+            text_block(img, ep["banner"](t), 520, 130, (255, 235, 90), stroke=14)
+        if "hud" in ep:
+            hud(img, *ep["hud"](t))
+        # diálogo estilo RPG (se escribe letra por letra)
         for t0, t1, who, text in lines:
             if t0 <= t < t1:
                 col = voices[who.split("+")[0]]["color"] if "+" not in who else (255, 255, 255)
                 tag = " + ".join(voices[v]["label"] for v in who.split("+"))
-                text_block(img, tag, 1262, 40, col, stroke=7)
-                text_block(img, text, 1370, 74, col)
+                shown = int(len(text) * min(1.0, (t - t0) / (0.45 * (t1 - t0))) + 1)
+                rpg_box(img, tag, col, text, shown)
         # gancho (primeros segundos): arranca ya en el fotograma 0
         if t < HOOK_SECONDS:
-            text_block(img, ep["hook"], 395, 92, (255, 235, 90), stroke=12, width=900)
+            text_block(img, ep["hook"], 560, 92, (255, 235, 90), stroke=12, width=900)
         # flash en cada corte
         for c in ep["cuts"]:
             if 0 <= t - c < 2.5 / FPS:
                 white = Image.new("RGB", OUT, (255, 255, 255))
                 img = Image.blend(img, white, 0.65 if t - c < 1 / FPS else 0.3)
-        # CTA en los últimos segundos
+        # CTA en los últimos segundos (misma caja RPG, en dorado)
         if t >= cta_t0:
             u = t - cta_t0
-            pop = 1 + 0.12 * math.sin(min(u, 0.3) / 0.3 * math.pi) + 0.02 * math.sin(u * 9)
-            layer = Image.new("RGBA", OUT, (0, 0, 0, 0))
-            dl = ImageDraw.Draw(layer)
-            hw, hh = 470 * pop, 190 * pop
-            dl.rounded_rectangle([OUT[0] / 2 - hw, 1370 - hh, OUT[0] / 2 + hw, 1370 + hh], radius=46,
-                                 fill=(12, 10, 28, 235), outline=(255, 235, 90, 255), width=10)
-            img = Image.alpha_composite(img.convert("RGBA"), layer).convert("RGB")
-            text_block(img, cta.upper(), 1370, int(78 * pop), (255, 235, 90), stroke=8, width=860)
+            pop = 1 + 0.06 * math.sin(min(u, 0.3) / 0.3 * math.pi)
+            cy = 1380
+            hh = int(150 * pop)
+            rpg_box(img, "MISIÓN", (255, 214, 70), cta, len(cta), y0=cy - hh, y1=cy + hh, gold=True)
         if i in (0, int(n * 0.25), int(n * 0.55), int(n * 0.9), n - 1):
             saved[i] = img.copy()
         pipe.stdin.write(img.tobytes())

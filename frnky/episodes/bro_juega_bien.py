@@ -4,8 +4,8 @@ from PIL import Image, ImageDraw
 
 from .. import audio
 from ..engine import cam_at
-from ..pixel import BRO, CHUY, NATI, MEMO, W, H, draw_char
-from ..scene import room, couch_front, table_items, confetti
+from ..sprite import draw_char
+from ..bg import room, tv, glow, light_shaft, night_grade, sparkles, cans, confetti, txt
 
 META = dict(id="bro-juega-bien", category="amistad",
             title="¿Qué pasaría si mi bro finalmente jugara bien?",
@@ -38,8 +38,9 @@ LINES = [
     (20.6, 21.9, "bro", "¿Mejor volvemos a ser malos?"),
     (22.0, 23.0, "todos", "¡ESE ES MI BRO!"),
 ]
-SEAT = dict(chuy=42, bro=105, nati=168, memo=231)
-BY, S = 312, 3
+SEAT = dict(chuy=50, bro=135, nati=222, memo=308)
+FEET = 395
+PRO = dict(expr="smug", shades=True, headset=True, shirt=(36, 36, 52))
 
 
 def speaking(t):
@@ -49,110 +50,126 @@ def speaking(t):
     return []
 
 
-def group(d, t, bro_kw, states, night=False):
-    """states: dict nombre -> kwargs para draw_char. Dibuja de atrás hacia adelante."""
-    sp = speaking(t)
-    for name, ch in (("chuy", CHUY), ("nati", NATI), ("memo", MEMO), ("bro", BRO)):
-        kw = dict(states.get(name, {}))
-        if name == "bro":
-            kw = {**bro_kw, **kw}
-        if kw.get("hide"):
-            continue
-        kw.pop("hide", None)
-        talk = name in sp or "todos" in sp
-        bob = round(math.sin(t * 5 + SEAT[name]) * 1)
-        kw.setdefault("oy", 0); kw["oy"] += bob
-        draw_char(d, ch, SEAT[name], BY, S, talk=talk, t=t, **kw)
-
-
-def frame(t):
-    img = Image.new("RGB", (W, H)); d = ImageDraw.Draw(img)
-    bro_old = dict(expr="neutral")
-    bro_pro = dict(expr="smug", shades=True, headset=True, shirt=(34, 34, 48))
-    shake = 0
-    if t < 3.6:  # S1: el conflicto
-        room(d, t, (0, 14), "DERROTA")
-        group(d, t, bro_old, dict(
-            chuy=dict(expr="angry", arms="fist", fx=("vein",), shake=1 if t < 2.3 else 0),
-            bro=dict(expr="sad", fx=("tear",), look=-1),
-            nati=dict(expr="shock", fx=("sweat",)),
-            memo=dict(expr="happy" if t > 2.2 else "smug", arms="down")))
-        couch_front(d)
-        keys = [(0, 30, 135, 240), (2.0, 28, 120, 250), (2.3, 17, 231, 262), (3.6, 16, 231, 262)]
-        shake = 1 if t < 0.4 else 0
-    elif t < 8.0:  # S2: lo corren
-        room(d, t, (0, 14), "DERROTA")
-        sink = round(smooth01((t - 5.3) / 0.3) * 8) if t < 6.5 else 0
-        group(d, t, bro_old, dict(
-            chuy=dict(expr="angry", arms="point" if t > 6.4 else "ctrl", fx=("vein",), shake=1 if t > 6.4 else 0),
-            nati=dict(expr="angry" if t < 5.3 else "shock", arms="point" if t > 6.4 else "ctrl"),
-            memo=dict(expr="angry", arms="point" if t > 6.4 else "down"),
-            bro=dict(expr="sad", fx=("tear", "sweat"), oy=sink if t < 6.5 else 10, look=1)))
-        couch_front(d)
-        keys = [(3.6, 17, 168, 262), (5.2, 17, 168, 262), (5.3, 15, 105, 262), (6.4, 15, 105, 262),
-                (6.5, 28, 120, 255), (8.0, 25, 105, 260)]
-        shake = 2 if t > 6.5 else 0
-    elif t < 12.6:  # S3: entrenamiento nocturno
-        day = 0 if t < 9.4 else (1 if t < 10.2 else (2 if t < 11.0 else 3))
-        kd = [(3, 9), (3, 9), (12, 5), (20, 1)][day]
-        room(d, t, kd, "PRÁCTICA", night=True, label="K / D")
-        cans = [0, 2, 6, 11][day]
-        table_items(d, cans)
-        expr = ["neutral", "neutral", "angry", "shock"][day]
-        draw_char(d, BRO, 135, BY, 4, expr=expr, t=t, talk=bool(speaking(t)), bags=day >= 2,
-                  arms="ctrl", fx=("sweat",) if day >= 2 else (), oy=round(math.sin(t * 12) * (1 + day)),
-                  shake=1 if day >= 2 else 0)
-        couch_front(d, night=True)
-        table_items(d, cans, pizza=day > 0)
-        if day:
-            from ..pixel import ptext
-            ptext(d, (135, 352), f"DÍA {day}", 26, (255, 235, 90))
-        keys = [(8.0, 24, 135, 250), (9.4, 21, 135, 258), (12.6, 17, 135, 258)]
-        shake = 1 if day >= 2 else 0
-    elif t < 16.6:  # S4: vuelve "pro"
-        room(d, t, (25, 0), "VICTORIA")
-        rise = round(40 * (1 - smooth01((t - 12.6) / 0.35)))
-        group(d, t, bro_pro, dict(
-            nati=dict(expr="happy", arms="cheer" if t < 13.9 else "ctrl"),
-            chuy=dict(expr="happy", arms="cheer" if 13.8 <= t < 14.9 else "ctrl"),
-            memo=dict(expr="happy", arms="down" if t < 14.0 else "ctrl"),
-            bro=dict(oy=rise, look=0)))
-        couch_front(d)
-        keys = [(12.6, 30, 135, 240), (14.8, 30, 135, 240), (14.9, 15, 105, 262), (16.6, 15, 105, 262)]
-    elif t < 20.5:  # S5: se pone insoportable
-        room(d, t, (25, 0), "VICTORIA")
-        group(d, t, bro_pro, dict(
-            chuy=dict(expr="sad", fx=("tear",), oy=4 if t > 17.9 else 0),
-            nati=dict(expr="sad" if t > 19.3 else "shock", arms="down"),
-            memo=dict(expr="shock", fx=("sweat",), arms="down"),
-            bro=dict(expr="smug", oy=0)))
-        couch_front(d)
-        keys = [(16.6, 17, 231, 262), (17.8, 17, 231, 262), (17.9, 15, 105, 262), (19.3, 15, 105, 262),
-                (19.4, 17, 168, 262), (20.5, 17, 168, 262)]
-    elif t < 22.0:  # S6: se arrepiente
-        gone = t > 21.3
-        room(d, t, (0, 14) if gone else (25, 0), "DERROTA" if gone else "VICTORIA")
-        bro_kw = dict(expr="shy", shirt=(34, 34, 48), shades=False, headset=False, look=-1)
-        group(d, t, bro_kw, dict(
-            chuy=dict(expr="shock", arms="down"), nati=dict(expr="shock", arms="down"),
-            memo=dict(expr="shock", arms="down"), bro=dict(arms="down" if gone else "ctrl")))
-        couch_front(d)
-        keys = [(20.5, 15, 105, 262), (22.0, 15, 105, 262)]
-    else:  # final: todos felices, bro de nuevo "malo" (conecta con el primer plano)
-        room(d, t, (0, 14), "DERROTA")
-        group(d, t, dict(expr="happy"), dict(
-            chuy=dict(expr="happy", arms="cheer"), nati=dict(expr="happy", arms="cheer"),
-            memo=dict(expr="happy", arms="cheer"), bro=dict(expr="happy", arms="cheer", look=0)))
-        confetti(d, t)
-        couch_front(d)
-        keys = [(22.0, 30, 135, 240), (T, 30, 135, 240)]
-        shake = 1 if t < 22.4 else 0
-    return img, cam_at(keys, t), shake
-
-
 def smooth01(x):
     x = max(0.0, min(1.0, x))
     return x * x * (3 - 2 * x)
+
+
+def char(c, t, name, x=None, shake=0, scale=2, feet=FEET, **kw):
+    sp = speaking(t)
+    talking = (name in sp or "todos" in sp) and int(t * 9) % 2 == 0
+    expr = kw.get("expr", "neutral")
+    if talking:
+        kw["mouth"] = "big" if expr in ("angry", "happy", "shock") else "open"
+    x = SEAT[name] if x is None else x
+    ox = round(math.sin(t * 61) * shake) if shake else 0
+    oy = round(math.sin(t * 5 + x) * 1.5) + kw.pop("oy", 0)
+    draw_char(c, name, x, feet, ox=ox, oy=oy, scale=scale, **kw)
+
+
+def banner(t):
+    if 9.4 <= t < 12.0:
+        return f"DÍA {1 if t < 10.2 else (2 if t < 11.0 else 3)}"
+    return ""
+
+
+def hud(t):
+    lvl = 1
+    if 8.0 <= t < 21.3:
+        lvl = 1 if t < 9.4 else (30 if t < 10.2 else (62 if t < 11.0 else 99))
+        if t >= 12.6:
+            lvl = 99
+    vibe = 100
+    if t < 8.0:
+        vibe = max(0, round(100 - 100 * min(1, t / 6.5)))
+    elif t < 12.6:
+        vibe = 0
+    elif t < 14.9:
+        vibe = 100
+    elif t < 20.5:
+        vibe = max(0, round(100 - 100 * (t - 14.9) / 5.0))
+    elif t < 22.0:
+        vibe = 0
+    return lvl, vibe
+
+
+def frame(t):
+    day = t < 8.0 or t >= 12.6
+    c = room(t, night=not day)
+    shake = 0
+    tvargs = dict(score=(0, 14), verdict="DERROTA")
+    if t < 3.6:  # S1: el conflicto, ya desde el primer fotograma
+        light_shaft(c)
+        char(c, t, "chuy", expr="angry", pose="fist", fx=("vein",), shake=3 if t < 2.3 else 1)
+        char(c, t, "bro", expr="sad", fx=("tear",), look=-1, oy=4)
+        char(c, t, "nati", expr="shock", fx=("sweat",), pose="ctrl")
+        char(c, t, "memo", expr="happy", pose="down", flip=True)
+        keys = [(0, 40, 180, 330), (2.0, 36, 160, 330), (2.3, 26, 308, 340), (3.6, 24, 308, 340)]
+        shake = 1 if t < 0.4 else 0
+    elif t < 8.0:  # S2: lo corren
+        light_shaft(c)
+        pt = t > 6.4
+        char(c, t, "chuy", expr="angry", pose="point" if pt else "ctrl", fx=("vein",), shake=2 if pt else 0)
+        char(c, t, "nati", expr="angry" if t < 5.3 else "shock", pose="point" if pt else "ctrl", flip=pt)
+        char(c, t, "memo", expr="angry", pose="point" if pt else "down", flip=True)
+        char(c, t, "bro", expr="sad", fx=("tear", "sweat"), look=1, oy=8 if t > 5.3 else 3)
+        keys = [(3.6, 26, 222, 340), (5.2, 26, 222, 340), (5.3, 24, 135, 340), (6.4, 24, 135, 340),
+                (6.5, 40, 180, 330), (8.0, 34, 150, 340)]
+        shake = 2 if pt else 0
+    elif t < 12.6:  # S3: entrenamiento nocturno
+        dn = 0 if t < 9.4 else (1 if t < 10.2 else (2 if t < 11.0 else 3))
+        cans(c, [0, 3, 8, 14][dn])
+        expr = ["neutral", "angry", "angry", "shock"][dn]
+        night_grade(c, 0.42)
+        char(c, t, "bro", x=180, feet=410, scale=3, expr=expr, pose="ctrl", bags=dn >= 2,
+             fx=("sweat",) if dn >= 2 else (), shake=1 if dn >= 2 else 0)
+        tvargs = dict(score=[(3, 9), (3, 9), (12, 5), (20, 1)][dn], verdict="PRÁCTICA", night=True)
+        if dn:
+            sparkles(c, t, 180, 300, 6, 110)
+        keys = [(8.0, 36, 180, 340), (9.4, 30, 180, 340), (12.6, 24, 180, 340)]
+        shake = 1 if dn >= 2 else 0
+    elif t < 16.6:  # S4: vuelve "pro"
+        light_shaft(c)
+        walk = smooth01((t - 12.6) / 1.0)
+        bx = -40 + (SEAT["bro"] + 40) * walk
+        bob = -abs(math.sin(t * 12)) * 5 if walk < 1 else 0
+        char(c, t, "nati", expr="happy", pose="cheer" if t < 13.9 else "ctrl")
+        char(c, t, "chuy", expr="happy", pose="cheer" if 13.8 <= t < 14.9 else "ctrl")
+        char(c, t, "memo", expr="happy", pose="down", flip=True)
+        char(c, t, "bro", x=bx, oy=bob, pose="ctrl", **PRO)
+        if t > 13.6:
+            sparkles(c, t, SEAT["bro"], 300, 5, 60)
+        tvargs = dict(score=(25, 0), verdict="VICTORIA")
+        keys = [(12.6, 40, 180, 330), (14.8, 40, 180, 330), (14.9, 24, 135, 340), (16.6, 24, 135, 340)]
+    elif t < 20.5:  # S5: se pone insoportable
+        light_shaft(c)
+        char(c, t, "chuy", expr="sad", fx=("tear",), oy=4 if t > 17.9 else 0, pose="down")
+        char(c, t, "nati", expr="sad" if t > 19.3 else "shock", pose="down")
+        char(c, t, "memo", expr="shock", fx=("sweat",), pose="down", flip=True)
+        char(c, t, "bro", pose="ctrl", **PRO)
+        sparkles(c, t, SEAT["bro"], 300, 4, 60)
+        tvargs = dict(score=(25, 0), verdict="VICTORIA")
+        keys = [(16.6, 26, 308, 340), (17.8, 26, 308, 340), (17.9, 24, 135, 340), (19.3, 24, 135, 340),
+                (19.4, 26, 222, 340), (20.5, 26, 222, 340)]
+    elif t < 22.0:  # S6: se arrepiente
+        gone = t > 21.3
+        light_shaft(c)
+        for n_ in ("chuy", "nati", "memo"):
+            char(c, t, n_, expr="shock", pose="down", flip=(n_ == "memo"))
+        char(c, t, "bro", expr="shy", pose="down" if gone else "ctrl", look=-1, shirt=(36, 36, 52))
+        tvargs = dict(score=(0, 14), verdict="DERROTA") if gone else dict(score=(25, 0), verdict="VICTORIA")
+        keys = [(20.5, 24, 135, 340), (22.0, 24, 135, 340)]
+    else:  # final: todos felices, bro de nuevo "malo" (cierra el bucle con el primer plano)
+        light_shaft(c)
+        for n_ in ("chuy", "nati", "bro", "memo"):
+            char(c, t, n_, expr="happy", pose="cheer", flip=(n_ == "memo"))
+        confetti(c, t)
+        keys = [(22.0, 40, 180, 330), (T, 40, 180, 330)]
+        shake = 1 if t < 22.4 else 0
+    tv(c, t, **tvargs)
+    if not day:
+        c = Image.fromarray(__import__("numpy").asarray(glow(c, (104, 96, 258, 244), (80, 130, 255), 150, 26))).convert("RGBA")
+    return c, cam_at(keys, t), shake
 
 
 def music(track):
@@ -173,4 +190,4 @@ def sfx(track):
     audio.jingle(track, 22.0)
 
 
-EP = dict(T=T, hook=HOOK, lines=LINES, cuts=CUTS, voices=VOICES, frame=frame, music=music, sfx=sfx, meta=META)
+EP = dict(banner=banner, hud=hud, T=T, hook=HOOK, lines=LINES, cuts=CUTS, voices=VOICES, frame=frame, music=music, sfx=sfx, meta=META)
