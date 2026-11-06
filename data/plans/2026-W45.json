@@ -1,0 +1,51 @@
+{
+ "week": "2026-W45",
+ "monday": "2026-11-06",
+ "variants": [
+  {
+   "id": "dia-libre",
+   "category": "trabajo",
+   "title": "Mi bro recibe un día libre y no sabe qué hacer"
+  },
+  {
+   "id": "te-pago-mañana",
+   "category": "dinero",
+   "title": "Mi bro y el «te pago mañana»"
+  },
+  {
+   "id": "ya-casi-llego",
+   "category": "amistad",
+   "title": "Mi bro que dice «ya casi llego» desde su cama"
+  }
+ ],
+ "schedule": [
+  {
+   "date": "2026-11-06",
+   "slot": "dia-libre"
+  },
+  {
+   "date": "2026-11-07",
+   "slot": "te-pago-mañana"
+  },
+  {
+   "date": "2026-11-08",
+   "slot": "ya-casi-llego"
+  },
+  {
+   "date": "2026-11-09",
+   "slot": "ganadora (decide con `report` tras el día 3)"
+  },
+  {
+   "date": "2026-11-10",
+   "slot": "ganadora (decide con `report` tras el día 3)"
+  },
+  {
+   "date": "2026-11-11",
+   "slot": "ganadora (decide con `report` tras el día 3)"
+  },
+  {
+   "date": "2026-11-12",
+   "slot": "ganadora (decide con `report` tras el día 3)"
+  }
+ ]
+}
