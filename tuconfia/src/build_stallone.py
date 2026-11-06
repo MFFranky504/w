@@ -351,10 +351,11 @@ def synth_audio():
     add(np.sin(2 * np.pi * 60 * tt(.5)) * np.exp(-tt(.5) * 10) * .8, g('no')['t0'] + (g('no')['t1'] - g('no')['t0']) * .5, .9)
     # riser previo al drop (el drop cae en 'O la protagoniza él...') y golpe
     G = g('deal')['t0'] + .02
+    SIL = 0.75        # silencio suspensivo antes de Touch The Sky
     rd = min(1.3, g('slam')['t1'] - g('slam')['t0'] - .35)
     rise = noise(rd, 3000) * (tt(rd) / rd) ** 2.2
-    add(rise * .55, G - rd - .25, .6)
-    add(np.sin(2 * np.pi * (80 + 300 * (tt(rd) / rd) ** 3) * tt(rd)) * (tt(rd) / rd) * .25, G - rd - .25, .6)
+    add(rise * .55, G - rd - SIL, .6)                                  # el riser sube y se corta en seco ...
+    add(np.sin(2 * np.pi * (80 + 300 * (tt(rd) / rd) ** 3) * tt(rd)) * (tt(rd) / rd) * .25, G - rd - SIL, .6)
     boom = np.sin(2 * np.pi * (55 * np.exp(-tt(1.8) * 1.2) + 28) * tt(1.8)) * np.exp(-tt(1.8) * 2.2)
     add(boom * .6, G, 1.0)
     add(noise(1.2, 6000) * np.exp(-tt(1.2) * 4) * .35, G, .6)
@@ -402,9 +403,12 @@ def synth_audio():
     tl = len(seg) / SR
     ramp_in = np.minimum(1, np.arange(len(seg)) / (SR * .5))
     # la nota E que cae en G se deja sonar y se apaga justo antes de la siguiente nota
-    tt_ = np.arange(len(seg)) / SR
-    ramp_out = np.where(tt_ > (G - r0 + .15), np.clip(1 - (tt_ - (G - r0 + .15)) / 1.0, 0, 1), 1.0)
-    seg *= (ramp_in * ramp_out)[:, None]
+    v = np.arange(len(seg)) / SR                                       # tiempo de vídeo (el tramo empieza en t=0)
+    f0, f1 = G - SIL - .4, G - SIL
+    gain = np.where(v < f0, 1.0, np.where(v < f1, 1 - (v - f0) / (f1 - f0), 0.0))     # el piano se apaga ...
+    back = np.clip((v - (G - .012)) / .012, 0, 1) * np.clip(1 - (v - (G + .15)) / 1.0, 0, 1)   # ... silencio ... y la nota vuelve exactamente en G
+    gain = np.where(v >= G - .012, back, gain)
+    seg *= (ramp_in * gain)[:, None]
     m[:min(len(seg), N)] += seg[:N]
     # Touch The Sky desde su inicio real, con el primer sonido en G
     p2 = song[int(T0 * SR):int(T0 * SR) + (N - int(G * SR))].copy()
