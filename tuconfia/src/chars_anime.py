@@ -231,6 +231,8 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
         d.line([(cx - 3, my - 1), (cx + 3, my - 1)], fill=WHITE); d.line([(cx - 2, my + 2), (cx + 2, my + 2)], fill=(232, 120, 128))
     elif expr == 'wow':
         d.ellipse([cx - 2, my - 2, cx + 2, my + 2], fill=dark)
+    elif expr == 'warm':
+        d.line([(cx - 4, my - 1), (cx - 3, my), (cx - 1, my + 1), (cx + 1, my + 1), (cx + 3, my), (cx + 4, my - 1)], fill=lip)
     elif expr == 'sad':
         d.line([(cx - 3, my + 1), (cx - 1, my), (cx + 1, my), (cx + 3, my + 1)], fill=lip)
     elif expr == 'worry':
