@@ -112,60 +112,77 @@ for b in range(nb):
 r = lp(noise(T[1]), 5) * np.linspace(0, 1, int(T[1] * SR)) ** 2
 add(r * .9, 0, .35, bus=stems["riser"])
 
-def curve(pts):  # [(t, gain)] linear
+def curve(pts):
     ts, gs = zip(*pts); return np.interp(np.arange(N) / SR, ts, gs)
+R0 = T[1] + REVEAL
 g = {
-    "pad":  curve([(0, .55), (T[1], .6), (T[4], .7), (T[5], .55), (END-1.5, .5), (END, 0)]),
-    "bass": curve([(0, 0), (.5, 0), (.6, .7), (T[5], .7), (END-1.5, .5), (END, 0)]),
-    "hat":  curve([(0, 0), (T[1]-.01, 0), (T[1], .6), (T[5], .7), (T[5]+.05, .25), (END-1.5, .2), (END, 0)]),
-    "ks":   curve([(0, 0), (T[2]-.01, 0), (T[2], .85), (T[5], .85), (T[5]+.05, 0), (END, 0)]),
-    "lead": curve([(0, 0), (T[3]-.01, 0), (T[3], .7), (T[5], .75), (T[5]+.3, .5), (END-1.5, .45), (END, 0)]),
-    "arp":  curve([(0, 0), (T[4]-.01, 0), (T[4], .45), (T[5], .45), (T[5]+.05, 0), (END, 0)]),
+    "pad":  curve([(0, .55), (R0, .6), (T[5], .7), (T[6], .55), (END-1.5, .5), (END, 0)]),
+    "bass": curve([(0, 0), (.5, 0), (.6, .7), (T[6], .7), (END-1.5, .5), (END, 0)]),
+    "hat":  curve([(0, 0), (T[1]-.01, 0), (T[1], .5), (T[6], .7), (T[6]+.05, .25), (END-1.5, .2), (END, 0)]),
+    "ks":   curve([(0, 0), (R0-.01, 0), (R0, .9), (T[2]-.01, .9), (T[2], 0), (T[3]-.01, 0), (T[3], .85), (T[6], .85), (T[6]+.05, 0), (END, 0)]),
+    "lead": curve([(0, 0), (R0-.01, 0), (R0, .8), (T[2]-.01, .8), (T[2], 0), (T[4]-.01, 0), (T[4], .7), (T[6], .75), (T[6]+.3, .5), (END-1.5, .45), (END, 0)]),
+    "arp":  curve([(0, 0), (T[5]-.01, 0), (T[5], .45), (T[6], .45), (T[6]+.05, 0), (END, 0)]),
     "riser": curve([(0, 1), (T[1], 1), (T[1] + .01, 0), (END, 0)]),
 }
 MUS_L = sum(stems[k][0] * g[k] for k in stems); MUS_R = sum(stems[k][1] * g[k] for k in stems)
-# sidechain-ish duck from kick+snare steps is skipped; gentle global level
-MUS = (MUS_L * .42, MUS_R * .42)
-L += MUS[0]; R += MUS[1]
+L += MUS_L * .42; R += MUS_R * .42
 
-# ---------------- SFX / ambience ----------------
 sfx = (np.zeros(N), np.zeros(N))
 def S(sig, t, gg=1.0, pan=0.0): add(sig, t, gg, pan, bus=sfx)
-S(blip(660, .1), .02, .8); S(blip(880, .1), .12, .8); S(blip(1320, .2), .22, .9)   # opening sting
+def cymbal(d=1.6):
+    t = tt(d); return hp(noise(d), 2) * np.exp(-t * 2.6) * .5
+def cheer(d=2.2):
+    t = tt(d); x = lp(noise(d), 9) * (np.minimum(t / .3, 1) * np.exp(-t * 1.1)); return x * 1.6
+# hook: opening sting + glitch bursts
+S(blip(660, .1), .02, .8); S(blip(880, .1), .12, .8); S(blip(1320, .2), .22, .9)
+for tg in (.30, .52, .78): S(hp(noise(.06), 2) * np.exp(-tt(.06) * 30) * .9, tg, .8)
 S(impact(.5, 80), T[1] - .02, 1.0)
-for i in range(1, 6):
+for i in range(1, 7):
     S(whoosh(.8), T[i] - .4, 1.0, pan=.2 if i % 2 else -.2)
-    if i > 1: S(impact(.4, 65), T[i] + .0, .7)
-bed = {}
+    if i > 1: S(impact(.4, 65), T[i], .7)
+# recap: header slam, drumroll, reveal, winners
+t1 = T[1]
+S(impact(.3, 90), t1 + .1, .8); S(blip(440, .08), t1 + .12, .7)
+tr, k = .45, 0
+while tr < REVEAL - .12:
+    S(snare(), t1 + tr, .35 + .5 * (tr / REVEAL), pan=(-1) ** k * .15); tr += max(.05, .26 - .0000 - .075 * k); k += 1
+S(lp(noise(REVEAL - .3), 4) * np.linspace(0, 1, int((REVEAL - .3) * SR)) ** 2 * .6, t1 + .3, .5)
+S(impact(.9, 55), t1 + REVEAL, 1.2); S(cymbal(), t1 + REVEAL, .9); S(cheer(), t1 + REVEAL + .1, .8)
+for j, f in enumerate((523, 659, 784, 1047)): S(blip(f, .16), t1 + REVEAL + .05 + .09 * j, .8)
+S(coin(), t1 + REVEAL + .5, .8)
+S(whoosh(.7), t1 + WIN0 - .4, .8); S(blip(988, .08), t1 + WIN0, .7); S(blip(1319, .16), t1 + WIN0 + .07, .7)
+for i in range(len(WINNERS)):
+    S(blip(700 + 40 * (i % 6), .05, False), t1 + WIN0 + .2 + i * ROW_H / WIN_SPEED, .55)
+S(coin(), T[2] - 4.6, .7)
+# clues
 for ci, c in enumerate(CLUES):
-    t0 = T[ci + 1]; seg = T[ci + 2] - t0; n = c["n"]
+    sidx = ci + 2; t0 = T[sidx]; seg = T[sidx + 1] - t0; n = c["n"]
     S(impact(.3, 90), t0 + .1, .8); S(blip(440, .08), t0 + .12, .7)
-    for k in range(n): S(blip(523 * 2 ** (k / 4 + .0) , .07), t0 + .45 + .11 * k, .6)
-    S(coin(), t0 + 1.0, .9); S(impact(.35, 110), t0 + 1.0, .6)
-    S(blip(784, .06), t0 + 1.5, .7); S(blip(1175, .1), t0 + 1.56, .7)
+    for kk in range(n): S(blip(523 * 2 ** (kk / 4), .07), t0 + .45 + .11 * kk, .6)
+    S(coin(), t0 + .9, .9); S(impact(.35, 110), t0 + .9, .6)
+    S(blip(784, .06), t0 + 1.1, .7); S(blip(1175, .1), t0 + 1.16, .7)
     for i, ch in enumerate(plain(c["text"])):
         if i % 2 == 0 and ch != " ": S(tick(), t0 + TW0 + i * TWS, .6 + .1 * (i % 3), pan=(i % 5 - 2) * .05)
-    # ambience
+    if n in BANNERS: S(blip(988, .07), t0 + BANNER_T, .7); S(blip(1480, .14), t0 + BANNER_T + .07, .7)
+    for kk in (3, 2, 1): S(tick() * 1.3, t0 + seg - kk, .5)       # countdown ticks
     d = seg + .5
     if n == 1:
         S(lp(noise(d), 120) * .12 + np.sin(2*np.pi*60*tt(d)) * .02, t0, 1.0)
         for tp in (.5, .8, 1.1): S(blip(300 + 200 * tp, .06, False), t0 + tp, .8)
     if n == 2:
         S(crackle_bed(d, 55, .5), t0, 1.0); S(boom(.6) * .5, t0 + .3, .8)
-        for k in range(3): S(coin(), t0 + 4.6 + .12 * k, .6)
+        for kk in range(3): S(coin(), t0 + 3.9 + .12 * kk, .6)
     if n == 3:
         S(lp(noise(d), 30) * .22 + crackle_bed(d, 40, .35), t0, 1.0); S(whoosh(.9), t0 + .2, 1.2)
     if n == 4:
-        cr = lp(noise(d), 10) * (0.1 + .08 * np.sin(2*np.pi*.4*tt(d)))
-        S(cr, t0, 1.0)
-        for tp in (3.0, 5.2): S(boom(1.0), t0 + tp, .9); S(crackle_bed(1.0, 160, .4), t0 + tp + .1, .7)
+        S(lp(noise(d), 10) * (0.1 + .08 * np.sin(2*np.pi*.4*tt(d))), t0, 1.0)
+        for tp in (2.4, 4.4): S(boom(1.0), t0 + tp, .9); S(crackle_bed(1.0, 160, .4), t0 + tp + .1, .7)
 # outro
-S(whoosh(1.0), T[5] + 2.6, 1.0)
-S(blip(784, .08), T[5] + .5, .8); S(blip(1175, .12), T[5] + .58, .8)
-S(coin(), T[5] + 3.2, .9); S(impact(.5, 70), T[5] + 3.2, .8)
-S(blip(988, .1), T[5] + 5.9, .7); S(blip(1319, .3), T[5] + 6.0, .7)
+S(whoosh(1.0), T[6] + 2.6, 1.0)
+S(blip(784, .08), T[6] + .5, .8); S(blip(1175, .12), T[6] + .58, .8)
+S(coin(), T[6] + 3.2, .9); S(impact(.5, 70), T[6] + 3.2, .8)
+S(blip(988, .1), T[6] + 5.9, .7); S(blip(1319, .3), T[6] + 6.0, .7)
 L += sfx[0] * .75; R += sfx[1] * .75
-# fades
 f = np.minimum(np.arange(N) / (.02 * SR), 1) * np.minimum((N - np.arange(N)) / (.9 * SR), 1)
 L *= f; R *= f
 pk = max(np.abs(L).max(), np.abs(R).max()); L /= pk; R /= pk
