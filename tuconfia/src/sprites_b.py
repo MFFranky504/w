@@ -29,6 +29,8 @@ OUTF = {
  'blazer': dict(top=(52, 70, 120), top2=(34, 46, 86), under=(250, 250, 250), pants=(70, 70, 82), shoes=(60, 44, 40), sole=(40, 30, 28)),
  'polo': dict(top=(210, 150, 80), top2=(160, 104, 50), under=(250, 240, 220), pants=(80, 84, 100), shoes=(70, 52, 44), sole=(40, 30, 28)),
  'coat': dict(top=(246, 248, 252), top2=(196, 206, 224), under=(190, 214, 240), pants=(70, 90, 130), shoes=(60, 50, 50), sole=(40, 30, 28)),
+ 'tux': dict(top=(32, 32, 44), top2=(18, 18, 28), under=(250, 250, 252), pants=(32, 32, 44), shoes=(16, 16, 22), sole=(10, 10, 14)),
+ 'grey': dict(top=(156, 160, 172), top2=(112, 116, 132), under=(206, 210, 220), pants=(70, 78, 110), shoes=(110, 70, 52), sole=(236, 226, 204)),
  'hoodie':  dict(top=(86, 102, 212), top2=(56, 68, 156), under=(246, 246, 252), pants=(52, 58, 106), shoes=(248, 248, 252), sole=(150, 150, 172)),
 }
 HAIRC = {'king': dict(b=(52, 50, 78), d=(32, 30, 54), l=(110, 120, 176)),
@@ -104,6 +106,11 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         clip_lines([[(cx - 14, y), (cx + 14, y + 1)] for y in range(36, 70, 6)] + [[(x, 31), (x - 1, 71)] for x in range(cx - 11, cx + 12, 6)], o['top2'])
         P.add(lambda d: d.polygon([(cx - 3, 30), (cx + 3, 30), (cx + 3.5, 46), (cx + 2, 57), (cx + 3, 71), (cx - 3, 71), (cx - 2, 57), (cx - 3.5, 46)], fill=255), o['under'], edge_k=.65)
         P.line([(cx - 8, 30), (cx - 3, 37)], o['under']); P.rect(cx - 9, 70, cx + 9, 71, o['top2'])
+    elif outfit == 'tux':
+        P.add(lambda d: d.polygon([(cx - 4, 30), (cx + 4, 30), (cx + 2, 56), (cx - 2, 56)], fill=255), (250, 250, 252), edge_k=.6)
+        P.line([(cx - 9, 30), (cx - 2, 46)], o['top2']); P.line([(cx + 9, 30), (cx + 2, 46)], o['top2']); P.rect(cx - 3, 32, cx + 3, 34, (180, 30, 50))
+    elif outfit == 'grey':
+        P.rect(cx - 5, 30, cx + 5, 31, o['top2']); P.add(lambda d: d.polygon([(cx - 8, 56), (cx + 8, 56), (cx + 9.5, 67), (cx - 9.5, 67)], fill=255), o['top2'], edge_k=.55)
     elif outfit == 'argentina':
         clip_lines([[(x, 29), (x, 71)] for x in range(cx - 12, cx + 13, 5)] + [[(x + 1, 29), (x + 1, 71)] for x in range(cx - 12, cx + 13, 5)], (252, 252, 255))
         P.rect(cx - 3, 30, cx + 3, 30, (250, 250, 255))
@@ -168,6 +175,8 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.rect(ex, 14, ex + 2, 14, (36, 26, 40))
         P.rect(ex, 15, ex + 2, 18, (255, 255, 255)); P.rect(ex + 1, 15, ex + 2, 18, CS['iris'])
         P.rect(ex + 1, 16, ex + 2, 17, (24, 18, 32)); P.px(ex + 1, 15, (255, 255, 255))
+    if CS['sleepy']:
+        for ex in (cx - 5, cx + 3): P.rect(ex, 14, ex + 2, 15, skd); P.rect(ex, 16, ex + 2, 16, (30, 22, 40))
     P.rect(cx - 6, 12, cx - 3, 12, hc['d']); P.rect(cx + 3, 12, cx + 6, 12, hc['d'])
     P.px(cx + 1, 21, skdd); P.rect(cx - 1, 23, cx + 1, 23, (182, 78, 90))
     if style not in ('king', 'short'):

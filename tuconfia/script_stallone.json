@@ -1,0 +1,83 @@
+{
+ "titulo": "Stallone y Rocky: lo que no se vende",
+ "lines": [
+  {
+   "id": "L1",
+   "t": "Vendió a su perro para poder *comer*.",
+   "p": 0.3,
+   "tag": "[directo, seco]"
+  },
+  {
+   "id": "L2",
+   "t": "Pero se negó a vender su *guion*.",
+   "p": 0.45,
+   "tag": "[grave]"
+  },
+  {
+   "id": "L3a",
+   "t": "Sylvester Stallone. Sin dinero... y en Hollywood decían que su cara y su voz no servían.",
+   "p": 0.3,
+   "tag": "[lento]"
+  },
+  {
+   "id": "L3b",
+   "t": "Una noche ve una pelea de Muhammad Ali... y se le ocurre una *historia*.",
+   "p": 0.25,
+   "tag": "[cálido]"
+  },
+  {
+   "id": "L4",
+   "t": "La escribe en apenas unos *días*.",
+   "p": 0.3,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "t": "Unos productores quieren comprarla... pero sin él como *protagonista*.",
+   "p": 0.4,
+   "tag": "[tenso]"
+  },
+  {
+   "id": "L6",
+   "t": "Él, que casi no tenía nada, dice: *no*.",
+   "p": 0.5,
+   "tag": "[firme]"
+  },
+  {
+   "id": "L7",
+   "t": "O la protagoniza él... o *no hay trato*.",
+   "p": 0.35,
+   "tag": "[intenso, creciendo]"
+  },
+  {
+   "id": "L8",
+   "t": "Al final aceptan. Poco dinero... pero el papel es *suyo*.",
+   "p": 0.4,
+   "tag": "[seco, luego cálido]"
+  },
+  {
+   "id": "L9",
+   "t": "*Rocky* gana el Oscar a *mejor película*.",
+   "p": 0.4,
+   "tag": "[emocionado]"
+  },
+  {
+   "id": "L10",
+   "t": "Y su perro Butkus... *sale en la película*.",
+   "p": 0.5,
+   "tag": "[cálido]"
+  },
+  {
+   "id": "L11",
+   "t": "Hay cosas que se pueden vender. Y hay sueños que *no están a la venta*.",
+   "p": 0.5,
+   "tag": "[lento, reflexivo]"
+  },
+  {
+   "id": "L12",
+   "t": "Y tú... ¿qué *no venderías* nunca?",
+   "p": 0.1,
+   "tag": "[suave, directo]"
+  }
+ ]
+}

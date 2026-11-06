@@ -118,7 +118,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     # ------------------------------------------------ cuerpo
     body, d = L()
     body_full = Image.new('RGBA', (W, H + 8), (0, 0, 0, 0)); d = ImageDraw.Draw(body_full)
-    tops = {'argentina': ((150, 206, 246), (100, 160, 214), (230, 246, 255)), 'blazer': ((52, 70, 120), (34, 46, 86), (96, 120, 180)), 'polo': ((210, 150, 80), (160, 104, 50), (250, 200, 130)),
+    tops = {'tux': ((32, 32, 44), (18, 18, 28), (80, 80, 100)), 'grey': ((156, 160, 172), (112, 116, 132), (206, 210, 220)), 'argentina': ((150, 206, 246), (100, 160, 214), (230, 246, 255)), 'blazer': ((52, 70, 120), (34, 46, 86), (96, 120, 180)), 'polo': ((210, 150, 80), (160, 104, 50), (250, 200, 130)),
             'coat': ((246, 248, 252), (196, 206, 224), (255, 255, 255)), 'tee_blue': ((70, 130, 220), (40, 86, 170), (130, 180, 250)), 'tee_green': ((80, 190, 110), (40, 140, 76), (150, 230, 170)),
             'tee_yellow': ((250, 210, 70), (206, 160, 30), (255, 240, 150)), 'tee_red': ((230, 80, 70), (170, 44, 48), (255, 140, 120)),
             'plaid': ((198, 66, 60), (150, 40, 44), (232, 110, 96)), 'teacher': ((236, 232, 220), (196, 192, 182), (252, 252, 248)),
@@ -189,6 +189,11 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     if look[0] and tpl in (EYE['open_f'], EYE['open_m']):
         for x0, mir in ((cx - 15, False), (cx + 5, True)):
             pass
+    if CS['sleepy']:
+        for x0 in (cx - 15, cx + 5):
+            for yy in range(ey, ey + 3):
+                for xx in range(x0, x0 + 10): px[xx, yy] = (*skd, 255)
+            for xx in range(x0, x0 + 10): px[xx, ey + 3] = (*LASH, 255)
     # cejas
     br = p['brow']
     d = ImageDraw.Draw(final)

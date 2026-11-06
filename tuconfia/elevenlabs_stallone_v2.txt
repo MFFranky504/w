@@ -1,0 +1,13 @@
+Vendió a su perro para poder comer. <break time="0.4s" />
+Pero se negó a vender su guion. <break time="0.6s" />
+Sylvester Stallone. Sin dinero... y en Hollywood decían que su cara y su voz no servían. <break time="0.4s" />
+Una noche ve una pelea de Muhammad Ali... y se le ocurre una historia. <break time="0.3s" />
+La escribe en apenas unos días. <break time="0.4s" />
+Unos productores quieren comprarla... pero sin él como protagonista. <break time="0.5s" />
+Él, que casi no tenía nada, dice: no. <break time="0.6s" />
+O la protagoniza él... o no hay trato. <break time="0.4s" />
+Al final aceptan. Poco dinero... pero el papel es suyo. <break time="0.5s" />
+Rocky gana el Oscar a mejor película. <break time="0.5s" />
+Y su perro Butkus... sale en la película. <break time="0.6s" />
+Hay cosas que se pueden vender. Y hay sueños que no están a la venta. <break time="0.6s" />
+Y tú... ¿qué no venderías nunca? <break time="0.2s" />

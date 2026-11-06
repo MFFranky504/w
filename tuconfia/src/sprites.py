@@ -274,6 +274,8 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
           'polo': dict(b=(210, 150, 80), d=(160, 104, 50), l=(250, 200, 130), pants=(80, 84, 100), boots=(70, 52, 44)),
           'coat': dict(b=(246, 248, 252), d=(196, 206, 224), l=(255, 255, 255), pants=(70, 90, 130), boots=(60, 50, 50)),
           'argentina': dict(b=(150, 206, 246), d=(100, 160, 214), l=(230, 246, 255), pants=(30, 30, 40), boots=(40, 40, 52)),
+          'tux': dict(b=(32, 32, 44), d=(18, 18, 28), l=(80, 80, 100), pants=(32, 32, 44), boots=(18, 18, 24)),
+          'grey': dict(b=(156, 160, 172), d=(112, 116, 132), l=(206, 210, 220), pants=(70, 78, 110), boots=(110, 70, 52)),
           'hoodie': dict(b=(86, 102, 212), d=(56, 68, 156), l=(134, 154, 244), pants=(52, 58, 106), boots=(248, 248, 252))}[outfit]
     cb, cd, clt = cl['b'], cl['d'], cl['l']
     pants, boots = cl['pants'], cl['boots']
@@ -326,6 +328,11 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.add(lambda d: d.polygon([(cx - 9, 44), (cx + 9, 44), (cx + 11, 51), (cx - 11, 51)], fill=255), clt, edge_k=.55)
         P.add(lambda d: d.rounded_rectangle([cx - 11, 29, cx + 11, 35], radius=3, fill=255), cd, edge_k=.5)
         P.rect(cx - 12, 51, cx + 12, 52, cd)
+    if outfit == 'tux':
+        P.add(lambda d: d.polygon([(cx - 6, 34), (cx + 6, 34), (cx + 2, 50), (cx - 2, 50)], fill=255), (250, 250, 252), edge_k=.6)
+        P.rect(cx - 3, 35, cx + 3, 37, (180, 30, 50)); P.px(cx, 36, (230, 70, 90))
+    elif outfit == 'grey':
+        P.rect(cx - 6, 34, cx + 6, 35, cd); P.add(lambda d: d.polygon([(cx - 8, 44), (cx + 8, 44), (cx + 10, 51), (cx - 10, 51)], fill=255), cd, edge_k=.55)
     if outfit == 'argentina':
         for x in range(cx - 11, cx + 12, 6): P.rect(x, 36, x + 2, 50, (252, 252, 255))
         P.rect(cx - 12, 51, cx + 12, 52, (30, 30, 40))
@@ -366,6 +373,8 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     br = HR['dd']
     P.rect(cx - 11, 16, cx - 6, 17, br); P.rect(cx + 6, 16, cx + 11, 17, br)
     P.rect(cx - 6, 17, cx - 5, 17, br); P.rect(cx + 5, 17, cx + 6, 17, br)
+    if CS['sleepy']:
+        for ex in (cx - 10, cx + 7): P.rect(ex, 19, ex + 3, 21, skd); P.rect(ex, 22, ex + 3, 22, (30, 22, 40))
     # nariz, boca, rubor
     P.px(cx + 1, 26, skdd); P.rect(cx - 1, 28, cx + 2, 28, (176, 72, 84)); P.px(cx + 2, 27, (176, 72, 84))
     if style != 'king':
@@ -407,3 +416,25 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     if style == 'tab':    # horquilla
         P.rect(cx - 17, 14, cx - 14, 15, (255, 240, 170)); P.px(cx - 15, 14, (255, 255, 255))
     return P.final()
+
+
+# ------------------------------------------------------------------ PERRO (Butkus, dogo/bullmastiff)
+def dog(sc=1, step=0, W=52, H=38):
+    P = Paint(W, H)
+    fur, furd, mask, ear = (214, 164, 98), (172, 120, 70), (74, 54, 48), (110, 76, 58)
+    lo = step
+    P.add(lambda d: d.rectangle([11, 22, 15, 33 - lo], fill=255), furd, edge_k=.45); P.add(lambda d: d.rectangle([32, 22, 36, 33 + lo], fill=255), furd, edge_k=.45)
+    P.add(lambda d: d.line([(6, 14), (3, 9), (4, 6)], fill=255, width=2), fur, edge_k=.45)                         # cola
+    P.add(lambda d: d.rounded_rectangle([7, 11, 36, 26], radius=6, fill=255), fur, edge_k=.45)                    # cuerpo
+    P.add(lambda d: d.ellipse([27, 9, 40, 27], fill=255), fur, edge_k=.45)                                         # pecho
+    P.add(lambda d: d.rectangle([18, 22, 22, 33 + lo], fill=255), fur, edge_k=.45); P.add(lambda d: d.rectangle([27, 22, 31, 33 - lo], fill=255), fur, edge_k=.45)
+    for x0 in (11, 18, 27, 32): P.rect(x0 - 0, 32 if x0 in (18, 27) else 32, x0 + 4, 33, (240, 232, 216)) if False else None
+    P.add(lambda d: d.rounded_rectangle([32, 4, 46, 19], radius=4, fill=255), fur, edge_k=.45)                    # cabeza
+    P.add(lambda d: d.rounded_rectangle([39, 9, 49, 19], radius=3, fill=255), mask, edge_k=.45)                   # hocico oscuro
+    P.add(lambda d: d.polygon([(33, 3), (38, 2), (37, 9), (33, 9)], fill=255), ear, edge_k=.45)                    # oreja caída
+    P.rect(40, 7, 41, 8, (24, 18, 28)); P.px(40, 7, (255, 255, 255)); P.rect(48, 10, 49, 11, (20, 14, 20))      # ojo y nariz
+    P.rect(38, 5, 40, 5, (110, 76, 58)); P.rect(41, 18, 45, 19, (150, 110, 90))                                     # ceja triste y babero
+    P.add(lambda d: d.rectangle([33, 18, 36, 21], fill=255), (210, 50, 66), edge=False)                            # collar
+    im = P.final()
+    if sc != 1: im = im.resize((int(im.width * sc), int(im.height * sc)), Image.NEAREST)
+    return im
