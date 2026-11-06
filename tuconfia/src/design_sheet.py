@@ -2,7 +2,7 @@ import sys; sys.path.insert(0,'.')
 from PIL import Image, ImageDraw, ImageFont
 import sprites as S
 from sprites_b import battle2
-from portrait2 import portrait2
+from chars_anime import portrait
 F=lambda s: ImageFont.truetype('/usr/share/fonts/opentype/inter/Inter-Bold.otf', s)
 BG=(52,110,112)
 chars=[('STEPHEN KING','king',['plaid','teacher']),('TABITHA','tab',['cardigan','uniform']),('TÚ (espectador)','you',['hoodie']),('STALLONE','stallone',['grey'])]
@@ -24,5 +24,5 @@ for r,(name,who,outs) in enumerate(chars):
             if o in('teacher','uniform') and pose=='hold': continue
             b=battle2(who,pose,o); big=b.resize((b.width*3,b.height*3),Image.NEAREST); sheet.paste(big,(x,y0+RH-40-big.height),big); x+=big.width-30
         x+=30
-    p=portrait2(who,'n',outfit=outs[0]); big=p.resize((p.width*3,p.height*3),Image.NEAREST); sheet.paste(big,(1330,y0+RH-10-big.height),big)
+    p=portrait(who,'n',outfit=outs[0]); p=p.crop((0,0,96,150)); big=p.resize((p.width*3,p.height*3),Image.NEAREST); sheet.paste(big,(1380,y0+RH-10-big.height),big)
 sheet.save('../out/hoja_diseno.png')
