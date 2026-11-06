@@ -44,3 +44,8 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 - `out/TU_CONFIA_Stallone_Rocky.mp4` — 1080×1920, 52,5 s, voz real (`audio/narracion_stallone.mp3`), en bucle.
 - Música: el instrumental de *Runaway* (solo piano, una nota E cada 1,38 s) abre el vídeo; la nota que cae justo en "Al final aceptan" coincide con el primer sonido de *Touch The Sky*, que suena desde el inicio de la canción original. Ambas giran en E, así que no hay desafine. Al final la música baja a silencio para el bucle.
 - Alineación voz↔escenas: asignación óptima de las 13 fronteras entre líneas a los silencios de la voz (`align_real` en `src/build_stallone.py`).
+
+### Voz actual (ElevenLabs directo)
+- `audio/narracion_stallone.mp3`: voz **George** (premade, gratuita) con `eleven_v3` y etiquetas de emoción por línea ([serious], [warmly], [excited]…), generada con la API de ElevenLabs desde el entorno (la clave se guarda con `request_credential`; nunca va en el repo). 58 s.
+- Copia de la versión anterior (Brian, vía vidIQ): `audio/narracion_stallone_brian_vidiq.mp3`.
+- Para regenerar: POST a `https://api.elevenlabs.io/v1/text-to-speech/<voice_id>` con `model_id=eleven_v3` (el proxy inyecta la clave). Cuota gratuita: 10.000 caracteres/mes; las voces "profesionales" de la biblioteca (Salva, Antonio…) requieren plan de pago por API.
