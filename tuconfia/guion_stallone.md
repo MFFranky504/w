@@ -11,5 +11,6 @@
 **L8** [seco, luego cálido] Al final aceptan. Poco dinero... pero el papel es *suyo*.
 **L9** [emocionado] *Rocky* gana el Oscar a *mejor película*.
 **L10** [cálido] Y su perro Butkus... *sale en la película*.
-**L11** [lento, reflexivo] Hay cosas que se pueden vender. Y hay sueños que *no están a la venta*.
-**L12** [suave, directo] Y tú... ¿qué *no venderías* nunca?
+**L11** [lento, reflexivo] Casi nadie *vende* su sueño. Casi todos lo *regalan*... por *miedo*.
+**L12** [firme, pausado] Nadie le pidió ese guion. Lo escribió *igual*.
+**L13** [suave, directo, despacio] ¿Qué sueño estás *regalando* tú... sin que nadie te lo pida?

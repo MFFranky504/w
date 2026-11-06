@@ -100,7 +100,8 @@ SCENES = [
     dict(n='oscar', a='L9', b='L9', fn=lambda t, u: S4.oscars(t, u), cam=[(0, 80, 196, 1.45), (1, 80, 150, 1.0)]),
     dict(n='reunion', a='L10', b='L10', fn=lambda t, u: S4.reunion(t, u), cam=[(0, 80, 210, 1.2), (1, 84, 214, 1.5)]),
     dict(n='sunset', a='L11', b='L11', fn=lambda t, u: S4.sunset(t, u), cam=[(0, 60, 220, 1.4), (1, 80, 170, 1.0)]),
-    dict(n='tu', a='L12', b='L12', fn=lambda t, u: S4.tu_script(t, u), cam=[(0, 80, 190, 1.4), (1, 80, 176, 1.1)]),
+    dict(n='type2', a='L12', b='L12', fn=lambda t, u: S4.typing(t, .99), cam=[(0, 80, 160, 1.5), (1, 80, 150, 1.05)]),
+    dict(n='tu', a='L13', b='L13', fn=lambda t, u: S4.tu_script(t, u), cam=[(0, 80, 190, 1.4), (1, 80, 176, 1.1)]),
 ]
 for i, s in enumerate(SCENES):
     s['t0'] = 0.0 if i == 0 else (LEND[SCENES[i - 1]['b']] + LSTART[s['a']]) / 2 if False else (LSTART[s['a']] if i else 0.0)
@@ -187,6 +188,7 @@ for l in LINES:
 
 def draw_sub(img, t):
     ch = next(((a, b, g, lid) for a, b, g, lid in CHUNKS if a <= t < b + 0.0), None)
+    if not ch and t >= CHUNKS[-1][1]: ch = CHUNKS[-1]            # la pregunta final se queda en pantalla
     if not ch: return
     a, b, g, lid = ch
     size = 96

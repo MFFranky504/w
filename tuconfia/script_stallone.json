@@ -69,15 +69,21 @@
   },
   {
    "id": "L11",
-   "t": "Hay cosas que se pueden vender. Y hay sueños que *no están a la venta*.",
-   "p": 0.5,
+   "t": "Casi nadie *vende* su sueño. Casi todos lo *regalan*... por *miedo*.",
+   "p": 0.6,
    "tag": "[lento, reflexivo]"
   },
   {
    "id": "L12",
-   "t": "Y tú... ¿qué *no venderías* nunca?",
+   "t": "Nadie le pidió ese guion. Lo escribió *igual*.",
+   "p": 0.7,
+   "tag": "[firme, pausado]"
+  },
+  {
+   "id": "L13",
+   "t": "¿Qué sueño estás *regalando* tú... sin que nadie te lo pida?",
    "p": 0.1,
-   "tag": "[suave, directo]"
+   "tag": "[suave, directo, despacio]"
   }
  ]
 }
