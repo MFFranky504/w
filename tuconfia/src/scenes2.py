@@ -3,17 +3,17 @@ import math, random
 import numpy as np
 from PIL import Image, ImageDraw
 from lib import *
-from chars import portrait, arm
+from chars_anime import portrait, arm
 import scenes as S0
 from scenes import alley, trailer_night, room_base, sp  # noqa (fondos originales)
 
-SK = {'king': C('#e4b690'), 'tab': C('#f0c4a4'), 'you': C('#d8a47c')}
+SK = {'king': (246, 206, 170), 'tab': (252, 214, 186), 'you': (242, 196, 158)}
 
 
 def bust(who, expr='n', look=(0, 0), t=0.0, sc=1.3, outfit=None, cap=False):
     blink = (t % 3.4) < .12
     key = ('bust', who, expr, look, blink, sc, outfit, cap)
-    if key not in S0.SPR: S0.SPR[key] = portrait(who, expr, look, blink, sc, outfit, cap)
+    if key not in S0.SPR: S0.SPR[key] = portrait(who, expr, look, blink, None, outfit, cap)
     return S0.SPR[key]
 
 
@@ -34,9 +34,9 @@ def room(t, phase='type', pages=1, thr=None):
     expr = 'sad' if phase in ('lift', 'throw', 'slump') else 'n'
     look = (0, 2) if phase in ('type', 'slump') else (1, 0)
     b = bust('king', expr, look, t, 1.3)
-    ytop = 66 + (2 if phase == 'slump' else 0)
+    ytop = 76 + (2 if phase == 'slump' else 0)
     c.blit(b, 78 - b.width / 2, ytop)
-    sl, sk = C('#b2443a'), SK['king']
+    sl, sk = (198, 66, 60), SK['king']
     ph = int(t * 9) % 2
     # escritorio
     c.R(36, 172, 92, 5, (160, 112, 70)); c.R(36, 172, 92, 1, (204, 150, 96)); c.R(38, 177, 88, 40, (110, 76, 50)); c.R(40, 217, 4, 30, (80, 54, 36)); c.R(120, 217, 4, 30, (80, 54, 36))
@@ -98,9 +98,9 @@ def classroom(t):
     c.R(24, 133, 112, 2, (110, 80, 52))
     c.d.ellipse([70, 24, 90, 44], fill=(240, 236, 220), outline=(40, 32, 30)); c.d.line([(80, 34), (80, 27)], fill=(30, 30, 30)); c.d.line([(80, 34), (85, 36)], fill=(30, 30, 30))
     b = bust('king', 'n', (1, 0), t, 1.3, 'teacher')
-    c.blit(b, 56 - b.width / 2, 80)
+    c.blit(b, 56 - b.width / 2, 90)
     sw = math.sin(t * 6) * 2
-    arm(c, 90, 172, 108 + sw, 112 + abs(sw), 9, C('#d8d2c0'), SK['king'], 3.2)
+    arm(c, 90, 172, 108 + sw, 112 + abs(sw), 9, (236, 232, 220), SK['king'], 3.2)
     c.R(int(108 + sw) + 2, int(112 + abs(sw)) - 2, 3, 2, (250, 250, 250))
     # escritorio del profesor
     c.R(0, 188, 120, 6, (150, 108, 70)); c.R(0, 188, 120, 1, (190, 140, 92)); c.R(0, 194, 120, 40, (110, 76, 50))
@@ -137,7 +137,7 @@ def donut_shop(t):
     c.R(128, 118, 16, 50, (60, 60, 76)); c.R(130, 130, 12, 14, (190, 80, 50)); c.R(130, 130, 12, 2, (240, 140, 90))
     # Tabitha
     b = bust('tab', 'n', (-1, 1), t, 1.25, 'uniform', True)
-    c.blit(b, 96 - b.width / 2, 82)
+    c.blit(b, 96 - b.width / 2, 88)
     # mostrador
     c.R(0, 170, WW, 14, (255, 140, 180)); c.R(0, 170, WW, 2, (255, 210, 226)); c.R(0, 184, WW, 56, (240, 240, 246)); c.R(0, 184, WW, 2, (200, 200, 214))
     # vitrina
@@ -173,12 +173,12 @@ def portrait_scene(t, who='king', expr='n', look=(0, 0), tone='cold', pages_in=F
         c.d.polygon([(80, 120), (80 + 220 * math.cos(a), 120 + 220 * math.sin(a)), (80 + 220 * math.cos(a + .18), 120 + 220 * math.sin(a + .18))], fill=tuple(int(v) for v in base * 1.12 + 6))
     b = bust(who, expr, look, t, 1.75, outfit)
     bob = math.sin(t * 1.8) * 1.2
-    c.blit(b, 80 - b.width / 2, 84 + bob)
+    c.blit(b, 80 - b.width / 2, 100 + bob)
     if pages_in:
         pg = Image.new('RGBA', (70, 44), (0, 0, 0, 0)); d = ImageDraw.Draw(pg)
         d.polygon([(6, 42), (14, 0), (64, 4), (66, 44)], fill=(246, 244, 232))
         for i in range(6): d.line([(18 - i // 2, 8 + i * 6), (58, 10 + i * 6)], fill=(120, 120, 134))
-        c.blit(pg, 44, 218 + math.sin(t * 2) * 1)
+        c.blit(pg, 44, 194 + math.sin(t * 2) * 1)
     if sparkle:
         for i in range(12):
             ph = (t * .7 + i * .09) % 1
@@ -202,10 +202,10 @@ def morning(t, u):
     k = ease(u * 1.5)
     lift = ease((u - .35) * 1.8)
     b = bust('tab', 'n', (0, 2), t, 1.3, 'cardigan')
-    c.blit(b, 80 - b.width / 2 + (1 - k) * 40, 92 + (1 - ease(u * 2)) * 6)
+    c.blit(b, 80 - b.width / 2 + (1 - k) * 40, 102 + (1 - ease(u * 2)) * 6)
     # hoja que sale de la papelera
     py = 206 - lift * 44
-    sl, sk = C('#d6a03c'), SK['tab']
+    sl, sk = (226, 172, 70), SK['tab']
     if u > .3:
         c.R(70, int(py), 18, 22, (246, 244, 232)); c.R(70, int(py), 18, 1, (180, 176, 168))
         for i in range(4): c.R(73, int(py) + 4 + i * 4, 12, 1, (120, 120, 134))
@@ -309,8 +309,8 @@ def final_you(t, u):
     expr = 'wow' if u < .35 else 'worry'
     look = (0, 0)
     b = bust('you', expr, look, t, 1.3)
-    c.blit(b, 80 - b.width / 2, 100)
-    sl, sk = C('#4a56c8'), SK['you']
+    c.blit(b, 80 - b.width / 2, 110)
+    sl, sk = C('#4c5cc8'), SK['you']
     tremble = math.sin(t * 25) * .8 if rel == 0 else 0
     hx, hy = 112 + tremble, 164
     arm(c, 126, 186, hx + 2, hy + 4, 10, sl, sk, 3.6)
