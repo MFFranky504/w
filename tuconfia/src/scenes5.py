@@ -9,6 +9,16 @@ import scenes3 as S3
 from scenes3 import rpg, bat, place, shrink, shadow
 
 
+def fig(img, f): return img.resize((max(1, int(img.width * f)), max(1, int(img.height * f))), Image.NEAREST)
+
+
+def bubble(c, x, y, txt, k=2):
+    w = ptext_w(txt, k) + 8
+    c.R(x - w // 2, y, w, 5 * k + 6, (250, 248, 240), c.ed); c.R(x - w // 2, y, w, 1, (255, 255, 255), c.ed)
+    c.d.polygon([(x - 3, y + 5 * k + 6), (x + 3, y + 5 * k + 6), (x, y + 5 * k + 11)], fill=(250, 248, 240))
+    ptext(c.ed, x - w // 2 + 4, y + 3, txt, (30, 20, 40), k)
+
+
 def _sign(c, x, y, txt, col, k=3):
     w = ptext_w(txt, k)
     c.R(x - 4, y - 4, w + 8, 5 * k + 8, (14, 10, 26)); c.R(x - 4, y - 4, w + 8, 1, col, c.ed); c.R(x - 4, y + 5 * k + 3, w + 8, 1, col, c.ed)
@@ -20,36 +30,38 @@ def _sign(c, x, y, txt, col, k=3):
 def door(t, u, who='jobs85', sign='APPLE', col=(255, 216, 74)):
     c = Canvas(vgrad([(0, '#2b1a4a'), (.45, '#d8784f'), (.62, '#e8a060'), (1, '#2a2038')]))
     hope = ease((u - .35) / .5) if who == 'you' else 0          # el final: amanece desde la caja
-    c.R(0, 96, WW, 120, (34, 40, 74)); c.R(0, 96, WW, 3, (90, 100, 150))
+    # fachada alta (sale por arriba del cuadro): la persona es pequeña frente al edificio
+    c.R(0, 0, WW, 204, (34, 40, 74))
     rnd = random.Random(5)
-    for r in range(4):
+    for r in range(9):
         for k in range(8):
             on = rnd.random() < .3 or (hope > .5 and rnd.random() < .6)
-            x0, y0 = 8 + k * 19, 104 + r * 22
+            if on and rnd.random() < .08 and int(t * 4 + r + k) % 5 == 0: on = False             # parpadeo
+            x0, y0 = 8 + k * 19, 6 + r * 20
             c.R(x0 - 1, y0 - 1, 16, 18, (24, 28, 56))
             c.R(x0, y0, 14, 16, (236, 176, 98) if on else (46, 54, 98))
             c.R(x0 + 6, y0, 2, 16, (24, 28, 56)); c.R(x0, y0 + 7, 14, 1, (24, 28, 56))
-    c.light(80, 120, 90, 90, (255, 180, 100), .25)
-    _sign(c, 24, 74, sign, col, 3 if len(sign) < 7 else 2)
+    c.R(0, 60, WW, 36, (28, 32, 62)); c.R(0, 60, WW, 2, (90, 100, 150))              # friso del letrero
+    c.light(80, 100, 90, 90, (255, 180, 100), .25)
+    _sign(c, 80 - ptext_w(sign, 3 if len(sign) < 7 else 2) // 2, 70, sign, col, 3 if len(sign) < 7 else 2)
     c.R(0, 204, WW, 90, (70, 58, 82)); c.R(0, 204, WW, 3, (130, 116, 140))
     for x in range(0, WW, 20): c.R(x, 207, 1, 90, (54, 44, 66))
-    c.R(46, 152, 68, 52, (24, 28, 52)); c.R(48, 154, 64, 48, (120, 84, 70)); c.R(48, 154, 64, 5, (200, 150, 100)); c.R(79, 154, 2, 48, (24, 28, 52))
-    c.light(80, 190, 60, 50, (255, 190, 110), .6)
-    if who == 'you':
-        x = 62 + 38 * ease(u * 1.1)                       # camina hacia la puerta (donde empieza el bucle)
-    else:
-        x = 112 - 56 * ease(u * 1.15)                     # sale por la puerta y camina
+    # puerta de cristal grande (más alta que la persona)
+    c.R(46, 100, 68, 104, (24, 28, 52)); c.R(48, 102, 64, 100, (120, 84, 70)); c.R(48, 102, 64, 5, (200, 150, 100)); c.R(79, 102, 2, 100, (24, 28, 52))
+    c.light(80, 170, 60, 60, (255, 190, 110), .6)
+    if who == 'you': x = 58 + 42 * ease(u * 1.1)                 # camina hacia la puerta (donde empieza el bucle)
+    else: x = 88 - 34 * ease(u * 1.15)                           # sale por la puerta y camina
     bob = math.sin(t * 6) * .8
-    if hope > .3:                                         # rayos suaves detrás del personaje
+    if hope > .3:
         for i in range(9):
             a = -math.pi / 2 + (i - 4) * .26
-            c.d.polygon([(x, 170), (x + 110 * math.cos(a - .07), 170 + 110 * math.sin(a - .07)), (x + 110 * math.cos(a + .07), 170 + 110 * math.sin(a + .07))], fill=(150, 112, 120))
-    place(c, bat(who, 'box'), x, 208 + bob)
-    if hope > .3: _sign(c, 24, 74, sign, col, 3 if len(sign) < 7 else 2)
-    if hope > 0: c.light(x, 175, 50, 50, (255, 214, 140), .45 * hope)
+            c.d.polygon([(x, 176), (x + 90 * math.cos(a - .07), 176 + 90 * math.sin(a - .07)), (x + 90 * math.cos(a + .07), 176 + 90 * math.sin(a + .07))], fill=(150, 112, 120))
+    place(c, fig(bat(who, 'box'), .75), x, 208 + bob)
+    if hope > .3: _sign(c, 80 - ptext_w(sign, 3 if len(sign) < 7 else 2) // 2, 70, sign, col, 3 if len(sign) < 7 else 2)
+    if hope > 0: c.light(x, 176, 44, 44, (255, 214, 140), .45 * hope)
     for i in range(9 if not hope else 18):
         ph = (t * (.25 if not hope else .45) + i * .11) % 1
-        px = (i * 37 + ph * 60) % WW; py = (70 + (1 - ph) * 130) if hope else (70 + ph * 130)
+        px = (i * 37 + ph * 60) % WW; py = (100 + (1 - ph) * 110) if hope else (100 + ph * 110)
         c.R(px, py, 2 if hope else 3, 2, (255, 236, 170) if hope else (250, 248, 240))
     c.amb = (.95 + .08 * hope, .86 + .1 * hope, .92); c.vig = .75
     return c.render()
@@ -58,28 +70,34 @@ def door(t, u, who='jobs85', sign='APPLE', col=(255, 216, 74)):
 # ============================================================ 2. la junta (chibis, 1985)
 def boardroom(t, u):
     c = Canvas(vgrad([(0, '#16283a'), (1, '#0e1824')]))
-    c.R(8, 76, 144, 58, (36, 62, 96)); c.R(8, 76, 144, 2, (100, 140, 190))
+    c.R(8, 70, 144, 70, (36, 62, 96)); c.R(8, 70, 144, 2, (100, 140, 190))
     for i in range(12):
-        h = 12 + (i * 17) % 28; c.R(10 + i * 12, 134 - h, 9, h, (22, 36, 62))
+        h = 16 + (i * 17) % 36; c.R(10 + i * 12, 140 - h, 9, h, (22, 36, 62))
         for j in range(h // 8):
-            if (i + j) % 2: c.R(12 + i * 12, 134 - h + 3 + j * 8, 2, 3, (255, 214, 120))
-    c.R(78, 76, 3, 58, (16, 24, 40))
+            if (i + j + int(t * 2)) % 3: c.R(12 + i * 12, 140 - h + 3 + j * 8, 2, 3, (255, 214, 120))
+    c.R(78, 70, 3, 70, (16, 24, 40))
     w = ptext_w('1985', 5)
-    c.R(80 - w // 2 - 6, 60, w + 12, 34, (14, 22, 40)); ptext(c.ed, 80 - w // 2, 66, '1985', (255, 216, 74), 5)
-    c.light(80, 100, 90, 50, (140, 180, 255), .35)
-    # suelo con tablones
+    if u < .52: c.R(80 - w // 2 - 6, 60, w + 12, 34, (14, 22, 40)); ptext(c.ed, 80 - w // 2, 66, '1985', (255, 216, 74), 5)
+    c.light(80, 110, 90, 50, (140, 180, 255), .35)
     c.R(0, 198, WW, 100, (58, 38, 30)); c.R(0, 198, WW, 2, (110, 74, 50))
     for yy in range(208, 290, 12): c.R(0, yy, WW, 1, (44, 28, 22))
-    # junta: tres sentados detrás de la mesa (la mesa tapa las piernas)
-    for k, (who, x) in enumerate((('prod1', 56), ('prod2', 92), ('prod1', 128))):
-        place(c, rpg(who, 0), x, 176 + math.sin(t * 2 + k) * .6, sh=False)
+    # junta (más pequeña que Jobs en primer plano); asienten y señalan
+    mem = (('prod1', 50), ('prod2', 82), ('prod1', 114), ('prod2', 140))
+    for k, (who, x) in enumerate(mem):
+        nod = 1.5 * max(0, math.sin(t * 5 + k)) if u > .35 else math.sin(t * 2 + k) * .5
+        place(c, fig(rpg(who, 0), .62), x, 172 + nod, sh=False)
     c.R(14, 164, 132, 16, (136, 88, 54)); c.R(14, 164, 132, 2, (196, 136, 90)); c.R(14, 180, 132, 14, (86, 54, 36)); c.R(14, 192, 132, 2, (50, 30, 22))
-    for k, x in enumerate((56, 92, 128)):
-        ph = (u * 3.2 - k * .55)
-        if 0 < ph < 1: ptext(c.ed, x - 2, 104 - int(ph * 4), '!', (255, 90, 90), 3)
-    # Jobs de pie delante, entra desde la izquierda
-    k = ease(u * 1.6)
-    place(c, rpg('jobs85', int(t * 4) % 2 if u < .6 else 0), 40 + 8 * k, 222, sh=True)
+    # documento que se desliza hacia Jobs
+    if u > .45:
+        k = ease((u - .45) / .3); px = 100 - 74 * k
+        c.R(px, 160, 14, 5, (250, 248, 240)); c.R(px, 160, 14, 1, (200, 196, 188)); c.R(px + 2, 162, 8, 1, (160, 60, 60))
+    for k, x in enumerate((50, 82, 114, 140)):
+        ph = (u * 3.4 - k * .4)
+        if 0 < ph < 1: ptext(c.ed, x - 2, 120 - int(ph * 4), '!', (255, 90, 90), 3)
+    if .45 < u < .8: bubble(c, 82, 118, 'FUERA', 2)
+    # Jobs de pie delante: entra, retrocede y baja la cabeza (zoom de cámara)
+    k = ease(u * 1.6); back = ease((u - .55) / .3)
+    place(c, fig(rpg('jobs85', int(t * 4) % 2 if u < .55 else 0), .78), 38 + 10 * k - 4 * back, 222 + 1.5 * back, sh=True)
     c.light(80, 140, 80, 70, (255, 200, 120), .35)
     c.amb = (.86, .9, 1); c.vig = .75
     return c.render()
@@ -88,20 +106,28 @@ def boardroom(t, u):
 # ============================================================ 4. NeXT + Pixar (chibi, de noche)
 def next_pixar(t, u):
     c = Canvas(vgrad([(0, '#0a0c24'), (.6, '#241a4a'), (1, '#1a1228')]))
-    stars(c, t, 60, 8, 110)
+    stars(c, t, 70, 8, 160)
+    c.d.ellipse([118, 22, 140, 44], fill=(240, 236, 210)); c.d.ellipse([124, 22, 144, 42], fill=(10, 12, 36))      # luna
     c.R(0, 206, WW, 90, (34, 30, 54)); c.R(0, 206, WW, 2, (90, 80, 120))
-    for x0, name, col, on in ((12, 'NEXT', (90, 220, 255), .25), (76, 'PIXAR', (255, 150, 220), .6)):
-        c.R(x0, 110, 60, 96, (40, 40, 84)); c.R(x0, 110, 60, 3, (100, 100, 160))
+    rnd = random.Random(9)
+    for x0, name, col, on in ((12, 'NEXT', (90, 220, 255), .22), (76, 'PIXAR', (255, 150, 220), .62)):
+        c.R(x0, 0, 66, 206, (40, 40, 84)); c.R(x0, 0, 2, 206, (70, 70, 130)); c.R(x0 + 64, 0, 2, 206, (26, 26, 58))
         lit = u > on
-        for r in range(4):
+        for r in range(9):
             for k in range(3):
-                w_ = lit and (r + k) % 3
-                c.R(x0 + 6 + k * 17, 120 + r * 21, 10, 12, (255, 220, 130) if w_ else (30, 30, 62))
-        if lit: _sign(c, x0 + 30 - ptext_w(name, 3) // 2, 84, name, col, 3)
-    k = ease(u * 1.15)
-    x = 128 - 74 * k
-    place(c, rpg('jobs85', int(t * 5) % 2), x, 214, flip=True)
-    if u > .1: c.R(x + 8, 196, 10, 8, (190, 150, 98)); c.R(x + 8, 196, 10, 2, (222, 184, 130))
+                w_ = lit and ((r * 3 + k) * 7 % 5 < 3) and not (int(t * 3 + r + k * 2) % 9 == 0)
+                c.R(x0 + 7 + k * 18, 10 + r * 20, 10, 12, (255, 220, 130) if w_ else (30, 30, 62))
+        c.R(x0 + 20, 170, 26, 36, (24, 24, 56)); c.R(x0 + 22, 172, 22, 34, (200, 150, 100) if lit else (50, 50, 90))     # puerta
+        if lit:
+            fl = 1 if (int(t * 12) % 7 or u > on + .12) else 0
+            if fl: _sign(c, x0 + 33 - ptext_w(name, 3) // 2, 130, name, col, 3)
+    # Jobs (pequeño frente a los edificios): llega, deja la caja ante NeXT y camina a Pixar
+    if u < .45: x = 128 - 64 * ease(u / .45)
+    else: x = 64 + 52 * ease((u - .45) / .45)
+    step = int(t * 5) % 2 if (u < .45 or u > .5) else 0
+    place(c, fig(rpg('jobs85', step), .7), x, 214, flip=(u < .45))
+    if u > .22:
+        c.R(60, 205, 9, 7, (190, 150, 98)); c.R(60, 205, 9, 2, (222, 184, 130))        # la caja se queda ante NeXT
     c.light(80, 200, 100, 70, (160, 140, 255), .3)
     c.amb = (.85, .86, 1); c.vig = .7
     return c.render()

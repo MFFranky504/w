@@ -101,10 +101,10 @@ print('modo:', MODE, 'duración total', round(TOTAL, 2), file=sys.stderr)
 # ---------------------------------------------------------------- escenas
 PS = S2.portrait_scene
 SCENES = [
-    dict(n='door', a='L1', b='L1', fn=lambda t, u: S5.door(t, u), cam=[(0, 80, 146, 1.0), (1, 78, 147, 1.05)]),
-    dict(n='board', a='L2', b='L2', fn=lambda t, u: S5.boardroom(t, u), cam=[(0, 80, 142, 1.0), (1, 80, 144, 1.04)]),
+    dict(n='door', a='L1', b='L1', fn=lambda t, u: S5.door(t, u), cam=[(0, 80, 146, 1.0), (1, 80, 146, 1.04)]),
+    dict(n='board', a='L2', b='L2', fn=lambda t, u: S5.boardroom(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (1, 50, 186, 1.4)]),
     dict(n='portS', a='L3', b='L3', fn=lambda t, u: PS(t, 'jobs85', 'sad', (0, 1), 'cold'), cam=[(0, 80, 160, 1.3), (1, 80, 150, 1.6)]),
-    dict(n='next', a='L4', b='L4', fn=lambda t, u: S5.next_pixar(t, u), cam=[(0, 80, 146, 1.0), (1, 78, 147, 1.04)]),
+    dict(n='next', a='L4', b='L4', fn=lambda t, u: S5.next_pixar(t, u), cam=[(0, 80, 146, 1.0), (.55, 80, 146, 1.0), (1, 112, 176, 1.55)]),
     dict(n='crash', a='L5', b='L5', fn=lambda t, u: S5.crash(t, u), cam=[(0, 80, 138, 1.0), (1, 82, 140, 1.04)]),
     dict(n='phone', a='L6', b='L6', fn=lambda t, u: S5.phone(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.04)]),
     dict(n='devices', a='L7', b='L7', fn=lambda t, u: S5.devices(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 138, 1.04)]),
@@ -156,12 +156,12 @@ BAYF = np.kron(np.tile(np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [
 
 # ---------------------------------------------------------------- overlay
 F = lambda w, s: ImageFont.truetype(f'/usr/share/fonts/opentype/inter/Inter-{w}.otf', s)
-FL = lambda s: ImageFont.truetype(f'{ROOT}/assets/fonts/lilita-one-latin-400-normal.woff', s)      # tipografía de subtítulos y marca
+FL = lambda s: ImageFont.truetype(f'{ROOT}/assets/fonts/pixelify-sans-latin-700-normal.woff', s)      # tipografía de subtítulos y marca
 YEL, WHITE, DARK = (255, 216, 74), (255, 255, 255), (14, 10, 26)
 PURPLE = (139, 92, 246)      # logo TU CONF.IA
 BRAND = Image.new('RGBA', (VW, VH), (0, 0, 0, 0))
 bd = ImageDraw.Draw(BRAND)
-fb = FL(56)
+fb = F('Black', 50)
 w1 = bd.textlength('TU CONF', font=fb); w2 = bd.textlength('.IA', font=fb)
 bx = (VW - (w1 + w2)) / 2
 bd.text((bx + 3, 233), 'TU CONF', font=fb, fill=(0, 0, 0, 160)); bd.text((bx, 230), 'TU CONF', font=fb, fill=WHITE)
@@ -205,21 +205,23 @@ def draw_sub(img, t):
     ft = FL(size)
     d = ImageDraw.Draw(img)
     txt = ' '.join(w for w, _ in g).upper()
-    while d.textlength(txt, font=ft) > 840 and size > 60: size -= 4; ft = FL(size)
+    GAP = lambda: int(size * .24)
+    wid = lambda: d.textlength(txt.replace(' ', ''), font=ft) + GAP() * (len(g) - 1)
+    while wid() > 840 and size > 60: size -= 4; ft = FL(size)
     pop = min(1, (t - a) / .09)
     sc = .86 + .14 * (1 - (1 - pop) ** 2)
     layer = Image.new('RGBA', (VW, 220), (0, 0, 0, 0)); ld = ImageDraw.Draw(layer)
-    total = ld.textlength(txt, font=ft)
+    total = wid()
     SUBCX = 500; x = (2 * SUBCX - total) / 2; y = 50
     for w, e in g:
         w = w.upper()
-        ld.text((x, y), w, font=ft, fill=YEL if e else WHITE, stroke_width=11, stroke_fill=DARK)
-        x += ld.textlength(w + ' ', font=ft)
+        ld.text((x, y), w, font=ft, fill=YEL if e else WHITE, stroke_width=8, stroke_fill=DARK)
+        x += ld.textlength(w, font=ft) + GAP()
     for w, e in g: pass
     # relleno encima del trazo
     x = (2 * SUBCX - total) / 2
     for w, e in g:
-        w = w.upper(); ld.text((x, y), w, font=ft, fill=YEL if e else WHITE); x += ld.textlength(w + ' ', font=ft)
+        w = w.upper(); ld.text((x, y), w, font=ft, fill=YEL if e else WHITE); x += ld.textlength(w, font=ft) + GAP()
     if sc < 1:
         layer = layer.resize((int(VW * sc), int(220 * sc)), Image.BILINEAR)
         ox, oy = (VW - layer.width) // 2 + (SUBCX - VW // 2), (220 - layer.height) // 2
