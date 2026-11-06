@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from lib import *
 from chars_anime import portrait, arm
+from portrait2 import portrait2
 import scenes as S0
 from scenes import alley, trailer_night, room_base, sp  # noqa (fondos originales)
 
@@ -13,7 +14,7 @@ SK = {'king': (246, 206, 170), 'tab': (252, 214, 186), 'you': (242, 196, 158)}
 def bust(who, expr='n', look=(0, 0), t=0.0, sc=1.3, outfit=None, cap=False):
     blink = (t % 3.4) < .12
     key = ('bust', who, expr, look, blink, sc, outfit, cap)
-    if key not in S0.SPR: S0.SPR[key] = portrait(who, expr, look, blink, None, outfit, cap)
+    if key not in S0.SPR: S0.SPR[key] = portrait2(who, expr, look, blink, None, outfit, cap, gesture='none')
     return S0.SPR[key]
 
 
