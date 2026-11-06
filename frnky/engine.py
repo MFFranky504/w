@@ -72,37 +72,39 @@ def post_fx(img):
     global _VIG
     small = img.resize((OUT[0] // 4, OUT[1] // 4), Image.BILINEAR).filter(ImageFilter.GaussianBlur(3))
     bloom = small.resize(OUT, Image.BILINEAR)
-    img = Image.blend(img, ImageChops.screen(img, bloom), 0.32)
+    img = Image.blend(img, ImageChops.screen(img, bloom), 0.22)
     if _VIG is None:
         yy, xx = np.mgrid[0:OUT[1], 0:OUT[0]]
         r = np.sqrt(((xx - OUT[0] / 2) / (OUT[0] / 2)) ** 2 + ((yy - OUT[1] / 2) / (OUT[1] / 2)) ** 2)
         _VIG = (1 - 0.38 * np.clip(r - 0.55, 0, 1) ** 1.6)[..., None].astype("float32")
+    from PIL import ImageEnhance
+    img = ImageEnhance.Color(img).enhance(0.9)
     a = np.asarray(img, dtype="float32") * _VIG
     return Image.fromarray(np.clip(a, 0, 255).astype("uint8"))
 
 
-def rpg_box(img, who_label, color, text, shown, y0=1255, y1=1465, gold=False):
+def rpg_box(img, who_label, color, text, shown, y0=1150, y1=1370, gold=False):
     """Caja de diálogo estilo JRPG con etiqueta de nombre y texto que se escribe solo."""
     layer = Image.new("RGBA", OUT, (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    fill, edge = ((46, 36, 8, 245), (255, 214, 70, 255)) if gold else ((26, 30, 104, 240), (236, 240, 255, 255))
-    d.rounded_rectangle([70, y0, 1010, y1], radius=26, fill=fill, outline=edge, width=7)
-    d.rounded_rectangle([86, y0 + 16, 994, y1 - 16], radius=18, outline=(120, 130, 230, 255) if not gold else (190, 140, 30, 255), width=3)
+    fill, edge = ((40, 32, 14, 246), (206, 172, 92, 255)) if gold else ((22, 28, 78, 244), (214, 218, 236, 255))
+    d.rounded_rectangle([64, y0, 930, y1], radius=26, fill=fill, outline=edge, width=7)
+    d.rounded_rectangle([80, y0 + 16, 914, y1 - 16], radius=18, outline=(120, 130, 230, 255) if not gold else (190, 140, 30, 255), width=3)
     if who_label:
         f = ImageFont.truetype(FONT, 34)
         tw = d.textlength(who_label, font=f) + 44
-        d.rounded_rectangle([86, y0 - 40, 86 + tw, y0 + 10], radius=12, fill=color + (255,), outline=(20, 16, 40, 255), width=5)
-        d.text((86 + tw / 2, y0 - 15), who_label, font=f, fill=(30, 20, 40), anchor="mm")
+        d.rounded_rectangle([80, y0 - 40, 80 + tw, y0 + 10], radius=12, fill=color + (255,), outline=(20, 16, 40, 255), width=5)
+        d.text((80 + tw / 2, y0 - 15), who_label, font=f, fill=(30, 20, 40), anchor="mm")
     img.paste(Image.alpha_composite(img.convert("RGBA"), layer).convert("RGB"))
     d2 = ImageDraw.Draw(img)
     f = ImageFont.truetype(FONT, 70 if gold else 56)
     vis = text[:shown]
-    lines = _wrap(d2, text, f, 860)
+    lines = _wrap(d2, text, f, 700 if gold else 760)
     # respeta el salto de línea de la frase completa para que no "baile" al escribirse
     y = (y0 + y1) / 2 - (len(lines) - 1) * (42 if gold else 34)
     left = shown
     for ln in lines:
-        d2.text((540 if gold else 120, y), ln[:max(0, left)], font=f,
+        d2.text((497 if gold else 104, y), ln[:max(0, left)], font=f,
                 fill=(255, 255, 255) if not gold else (255, 236, 130), anchor="mm" if gold else "lm")
         left -= len(ln) + 1
         y += 84 if gold else 68
@@ -111,12 +113,12 @@ def rpg_box(img, who_label, color, text, shown, y0=1255, y1=1465, gold=False):
 def hud(img, level, vibe):
     d = ImageDraw.Draw(img)
     f = ImageFont.truetype(FONT, 36)
-    for k, (label, val, col) in enumerate((("NIVEL DE BRO", f"{level}", (255, 214, 70)), ("BUENA ONDA", f"{vibe}%", (255, 120, 170)))):
+    for k, (label, val, col) in enumerate((("NIVEL DE BRO", f"{level}", (226, 196, 120)), ("BUENA ONDA", f"{vibe}%", (214, 140, 160)))):
         s = f"{label}: {val}"
         w = d.textlength(s, font=f) + 40
-        y = 262 + k * 68
-        d.rounded_rectangle([36, y, 36 + w, y + 54], radius=12, fill=(24, 20, 60), outline=col, width=4)
-        d.text((56, y + 27), s, font=f, fill=col, anchor="lm")
+        y = 270 + k * 68
+        d.rounded_rectangle([64, y, 64 + w, y + 54], radius=12, fill=(20, 22, 56), outline=col, width=4)
+        d.text((84, y + 27), s, font=f, fill=col, anchor="lm")
 
 
 def render_video(ep, cta, out_mp4, workdir):
@@ -156,7 +158,7 @@ def render_video(ep, cta, out_mp4, workdir):
         canvas, cam, shake = ep["frame"](t)
         img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t))
         if "banner" in ep and ep["banner"](t):
-            text_block(img, ep["banner"](t), 520, 130, (255, 235, 90), stroke=14)
+            text_block(img, ep["banner"](t), 520, 130, (236, 214, 130), stroke=14)
         if "hud" in ep:
             hud(img, *ep["hud"](t))
         # diálogo estilo RPG (se escribe letra por letra)
@@ -168,7 +170,7 @@ def render_video(ep, cta, out_mp4, workdir):
                 rpg_box(img, tag, col, text, shown)
         # gancho (primeros segundos): arranca ya en el fotograma 0
         if t < HOOK_SECONDS:
-            text_block(img, ep["hook"], 560, 92, (255, 235, 90), stroke=12, width=900)
+            text_block(img, ep["hook"], 592, 72, (236, 214, 130), stroke=11, width=900)
         # flash en cada corte
         for c in ep["cuts"]:
             if 0 <= t - c < 2.5 / FPS:
@@ -178,8 +180,8 @@ def render_video(ep, cta, out_mp4, workdir):
         if t >= cta_t0:
             u = t - cta_t0
             pop = 1 + 0.06 * math.sin(min(u, 0.3) / 0.3 * math.pi)
-            cy = 1380
-            hh = int(150 * pop)
+            cy = 1260
+            hh = int(116 * pop)
             rpg_box(img, "MISIÓN", (255, 214, 70), cta, len(cta), y0=cy - hh, y1=cy + hh, gold=True)
         if i in (0, int(n * 0.25), int(n * 0.55), int(n * 0.9), n - 1):
             saved[i] = img.copy()

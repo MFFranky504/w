@@ -26,7 +26,7 @@ def txt(d, xy, s, size, fill, outline=OL, anchor="mm"):
     d.text((x, y), s, font=f, fill=fill, anchor=anchor)
 
 
-def room(t, night=False):
+def _room_base(t, night=False):
     img = Image.new("RGBA", (W, H), (0, 0, 0, 255))
     d = ImageDraw.Draw(img)
     wall, wall2 = (236, 168, 150), (244, 184, 160)
@@ -132,7 +132,7 @@ def glow(img, box, color, strength=140, blur=22):
                                                       __import__("numpy").asarray(layer, dtype="int16"), 0, 255).astype("uint8"))
 
 
-def light_shaft(img, strength=44):
+def light_shaft(img, strength=30):
     """Luz diagonal que entra por la ventana."""
     l = Image.new("RGBA", img.size, (0, 0, 0, 0))
     d = ImageDraw.Draw(l)
@@ -175,3 +175,30 @@ def confetti(img, t, n=60):
         x = (i * 71) % W
         y = int((t * 130 + i * 53) % 560) + 20
         d.rectangle([x, y, x + 4, y + 6], fill=cols[i % 4])
+
+
+DY = 44  # sube toda la escena para que los personajes queden sobre la zona segura
+
+
+def grade(img, sat=0.5, bright=0.8):
+    """Paleta apagada tipo JRPG: baja saturación y brillo, sombras frías."""
+    from PIL import ImageEnhance
+    rgb = ImageEnhance.Brightness(ImageEnhance.Color(img.convert("RGB")).enhance(sat)).enhance(bright)
+    a = __import__("numpy").asarray(rgb, dtype="float32") * __import__("numpy").array([0.96, 0.96, 1.04], dtype="float32")
+    return Image.fromarray(a.clip(0, 255).astype("uint8")).convert("RGBA")
+
+
+def room(t, night=False, score=(0, 14), verdict="DERROTA", label="K / D", cans_n=0):
+    img = _room_base(t, night)
+    img = grade(img)
+    if night:
+        night_grade(img, 0.42)
+    if cans_n:
+        cans(img, cans_n)
+    tv(img, t, score, verdict, label, night)
+    if night:
+        img = Image.fromarray(__import__("numpy").asarray(glow(img, (104, 96, 258, 244), (70, 110, 220), 130, 26))).convert("RGBA")
+    out = Image.new("RGBA", (W, H))
+    out.paste(img.crop((0, DY, W, H)), (0, 0))
+    out.paste(img.crop((0, H - 2 * DY, W, H - DY)), (0, H - DY))
+    return out

@@ -1,30 +1,34 @@
-"""Sprites chibi de cuerpo completo (56x64 px de diseño, x2 en el lienzo), con contorno automático,
-rampas de color de 3 tonos, ojos grandes con brillo y poses. Todo original, dibujado por código."""
+"""Sprites de cuerpo completo estilo JRPG 16/32 bits (proporciones de ~4 cabezas, paleta apagada).
+Diseño de 56x72 px, x2 en el lienzo; contorno automático; sombras frías y luces cálidas."""
 from functools import lru_cache
 
 import numpy as np
 from PIL import Image, ImageDraw
 
-SW, SH, CX = 56, 64, 28
-DARK = (38, 24, 56, 255)
-WHITE = (255, 255, 255, 255)
+SW, SH, CX, FOOT = 56, 72, 28, 70
+DARK = (22, 16, 34, 255)
+WHITE = (238, 236, 232, 255)
+INK = (96, 44, 52, 255)
 
 
-def sh(c, f):
-    return tuple(max(0, min(255, int(v * f))) for v in c[:3]) + (255,)
+def dk(c, f=0.72):   # sombra: baja valor y se enfría
+    return (int(c[0] * f * 0.96), int(c[1] * f * 0.98), min(255, int(c[2] * f * 1.08)), 255)
+
+
+def lt(c, f=1.16):   # luz: sube valor y se calienta
+    return (min(255, int(c[0] * f + 8)), min(255, int(c[1] * f + 5)), min(255, int(c[2] * f)), 255)
 
 
 CHARS = {
-    "bro": dict(skin=(246, 198, 150), hair=(112, 66, 40), shirt=(70, 120, 224), pants=(60, 64, 110),
-                shoe=(240, 240, 250), eye=(70, 150, 235), style="spiky"),
-    "chuy": dict(skin=(250, 206, 160), hair=(40, 30, 40), shirt=(70, 176, 100), pants=(70, 80, 130),
-                 shoe=(230, 90, 70), eye=(150, 90, 40), style="cap", cap=(232, 64, 70)),
-    "nati": dict(skin=(222, 160, 116), hair=(86, 48, 150), shirt=(240, 120, 180), pants=(250, 240, 230),
-                 shoe=(250, 200, 220), eye=(150, 70, 190), style="pony"),
-    "memo": dict(skin=(160, 112, 78), hair=(60, 40, 32), shirt=(250, 204, 70), pants=(80, 76, 100),
-                 shoe=(60, 60, 80), eye=(50, 120, 80), style="curly", glasses=True),
+    "bro": dict(skin=(214, 168, 136), hair=(78, 54, 44), coat=(54, 70, 116), pants=(46, 48, 68),
+                boot=(74, 58, 54), eye=(96, 128, 160), style="spiky", accent=(150, 120, 70)),
+    "chuy": dict(skin=(226, 182, 146), hair=(36, 30, 36), coat=(72, 98, 78), pants=(58, 62, 86),
+                 boot=(96, 62, 50), eye=(120, 86, 56), style="cap", cap=(146, 46, 54), accent=(190, 160, 90)),
+    "nati": dict(skin=(204, 154, 122), hair=(70, 50, 104), coat=(150, 84, 112), pants=(52, 52, 66),
+                 boot=(60, 50, 60), eye=(130, 96, 160), style="pony", accent=(210, 190, 130)),
+    "memo": dict(skin=(150, 108, 82), hair=(48, 36, 32), coat=(172, 138, 62), pants=(66, 64, 84),
+                 boot=(56, 52, 64), eye=(70, 110, 84), style="curly", glasses=True, accent=(110, 80, 50)),
 }
-INK = (122, 52, 64, 255)
 
 
 def _outline(img):
@@ -32,8 +36,7 @@ def _outline(img):
     m = a[..., 3] > 0
     d = np.zeros_like(m)
     d[1:] |= m[:-1]; d[:-1] |= m[1:]; d[:, 1:] |= m[:, :-1]; d[:, :-1] |= m[:, 1:]
-    ring = d & ~m
-    a[ring] = DARK
+    a[d & ~m] = DARK
     return Image.fromarray(a)
 
 
@@ -42,7 +45,9 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
            headset=False, bags=False, shirt=None):
     ch = CHARS[name]
     skin, hair = ch["skin"] + (255,), ch["hair"] + (255,)
-    shirt_c = (shirt or ch["shirt"]) + (255,)
+    coat = (shirt or ch["coat"]) + (255,)
+    pants, boot, acc = ch["pants"] + (255,), ch["boot"] + (255,), ch["accent"] + (255,)
+    style = ch["style"]
     img = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
 
@@ -52,207 +57,173 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
     def P(x, y, c):
         d.point((CX + x, y), fill=c)
 
-    def body(x0, y0, x1, y1, c):  # bloque con luz a la izquierda y sombra a la derecha
+    def body(x0, y0, x1, y1, c):  # luz arriba-izquierda, sombra derecha y abajo
         R(x0, y0, x1, y1, c)
-        R(x1 - 3, y0, x1, y1, sh(c, 0.78)); R(x0, y0, x0 + 2, y1, sh(c, 1.14))
-        R(x0, y1 - 2, x1, y1, sh(c, 0.82))
+        R(x1 - 2, y0, x1, y1, dk(c, 0.78)); R(x0, y0, x0 + 1, y1, lt(c, 1.12))
+        R(x0, y1 - 1, x1, y1, dk(c, 0.8))
 
-    style = ch["style"]
-    if style == "pony":  # cola de caballo detrás de la cabeza
-        R(11, 14, 19, 36, sh(hair, 0.9)); R(12, 14, 14, 34, sh(hair, 1.25)); R(11, 20, 19, 22, (255, 110, 170, 255))
-    # piernas y zapatos
-    pants = ch["pants"] + (255,)
-    body(-7, 50, -1, 60, pants); body(1, 50, 7, 60, pants)
-    body(-8, 59, -1, 63, ch["shoe"] + (255,)); body(1, 59, 8, 63, ch["shoe"] + (255,))
-    R(-8, 62, -1, 63, sh(ch["shoe"], 0.6)); R(1, 62, 8, 63, sh(ch["shoe"], 0.6))
-    # torso
-    body(-9, 36, 9, 52, shirt_c)
-    R(-3, 36, 3, 38, sh(shirt_c, 0.7)); R(-1, 38, 1, 46, sh(shirt_c, 0.9))
-    if name == "bro":
-        R(-5, 45, 5, 49, sh(shirt_c, 0.85)); R(-2, 38, -1, 44, (240, 240, 250, 255)); R(2, 38, 3, 44, (240, 240, 250, 255))
+    if style == "pony":  # pelo largo detrás del cuerpo
+        body(-11, 10, 11, 36, hair)
+    # piernas y botas
+    body(-8, 46, -1, 64, pants); body(1, 46, 8, 64, pants)
+    body(-9, 62, -1, 70, boot); body(1, 62, 9, 70, boot)
+    R(-9, 69, -1, 70, dk(boot, 0.6)); R(1, 69, 9, 70, dk(boot, 0.6))
+    R(-9, 62, -1, 63, lt(boot, 1.3)); R(1, 62, 9, 63, lt(boot, 1.3))
+    # abrigo / torso
+    body(-10, 26, 10, 48, coat)
+    R(-10, 46, 10, 56, coat); R(8, 46, 10, 56, dk(coat, 0.78)); R(-10, 46, -9, 56, lt(coat, 1.12)); R(-10, 55, 10, 56, dk(coat, 0.7))
+    R(-10, 47, 10, 48, dk(acc, 0.8)); R(-1, 47, 1, 49, lt(acc, 1.2))          # cinturón y hebilla
+    R(-3, 26, 3, 36, dk(coat, 0.6)); R(-4, 26, -3, 38, lt(coat, 1.2)); R(3, 26, 4, 38, dk(coat, 0.7))  # solapa en V
+    R(-1, 36, 1, 47, dk(coat, 0.7))
+    for yy in (39, 43):
+        P(-2, yy, lt(acc, 1.1)); P(1, yy, lt(acc, 1.1))
+    if name == "nati":
+        R(-10, 26, 10, 29, dk(coat, 0.85)); R(-9, 28, 9, 29, acc)
     if name == "memo":
-        R(-4, 42, 4, 45, (255, 255, 255, 255))  # estampa
+        R(-10, 26, 10, 28, dk(coat, 0.75)); R(-6, 34, 6, 36, dk(coat, 0.85))
     # brazos
-    sl = shirt_c
     hand = skin
-    if pose in ("down", "fist", "point", "cheer"):
-        if pose != "cheer":
-            body(-12, 37, -9, 49, sl); R(-12, 49, -8, 52, hand); R(-12, 51, -8, 52, sh(hand, .85))
-        if pose == "down":
-            body(9, 37, 12, 49, sl); R(8, 49, 12, 52, hand); R(8, 51, 12, 52, sh(hand, .85))
-        elif pose == "fist":
-            body(9, 24, 13, 38, sl); R(9, 18, 14, 25, hand); R(9, 24, 14, 25, sh(hand, .8))
-        elif pose == "point":
-            body(9, 37, 20, 42, sl); R(20, 36, 26, 42, hand); R(24, 36, 26, 38, hand); R(20, 41, 26, 42, sh(hand, .8))
-        elif pose == "cheer":
-            for sx in (-1, 1):
-                x0, x1 = (-13, -9) if sx < 0 else (9, 13)
-                body(x0, 24, x1, 38, sl); R(x0 - (1 if sx < 0 else 0), 18, x1 + (0 if sx < 0 else 1), 25, hand)
+    if pose != "cheer":
+        body(-13, 27, -10, 43, coat); R(-13, 43, -10, 46, hand); R(-13, 45, -10, 46, dk(hand, 0.8))
+    if pose == "down":
+        body(10, 27, 13, 43, coat); R(10, 43, 13, 46, hand); R(10, 45, 13, 46, dk(hand, 0.8))
+    elif pose == "fist":
+        body(10, 16, 13, 30, coat); R(9, 11, 14, 17, hand); R(9, 16, 14, 17, dk(hand, 0.8))
+    elif pose == "point":
+        body(10, 27, 21, 31, coat); R(21, 26, 26, 31, hand); R(24, 26, 26, 28, hand); R(21, 30, 26, 31, dk(hand, 0.8))
+    elif pose == "cheer":
+        for x0, x1 in ((-13, -10), (10, 13)):
+            body(x0, 14, x1, 30, coat); R(x0 - 1, 9, x1 + 1, 15, hand)
     elif pose == "ctrl":
-        body(-12, 37, -9, 46, sl); body(9, 37, 12, 46, sl)
-        R(-10, 46, -5, 49, hand); R(5, 46, 10, 49, hand)
-        body(-8, 44, 8, 49, (84, 88, 120, 255))
-        R(-7, 45, -5, 47, (240, 70, 70, 255)); R(4, 45, 6, 47, (90, 210, 255, 255)); R(-1, 46, 1, 47, (255, 220, 90, 255))
-    # cuello + cabeza
-    R(-3, 33, 3, 37, sh(skin, 0.82))
-    d.rounded_rectangle([CX - 14, 8, CX + 13, 35], radius=5, fill=skin)
-    R(-14, 8, 14, 9, skin)
-    # sombras de la cara
-    R(11, 14, 14, 33, sh(skin, 0.86)); R(-12, 33, 12, 35, sh(skin, 0.84))
-    R(-14, 22, -12, 28, skin); R(12, 22, 14, 28, sh(skin, 0.86))
-    R(-15, 22, -14, 28, sh(skin, 0.9)); R(14, 22, 15, 28, sh(skin, 0.8))  # orejas
-    # --- pelo ---
-    hl = sh(hair, 1.45)
+        body(10, 27, 13, 38, coat)
+        R(-13, 37, 13, 41, dk(coat, 0.9)); R(-12, 37, 12, 38, lt(coat, 1.1))
+        R(-7, 38, -4, 42, hand); R(4, 38, 7, 42, hand)
+        body(-5, 37, 5, 43, (62, 66, 90, 255))
+        R(-4, 38, -3, 39, (170, 70, 70, 255)); R(3, 38, 4, 39, (80, 150, 180, 255)); R(-1, 40, 1, 41, (200, 180, 100, 255))
+    # cuello y cabeza
+    R(-2, 23, 2, 27, dk(skin, 0.82))
+    d.rounded_rectangle([CX - 9, 5, CX + 8, 24], radius=4, fill=skin)
+    R(6, 8, 9, 23, dk(skin, 0.86)); R(-8, 22, 8, 24, dk(skin, 0.84))
+    R(-10, 13, -9, 19, dk(skin, 0.92)); R(9, 13, 10, 19, dk(skin, 0.8))   # orejas
+    # pelo
     if style == "spiky":
-        d.rounded_rectangle([CX - 15, 4, CX + 14, 21], radius=6, fill=hair)
-        for x0, top in ((-13, 0), (-7, -1), (-1, 0), (5, -1), (10, 2)):
-            R(x0, max(top, 0), x0 + 6, 8, hair)
-        R(-15, 14, -9, 30, hair); R(-9, 16, -2, 24, hair); R(-5, 24, -2, 26, hair); R(13, 14, 15, 28, sh(hair, .8))
-        R(-9, 5, -3, 8, hl); R(-4, 3, 0, 5, hl); R(3, 4, 8, 7, sh(hair, 1.2))
+        d.rounded_rectangle([CX - 10, 2, CX + 9, 13], radius=4, fill=hair)
+        for x0, top in ((-9, 0), (-4, -1), (1, 0), (5, 1)):
+            R(x0, max(top, 0), x0 + 5, 6, hair)
+        R(-10, 8, -6, 18, hair); R(-6, 9, -1, 13, hair); R(8, 8, 10, 16, dk(hair, 0.8))
+        R(-7, 3, -2, 5, lt(hair, 1.5)); R(2, 3, 6, 4, lt(hair, 1.3))
     elif style == "cap":
         cap = ch["cap"] + (255,)
-        d.rounded_rectangle([CX - 15, 3, CX + 14, 19], radius=7, fill=cap)
-        R(-15, 15, 15, 21, sh(cap, .72)); R(-17, 19, 17, 22, sh(cap, 0.6))
-        R(-8, 5, -3, 9, sh(cap, 1.35)); R(-1, 1, 2, 4, sh(cap, 0.8)); R(10, 6, 14, 16, sh(cap, 0.8))
-        R(-14, 21, -10, 30, hair); R(10, 21, 14, 30, hair)
+        d.rounded_rectangle([CX - 10, 2, CX + 9, 11], radius=4, fill=cap)
+        R(-10, 8, 10, 12, dk(cap, 0.7)); R(-6, 3, -2, 6, lt(cap, 1.3)); R(6, 4, 9, 9, dk(cap, 0.8))
+        R(-10, 12, -7, 18, hair); R(7, 12, 10, 18, hair)
     elif style == "pony":
-        d.rounded_rectangle([CX - 15, 4, CX + 14, 20], radius=7, fill=hair)
-        R(-15, 12, -11, 38, hair); R(11, 12, 15, 38, sh(hair, .85))
-        R(-12, 14, 12, 21, hair); R(-3, 18, 2, 23, hair); R(5, 18, 9, 22, hair)
-        R(-9, 5, -2, 8, hl); R(-13, 20, -12, 34, hl); R(2, 10, 6, 12, sh(hair, 1.25))
-        R(8, 5, 12, 9, (255, 110, 170, 255))  # moño
+        d.rounded_rectangle([CX - 10, 2, CX + 9, 13], radius=4, fill=hair)
+        R(-11, 8, -8, 24, hair); R(8, 8, 11, 24, dk(hair, 0.85))
+        R(-9, 8, 9, 12, hair); R(-2, 11, 1, 14, hair); R(4, 11, 8, 13, hair)
+        R(-7, 3, -2, 5, lt(hair, 1.6)); R(-10, 10, -9, 22, lt(hair, 1.4))
     elif style == "curly":
-        d.rounded_rectangle([CX - 16, 6, CX + 15, 22], radius=6, fill=hair)
-        for x0 in (-15, -9, -3, 3, 9):
-            d.ellipse([CX + x0, 0, CX + x0 + 7, 9], fill=hair)
-        R(-16, 14, -11, 28, hair); R(12, 14, 16, 28, sh(hair, .8))
-        R(-11, 4, -7, 6, hl); R(-2, 2, 2, 4, hl); R(5, 4, 9, 6, hl)
-    # --- ojos ---
-    def eye(sx, side):  # side=-1 izquierdo, +1 derecho; el lado interno mira al centro
-        top = 21
+        d.rounded_rectangle([CX - 10, 3, CX + 9, 12], radius=4, fill=hair)
+        for x0 in (-10, -6, -2, 2, 6):
+            d.ellipse([CX + x0, 0, CX + x0 + 5, 6], fill=hair)
+        R(-10, 8, -8, 15, hair); R(8, 8, 10, 15, dk(hair, 0.8))
+        R(-7, 2, -4, 3, lt(hair, 1.8)); R(2, 1, 5, 2, lt(hair, 1.6))
+    # ojos (5x4, iris visible + brillo)
+    ec = ch["eye"] + (255,)
+
+    def eye(sx, side):
+        y0 = 14
         if expr in ("happy", "blink"):
-            for i, (dx, dy) in enumerate([(0, 6), (1, 5), (2, 4), (3, 4), (4, 4), (5, 5), (6, 6)]):
-                R(sx + dx, 21 + dy - 1, sx + dx + 1, 21 + dy + 1, INK)
+            for dx, dy in ((0, 3), (1, 2), (2, 2), (3, 2), (4, 3)):
+                P(sx + dx, y0 + dy, INK)
             return
         if expr == "shock":
-            top = 19
-        R(sx, top, sx + 7, 30, (255, 255, 255, 255))
-        R(sx, top, sx + 7, top + 1, DARK)
-        R(sx, 29, sx + 7, 30, sh(skin, 0.9))
+            y0 = 13
+        R(sx, y0, sx + 5, y0 + (6 if expr == "shock" else 4), (236, 236, 240, 255))
+        R(sx, y0, sx + 5, y0 + 1, DARK)
         ix = max(sx, min(sx + 2, sx + 1 + look))
-        ec = ch["eye"] + (255,)
         if expr == "shock":
-            R(sx + 2, 22, sx + 5, 27, ec); R(sx + 3, 23, sx + 4, 26, DARK); R(sx + 2, 22, sx + 3, 23, WHITE)
+            R(sx + 1, y0 + 2, sx + 4, y0 + 5, ec); R(sx + 2, y0 + 3, sx + 3, y0 + 4, DARK); P(sx + 1, y0 + 2, WHITE)
         else:
-            R(ix, top + 1, ix + 5, 30, sh(ec, 0.75))
-            R(ix, top + 3, ix + 5, 30, ec)
-            R(ix, 27, ix + 5, 30, sh(ec, 1.3))
-            R(ix + 1, top + 3, ix + 4, 28, DARK)
-            R(ix + 1, top + 2, ix + 3, top + 4, WHITE)
-            P(ix + 4, 28, WHITE)
-        inner = sx + 7 if side < 0 else sx
+            R(ix, y0 + 1, ix + 3, y0 + 4, ec); R(ix, y0 + 3, ix + 3, y0 + 4, lt(ec, 1.35))
+            P(ix + 1, y0 + 2, DARK); P(ix + 1, y0 + 3, DARK); P(ix, y0 + 1, WHITE)
         if expr == "angry":
-            for k in range(4):
-                xx = (sx + 7 - 1 - k * 2) if side < 0 else (sx + k * 2)
-                R(min(xx, xx + 2), top + 1, max(xx, xx + 2) + (0), top + 2 + (3 - k) * 0, DARK) if False else None
-            for k in range(4):
-                if side < 0:
-                    R(sx + 7 - 2 * (k + 1), 21, sx + 7, 21 + k + 1, hair) if k == 3 else None
-            for k in range(4):
-                x0 = sx + 7 - (k + 1) * 2 if side < 0 else sx
-                x1 = sx + 7 if side < 0 else sx + (k + 1) * 2
-                R(x0, 21, x1, 21 + 1 + (3 - k) // 2 + (1 if k == 3 else 0), sh(skin, 0.7)) if False else None
-            if side < 0:
-                R(sx, 21, sx + 7, 23, sh(skin, 0.8)); R(sx + 3, 23, sx + 7, 25, sh(skin, 0.8))
-            else:
-                R(sx, 21, sx + 7, 23, sh(skin, 0.8)); R(sx, 23, sx + 4, 25, sh(skin, 0.8))
+            R(sx, y0, sx + 5, y0 + 2, dk(skin, 0.7))
+            R(sx + (3 if side < 0 else 0), y0 + 2, sx + (5 if side < 0 else 2), y0 + 3, dk(skin, 0.7))
         elif expr == "sad":
-            if side < 0:
-                R(sx, 21, sx + 4, 24, sh(skin, 0.8))
-            else:
-                R(sx + 3, 21, sx + 7, 24, sh(skin, 0.8))
+            R(sx + (0 if side < 0 else 2), y0, sx + (3 if side > 0 else 5) if side > 0 else sx + 3, y0 + 2, dk(skin, 0.75))
         elif expr in ("smug", "shy"):
-            R(sx, 21, sx + 7, 25, sh(skin, 0.78)); R(sx, 25, sx + 7, 26, DARK)
+            R(sx, y0, sx + 5, y0 + 2, dk(skin, 0.72)); R(sx, y0 + 2, sx + 5, y0 + 3, DARK)
         if bags:
-            R(sx, 30, sx + 7, 31, (150, 100, 170, 255))
-    eye(-10, -1); eye(3, 1)
-    # cejas
-    bc = sh(hair, 0.7) if style != "cap" else sh(hair, 1.0)
-    for sx, side in ((-10, -1), (3, 1)):
-        y = 17
+            R(sx, y0 + 5, sx + 5, y0 + 6, (130, 96, 140, 255))
+
+    eye(-7, -1); eye(2, 1)
+    bc = dk(hair, 0.8)
+    for sx, side in ((-7, -1), (2, 1)):
         if expr == "angry":
-            R(sx, 16 + (0 if side < 0 else 3), sx + 4, 17 + (0 if side < 0 else 3), bc)
-            R(sx + 3, 19 if side < 0 else 16, sx + 7, 20 if side < 0 else 17, bc)
-            R(sx + (0 if side < 0 else 0), 16 if side < 0 else 19, sx + 3, 17 if side < 0 else 20, bc) if False else None
+            R(sx, 11 if side < 0 else 12, sx + 3, 12 if side < 0 else 13, bc); R(sx + 3, 12 if side < 0 else 11, sx + 6, 13 if side < 0 else 12, bc)
             if side < 0:
-                R(sx, 16, sx + 3, 17, bc); R(sx + 3, 18, sx + 7, 19, bc)
+                R(sx, 11, sx + 3, 12, bc); R(sx + 3, 12, sx + 6, 13, bc)
             else:
-                R(sx + 4, 16, sx + 7, 17, bc); R(sx, 18, sx + 4, 19, bc)
+                R(sx, 12, sx + 3, 13, bc); R(sx + 3, 11, sx + 6, 12, bc)
         elif expr == "sad":
             if side < 0:
-                R(sx, 19, sx + 3, 20, bc); R(sx + 3, 17, sx + 7, 18, bc)
+                R(sx, 12, sx + 3, 13, bc); R(sx + 3, 11, sx + 6, 12, bc)
             else:
-                R(sx + 4, 19, sx + 7, 20, bc); R(sx, 17, sx + 4, 18, bc)
+                R(sx, 11, sx + 3, 12, bc); R(sx + 3, 12, sx + 6, 13, bc)
         elif expr == "shock":
-            R(sx, 14, sx + 7, 15, bc)
-        elif expr not in ("happy", "blink", "smug") or True:
-            if expr != "angry":
-                R(sx, 17 if expr != "smug" else 18, sx + 7, 18 if expr != "smug" else 19, bc)
+            R(sx, 10, sx + 6, 11, bc)
+        else:
+            R(sx, 12 if expr != "smug" else 13, sx + 6, 13 if expr != "smug" else 14, bc)
     if "tear" in fx:
-        R(-9, 30, -7, 36, (130, 210, 255, 255)); R(-9, 30, -8, 33, WHITE)
-    # mejillas y nariz
+        R(-6, 19, -5, 23, (140, 190, 220, 255)); P(-6, 19, WHITE)
     if expr in ("happy", "angry", "shy", "shock") or "blush" in fx:
-        R(-12, 30, -8, 32, (255, 130, 140, 200)); R(8, 30, 12, 32, (255, 130, 140, 200))
-    P(0, 29, sh(skin, 0.75)); P(1, 29, sh(skin, 0.75))
-    # boca
+        R(-8, 19, -5, 20, (196, 110, 110, 255)); R(5, 19, 8, 20, (196, 110, 110, 255))
+    P(0, 18, dk(skin, 0.76)); P(1, 18, dk(skin, 0.76))
     m = mouth or {"happy": "smile", "sad": "frown", "angry": "open", "shock": "o", "smug": "smirk", "shy": "shy"}.get(expr, "closed")
     if m == "closed":
-        R(-2, 32, 2, 33, INK)
+        R(-1, 21, 3, 22, INK)
     elif m == "open":
-        R(-3, 31, 3, 35, INK); R(-2, 34, 2, 35, (230, 90, 100, 255)); R(-3, 31, 3, 32, WHITE)
+        R(-2, 20, 3, 23, INK); R(-1, 22, 2, 23, (190, 80, 90, 255))
     elif m == "big":
-        R(-4, 31, 4, 36, INK); R(-3, 34, 3, 36, (230, 90, 100, 255)); R(-4, 31, 4, 33, WHITE)
+        R(-3, 20, 4, 24, INK); R(-2, 23, 3, 24, (190, 80, 90, 255)); R(-3, 20, 4, 21, WHITE)
     elif m == "smile":
-        R(-3, 32, 3, 33, INK); R(-4, 31, -3, 32, INK); R(3, 31, 4, 32, INK); R(-2, 33, 2, 35, INK); R(-2, 33, 2, 34, WHITE)
+        R(-2, 21, 3, 22, INK); P(-3, 20, INK); P(3, 20, INK); R(-1, 22, 2, 23, WHITE)
     elif m == "frown":
-        R(-3, 33, 3, 34, INK); R(-4, 34, -3, 35, INK); R(3, 34, 4, 35, INK)
+        R(-2, 21, 3, 22, INK); P(-3, 22, INK); P(3, 22, INK)
     elif m == "o":
-        R(-2, 31, 2, 36, INK); R(-1, 34, 1, 36, (230, 90, 100, 255))
+        R(-1, 20, 2, 24, INK); R(0, 22, 1, 24, (190, 80, 90, 255))
     elif m == "smirk":
-        R(-3, 33, 2, 34, INK); R(2, 32, 4, 33, INK)
+        R(-2, 21, 2, 22, INK); R(2, 20, 4, 21, INK)
     elif m == "shy":
-        R(-3, 33, 0, 34, INK); R(0, 32, 3, 33, INK)
-    # accesorios
+        R(-2, 21, 0, 22, INK); R(0, 20, 3, 21, INK)
     if ch.get("glasses"):
-        for sx in (-11, 2):
-            R(sx, 20, sx + 9, 21, DARK); R(sx, 30, sx + 9, 31, DARK); R(sx, 20, sx + 1, 31, DARK); R(sx + 8, 20, sx + 9, 31, DARK)
-            R(sx + 1, 21, sx + 3, 22, (255, 255, 255, 140))
-        R(-2, 24, 2, 25, DARK)
+        for sx in (-8, 1):
+            R(sx, 13, sx + 7, 14, DARK); R(sx, 19, sx + 7, 20, DARK); R(sx, 13, sx + 1, 20, DARK); R(sx + 6, 13, sx + 7, 20, DARK)
+            P(sx + 2, 15, (200, 210, 230, 255))
+        R(-1, 15, 1, 16, DARK)
     if shades:
-        R(-13, 21, 13, 29, (24, 24, 40, 255)); R(-13, 21, 13, 23, (50, 50, 70, 255))
-        R(-10, 24, -6, 25, (120, 210, 255, 255)); R(5, 24, 9, 25, (120, 210, 255, 255)); R(-10, 26, -8, 27, (120, 210, 255, 255))
+        R(-9, 13, 9, 19, (22, 24, 36, 255)); R(-9, 13, 9, 15, (48, 52, 70, 255))
+        R(-7, 16, -4, 17, (120, 170, 200, 255)); R(3, 16, 6, 17, (120, 170, 200, 255))
     if headset:
-        R(-16, 8, 16, 11, (70, 74, 96, 255)); R(-16, 9, 16, 10, (110, 116, 150, 255))
-        R(-16, 10, -14, 26, (70, 74, 96, 255)); R(14, 10, 16, 26, (70, 74, 96, 255))
-        body(-19, 20, -14, 31, (232, 60, 100, 255)); body(14, 20, 19, 31, (232, 60, 100, 255))
-        R(-18, 31, -17, 36, (70, 74, 96, 255)); R(-18, 35, -8, 36, (70, 74, 96, 255)); R(-9, 34, -6, 37, (232, 60, 100, 255))
+        steel = (84, 90, 110, 255)
+        R(-11, 4, 11, 7, steel); R(-11, 5, 11, 6, lt(steel, 1.4)); R(-11, 6, -9, 16, steel); R(9, 6, 11, 16, steel)
+        body(-13, 12, -9, 21, (150, 52, 70, 255)); body(9, 12, 13, 21, (150, 52, 70, 255))
+        R(-12, 21, -11, 25, steel); R(-12, 24, -5, 25, steel); R(-6, 23, -3, 26, (150, 52, 70, 255))
     if "sweat" in fx:
-        R(12, 6, 15, 11, (150, 220, 255, 255)); R(13, 6, 14, 8, WHITE)
+        R(10, 4, 12, 8, (160, 200, 225, 255)); P(10, 4, WHITE)
     if "vein" in fx:
-        R(-14, 2, -11, 3, (240, 50, 50, 255)); R(-13, 1, -12, 5, (240, 50, 50, 255))
-        R(8, 2, 11, 3, (240, 50, 50, 255)); R(9, 1, 10, 5, (240, 50, 50, 255))
+        R(-10, 0, -7, 1, (190, 50, 50, 255)); R(-9, -1, -8, 3, (190, 50, 50, 255)) if False else R(-9, 0, -8, 3, (190, 50, 50, 255))
     return _outline(img)
 
 
 def draw_char(canvas, name, x, feet_y, flip=False, scale=2, shadow=True, ox=0, oy=0, **kw):
-    """Pega el sprite sobre el lienzo RGBA; x = centro, feet_y = suelo."""
     spr = sprite(name, **kw)
     if flip:
         spr = spr.transpose(Image.FLIP_LEFT_RIGHT)
     big = spr.resize((SW * scale, SH * scale), Image.NEAREST)
     if shadow:
-        from PIL import ImageDraw as D
         sh_l = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
-        D.Draw(sh_l).ellipse([x - 34 + ox, feet_y - 7, x + 34 + ox, feet_y + 7], fill=(10, 6, 30, 90))
+        ImageDraw.Draw(sh_l).ellipse([x - 30 * scale / 2 + ox, feet_y - 6, x + 30 * scale / 2 + ox, feet_y + 6], fill=(8, 6, 20, 110))
         canvas.alpha_composite(sh_l)
-    canvas.alpha_composite(big, (int(x - SW * scale // 2 + ox), int(feet_y - 62 * scale + oy)))
+    canvas.alpha_composite(big, (int(x - SW * scale // 2 + ox), int(feet_y - FOOT * scale + oy)))
