@@ -180,7 +180,7 @@ def confetti(img, t, n=60):
 DY = 44  # sube toda la escena para que los personajes queden sobre la zona segura
 
 
-def grade(img, sat=0.5, bright=0.8):
+def grade(img, sat=0.78, bright=0.95):
     """Paleta apagada tipo JRPG: baja saturación y brillo, sombras frías."""
     from PIL import ImageEnhance
     rgb = ImageEnhance.Brightness(ImageEnhance.Color(img.convert("RGB")).enhance(sat)).enhance(bright)

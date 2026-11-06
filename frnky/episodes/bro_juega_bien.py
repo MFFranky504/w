@@ -64,7 +64,7 @@ def smooth01(x):
 
 def char(c, t, name, x=None, shake=0, scale=2, feet=FEET, **kw):
     sp = speaking(t)
-    talking = (name in sp or "todos" in sp) and int(t * 9) % 2 == 0
+    talking = (name in sp or "todos" in sp) and int(t * 7) % 2 == 0
     expr = kw.get("expr", "neutral")
     if talking:
         kw["mouth"] = "big" if expr in ("angry", "happy", "shock") else "open"
@@ -72,12 +72,6 @@ def char(c, t, name, x=None, shake=0, scale=2, feet=FEET, **kw):
     ox = round(math.sin(t * 61) * shake) if shake else 0
     oy = round(math.sin(t * 5 + x) * 1.5) + kw.pop("oy", 0)
     draw_char(c, name, x, feet, ox=ox, oy=oy, scale=scale, **kw)
-
-
-def banner(t):
-    if 9.4 <= t < 12.0:
-        return f"DÍA {1 if t < 10.2 else (2 if t < 11.0 else 3)}"
-    return ""
 
 
 def hud(t):
@@ -182,22 +176,48 @@ def frame(t):
     return c, cam_at(keys, t), shake
 
 
+K = 1.35   # estiramiento del tiempo: ritmo más pausado (todo lo de arriba está en tiempo base)
+
+
+def banner(t):
+    if 8.0 <= t < 9.3:
+        return "ESA NOCHE…"
+    if 9.4 <= t < 12.0:
+        return f"DÍA {1 if t < 10.2 else (2 if t < 11.0 else 3)}"
+    if 12.7 <= t < 14.0:
+        return "REGRESÓ… DIFERENTE"
+    if 16.6 <= t < 17.8:
+        return "SE LE SUBIÓ A LA CABEZA"
+    return ""
+
+
 def music(track):
-    audio.groove(track, 0, 3.6, 140, 57, True, True, True)
-    audio.groove(track, 3.6, 5.3, 140, 57, True, False, False, 0.8)
-    audio.groove(track, 6.4, 8.0, 140, 57, True, True, False)
-    audio.groove(track, 8.0, 12.6, 150, 52, True, True, True)
-    audio.riser(track, 9.4, 12.5)
-    audio.groove(track, 12.6, 16.6, 150, 60, False, True, True)
-    audio.groove(track, 16.6, 20.4, 100, 57, True, False, False, 0.7)
-    audio.groove(track, 22.0, T, 150, 60, False, True, True)
+    g = lambda a, b, *x, **k: audio.groove(track, a * K, b * K, *x, **k)
+    g(0, 3.6, 132, "min")                                   # arranque tenso y con energía
+    g(3.6, 5.3, 132, "min", layers=("bass", "pad", "arp"))
+    g(5.3, 6.4, 132, "min", layers=("pad",), vol=0.9)       # momento triste
+    g(6.4, 8.0, 132, "min", layers=("bass", "pad", "arp", "drums"))
+    g(8.0, 12.6, 144, "min", layers=("bass", "pad", "arp", "drums"))   # entrenamiento: sube la tensión
+    audio.riser(track, 9.4 * K, 12.5 * K)
+    g(12.6, 16.6, 138, "maj")                               # victoria
+    g(16.6, 20.4, 138, "min", layers=("bass", "pad"), vol=0.7)       # incómodo
+    g(20.4, 22.0, 138, "min", layers=("pad",), vol=0.6)
+    g(22.0, T, 138, "maj")                                  # final festivo
 
 
 def sfx(track):
-    audio.powerup(track, 12.6)
-    audio.scratch(track, 14.9)
-    audio.trombone(track, 20.6)
-    audio.jingle(track, 22.0)
+    audio.hit(track, 0.0)
+    audio.ding(track, 1.7)
+    audio.powerup(track, 12.6 * K)
+    audio.scratch(track, 14.9 * K)
+    audio.trombone(track, 20.6 * K)
+    audio.jingle(track, 22.0 * K)
 
 
-EP = dict(banner=banner, hud=hud, T=T, hook=HOOK, lines=LINES, cuts=CUTS, voices=VOICES, frame=frame, music=music, sfx=sfx, meta=META)
+HOOKS = [(0.0, 1.7, "LO CORRIERON POR SER MALO…"), (1.7, 3.6, "¡Y SE VOLVIÓ DEMASIADO BUENO!")]
+
+EP = dict(
+    T=T * K, hooks=HOOKS, cuts=[c * K for c in CUTS], voices=VOICES,
+    lines=[(a * K, b * K, w, x) for a, b, w, x in LINES],
+    frame=lambda t: frame(t / K), hud=lambda t: hud(t / K), banner=lambda t: banner(t / K),
+    music=music, sfx=sfx, meta=META)

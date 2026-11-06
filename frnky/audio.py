@@ -60,27 +60,58 @@ def midi(n):
     return 440 * 2 ** ((n - 69) / 12)
 
 
-def groove(track, t0, t1, bpm, root, minor=True, drums=True, lead=True, vol=1.0):
+PROG_MIN = [(45, "m"), (41, "M"), (48, "M"), (43, "M")]   # Am F C G
+PROG_MAJ = [(48, "M"), (43, "M"), (45, "m"), (41, "M")]   # C G Am F
+MEL_MIN = [(0, 76, 1), (1, 76, 1), (2, 79, 2), (4, 81, 2), (6, 79, 1), (7, 76, 1),
+           (8, 77, 2), (10, 76, 1), (11, 72, 1), (12, 74, 3), (15, 72, 1),
+           (16, 72, 1), (17, 76, 1), (18, 79, 2), (20, 84, 2), (22, 79, 1), (23, 76, 1),
+           (24, 74, 2), (26, 76, 1), (27, 74, 1), (28, 71, 3), (31, 74, 1)]
+MEL_MAJ = [(0, 79, 1), (1, 79, 1), (2, 84, 2), (4, 86, 2), (6, 84, 1), (7, 79, 1),
+           (8, 83, 2), (10, 81, 1), (11, 79, 1), (12, 81, 3), (15, 79, 1),
+           (16, 84, 1), (17, 88, 1), (18, 86, 2), (20, 84, 2), (22, 81, 1), (23, 79, 1),
+           (24, 77, 2), (26, 79, 1), (27, 81, 1), (28, 84, 3), (31, 79, 1)]
+
+
+def groove(track, t0, t1, bpm, mode="min", layers=("bass", "pad", "arp", "lead", "drums"), vol=1.0):
+    """Loop de 4 compases (Am-F-C-G o C-G-Am-F) con bajo sincopado, pad, arpegio, melodía con eco y batería."""
     step = 60 / bpm / 2
-    scale = [0, 3, 7, 10, 12, 15] if minor else [0, 4, 7, 9, 12, 16]
-    prog = [0, 0, -4 if minor else 5, -2 if minor else 7]
-    i, t = 0, t0
-    while t < t1 - 0.05:
-        bar = (i // 8) % 4
-        r = root + prog[bar]
-        if i % 2 == 0:
-            put(track, t, note(midi(r - 12), step * 1.8, 0.16, "tri", rel=0.4), vol)
-        if lead and i % 2 == 1 or lead and i % 4 == 0:
-            n = r + scale[(i * 3) % len(scale)]
-            put(track, t, note(midi(n), step * 0.9, 0.07, "sq", 0.25, 0.25), vol)
-        if drums:
-            if i % 4 == 0:
-                put(track, t, kick(0.45), vol)
-            if i % 4 == 2:
-                put(track, t, noise(0.09, 0.16, 0.06), vol)
-            put(track, t, noise(0.02, 0.05, 0.02), vol)
-        i += 1
-        t += step
+    prog = PROG_MIN if mode == "min" else PROG_MAJ
+    mel = MEL_MIN if mode == "min" else MEL_MAJ
+    lead = np.zeros(len(track))
+    n = int((t1 - t0) / step)
+    for i in range(n):
+        t = t0 + i * step
+        bar, st = (i // 8) % 4, i % 8
+        root, q = prog[bar]
+        third = 3 if q == "m" else 4
+        if "bass" in layers and st in (0, 3, 6):
+            put(track, t, note(midi(root - 12 + (12 if st == 6 else 0)), step * 2.2, 0.17, "tri", rel=0.35), vol)
+        if "pad" in layers and st == 0:
+            for off in (0, third, 7):
+                put(track, t, note(midi(root + 12 + off), step * 7.5, 0.035, "tri", rel=1.6), vol)
+        if "arp" in layers:
+            for sub in (0, 1):
+                k = (i * 2 + sub) % 4
+                f = midi(root + 24 + (0, third, 7, 12)[k])
+                put(track, t + sub * step / 2, note(f, step * 0.45, 0.028, "sq", 0.125, 0.25), vol)
+        if "drums" in layers:
+            if st in (0, 4) or (st == 7 and bar % 2):
+                put(track, t, kick(0.42), vol)
+            if st in (2, 6):
+                put(track, t, noise(0.1, 0.15, 0.07), vol)
+            put(track, t, noise(0.018, 0.04 if st % 2 else 0.06, 0.02), vol)
+    if "lead" in layers:
+        for k in range(int((t1 - t0) / (step * 32)) + 1):
+            for s0, m, ln in mel:
+                tt = t0 + (k * 32 + s0) * step
+                if tt < t1 - 0.05:
+                    f = midi(m)
+                    dur = ln * step * 0.95
+                    sig = square(f * (1 + 0.004 * np.sin(2 * np.pi * 5.5 * _t(dur))), dur, 0.25)
+                    put(lead, tt, sig * env(len(sig), rel=0.5) * 0.085)
+        d = int(0.19 * SR)
+        lead[d:] += 0.35 * lead[:-d]
+        track += lead * vol
 
 
 def riser(track, t0, t1, root=57, vol=1.0):

@@ -78,7 +78,7 @@ def post_fx(img):
         r = np.sqrt(((xx - OUT[0] / 2) / (OUT[0] / 2)) ** 2 + ((yy - OUT[1] / 2) / (OUT[1] / 2)) ** 2)
         _VIG = (1 - 0.38 * np.clip(r - 0.55, 0, 1) ** 1.6)[..., None].astype("float32")
     from PIL import ImageEnhance
-    img = ImageEnhance.Color(img).enhance(0.9)
+    img = ImageEnhance.Color(img).enhance(1.12)
     a = np.asarray(img, dtype="float32") * _VIG
     return Image.fromarray(np.clip(a, 0, 255).astype("uint8"))
 
@@ -135,7 +135,7 @@ def render_video(ep, cta, out_mp4, workdir):
     voices = ep["voices"]
     lines = ep["lines"]
     # Reglas del canal, verificadas al renderizar:
-    assert lines[0][0] <= HOOK_SECONDS and lines[0][0] < 0.5, "el conflicto debe sonar/verse desde el segundo 0"
+    assert lines[0][0] < 0.5 and ep["hooks"][0][0] == 0 and ep["hooks"][0][1] <= HOOK_SECONDS + 0.5, "el conflicto debe verse desde el segundo 0"
     cta_t0 = T - CTA_SECONDS
     assert all(l[1] <= cta_t0 + 0.01 for l in lines), "ningún diálogo puede pisar el CTA final"
 
@@ -164,7 +164,8 @@ def render_video(ep, cta, out_mp4, workdir):
         canvas, cam, shake = ep["frame"](t)
         img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t))
         if "banner" in ep and ep["banner"](t):
-            text_block(img, ep["banner"](t), 520, 130, (236, 214, 130), stroke=14)
+            bt = ep["banner"](t)
+            text_block(img, bt, 520, 130 if len(bt) < 9 else 80, (252, 224, 110), stroke=14, width=900)
         if "hud" in ep:
             hud(img, *ep["hud"](t))
         # diálogo estilo RPG (se escribe letra por letra)
@@ -175,8 +176,10 @@ def render_video(ep, cta, out_mp4, workdir):
                 shown = int(len(text) * min(1.0, (t - t0) / (0.45 * (t1 - t0))) + 1)
                 rpg_box(img, tag, col, text, shown, flag=None if '+' in who else voices[who].get('flag'))
         # gancho (primeros segundos): arranca ya en el fotograma 0
-        if t < HOOK_SECONDS:
-            text_block(img, ep["hook"], 592, 72, (236, 214, 130), stroke=11, width=900)
+        for h0, h1, htext in ep["hooks"]:
+            if h0 <= t < h1:
+                pop = 1 + 0.10 * math.sin(min((t - h0) / 0.25, 1) * math.pi)
+                text_block(img, htext, 592, int(74 * pop), (252, 224, 110), stroke=11, width=900)
         # flash en cada corte
         for c in ep["cuts"]:
             if 0 <= t - c < 2.5 / FPS:
