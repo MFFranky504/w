@@ -7,7 +7,7 @@ BG=(52,110,112)
 chars=[('STEPHEN KING','king',['plaid','teacher']),('TABITHA','tab',['cardigan','uniform']),('TÚ (espectador)','you',['hoodie'])]
 RH=520
 sheet=Image.new('RGB',(1700,60+RH*3),BG); d=ImageDraw.Draw(sheet)
-for x,t in ((40,'1 · RPG  (planos MUY lejanos)'),(520,'2 · BATALLA  (planos medios / lejanos)'),(1180,'3 · PORTRAIT  (solo primeros planos)')):
+for x,t in ((40,'1 · RPG  (planos MUY lejanos)'),(640,'2 · BATALLA  (planos medios / lejanos)'),(1330,'3 · PORTRAIT  (primer plano)')):
     d.text((x,14),t,font=F(26),fill=(255,236,150))
 for r,(name,who,outs) in enumerate(chars):
     y0=60+r*RH
@@ -15,13 +15,13 @@ for r,(name,who,outs) in enumerate(chars):
     x=40
     for o in outs:
         for st in (0,1):
-            im=S.rpg(who,o,step=st); big=im.resize((im.width*4,im.height*4),Image.NEAREST); sheet.paste(big,(x,y0+RH-60-big.height),big); x+=big.width-14
-        x+=24
-    x=520
+            im=S.rpg(who,o,step=st); big=im.resize((im.width*3,im.height*3),Image.NEAREST); sheet.paste(big,(x,y0+RH-60-big.height),big); x+=big.width-6
+        x+=14
+    x=640
     for o in outs[:2]:
         for pose in ('hold','stand'):
             if o in('teacher','uniform') and pose=='hold': continue
-            b=S.battle(who,pose,o); big=b.resize((b.width*3,b.height*3),Image.NEAREST); sheet.paste(big,(x,y0+RH-60-big.height),big); x+=big.width-30
+            b=S.battle(who,pose,o); big=b.resize((b.width*3,b.height*3),Image.NEAREST); sheet.paste(big,(x,y0+RH-60-big.height),big); x+=big.width-18
         x+=30
-    p=portrait(who,'n',outfit=outs[0]); p=p.crop((0,0,96,150)); big=p.resize((p.width*3,p.height*3),Image.NEAREST); sheet.paste(big,(1180,y0+RH-40-big.height),big)
+    p=portrait(who,'n',outfit=outs[0]); p=p.crop((0,0,96,150)); big=p.resize((p.width*3,p.height*3),Image.NEAREST); sheet.paste(big,(1380,y0+RH-40-big.height),big)
 sheet.save('../out/hoja_diseno.png')
