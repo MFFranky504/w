@@ -1,18 +1,18 @@
-# Guion — La novela que Stephen King tiró a la basura
+# Guion v2 — La novela que Stephen King tiró a la basura
 
-**L1** [directo, seco] Tiró su *primera novela* a la basura.
-**L2** [grave] Y quien la sacó... *no fue él*.
-**L3** [lento, reflexivo] Principios de los setenta. *Stephen King* vive en un remolque, en Maine.
-**L4a**  Da clases en una escuela.
-**L4b**  Su esposa, *Tabitha*, trabaja en una cafetería de donas.
-**L5** [cansado] Y el dinero... *nunca alcanza*.
-**L6** [tranquilo] Él escribe de noche, en un cuartito diminuto: el *lavadero*.
-**L7a**  Empieza una historia sobre una chica con *poderes*.
-**L7b** [tenso] Escribe tres páginas... y *no le convencen*.
-**L8** [seco] Las arruga. *Las tira.*
-**L9** [intenso, creciendo] Al día siguiente, *Tabitha* encuentra las hojas... entre la basura y la ceniza.
-**L10** [cálido] Las lee. Y le dice que ahí *hay algo*. Que *no se rinda*.
-**L11** [emocionado] King termina *Carrie*. Una editorial le da un anticipo de *dos mil quinientos dólares*.
-**L12** [asombrado] Poco después, los derechos de bolsillo se venden por *cuatrocientos mil*.
-**L13** [lento, reflexivo] A veces una idea no muere por ser mala. *Muere porque nadie la rescata.*
-**L14** [suave, directo] ¿Quién fue tu *Tabitha*? ¿Y a quién te toca *rescatar* hoy?
+**L1** [directo, seco] Tiró su *novela* a la basura.
+**L2** [grave] Y casi nos quedamos sin *Stephen King*.
+**L3a** [lento] Maine, años setenta.
+**L3b**  Profesor de escuela. *Sin dinero*.
+**L3c**  Su esposa trabajaba en una cafetería de donas.
+**L4a** [tenso] Escribe tres páginas.
+**L4b**  Le parecen *malas*.
+**L4c** [seco] Las arruga... y *las tira*.
+**L5** [intenso] Al día siguiente, *Tabitha* las encuentra en la basura.
+**L6** [susurrando, misterio] ¿Y sabes qué le dijo?
+**L7** [cálido] Que ahí *había algo*. Que *no se rindiera*.
+**L8a** [emocionado] Terminó *Carrie*.
+**L8b**  Anticipo: *dos mil quinientos dólares*.
+**L8c** [asombrado] Derechos de bolsillo: *cuatrocientos mil*.
+**L9** [lento, reflexivo] Todo, por unas hojas que *ya estaban en la basura*.
+**L10** [suave, directo] Y tú... ¿qué estás a punto de *tirar*?

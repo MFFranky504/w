@@ -83,26 +83,30 @@ ids = [l['id'] for l in LINES]
 print('modo:', MODE, 'duración total', round(TOTAL, 2), file=sys.stderr)
 
 # ---------------------------------------------------------------- escenas
-def sc_room_a(t, u): return S.room(t, 'type', 1)
+import scenes2 as S2
+def sc_room_a(t, u): return S2.room(t, 'type', 1)
 def sc_room_b(t, u):
-    if u < .3: return S.room(t, 'lift', 3)
-    if u < .55: return S.room(t, 'throw', 3, thr=(u - .3) / .25)
-    return S.room(t, 'slump', 3, thr=1.0)
+    if u < .25: return S2.room(t, 'lift', 3)
+    if u < .5: return S2.room(t, 'throw', 3, thr=(u - .25) / .25)
+    return S2.room(t, 'slump', 3, thr=1.0)
 
 SCENES = [
-    dict(n='alley', a='L1', b='L2', fn=lambda t, u: S.alley(t), cam=[(0, 80, 140, 1.0), (.4, 80, 150, 1.2), (1, 83, 172, 2.5)]),
-    dict(n='trailer', a='L3', b='L3', fn=lambda t, u: S.trailer_night(t), cam=[(0, 80, 150, 1.0), (1, 80, 172, 1.55)]),
-    dict(n='class', a='L4a', b='L4a', fn=lambda t, u: S.classroom(t), cam=[(0, 80, 130, 1.0), (1, 76, 168, 2.1)]),
-    dict(n='donut', a='L4b', b='L5', fn=lambda t, u: S.donut_shop(t), cam=[(0, 60, 130, 1.2), (1, 90, 150, 2.2)]),
-    dict(n='roomA', a='L6', b='L7a', fn=sc_room_a, cam=[(0, 80, 175, 1.25), (1, 82, 165, 2.4)]),
-    dict(n='portK', a='L7b', b='L7b', fn=lambda t, u: S.portrait_scene(t, 'king', 'sad', (0, 1)), cam=[(0, 80, 150, 1.0), (1, 80, 142, 1.14)]),
-    dict(n='roomB', a='L8', b='L8', fn=sc_room_b, cam=[(0, 86, 160, 2.2), (.5, 66, 176, 1.9), (1, 82, 160, 1.7)]),
-    dict(n='morning', a='L9', b='L9', fn=lambda t, u: S.morning(t, u), cam=[(0, 84, 165, 1.2), (1, 76, 176, 1.75)]),
-    dict(n='portT', a='L10', b='L10', fn=lambda t, u: S.portrait_scene(t, 'tab', 'smile' if u > .55 else 'n', (0, 1) if u < .35 else (0, 0), 'warm', pages_in=True, sparkle=u > .5), cam=[(0, 80, 152, 1.0), (1, 80, 142, 1.12)]),
-    dict(n='pay1', a='L11', b='L11', fn=lambda t, u: S.payoff(t, u, 'adv', '$2.500'), cam=[(0, 80, 142, 1.0), (1, 80, 140, 1.1)]),
-    dict(n='pay2', a='L12', b='L12', fn=lambda t, u: S.payoff(t, u, 'big', '$400.000'), cam=[(0, 80, 140, 1.1), (1, 80, 142, 1.0)]),
-    dict(n='dawn', a='L13', b='L13', fn=lambda t, u: S.dawn(t, u), cam=[(0, 92, 192, 1.9), (1, 80, 150, 1.0)]),
-    dict(n='outro', a='L14', b='L14', fn=lambda t, u: S.outro(t), cam=[(0, 80, 142, 1.0), (1, 80, 142, 1.0)]),
+    dict(n='alley', a='L1', b='L1', fn=lambda t, u: S.alley(t), cam=[(0, 80, 120, 1.0), (.55, 80, 150, 1.25), (1, 83, 172, 2.2)]),
+    dict(n='king', a='L2', b='L2', fn=lambda t, u: S2.portrait_scene(t, 'king', 'n', (0, 0), tag='STEPHEN KING'), cam=[(0, 80, 140, 1.25), (1, 80, 150, 1.0)]),
+    dict(n='trailer', a='L3a', b='L3a', fn=lambda t, u: S.trailer_night(t), cam=[(0, 80, 150, 1.0), (1, 80, 168, 1.5)]),
+    dict(n='class', a='L3b', b='L3b', fn=lambda t, u: S2.classroom(t), cam=[(0, 80, 140, 1.15), (1, 66, 140, 1.7)]),
+    dict(n='donut', a='L3c', b='L3c', fn=lambda t, u: S2.donut_shop(t), cam=[(0, 70, 140, 1.15), (1, 96, 134, 1.85)]),
+    dict(n='roomA', a='L4a', b='L4a', fn=sc_room_a, cam=[(0, 80, 140, 1.1), (1, 80, 132, 1.7)]),
+    dict(n='portK', a='L4b', b='L4b', fn=lambda t, u: S2.portrait_scene(t, 'king', 'sad', (0, 1)), cam=[(0, 80, 150, 1.0), (1, 80, 138, 1.22)]),
+    dict(n='roomB', a='L4c', b='L4c', fn=sc_room_b, cam=[(0, 92, 140, 1.15), (.5, 104, 150, 1.3), (1, 88, 158, 1.15)]),
+    dict(n='morning', a='L5', b='L5', fn=lambda t, u: S2.morning(t, u), cam=[(0, 84, 160, 1.1), (1, 80, 168, 1.6)]),
+    dict(n='portT1', a='L6', b='L6', fn=lambda t, u: S2.portrait_scene(t, 'tab', 'n', (0, 2), 'purple', pages_in=True), cam=[(0, 80, 160, 1.0), (1, 80, 150, 1.3)]),
+    dict(n='portT2', a='L7', b='L7', fn=lambda t, u: S2.portrait_scene(t, 'tab', 'smile', (0, 0), 'warm', pages_in=True, sparkle=True), cam=[(0, 80, 150, 1.25), (1, 80, 142, 1.0)]),
+    dict(n='book', a='L8a', b='L8a', fn=lambda t, u: S2.payoff(t, u, 'book'), cam=[(0, 80, 142, 1.3), (1, 80, 142, 1.0)]),
+    dict(n='pay1', a='L8b', b='L8b', fn=lambda t, u: S2.payoff(t, u, 'adv'), cam=[(0, 80, 142, 1.0), (1, 80, 140, 1.12)]),
+    dict(n='pay2', a='L8c', b='L8c', fn=lambda t, u: S2.payoff(t, u, 'big'), cam=[(0, 80, 140, 1.12), (1, 80, 142, 1.0)]),
+    dict(n='dawn', a='L9', b='L9', fn=lambda t, u: S2.dawn(t, u), cam=[(0, 92, 192, 1.8), (1, 80, 150, 1.0)]),
+    dict(n='final', a='L10', b='L10', fn=lambda t, u: S2.final_you(t, u), cam=[(0, 80, 146, 1.0), (1, 82, 148, 1.2)]),
 ]
 for i, s in enumerate(SCENES):
     s['t0'] = 0.0 if i == 0 else (LEND[SCENES[i - 1]['b']] + LSTART[s['a']]) / 2 if False else (LSTART[s['a']] if i else 0.0)
@@ -114,7 +118,8 @@ for i in range(1, len(SCENES)):
     SCENES[i]['t0'] = max(prev_end + 0.05, LSTART[SCENES[i]['a']] - 0.15)
     SCENES[i - 1]['t1'] = SCENES[i]['t0']
 
-TR = 0.34  # dissolve
+TR = 0.28  # dissolve
+DROP_T = next(x['t0'] for x in SCENES if x['n'] == 'portT2') + .02
 
 
 def cam_at(kf, u):
@@ -132,7 +137,13 @@ def render_scene(i, t):
     tl = max(0, t - s['t0'])
     img = s['fn'](tl, u)
     cx, cy, z = cam_at(s['cam'], u)
-    big = img.resize((WW * 8, WH * 8), Image.NEAREST)
+    for l in LINES:
+        dt = t - LSTART[l['id']]
+        if 0 <= dt < .35 and s['t0'] - .2 <= LSTART[l['id']] <= s['t1']: z *= 1 + .045 * math.exp(-dt / .09)
+    sh_ = 0
+    if 0 <= t - DROP_T < .4: sh_ = math.sin((t - DROP_T) * 90) * 9 * (1 - (t - DROP_T) / .4)
+    if 1.05 <= t < 1.4: sh_ = math.sin((t - 1.05) * 80) * 7 * (1 - (t - 1.05) / .35)
+    big = img.resize((WW * 8, WH * 8), Image.NEAREST); cx += sh_ / 8; cy += sh_ / 11
     cw, ch = VW / z, VH / z
     x0 = min(max(cx * 8 - cw / 2, 0), WW * 8 - cw); y0 = min(max(cy * 8 - ch / 2, 0), WH * 8 - ch)
     return big.resize((VW, VH), Image.BILINEAR, box=(x0, y0, x0 + cw, y0 + ch))
@@ -206,7 +217,7 @@ def draw_sub(img, t):
         layer = layer.resize((int(VW * sc), int(220 * sc)), Image.BILINEAR)
         ox, oy = (VW - layer.width) // 2, (220 - layer.height) // 2
     else: ox = oy = 0
-    ysub = 560 if lid == 'L14' else 1190
+    ysub = 1230
     img.alpha_composite(layer, (ox, ysub + oy))
 
 
@@ -236,16 +247,9 @@ def draw_outro(img, t):
 def overlay(base, t):
     img = base.convert('RGBA')
     img.alpha_composite(BRAND)
-    draw_caps(img, t)
-    draw_outro(img, t) if t >= SCENES[-1]['t0'] else None
     draw_sub(img, t)
     # fundido final
     out = img.convert('RGB')
-    if t > TOTAL - .5:
-        k = max(0, (TOTAL - t) / .5)
-        out = Image.eval(out, lambda v: int(v * k))
-    if t < .15:
-        k = t / .15; out = Image.eval(out, lambda v: int(v * k))
     return out
 
 
@@ -299,8 +303,7 @@ def synth_audio():
     s = {x['n']: x for x in SCENES}
     bed(0, s['trailer']['t0'] + .3, .075, 3500)        # lluvia
     bed(s['trailer']['t0'] - .2, s['class']['t0'] + .3, .09, 600, .2)  # viento
-    bed(s['class']['t0'], s['donut']['t0'], .02, 400)
-    bed(s['donut']['t0'] - .1, s['roomA']['t0'] + .2, .03, 900, .5)
+    bed(s['class']['t0'] - .1, s['roomA']['t0'] + .2, .035, 700, .4)
     bed(s['roomA']['t0'] - .1, s['morning']['t0'], .035, 300, .1)
     # latido de luz fluorescente
     # papel que cae + golpe
@@ -311,7 +314,7 @@ def synth_audio():
         d = .45; env = np.sin(np.pi * np.clip(tt(d) / d, 0, 1)) ** 2
         add(noise(d, 1800) * env * .4, sc['t0'] - .22, .5)
     # máquina de escribir
-    r0, r1 = s['roomA']['t0'], s['roomA']['t1']
+    r0, r1 = s['roomA']['t0'] - .3, s['roomA']['t1']
     t = r0 + .3
     while t < r1 - .2:
         add((noise(.03, 5000) * np.exp(-tt(.03) * 140) * .9), t, .5, rng.uniform(-.2, .2))
@@ -326,8 +329,8 @@ def synth_audio():
     add(noise(.3, 1500) * np.sin(np.pi * np.clip(tt(.3) / .3, 0, 1)) * .3, rb['t0'] + d * .3 + .1, .4)
     add(np.sin(2 * np.pi * 110 * tt(.3)) * np.exp(-tt(.3) * 18) * .5, rb['t0'] + d * .55 + .05, .6)
     # riser previo al drop y golpe
-    G = s['morning']['t0'] + .02
-    rd = 1.3
+    G = s['portT2']['t0'] + .02
+    rd = min(1.3, s['portT1']['t1'] - s['portT1']['t0'] - .35)
     rise = noise(rd, 3000) * (tt(rd) / rd) ** 2.2
     add(rise * .55, G - rd - .25, .6)
     add(np.sin(2 * np.pi * (80 + 300 * (tt(rd) / rd) ** 3) * tt(rd)) * (tt(rd) / rd) * .25, G - rd - .25, .6)
@@ -339,6 +342,7 @@ def synth_audio():
     def chime(t0, notes, g=.35):
         for k, f in enumerate(notes):
             add((np.sin(2 * np.pi * f * tt(1.0)) + .4 * np.sin(2 * np.pi * 2 * f * tt(1.0))) * np.exp(-tt(1.0) * 4.5) * .5, t0 + k * .09, g)
+    chime(s['book']['t0'] + .05, [784, 988, 1175, 1568])
     chime(s['pay1']['t0'] + .1, [1046, 1318, 1568, 2093])
     chime(s['pay2']['t0'] + .1, [880, 1108, 1318, 1760, 2217], .38)
     # pájaros al amanecer
@@ -347,7 +351,8 @@ def synth_audio():
         f0 = rng.uniform(2800, 4200); d = .12
         add(np.sin(2 * np.pi * (f0 + 900 * tt(d) / d) * tt(d)) * np.sin(np.pi * tt(d) / d) * .12, t0, .35, rng.uniform(-.6, .6))
     # cierre
-    chime(s['outro']['t0'] + .05, [659, 880, 1318], .3)
+    add(np.sin(2 * np.pi * 70 * tt(.6)) * np.exp(-tt(.6) * 9) * .8, TOTAL - .22, .9)
+    add(noise(.25, 2500) * np.exp(-tt(.25) * 14) * .4, TOTAL - .24, .6)
     sfx = L.copy()
     # ---- música
     song = subprocess.run(['ffmpeg', '-v', 'error', '-i', f'{ROOT}/audio/cancion.m4a', '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
@@ -358,7 +363,7 @@ def synth_audio():
     dj = np.array([e[i:i + 5].mean() - e[max(0, i - 5):i].mean() for i in range(5, len(e) - 5)])
     drop = 31.0 + (int(np.argmax(dj)) + 5) * .01
     start1 = 2.2
-    d1 = min(G - 0.95, 18.0)
+    d1 = min(G - 0.95, 14.0)
     m = np.zeros((N, 2), np.float32)
     p1 = song[int(start1 * SR):int((start1 + d1) * SR)].copy()
     fi_ = np.minimum(1, np.arange(len(p1)) / (SR * .8)); fo_ = np.minimum(1, (len(p1) - np.arange(len(p1))) / (SR * (1.0 if d1 < G - 0.95 else .08)))
@@ -366,7 +371,7 @@ def synth_audio():
     m[:len(p1)] += p1[:N]
     ps = int((drop - .03) * SR)
     p2 = song[ps:ps + (N - int((G - .03) * SR))].copy()
-    fo2 = np.minimum(1, (len(p2) - np.arange(len(p2))) / (SR * 2.5))
+    fo2 = np.minimum(1, (len(p2) - np.arange(len(p2))) / (SR * .5))
     p2 *= fo2[:, None] * .78
     o = int((G - .03) * SR); n2 = min(len(p2), N - o)
     m[o:o + n2] += p2[:n2]
@@ -394,7 +399,7 @@ def synth_audio():
 if __name__ == '__main__':
     dur = TOTAL
     args = sys.argv[1:]
-    out_name = 'TU_CONFIA_Stephen_King_Carrie' + ('' if narr else '_PREVIEW_sin_voz') + '.mp4'
+    out_name = 'TU_CONFIA_Stephen_King_Carrie_v2' + ('' if narr else '_PREVIEW_sin_voz') + '.mp4'
     if args and args[0] == '--still':
         t = float(args[1]); fr = frame(int(t * FPS)); fr.save(f'{ROOT}/out/still_{t:.1f}.png'); sys.exit()
     if args and args[0] == '--timing':

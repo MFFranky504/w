@@ -3,98 +3,98 @@
  "lines": [
   {
    "id": "L1",
-   "t": "Tiró su *primera novela* a la basura.",
-   "p": 0.35,
+   "t": "Tiró su *novela* a la basura.",
+   "p": 0.3,
    "tag": "[directo, seco]"
   },
   {
    "id": "L2",
-   "t": "Y quien la sacó... *no fue él*.",
-   "p": 0.55,
+   "t": "Y casi nos quedamos sin *Stephen King*.",
+   "p": 0.45,
    "tag": "[grave]"
   },
   {
-   "id": "L3",
-   "t": "Principios de los setenta. *Stephen King* vive en un remolque, en Maine.",
-   "p": 0.25,
-   "tag": "[lento, reflexivo]"
+   "id": "L3a",
+   "t": "Maine, años setenta.",
+   "p": 0.12,
+   "tag": "[lento]"
+  },
+  {
+   "id": "L3b",
+   "t": "Profesor de escuela. *Sin dinero*.",
+   "p": 0.15,
+   "tag": ""
+  },
+  {
+   "id": "L3c",
+   "t": "Su esposa trabajaba en una cafetería de donas.",
+   "p": 0.3,
+   "tag": ""
   },
   {
    "id": "L4a",
-   "t": "Da clases en una escuela.",
-   "p": 0.12,
-   "tag": ""
+   "t": "Escribe tres páginas.",
+   "p": 0.1,
+   "tag": "[tenso]"
   },
   {
    "id": "L4b",
-   "t": "Su esposa, *Tabitha*, trabaja en una cafetería de donas.",
+   "t": "Le parecen *malas*.",
    "p": 0.25,
    "tag": ""
   },
   {
-   "id": "L5",
-   "t": "Y el dinero... *nunca alcanza*.",
-   "p": 0.4,
-   "tag": "[cansado]"
-  },
-  {
-   "id": "L6",
-   "t": "Él escribe de noche, en un cuartito diminuto: el *lavadero*.",
-   "p": 0.2,
-   "tag": "[tranquilo]"
-  },
-  {
-   "id": "L7a",
-   "t": "Empieza una historia sobre una chica con *poderes*.",
-   "p": 0.3,
-   "tag": ""
-  },
-  {
-   "id": "L7b",
-   "t": "Escribe tres páginas... y *no le convencen*.",
-   "p": 0.3,
-   "tag": "[tenso]"
-  },
-  {
-   "id": "L8",
-   "t": "Las arruga. *Las tira.*",
-   "p": 0.75,
+   "id": "L4c",
+   "t": "Las arruga... y *las tira*.",
+   "p": 0.7,
    "tag": "[seco]"
   },
   {
-   "id": "L9",
-   "t": "Al día siguiente, *Tabitha* encuentra las hojas... entre la basura y la ceniza.",
+   "id": "L5",
+   "t": "Al día siguiente, *Tabitha* las encuentra en la basura.",
    "p": 0.3,
-   "tag": "[intenso, creciendo]"
+   "tag": "[intenso]"
   },
   {
-   "id": "L10",
-   "t": "Las lee. Y le dice que ahí *hay algo*. Que *no se rinda*.",
-   "p": 0.45,
+   "id": "L6",
+   "t": "¿Y sabes qué le dijo?",
+   "p": 0.5,
+   "tag": "[susurrando, misterio]"
+  },
+  {
+   "id": "L7",
+   "t": "Que ahí *había algo*. Que *no se rindiera*.",
+   "p": 0.35,
    "tag": "[cálido]"
   },
   {
-   "id": "L11",
-   "t": "King termina *Carrie*. Una editorial le da un anticipo de *dos mil quinientos dólares*.",
-   "p": 0.3,
+   "id": "L8a",
+   "t": "Terminó *Carrie*.",
+   "p": 0.12,
    "tag": "[emocionado]"
   },
   {
-   "id": "L12",
-   "t": "Poco después, los derechos de bolsillo se venden por *cuatrocientos mil*.",
-   "p": 0.5,
+   "id": "L8b",
+   "t": "Anticipo: *dos mil quinientos dólares*.",
+   "p": 0.2,
+   "tag": ""
+  },
+  {
+   "id": "L8c",
+   "t": "Derechos de bolsillo: *cuatrocientos mil*.",
+   "p": 0.4,
    "tag": "[asombrado]"
   },
   {
-   "id": "L13",
-   "t": "A veces una idea no muere por ser mala. *Muere porque nadie la rescata.*",
-   "p": 0.6,
+   "id": "L9",
+   "t": "Todo, por unas hojas que *ya estaban en la basura*.",
+   "p": 0.5,
    "tag": "[lento, reflexivo]"
   },
   {
-   "id": "L14",
-   "t": "¿Quién fue tu *Tabitha*? ¿Y a quién te toca *rescatar* hoy?",
-   "p": 0.3,
+   "id": "L10",
+   "t": "Y tú... ¿qué estás a punto de *tirar*?",
+   "p": 0.1,
    "tag": "[suave, directo]"
   }
  ]

@@ -1,44 +1,43 @@
 [directo, seco]
-Tiró su primera novela a la basura.
+Tiró su novela a la basura.
 
 [grave]
-Y quien la sacó... no fue él.
+Y casi nos quedamos sin Stephen King.
 
-[lento, reflexivo]
-Principios de los setenta. Stephen King vive en un remolque, en Maine.
+[lento]
+Maine, años setenta.
 
-Da clases en una escuela.
+Profesor de escuela. Sin dinero.
 
-Su esposa, Tabitha, trabaja en una cafetería de donas.
-
-[cansado]
-Y el dinero... nunca alcanza.
-
-[tranquilo]
-Él escribe de noche, en un cuartito diminuto: el lavadero.
-
-Empieza una historia sobre una chica con poderes.
+Su esposa trabajaba en una cafetería de donas.
 
 [tenso]
-Escribe tres páginas... y no le convencen.
+Escribe tres páginas.
+
+Le parecen malas.
 
 [seco]
-Las arruga. Las tira.
+Las arruga... y las tira.
 
-[intenso, creciendo]
-Al día siguiente, Tabitha encuentra las hojas... entre la basura y la ceniza.
+[intenso]
+Al día siguiente, Tabitha las encuentra en la basura.
+
+[susurrando, misterio]
+¿Y sabes qué le dijo?
 
 [cálido]
-Las lee. Y le dice que ahí hay algo. Que no se rinda.
+Que ahí había algo. Que no se rindiera.
 
 [emocionado]
-King termina Carrie. Una editorial le da un anticipo de dos mil quinientos dólares.
+Terminó Carrie.
+
+Anticipo: dos mil quinientos dólares.
 
 [asombrado]
-Poco después, los derechos de bolsillo se venden por cuatrocientos mil.
+Derechos de bolsillo: cuatrocientos mil.
 
 [lento, reflexivo]
-A veces una idea no muere por ser mala. Muere porque nadie la rescata.
+Todo, por unas hojas que ya estaban en la basura.
 
 [suave, directo]
-¿Quién fue tu Tabitha? ¿Y a quién te toca rescatar hoy?
+Y tú... ¿qué estás a punto de tirar?
