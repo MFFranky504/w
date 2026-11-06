@@ -1,0 +1,71 @@
+{
+ "titulo": "Messi y el contrato en una servilleta",
+ "lines": [
+  {
+   "id": "L1",
+   "t": "Su contrato con el Barcelona fue... una *servilleta*.",
+   "p": 0.35,
+   "tag": "[directo, seco]"
+  },
+  {
+   "id": "L2",
+   "t": "Porque decían que era demasiado *pequeño*.",
+   "p": 0.45,
+   "tag": "[grave]"
+  },
+  {
+   "id": "L3a",
+   "t": "Rosario, Argentina. Leo tiene diez años y *juega como nadie*.",
+   "p": 0.2,
+   "tag": "[lento, cálido]"
+  },
+  {
+   "id": "L3b",
+   "t": "Pero su cuerpo no crece... y a su familia le cuesta pagar el *tratamiento*.",
+   "p": 0.35,
+   "tag": "[tenso]"
+  },
+  {
+   "id": "L4",
+   "t": "A los trece, viaja a Barcelona para una *prueba*.",
+   "p": 0.45,
+   "tag": "[esperanzado]"
+  },
+  {
+   "id": "L6",
+   "t": "Y el club duda... hasta que Carles Rexach decide *actuar*.",
+   "p": 0.5,
+   "tag": "[firme]"
+  },
+  {
+   "id": "L7",
+   "t": "Diciembre del 2000. La familia pide algo *por escrito*.",
+   "p": 0.3,
+   "tag": "[intenso, creciendo]"
+  },
+  {
+   "id": "L8",
+   "t": "Rexach no tiene papel. Toma una *servilleta*... y escribe que lo *fichará*.",
+   "p": 0.55,
+   "tag": "[seco, pausado]"
+  },
+  {
+   "id": "L9",
+   "t": "El Barcelona pagó su tratamiento. Hoy, Messi es *campeón del mundo*.",
+   "p": 0.5,
+   "tag": "[emocionado]"
+  },
+  {
+   "id": "L10",
+   "t": "Todo empezó cuando alguien *creyó en él*... antes de que lo demostrara.",
+   "p": 0.5,
+   "tag": "[lento, reflexivo]"
+  },
+  {
+   "id": "L11",
+   "t": "Y tú... ¿a quién le *firmarías* en una servilleta?",
+   "p": 0.1,
+   "tag": "[suave, directo]"
+  }
+ ]
+}

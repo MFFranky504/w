@@ -18,3 +18,11 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 ## Pendiente / límites
 - Narración real (arriba). Duración final dependerá de la voz (est. 55–62 s).
 - Personajes dibujados proceduralmente en pixel-art (estilo BW/Pokémon); la mascota del canal es tu sprite original.
+
+---
+## Historia 2 — Messi y el contrato en una servilleta (vigente)
+- Preview: `out/TU_CONFIA_Messi_Servilleta_PREVIEW_sin_voz.mp4` (1080×1920, ~47 s, sin narración).
+- Guion: `guion_messi.md` · ElevenLabs: `elevenlabs_messi_v3.txt` (v3) / `elevenlabs_messi_v2.txt` (Multilingual v2).
+- Voz final: guarda el audio como `audio/narracion_messi.mp3` y ejecuta `cd src && python3 -I build_messi.py`.
+- Sistema de personajes (reutilizable): `src/cast.py` (reparto) + `sprites.py` (chibi RPG) + `sprites_b.py` (batalla) + `chars_anime.py` (portrait). Jerarquía: chibi = planos lejanos · batalla = medios · portrait = solo primeros planos.
+- Hechos usados: diagnóstico de déficit de hormona de crecimiento en la infancia; prueba en Barcelona a los 13; el 14-dic-2000 Rexach escribió el compromiso en una servilleta en el club de tenis Pompeia porque la familia pidió algo por escrito y no tenía otro papel; el Barcelona asumió el tratamiento; campeón del mundo 2022. No se usan cifras discutidas ni citas literales.

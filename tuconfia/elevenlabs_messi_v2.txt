@@ -1,0 +1,11 @@
+Su contrato con el Barcelona fue... una servilleta. <break time="0.4s" />
+Porque decían que era demasiado pequeño. <break time="0.6s" />
+Rosario, Argentina. Leo tiene diez años y juega como nadie. <break time="0.3s" />
+Pero su cuerpo no crece... y a su familia le cuesta pagar el tratamiento. <break time="0.4s" />
+A los trece, viaja a Barcelona para una prueba. <break time="0.6s" />
+Y el club duda... hasta que Carles Rexach decide actuar. <break time="0.6s" />
+Diciembre del 2000. La familia pide algo por escrito. <break time="0.4s" />
+Rexach no tiene papel. Toma una servilleta... y escribe que lo fichará. <break time="0.7s" />
+El Barcelona pagó su tratamiento. Hoy, Messi es campeón del mundo. <break time="0.6s" />
+Todo empezó cuando alguien creyó en él... antes de que lo demostrara. <break time="0.6s" />
+Y tú... ¿a quién le firmarías en una servilleta? <break time="0.2s" />

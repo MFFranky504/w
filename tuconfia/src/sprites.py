@@ -255,26 +255,34 @@ def overworld(who='king', outfit=None, step=0, W=30, H=40):
 def rpg(who='king', outfit=None, step=0, W=46, H=70):
     P = Paint(W, H)
     cx = W // 2
-    sk = SKIN[who]
-    outfit = outfit or {'king': 'plaid', 'tab': 'cardigan', 'you': 'hoodie'}[who]
+    from cast import resolve
+    CS = resolve(who); style = CS['style']
+    sk = CS['skin']
+    outfit = outfit or CS['outfit']
     skd = shade(sk, .84); skdd = shade(sk, .68); sk_l = shade(sk, 1.06)
     NAVY = (30, 34, 78)
-    HR = {'king': dict(b=(52, 50, 78), d=(32, 30, 54), dd=(22, 20, 38), l=(110, 120, 176)),
-          'tab': dict(b=(150, 88, 54), d=(112, 62, 40), dd=(78, 42, 30), l=(214, 150, 92)),
-          'you': dict(b=(72, 86, 160), d=(48, 58, 118), dd=(32, 38, 82), l=(130, 160, 232))}[who]
+    HR = CS['hair']
     cl = {'plaid': dict(b=(214, 74, 66), d=(158, 44, 52), l=(246, 124, 108), pants=(70, 106, 176), boots=(110, 70, 52)),
           'teacher': dict(b=(236, 232, 218), d=(190, 186, 176), l=(255, 255, 250), pants=(128, 104, 80), boots=(84, 58, 46)),
           'cardigan': dict(b=(236, 182, 76), d=(188, 134, 48), l=(255, 220, 124), pants=(84, 112, 160), boots=(116, 70, 54)),
           'uniform': dict(b=(248, 126, 166), d=(208, 86, 128), l=(255, 176, 204), pants=(252, 252, 254), boots=(206, 206, 216)),
+          'tee_blue': dict(b=(70, 130, 220), d=(40, 86, 170), l=(130, 180, 250), pants=(60, 70, 100), boots=(60, 50, 56)),
+          'tee_green': dict(b=(80, 190, 110), d=(40, 140, 76), l=(150, 230, 170), pants=(70, 76, 110), boots=(100, 70, 50)),
+          'tee_yellow': dict(b=(250, 210, 70), d=(206, 160, 30), l=(255, 240, 150), pants=(76, 86, 130), boots=(70, 56, 56)),
+          'tee_red': dict(b=(230, 80, 70), d=(170, 44, 48), l=(255, 140, 120), pants=(60, 74, 110), boots=(90, 66, 52)),
+          'blazer': dict(b=(52, 70, 120), d=(34, 46, 86), l=(96, 120, 180), pants=(70, 70, 82), boots=(60, 44, 40)),
+          'polo': dict(b=(210, 150, 80), d=(160, 104, 50), l=(250, 200, 130), pants=(80, 84, 100), boots=(70, 52, 44)),
+          'coat': dict(b=(246, 248, 252), d=(196, 206, 224), l=(255, 255, 255), pants=(70, 90, 130), boots=(60, 50, 50)),
+          'argentina': dict(b=(150, 206, 246), d=(100, 160, 214), l=(230, 246, 255), pants=(30, 30, 40), boots=(40, 40, 52)),
           'hoodie': dict(b=(86, 102, 212), d=(56, 68, 156), l=(134, 154, 244), pants=(52, 58, 106), boots=(248, 248, 252))}[outfit]
     cb, cd, clt = cl['b'], cl['d'], cl['l']
     pants, boots = cl['pants'], cl['boots']
     mint = (126, 232, 196)
     lo = step
     # ---------- pelo trasero (largo en Tabitha, mechón lateral en los demás)
-    if who == 'tab':
+    if style == 'tab':
         P.add(lambda d: d.polygon([(2, 14), (3, 6), (12, 1), (32, 1), (41, 6), (42, 14), (43, 40), (38, 46), (33, 44), (33, 30), (11, 30), (11, 44), (6, 46), (1, 40)], fill=255), HR['d'], edge_k=.4)
-    elif who == 'you':
+    elif style == 'you':
         P.add(lambda d: d.polygon([(3, 18), (4, 8), (12, 3), (32, 3), (40, 8), (41, 18), (40, 30), (34, 30), (11, 30), (5, 30)], fill=255), HR['dd'], edge_k=.4)
     # ---------- piernas
     P.add(lambda d: d.rectangle([cx - 10, 50, cx - 1, 61 - lo], fill=255), pants, edge_k=.45)
@@ -318,13 +326,25 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.add(lambda d: d.polygon([(cx - 9, 44), (cx + 9, 44), (cx + 11, 51), (cx - 11, 51)], fill=255), clt, edge_k=.55)
         P.add(lambda d: d.rounded_rectangle([cx - 11, 29, cx + 11, 35], radius=3, fill=255), cd, edge_k=.5)
         P.rect(cx - 12, 51, cx + 12, 52, cd)
+    if outfit == 'argentina':
+        for x in range(cx - 11, cx + 12, 6): P.rect(x, 36, x + 2, 50, (252, 252, 255))
+        P.rect(cx - 12, 51, cx + 12, 52, (30, 30, 40))
+    elif outfit == 'blazer':
+        P.add(lambda d: d.polygon([(cx - 6, 34), (cx + 6, 34), (cx + 3, 51), (cx - 3, 51)], fill=255), (250, 250, 250), edge_k=.55)
+        P.line([(cx - 9, 34), (cx - 3, 46)], cd); P.line([(cx + 9, 34), (cx + 3, 46)], cd)
+    elif outfit == 'coat':
+        P.rect(cx - 1, 36, cx, 51, cd); P.rect(cx + 5, 40, cx + 9, 43, (190, 214, 240))
+    elif outfit == 'polo':
+        P.add(lambda d: d.polygon([(cx - 5, 34), (cx + 5, 34), (cx, 41)], fill=255), (250, 240, 220), sh=False, edge_k=.55)
+    elif outfit.startswith('tee'):
+        P.rect(cx - 12, 44, cx + 12, 44, cd)
     # ---------- bufanda / cuello (grande como en la referencia)
-    if who == 'tab':
+    if style == 'tab':
         P.add(lambda d: d.rounded_rectangle([cx - 14, 31, cx + 14, 39], radius=3, fill=255), (250, 240, 222), edge_k=.5)
         P.add(lambda d: d.rectangle([cx - 14, 37, cx - 7, 48], fill=255), (250, 240, 222), edge_k=.5)
         for y in (33, 36): P.rect(cx - 15, y, cx + 15, y, (226, 206, 176))
         for y in (40, 43, 46): P.rect(cx - 13, y, cx - 8, y, (226, 206, 176))
-    elif who == 'you':
+    elif style == 'you':
         P.add(lambda d: d.arc([cx - 13, 28, cx + 13, 48], 20, 160, fill=255, width=2), (46, 46, 60), sh=False, hi=False, edge_k=.4)
         P.add(lambda d: d.ellipse([cx - 16, 33, cx - 9, 43], fill=255), (60, 60, 80)); P.add(lambda d: d.ellipse([cx + 9, 33, cx + 16, 43], fill=255), (60, 60, 80))
         P.rect(cx - 14, 36, cx - 11, 40, (255, 170, 64)); P.rect(cx + 11, 36, cx + 14, 40, (255, 170, 64))
@@ -339,8 +359,8 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     # ojos grandes
     for ex in (cx - 10, cx + 7):
         P.rect(ex, 19, ex + 3, 19, (30, 22, 40))
-        P.rect(ex, 20, ex + 2, 24, NAVY if who != 'tab' else (74, 42, 30)); P.rect(ex + 3, 20, ex + 3, 23, (255, 255, 255))
-        P.rect(ex, 20, ex, 20, (255, 255, 255)); P.rect(ex + 1, 20, ex + 1, 20, (255, 255, 255)); P.rect(ex + 1, 21, ex + 1, 22, (40, 54, 120) if who != 'tab' else (120, 74, 46))
+        P.rect(ex, 20, ex + 2, 24, CS['iris']); P.rect(ex + 3, 20, ex + 3, 23, (255, 255, 255))
+        P.rect(ex, 20, ex, 20, (255, 255, 255)); P.rect(ex + 1, 20, ex + 1, 20, (255, 255, 255)); P.rect(ex + 1, 21, ex + 1, 22, tuple(int(v*1.15) for v in CS['iris']))
         P.rect(ex, 25, ex + 2, 25, skd)
     # cejas gruesas
     br = HR['dd']
@@ -348,20 +368,23 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     P.rect(cx - 6, 17, cx - 5, 17, br); P.rect(cx + 5, 17, cx + 6, 17, br)
     # nariz, boca, rubor
     P.px(cx + 1, 26, skdd); P.rect(cx - 1, 28, cx + 2, 28, (176, 72, 84)); P.px(cx + 2, 27, (176, 72, 84))
-    if who != 'king':
+    if style != 'king':
         for bx in (cx - 13, cx + 10): P.rect(bx, 26, bx + 2, 26, (246, 150, 150)); P.rect(bx + 1, 27, bx + 2, 27, (246, 150, 150))
-    if who == 'king':   # gafas redondas
+    if CS['glasses']:   # gafas redondas
         for ex in (cx - 12, cx + 5):
             P.rect(ex, 18, ex + 7, 18, (34, 30, 48)); P.rect(ex, 26, ex + 7, 26, (34, 30, 48))
             P.rect(ex, 18, ex, 26, (34, 30, 48)); P.rect(ex + 7, 18, ex + 7, 26, (34, 30, 48))
             P.rect(ex + 1, 25, ex + 2, 25, (210, 232, 255))
         P.rect(cx - 4, 21, cx + 3, 21, (34, 30, 48))
     # ---------- pelo frontal (4 tonos)
-    if who == 'king':
+    if style == 'short':
+        P.add(lambda d: d.polygon([(cx - 19, 24), (cx - 20, 11), (cx - 14, 4), (cx - 6, 1), (cx + 4, 0), (cx + 13, 3), (cx + 19, 9), (cx + 20, 24), (cx + 17, 15), (cx + 10, 11), (cx + 2, 10), (cx - 6, 12), (cx - 13, 15), (cx - 17, 20)], fill=255), HR['b'], edge_k=.45)
+        P.line([(cx - 4, 3), (cx - 6, 10)], HR['d'])
+    elif style == 'king':
         P.add(lambda d: d.polygon([(cx - 19, 22), (cx - 20, 11), (cx - 14, 4), (cx - 6, 1), (cx + 4, 0), (cx + 13, 3), (cx + 19, 9), (cx + 20, 22), (cx + 16, 15), (cx + 13, 19), (cx + 9, 13), (cx + 4, 19), (cx, 13), (cx - 5, 18), (cx - 9, 13), (cx - 14, 19), (cx - 17, 14)], fill=255), HR['b'], edge_k=.45)
         P.add(lambda d: d.polygon([(cx - 8, 3), (cx - 3, -3 + 3), (cx + 1, 3)], fill=255), HR['b'], edge=False)
         P.add(lambda d: d.polygon([(cx + 5, 2), (cx + 12, -2 + 3), (cx + 13, 8)], fill=255), HR['b'], edge=False)
-    elif who == 'tab':
+    elif style == 'tab':
         P.add(lambda d: d.polygon([(cx - 20, 34), (cx - 21, 12), (cx - 14, 4), (cx - 2, 1), (cx + 12, 3), (cx + 20, 10), (cx + 21, 34), (cx + 17, 22), (cx + 15, 17), (cx + 10, 16), (cx + 5, 12), (cx, 17), (cx - 6, 12), (cx - 11, 17), (cx - 16, 16), (cx - 17, 24)], fill=255), HR['b'], edge_k=.45)
     else:
         P.add(lambda d: d.polygon([(cx - 19, 24), (cx - 20, 11), (cx - 12, 3), (cx - 2, 1), (cx + 10, 2), (cx + 18, 8), (cx + 20, 22), (cx + 17, 15), (cx + 13, 20), (cx + 10, 13), (cx + 5, 19), (cx + 1, 12), (cx - 5, 19), (cx - 9, 13), (cx - 14, 20), (cx - 17, 16)], fill=255), HR['b'], edge_k=.45)
@@ -372,12 +395,15 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     for (x0, y0, x1, y1) in [(cx - 14, 6, cx - 8, 4), (cx - 6, 4, cx, 3), (cx - 16, 12, cx - 14, 9)]:
         P.line([(x0, y0), (x1, y1)], HR['l'])
     P.line([(cx - 12, 14), (cx - 9, 13)], HR['dd']); P.line([(cx + 2, 14), (cx + 5, 13)], HR['dd'])
-    if who == 'tab' and outfit == 'uniform':
+    if style == 'tab' and outfit == 'uniform':
         P.add(lambda d: d.polygon([(cx - 19, 14), (cx - 15, 3), (cx, 0), (cx + 15, 3), (cx + 19, 14)], fill=255), cb, edge_k=.45)
         P.add(lambda d: d.polygon([(cx - 21, 14), (cx + 24, 14), (cx + 26, 18), (cx - 19, 18)], fill=255), cd, edge_k=.45)
         P.rect(cx - 8, 5, cx - 2, 5, clt)
+    if CS['beard']:
+        P.add(lambda d: d.polygon([(cx - 14, 24), (cx - 13, 31), (cx - 6, 34), (cx + 6, 34), (cx + 13, 31), (cx + 14, 24), (cx + 9, 27), (cx + 4, 29), (cx - 4, 29), (cx - 9, 27)], fill=255), HR['d'], edge_k=.5, sh=False)
+        P.rect(cx - 3, 28, cx + 3, 28, (176, 72, 84))
     if who == 'king':   # lápiz tras la oreja
         P.rect(cx + 18, 20, cx + 19, 26, (255, 200, 70)); P.rect(cx + 18, 27, cx + 19, 27, (240, 150, 140)); P.px(cx + 18, 19, (60, 50, 60))
-    if who == 'tab':    # horquilla
+    if style == 'tab':    # horquilla
         P.rect(cx - 17, 14, cx - 14, 15, (255, 240, 170)); P.px(cx - 15, 14, (255, 255, 255))
     return P.final()
