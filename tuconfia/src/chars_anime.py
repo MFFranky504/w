@@ -118,7 +118,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     # ------------------------------------------------ cuerpo
     body, d = L()
     body_full = Image.new('RGBA', (W, H + 8), (0, 0, 0, 0)); d = ImageDraw.Draw(body_full)
-    tops = {'tux': ((32, 32, 44), (18, 18, 28), (80, 80, 100)), 'grey': ((156, 160, 172), (112, 116, 132), (206, 210, 220)), 'argentina': ((150, 206, 246), (100, 160, 214), (230, 246, 255)), 'blazer': ((52, 70, 120), (34, 46, 86), (96, 120, 180)), 'polo': ((210, 150, 80), (160, 104, 50), (250, 200, 130)),
+    tops = {'suit85': ((44, 46, 62), (26, 28, 42), (96, 100, 128)), 'turtle': ((30, 30, 38), (16, 16, 22), (86, 86, 102)), 'tux': ((32, 32, 44), (18, 18, 28), (80, 80, 100)), 'grey': ((156, 160, 172), (112, 116, 132), (206, 210, 220)), 'argentina': ((150, 206, 246), (100, 160, 214), (230, 246, 255)), 'blazer': ((52, 70, 120), (34, 46, 86), (96, 120, 180)), 'polo': ((210, 150, 80), (160, 104, 50), (250, 200, 130)),
             'coat': ((246, 248, 252), (196, 206, 224), (255, 255, 255)), 'tee_blue': ((70, 130, 220), (40, 86, 170), (130, 180, 250)), 'tee_green': ((80, 190, 110), (40, 140, 76), (150, 230, 170)),
             'tee_yellow': ((250, 210, 70), (206, 160, 30), (255, 240, 150)), 'tee_red': ((230, 80, 70), (170, 44, 48), (255, 140, 120)),
             'plaid': ((198, 66, 60), (150, 40, 44), (232, 110, 96)), 'teacher': ((236, 232, 220), (196, 192, 182), (252, 252, 248)),
@@ -145,6 +145,11 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     elif outfit == 'uniform':
         d.polygon([(cx - 13, 78), (cx - 4, 90), (cx, 84), (cx + 4, 90), (cx + 13, 78)], fill=(255, 255, 255))
         d.rectangle([cx + 12, 98, cx + 24, 104], fill=(255, 255, 255)); d.line([(cx + 14, 101), (cx + 22, 101)], fill=td)
+    elif outfit == 'turtle':
+        d.rectangle([cx - 9, 70, cx + 9, 86], fill=tb); d.line([(cx - 9, 78), (cx + 9, 78)], fill=td)
+    elif outfit == 'suit85':
+        d.polygon([(cx - 12, 78), (cx, 100), (cx + 12, 78)], fill=(250, 250, 252)); d.polygon([(cx - 6, 80), (cx + 6, 80), (cx + 6, 86), (cx - 6, 86)], fill=(22, 26, 60))
+        d.line([(cx - 14, 78), (cx - 2, 98)], fill=td); d.line([(cx + 14, 78), (cx + 2, 98)], fill=td)
     elif outfit == 'hoodie':
         d.polygon([(cx - 20, 80), (cx - 12, 72), (cx + 12, 72), (cx + 20, 80), (cx + 12, 86), (cx - 12, 86)], fill=td)
         d.polygon([(cx - 9, 80), (cx, 88), (cx + 9, 80)], fill=shade(td, .8))
@@ -170,6 +175,10 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     fpoly = [(cx - 18, 24), (cx + 18, 24), (cx + 19, 48), (cx + 15, 58), (cx + 7, 66), (cx, 69), (cx - 7, 66), (cx - 15, 58), (cx - 19, 48)]
     if CS['strong']: fpoly = [(cx - 18, 24), (cx + 18, 24), (cx + 21, 46), (cx + 20, 58), (cx + 12, 67), (cx, 70), (cx - 12, 67), (cx - 20, 58), (cx - 21, 46)]
     d.polygon(fpoly, fill=sk)
+    if style == 'shag':
+        d.polygon([(cx - 13, 21), (cx - 4, 17), (cx + 6, 18), (cx + 14, 24), (cx + 18, 26), (cx - 18, 26)], fill=sk)
+    if style == 'short':  # frente hasta el flequillo (sin hueco)
+        d.polygon([(cx - 11, 17), (cx + 9, 17), (cx + 17, 25), (cx - 18, 25)], fill=sk)
     d.polygon([(cx + 15, 30), (cx + 18, 26), (cx + 19, 48), (cx + 15, 58), (cx + 10, 63), (cx + 14, 52), (cx + 16, 44)], fill=skd)
     final.alpha_composite(outline(face, ol_skin))
     px = final.load()

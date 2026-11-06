@@ -1,0 +1,11 @@
+[serious] Te despiden de tu propia empresa. De la que tú fundaste.
+[calm] 1985. Steve Jobs tiene treinta años... y pierde una lucha de poder en Apple.
+[sad] Los directivos eligen al hombre que él mismo contrató... y a él le quitan todo.
+[determined] Y en vez de rendirse... empieza de cero.
+[excited] Funda otra empresa. Compra un estudio de animación: Pixar.
+[tense] Mientras tanto... Apple se hunde.
+[intense] 1997. Apple compra su empresa... y lo vuelve a llamar.
+[excited] Llegan el iMac, el iPod... el iPhone.
+[warmly] Años después diría que ser despedido fue lo mejor que le pasó.
+[thoughtful] Porque cambió el peso del éxito... por la ligereza de ser principiante.
+[softly] Y tú... ¿qué tendrías que perder para atreverte a empezar de nuevo?

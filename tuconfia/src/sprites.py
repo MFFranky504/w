@@ -127,6 +127,8 @@ def battle(who='king', pose='hold', outfit=None, W=72, H=112):
         P.add(lambda d: d.polygon([(cx - 8, 31), (cx + 8, 31), (cx, 40)], fill=255), (255, 255, 255), sh=False)
         P.add(lambda d: d.rectangle([cx + 4, 46, cx + 10, 50], fill=255), (255, 255, 255), sh=False)
         P.add(lambda d: d.polygon([(cx - 13, 56), (cx + 13, 56), (cx + 13, 66), (cx - 13, 66)], fill=255), (255, 176, 112))  # delantal
+    elif outfit in ('turtle', 'suit85'):
+        pass                                               # sin detalles extra (jersey liso / traje)
     else:  # hoodie
         P.line([(cx - 4, 36), (cx - 5, 50)], (246, 246, 252)); P.line([(cx + 4, 36), (cx + 5, 48)], (246, 246, 252))
         P.add(lambda d: d.polygon([(cx - 9, 54), (cx + 9, 54), (cx + 11, 64), (cx - 11, 64)], fill=255), top2, edge_k=.7)
@@ -275,6 +277,8 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
           'coat': dict(b=(246, 248, 252), d=(196, 206, 224), l=(255, 255, 255), pants=(70, 90, 130), boots=(60, 50, 50)),
           'argentina': dict(b=(150, 206, 246), d=(100, 160, 214), l=(230, 246, 255), pants=(30, 30, 40), boots=(40, 40, 52)),
           'tux': dict(b=(32, 32, 44), d=(18, 18, 28), l=(80, 80, 100), pants=(32, 32, 44), boots=(18, 18, 24)),
+          'suit85': dict(b=(44, 46, 62), d=(26, 28, 42), l=(96, 100, 128), pants=(44, 46, 62), boots=(20, 20, 26)),
+          'turtle': dict(b=(30, 30, 38), d=(16, 16, 22), l=(86, 86, 102), pants=(70, 104, 168), boots=(228, 228, 234)),
           'grey': dict(b=(156, 160, 172), d=(112, 116, 132), l=(206, 210, 220), pants=(70, 78, 110), boots=(110, 70, 52)),
           'hoodie': dict(b=(86, 102, 212), d=(56, 68, 156), l=(134, 154, 244), pants=(52, 58, 106), boots=(248, 248, 252))}[outfit]
     cb, cd, clt = cl['b'], cl['d'], cl['l']
@@ -323,14 +327,17 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.add(lambda d: d.polygon([(cx - 8, 34), (cx + 8, 34), (cx, 42)], fill=255), (255, 255, 255), sh=False, edge_k=.6)
         P.add(lambda d: d.rectangle([cx - 12, 44, cx + 12, 52], fill=255), (255, 178, 114), edge_k=.5)
         P.rect(cx + 5, 38, cx + 10, 41, (255, 255, 255)); P.rect(cx + 6, 40, cx + 9, 40, cd)
+    elif outfit in ('turtle', 'suit85'):
+        pass                                               # sin detalles extra
     else:  # hoodie
         P.rect(cx - 5, 38, cx - 5, 48, (246, 246, 252)); P.rect(cx + 5, 38, cx + 5, 46, (246, 246, 252))
         P.add(lambda d: d.polygon([(cx - 9, 44), (cx + 9, 44), (cx + 11, 51), (cx - 11, 51)], fill=255), clt, edge_k=.55)
         P.add(lambda d: d.rounded_rectangle([cx - 11, 29, cx + 11, 35], radius=3, fill=255), cd, edge_k=.5)
         P.rect(cx - 12, 51, cx + 12, 52, cd)
-    if outfit == 'tux':
+    if outfit in ('tux', 'suit85'):
         P.add(lambda d: d.polygon([(cx - 6, 34), (cx + 6, 34), (cx + 2, 50), (cx - 2, 50)], fill=255), (250, 250, 252), edge_k=.6)
-        P.rect(cx - 3, 35, cx + 3, 37, (180, 30, 50)); P.px(cx, 36, (230, 70, 90))
+        bow = (180, 30, 50) if outfit == 'tux' else (22, 26, 60)
+        P.rect(cx - 3, 35, cx + 3, 37, bow); P.px(cx, 36, (230, 70, 90) if outfit == 'tux' else (70, 80, 150))
     elif outfit == 'grey':
         P.rect(cx - 6, 34, cx + 6, 35, cd); P.add(lambda d: d.polygon([(cx - 8, 44), (cx + 8, 44), (cx + 10, 51), (cx - 10, 51)], fill=255), cd, edge_k=.55)
     if outfit == 'argentina':
@@ -357,7 +364,7 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.rect(cx - 14, 36, cx - 11, 40, (255, 170, 64)); P.rect(cx + 11, 36, cx + 14, 40, (255, 170, 64))
         P.rect(cx - 14, 36, cx - 13, 37, (255, 218, 140)); P.rect(cx + 11, 36, cx + 12, 37, (255, 218, 140))
     else:
-        P.add(lambda d: d.rounded_rectangle([cx - 12, 31, cx + 12, 36], radius=3, fill=255), (250, 248, 244) if outfit == 'plaid' else (252, 252, 250), edge_k=.55)
+        P.add(lambda d: d.rounded_rectangle([cx - 12, 31, cx + 12, 36], radius=3, fill=255), (250, 248, 244) if outfit == 'plaid' else ((28, 28, 36) if outfit == 'turtle' else (252, 252, 250)), edge_k=.55)
     # ---------- cabeza
     fpts = [(cx - 17, 13), (cx + 17, 13), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx - 11, 32), (cx - 16, 28), (cx - 18, 21)]
     if CS['strong']: fpts = [(cx - 17, 13), (cx + 17, 13), (cx + 19, 22), (cx + 19, 29), (cx + 14, 33), (cx - 14, 33), (cx - 19, 29), (cx - 19, 22)]

@@ -1,0 +1,71 @@
+{
+ "titulo": "Steve Jobs: despedido de su propia empresa",
+ "lines": [
+  {
+   "id": "L1",
+   "t": "Te despiden de tu propia empresa. De la que tú *fundaste*.",
+   "p": 0.5,
+   "tag": "[serious]"
+  },
+  {
+   "id": "L2",
+   "t": "1985. Steve Jobs tiene *treinta años*... y pierde una lucha de poder en Apple.",
+   "p": 0.35,
+   "tag": "[calm]"
+  },
+  {
+   "id": "L3",
+   "t": "Los directivos eligen al hombre que él mismo *contrató*... y a él le quitan todo.",
+   "p": 0.5,
+   "tag": "[sad]"
+  },
+  {
+   "id": "L4",
+   "t": "Y en vez de rendirse... *empieza de cero*.",
+   "p": 0.4,
+   "tag": "[determined]"
+  },
+  {
+   "id": "L5",
+   "t": "Funda otra empresa. Compra un estudio de animación: *Pixar*.",
+   "p": 0.35,
+   "tag": "[excited]"
+  },
+  {
+   "id": "L6",
+   "t": "Mientras tanto... Apple se *hunde*.",
+   "p": 0.5,
+   "tag": "[tense]"
+  },
+  {
+   "id": "L7",
+   "t": "1997. Apple compra su empresa... y lo vuelve a *llamar*.",
+   "p": 0.4,
+   "tag": "[intense]"
+  },
+  {
+   "id": "L8",
+   "t": "Llegan el iMac, el iPod... el *iPhone*.",
+   "p": 0.5,
+   "tag": "[excited]"
+  },
+  {
+   "id": "L9",
+   "t": "Años después diría que ser despedido fue lo *mejor* que le pasó.",
+   "p": 0.5,
+   "tag": "[warmly]"
+  },
+  {
+   "id": "L10",
+   "t": "Porque cambió el peso del éxito... por la ligereza de ser *principiante*.",
+   "p": 0.6,
+   "tag": "[thoughtful]"
+  },
+  {
+   "id": "L11",
+   "t": "Y tú... ¿qué tendrías que *perder* para atreverte a empezar de nuevo?",
+   "p": 0.1,
+   "tag": "[softly]"
+  }
+ ]
+}

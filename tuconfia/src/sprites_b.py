@@ -30,6 +30,8 @@ OUTF = {
  'polo': dict(top=(210, 150, 80), top2=(160, 104, 50), under=(250, 240, 220), pants=(80, 84, 100), shoes=(70, 52, 44), sole=(40, 30, 28)),
  'coat': dict(top=(246, 248, 252), top2=(196, 206, 224), under=(190, 214, 240), pants=(70, 90, 130), shoes=(60, 50, 50), sole=(40, 30, 28)),
  'tux': dict(top=(32, 32, 44), top2=(18, 18, 28), under=(250, 250, 252), pants=(32, 32, 44), shoes=(16, 16, 22), sole=(10, 10, 14)),
+ 'suit85': dict(top=(44, 46, 62), top2=(26, 28, 42), under=(250, 250, 252), pants=(44, 46, 62), shoes=(20, 20, 26), sole=(10, 10, 14)),
+ 'turtle': dict(top=(30, 30, 38), top2=(16, 16, 22), under=(30, 30, 38), pants=(70, 104, 168), shoes=(228, 228, 234), sole=(150, 150, 162)),
  'grey': dict(top=(156, 160, 172), top2=(112, 116, 132), under=(206, 210, 220), pants=(70, 78, 110), shoes=(110, 70, 52), sole=(236, 226, 204)),
  'hoodie':  dict(top=(86, 102, 212), top2=(56, 68, 156), under=(246, 246, 252), pants=(52, 58, 106), shoes=(248, 248, 252), sole=(150, 150, 172)),
 }
@@ -59,6 +61,8 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
     shL, shR = (cx - sh_w, 31), (cx + sh_w, 30)
     if pose in ('toss', 'trophy'):
         elbR, hndR = (cx + 17, 24), (cx + 15, 10)
+    elif pose == 'box':
+        elbR, hndR = (cx + 13, 52), (cx + 6, 52)
     elif pose == 'hold':
         elbR, hndR = (cx + 15, 50), (cx + 8, 43)
     elif pose == 'hip':
@@ -66,6 +70,7 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
     else:
         elbR, hndR = (cx + 15, 51), (cx + 17, 67)
     elbL, hndL = (cx - 14.5, 51), (cx - 14, 68)
+    if pose == 'box': elbL, hndL = (cx - 13, 52), (cx - 6, 52)
     # ---------------- pierna lejana (derecha del dibujo) y cercana
     lerp = lambda a, c, t: (a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t)
     if o.get('shorts'):
@@ -106,9 +111,9 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         clip_lines([[(cx - 14, y), (cx + 14, y + 1)] for y in range(36, 70, 6)] + [[(x, 31), (x - 1, 71)] for x in range(cx - 11, cx + 12, 6)], o['top2'])
         P.add(lambda d: d.polygon([(cx - 3, 30), (cx + 3, 30), (cx + 3.5, 46), (cx + 2, 57), (cx + 3, 71), (cx - 3, 71), (cx - 2, 57), (cx - 3.5, 46)], fill=255), o['under'], edge_k=.65)
         P.line([(cx - 8, 30), (cx - 3, 37)], o['under']); P.rect(cx - 9, 70, cx + 9, 71, o['top2'])
-    elif outfit == 'tux':
+    elif outfit in ('tux', 'suit85'):
         P.add(lambda d: d.polygon([(cx - 4, 30), (cx + 4, 30), (cx + 2, 56), (cx - 2, 56)], fill=255), (250, 250, 252), edge_k=.6)
-        P.line([(cx - 9, 30), (cx - 2, 46)], o['top2']); P.line([(cx + 9, 30), (cx + 2, 46)], o['top2']); P.rect(cx - 3, 32, cx + 3, 34, (180, 30, 50))
+        P.line([(cx - 9, 30), (cx - 2, 46)], o['top2']); P.line([(cx + 9, 30), (cx + 2, 46)], o['top2']); P.rect(cx - 3, 32, cx + 3, 34, (180, 30, 50) if outfit == 'tux' else (22, 26, 60))
     elif outfit == 'grey':
         P.rect(cx - 5, 30, cx + 5, 31, o['top2']); P.add(lambda d: d.polygon([(cx - 8, 56), (cx + 8, 56), (cx + 9.5, 67), (cx - 9.5, 67)], fill=255), o['top2'], edge_k=.55)
     elif outfit == 'argentina':
@@ -135,6 +140,8 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.add(lambda d: d.polygon([(cx - 7, 30), (cx + 7, 30), (cx, 38)], fill=255), (255, 255, 255), sh=False, edge_k=.55)
         P.add(lambda d: d.polygon([(cx - wa_w - .5, 55), (cx + wa_w + .5, 55), (cx + hp_w + 3, 79), (cx - hp_w - 3, 79)], fill=255), (255, 178, 114), edge_k=.5)
         P.rect(cx + 2, 40, cx + 6, 43, (255, 255, 255)); P.rect(cx + 3, 42, cx + 5, 42, o['top2'])
+    elif outfit in ('turtle', 'suit85'):
+        pass                                               # sin detalles extra (jersey liso / traje)
     else:  # hoodie
         P.rect(cx - 3, 36, cx - 3, 49, o['under']); P.rect(cx + 3, 36, cx + 3, 47, o['under'])
         P.add(lambda d: d.polygon([(cx - 8, 58), (cx + 8, 58), (cx + 9.5, 68), (cx - 9.5, 68)], fill=255), (134, 154, 244), edge_k=.5)
@@ -142,6 +149,7 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.rect(cx - 9, 70, cx + 9, 71, o['top2'])
     # ---------------- cuello y cabeza
     P.add(lambda d: limb(d, (cx, 24), (cx, 30), 3.0, 3.4), skd, sh=False, hi=False, edge=False)
+    if outfit == 'turtle': P.add(lambda d: d.rectangle([cx - 4, 24, cx + 4, 31], fill=255), o['top'], edge_k=.4)       # cuello alto
     if outfit == 'hoodie':   # auriculares
         P.add(lambda d: d.arc([cx - 10, 22, cx + 10, 40], 15, 165, fill=255, width=2), (44, 44, 58), sh=False, hi=False, edge_k=.4)
         for sx in (-1, 1):
@@ -162,6 +170,11 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.add(lambda d: d.polygon([(hx - 7, hy - 12), (hx + 3, hy - 11), (hx + 4, hy + 1), (hx - 6, hy)], fill=255), (252, 250, 240), edge_k=.6)
         for i in range(3): P.rect(hx - 5, hy - 9 + i * 3, hx + 1, hy - 9 + i * 3, (130, 132, 150))
         P.add(lambda d: d.ellipse([hx - 3, hy - 2, hx + 3, hy + 3], fill=255), sk, edge_k=.45)
+    if pose == 'box':                                                                    # caja de cartón sujeta con las dos manos
+        P.add(lambda d: d.polygon([(cx - 13, 44), (cx + 13, 44), (cx + 14, 64), (cx - 14, 64)], fill=255), (196, 150, 98), edge_k=.5)
+        P.add(lambda d: d.polygon([(cx - 13, 44), (cx + 13, 44), (cx + 11, 48), (cx - 11, 48)], fill=255), (224, 180, 124), edge=False, sh=False, hi=False)
+        P.rect(cx - 2, 44, cx + 2, 56, (234, 216, 172)); P.rect(cx - 9, 54, cx - 4, 58, (250, 248, 240))
+        for sx_ in (-1, 1): P.add(lambda d, sx_=sx_: d.ellipse([cx + sx_ * 13 - 3, 53, cx + sx_ * 13 + 3, 60], fill=255), sk, edge_k=.45)
     if pose == 'toss':
         P.add(lambda d: d.ellipse([int(hndR[0]) - 3, int(hndR[1]) - 11, int(hndR[0]) + 5, int(hndR[1]) - 3], fill=255), (248, 246, 238))
     # ---------------- cabeza (≈ 6.5 cabezas de alto)

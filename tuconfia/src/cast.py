@@ -22,6 +22,10 @@ CAST = {
  'stallone_tux': dict(style='shag', skin=(224, 174, 132), hair=ramp((40, 30, 28)), iris=(66, 46, 36), outfit='tux', sleepy=True, strong=True, stubble=True),
  'prod1': dict(style='short', skin=(240, 196, 160), hair=ramp((176, 176, 186)), iris=(80, 64, 52), outfit='blazer', beard=False),
  'prod2': dict(style='short', skin=(236, 190, 154), hair=ramp((60, 52, 50)), iris=(60, 84, 120), outfit='teacher', glasses=True),
+
+ # --- historia 4: Steve Jobs
+ 'jobs':   dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='turtle', glasses=True),
+ 'jobs85': dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='suit85'),
 }
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False)
