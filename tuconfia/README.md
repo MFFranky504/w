@@ -49,3 +49,8 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 - `audio/narracion_stallone.mp3`: voz **George** (premade, gratuita) con `eleven_v3` y etiquetas de emoción por línea ([serious], [warmly], [excited]…), generada con la API de ElevenLabs desde el entorno (la clave se guarda con `request_credential`; nunca va en el repo). 58 s.
 - Copia de la versión anterior (Brian, vía vidIQ): `audio/narracion_stallone_brian_vidiq.mp3`.
 - Para regenerar: POST a `https://api.elevenlabs.io/v1/text-to-speech/<voice_id>` con `model_id=eleven_v3` (el proxy inyecta la clave). Cuota gratuita: 10.000 caracteres/mes; las voces "profesionales" de la biblioteca (Salva, Antonio…) requieren plan de pago por API.
+
+## Video 5 — Steve Jobs (del despido al regreso)
+- `src/build_jobs.py` + `src/scenes5.py`, guion `guion_jobs.md`, caption `caption_jobs.txt` (formato de `src/captions.py`).
+- Voz George/eleven_v3, música "Every Living Breathing Moment" (piano), 42 s, bucle (última escena → primer fotograma).
+- Zona segura para IG/TikTok: logo en y=230, subtítulos centrados en x=500 (máx. 840 px) a y≈1170–1390; contenido clave entre y≈320 y 1400 (arriba ~250 px y abajo ~450 px quedan libres para la interfaz).

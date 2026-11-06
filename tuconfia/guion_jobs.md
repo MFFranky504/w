@@ -1,13 +1,11 @@
-# Guion — Steve Jobs: despedido de su propia empresa
+# Guion — Steve Jobs: del despido al regreso
 
-**L1** [serious] Te despiden de tu propia empresa. De la que tú *fundaste*.
-**L2** [calm] 1985. Steve Jobs tiene *treinta años*... y pierde una lucha de poder en Apple.
-**L3** [sad] Los directivos eligen al hombre que él mismo *contrató*... y a él le quitan todo.
-**L4** [determined] Y en vez de rendirse... *empieza de cero*.
-**L5** [excited] Funda otra empresa. Compra un estudio de animación: *Pixar*.
-**L6** [tense] Mientras tanto... Apple se *hunde*.
-**L7** [intense] 1997. Apple compra su empresa... y lo vuelve a *llamar*.
-**L8** [excited] Llegan el iMac, el iPod... el *iPhone*.
-**L9** [warmly] Años después diría que ser despedido fue lo *mejor* que le pasó.
-**L10** [thoughtful] Porque cambió el peso del éxito... por la ligereza de ser *principiante*.
-**L11** [softly] Y tú... ¿qué tendrías que *perder* para atreverte a empezar de nuevo?
+**L1** [curious] ¿Sabías que *Steve Jobs* transformó su despido de Apple... en el regreso más grande de la tecnología?
+**L2** [serious] 1985. Tiene *treinta años*... y la junta de Apple le quita el control de su propia empresa.
+**L3** [sad] Sale de allí con sus cosas en una *caja*.
+**L4** [determined] Pero no se rinde. *Empieza de cero*: funda NeXT y compra *Pixar*.
+**L5** [tense] Mientras tanto... Apple casi *quiebra*.
+**L6** [intense] 1997. Apple lo vuelve a *llamar*.
+**L7** [excited] Y llegan el iMac, el iPod... el *iPhone*.
+**L8** [warmly] Años después diría que ser despedido fue lo *mejor* que le pasó.
+**L9** [softly] Y tú... ¿cuál fue tu mayor *rechazo*?

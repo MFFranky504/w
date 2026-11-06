@@ -176,9 +176,9 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     if CS['strong']: fpoly = [(cx - 18, 24), (cx + 18, 24), (cx + 21, 46), (cx + 20, 58), (cx + 12, 67), (cx, 70), (cx - 12, 67), (cx - 20, 58), (cx - 21, 46)]
     d.polygon(fpoly, fill=sk)
     if style == 'shag':
-        d.polygon([(cx - 13, 21), (cx - 4, 17), (cx + 6, 18), (cx + 14, 24), (cx + 18, 26), (cx - 18, 26)], fill=sk)
+        d.polygon([(cx - 13, 21), (cx - 4, 17), (cx + 6, 18), (cx + 14, 29), (cx + 18, 32), (cx - 18, 32)], fill=sk)
     if style == 'short':  # frente hasta el flequillo (sin hueco)
-        d.polygon([(cx - 11, 17), (cx + 9, 17), (cx + 17, 25), (cx - 18, 25)], fill=sk)
+        d.polygon([(cx - 11, 17), (cx + 9, 17), (cx + 17, 30), (cx - 18, 30)], fill=sk)
     d.polygon([(cx + 15, 30), (cx + 18, 26), (cx + 19, 48), (cx + 15, 58), (cx + 10, 63), (cx + 14, 52), (cx + 16, 44)], fill=skd)
     final.alpha_composite(outline(face, ol_skin))
     px = final.load()
@@ -249,12 +249,12 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     # ------------------------------------------------ pelo frontal
     hair, d = L()
     if style == 'shag':
-        d.polygon([(cx - 24, 52), (cx - 27, 30), (cx - 23, 14), (cx - 13, 4), (cx, 0), (cx + 13, 3), (cx + 22, 10), (cx + 27, 26), (cx + 25, 52), (cx + 21, 42), (cx + 19, 32), (cx + 14, 24), (cx + 6, 18), (cx - 4, 17), (cx - 12, 21), (cx - 18, 28), (cx - 21, 40)], fill=hb)
+        d.polygon([(cx - 24, 52), (cx - 27, 30), (cx - 23, 14), (cx - 13, 4), (cx, 0), (cx + 13, 3), (cx + 22, 10), (cx + 27, 26), (cx + 25, 52), (cx + 21, 42), (cx + 19, 36), (cx + 14, 29), (cx + 6, 26), (cx - 4, 25), (cx - 12, 27), (cx - 18, 31), (cx - 21, 40)], fill=hb)
         d.polygon([(cx + 12, 5), (cx + 22, 10), (cx + 27, 26), (cx + 25, 52), (cx + 21, 42), (cx + 19, 30)], fill=hd)
         for a_, b_ in [((cx - 20, 12), (cx - 6, 4)), ((cx - 4, 3), (cx + 12, 6)), ((cx - 16, 22), (cx - 8, 12)), ((cx + 2, 9), (cx + 14, 14))]: d.line([a_, b_], fill=hl)
         d.line([(cx - 9, 5), (cx - 14, 18)], fill=hd); d.line([(cx - 2, 4), (cx - 5, 15)], fill=hd)
     elif style == 'short':
-        d.polygon([(cx - 22, 50), (cx - 24, 32), (cx - 20, 18), (cx - 12, 9), (cx - 2, 5), (cx + 9, 6), (cx + 18, 12), (cx + 23, 22), (cx + 24, 34), (cx + 22, 48), (cx + 19, 34), (cx + 15, 24), (cx + 8, 19), (cx, 18), (cx - 10, 20), (cx - 16, 25), (cx - 19, 38)], fill=hb)
+        d.polygon([(cx - 22, 50), (cx - 24, 32), (cx - 20, 18), (cx - 12, 9), (cx - 2, 5), (cx + 9, 6), (cx + 18, 12), (cx + 23, 22), (cx + 24, 34), (cx + 22, 48), (cx + 19, 36), (cx + 16, 30), (cx + 8, 27), (cx, 26), (cx - 8, 28), (cx - 15, 31), (cx - 19, 38)], fill=hb)
         d.polygon([(cx + 14, 14), (cx + 23, 22), (cx + 24, 34), (cx + 22, 48), (cx + 19, 34), (cx + 18, 24)], fill=hd)
         d.line([(cx - 6, 8), (cx - 8, 22)], fill=hd)
         for a, b in [((cx - 16, 17), (cx - 6, 12)), ((cx - 4, 12), (cx + 4, 11)), ((cx + 6, 12), (cx + 13, 15))]: d.line([a, b], fill=hl)

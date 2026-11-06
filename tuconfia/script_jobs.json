@@ -1,70 +1,58 @@
 {
- "titulo": "Steve Jobs: despedido de su propia empresa",
+ "titulo": "Steve Jobs: del despido al regreso",
  "lines": [
   {
    "id": "L1",
-   "t": "Te despiden de tu propia empresa. De la que tú *fundaste*.",
+   "t": "¿Sabías que *Steve Jobs* transformó su despido de Apple... en el regreso más grande de la tecnología?",
+   "p": 0.5,
+   "tag": "[curious]"
+  },
+  {
+   "id": "L2",
+   "t": "1985. Tiene *treinta años*... y la junta de Apple le quita el control de su propia empresa.",
    "p": 0.5,
    "tag": "[serious]"
   },
   {
-   "id": "L2",
-   "t": "1985. Steve Jobs tiene *treinta años*... y pierde una lucha de poder en Apple.",
-   "p": 0.35,
-   "tag": "[calm]"
-  },
-  {
    "id": "L3",
-   "t": "Los directivos eligen al hombre que él mismo *contrató*... y a él le quitan todo.",
-   "p": 0.5,
+   "t": "Sale de allí con sus cosas en una *caja*.",
+   "p": 0.45,
    "tag": "[sad]"
   },
   {
    "id": "L4",
-   "t": "Y en vez de rendirse... *empieza de cero*.",
-   "p": 0.4,
+   "t": "Pero no se rinde. *Empieza de cero*: funda NeXT y compra *Pixar*.",
+   "p": 0.5,
    "tag": "[determined]"
   },
   {
    "id": "L5",
-   "t": "Funda otra empresa. Compra un estudio de animación: *Pixar*.",
-   "p": 0.35,
-   "tag": "[excited]"
-  },
-  {
-   "id": "L6",
-   "t": "Mientras tanto... Apple se *hunde*.",
+   "t": "Mientras tanto... Apple casi *quiebra*.",
    "p": 0.5,
    "tag": "[tense]"
   },
   {
-   "id": "L7",
-   "t": "1997. Apple compra su empresa... y lo vuelve a *llamar*.",
-   "p": 0.4,
+   "id": "L6",
+   "t": "1997. Apple lo vuelve a *llamar*.",
+   "p": 0.5,
    "tag": "[intense]"
   },
   {
-   "id": "L8",
-   "t": "Llegan el iMac, el iPod... el *iPhone*.",
+   "id": "L7",
+   "t": "Y llegan el iMac, el iPod... el *iPhone*.",
    "p": 0.5,
    "tag": "[excited]"
   },
   {
-   "id": "L9",
+   "id": "L8",
    "t": "Años después diría que ser despedido fue lo *mejor* que le pasó.",
    "p": 0.5,
    "tag": "[warmly]"
   },
   {
-   "id": "L10",
-   "t": "Porque cambió el peso del éxito... por la ligereza de ser *principiante*.",
-   "p": 0.6,
-   "tag": "[thoughtful]"
-  },
-  {
-   "id": "L11",
-   "t": "Y tú... ¿qué tendrías que *perder* para atreverte a empezar de nuevo?",
-   "p": 0.1,
+   "id": "L9",
+   "t": "Y tú... ¿cuál fue tu mayor *rechazo*?",
+   "p": 0.5,
    "tag": "[softly]"
   }
  ]
