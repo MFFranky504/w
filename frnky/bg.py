@@ -120,6 +120,16 @@ def tv(img, t, score, verdict, label="K / D", night=False):
         d.rectangle([124 + i * 8, 214, 129 + i * 8, 220], fill=col if (i < 4 or not good) else sh(col, .4))
     if int(t * 3) % 2 == 0:
         d.rectangle([118, 112, 124, 118], fill=col)
+    # mini-juego animado: héroe azul vs. enemigos rojos
+    d.rectangle([114, 226, 248, 228], fill=sh(scr, 0.6))
+    hx = 130 + int(abs(math.sin(t * 2.2)) * 90)
+    d.rectangle([hx, 222, hx + 6, 228], fill=(90, 160, 255))
+    for i in range(3):
+        ex = 124 + int((t * (30 + 12 * i) + i * 47) % 118)
+        if good and int(t * 4 + i) % 5 == 0:
+            d.rectangle([ex - 2, 220, ex + 8, 228], fill=(255, 230, 120))
+        else:
+            d.rectangle([ex, 222, ex + 5, 228], fill=(240, 90, 90))
     d.rectangle([116, 110, 130, 114], fill=(255, 255, 255, 60)) if False else None
     d.polygon([(118, 112), (150, 112), (126, 164), (118, 164)], fill=None) if False else None
 
@@ -190,17 +200,171 @@ def grade(img, sat=0.78, bright=0.95):
     return Image.fromarray(a.clip(0, 255).astype("uint8")).convert("RGBA")
 
 
-def room(t, night=False, score=(0, 14), verdict="DERROTA", label="K / D", cans_n=0):
-    img = _room_base(t, night)
-    img = grade(img)
-    if night:
+def _street_base(t):
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 255)); d = ImageDraw.Draw(img)
+    top, bot = (74, 62, 140), (252, 156, 112)
+    for y in range(0, 345, 3):
+        u = y / 345
+        d.rectangle([0, y, W, y + 3], fill=tuple(int(top[i] + (bot[i] - top[i]) * u) for i in range(3)))
+    d.ellipse([240, 226, 320, 306], fill=(255, 214, 140))
+    rnd = random.Random(5)
+    x = -10
+    while x < W:     # edificios lejanos
+        w, h = rnd.randint(40, 70), rnd.randint(110, 190)
+        d.rectangle([x, 340 - h, x + w, 340], fill=(92, 78, 150)); x += w - 4
+    cols = [(240, 152, 64), (212, 84, 120), (96, 130, 216), (244, 204, 96), (80, 180, 150)]
+    x, k = -20, 0
+    while x < W:     # edificios cercanos con ventanas encendidas
+        w, h = rnd.randint(70, 92), rnd.randint(150, 230)
+        c = cols[k % 5]; k += 1
+        d.rectangle([x, 346 - h, x + w, 346], fill=OL); d.rectangle([x + 2, 348 - h, x + w - 2, 346], fill=c)
+        d.rectangle([x + w - 12, 348 - h, x + w - 2, 346], fill=sh(c, 0.8))
+        for wy in range(350 - h + 12, 330, 24):
+            for wx in range(x + 10, x + w - 14, 20):
+                lit = (wx * 7 + wy * 3) % 5 != 0
+                d.rectangle([wx, wy, wx + 9, wy + 12], fill=(255, 232, 140) if lit else sh(c, 0.55), outline=OL)
+        x += w + 2
+    d.line([0, 150, W, 178], fill=OL, width=2)   # banderines
+    for i in range(0, W, 24):
+        yy = 150 + (28 * i / W)
+        d.polygon([(i, yy), (i + 14, yy), (i + 7, yy + 14)], fill=cols[(i // 24) % 5])
+    d.rectangle([0, 346, W, 420], fill=(176, 170, 190)); d.rectangle([0, 346, W, 352], fill=(210, 206, 220))
+    for xx in range(0, W, 48):
+        d.rectangle([xx, 352, xx + 1, 420], fill=(140, 134, 158))
+    d.rectangle([0, 420, W, 428], fill=(120, 116, 136)); d.rectangle([0, 428, W, H], fill=(64, 64, 82))
+    for xx in range(0, W, 70):
+        d.rectangle([xx, 540, xx + 40, 546], fill=(236, 200, 80))
+    d.rectangle([54, 200, 60, 346], fill=OL); d.rectangle([40, 196, 74, 206], fill=OL)   # farola
+    d.ellipse([44, 198, 70, 212], fill=(255, 238, 170))
+    return img
+
+
+def _bedroom_base(t):
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 255)); d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, W, 340], fill=(44, 48, 100))
+    for x in range(0, W, 30):
+        d.rectangle([x, 0, x + 14, 340], fill=(50, 54, 112))
+    hue = [(0, 255, 255), (255, 60, 200), (120, 90, 255)][int(t * 1.5) % 3]
+    d.rectangle([0, 10, W, 17], fill=hue)                                       # tira LED
+    d.rectangle([18, 58, 118, 206], fill=OL); d.rectangle([22, 62, 114, 202], fill=(14, 18, 60))
+    d.ellipse([80, 78, 104, 102], fill=(250, 240, 190))
+    for sx, sy in ((36, 80), (60, 110), (46, 150), (96, 140)):
+        d.rectangle([sx, sy, sx + 1, sy + 1], fill=(255, 255, 255))
+    d.rectangle([66, 62, 70, 202], fill=(70, 70, 110))
+    d.rectangle([276, 52, 346, 132], fill=OL); d.rectangle([279, 55, 343, 129], fill=(180, 50, 70))
+    d.polygon([(290, 118), (311, 66), (332, 118)], fill=(255, 210, 90))
+    d.rectangle([286, 150, 338, 212], fill=OL); d.rectangle([289, 153, 335, 209], fill=(40, 150, 140))
+    d.ellipse([300, 166, 324, 190], fill=(250, 230, 120))
+    d.rectangle([270, 226, 350, 232], fill=(140, 96, 70))
+    for tx in (278, 300, 322):
+        d.rectangle([tx, 206, tx + 12, 226], fill=(240, 196, 70), outline=OL)
+    d.rectangle([60, 244, 300, 258], fill=(150, 104, 76), outline=OL)              # escritorio
+    d.rectangle([66, 258, 294, 340], fill=(112, 76, 60), outline=OL, width=2)
+    for dx in (80, 190):
+        d.rectangle([dx, 270, dx + 90, 326], outline=(80, 52, 44), width=2); d.rectangle([dx + 38, 294, dx + 52, 300], fill=(240, 200, 100))
+    d.rectangle([132, 238, 232, 244], fill=(30, 30, 44))                           # teclado RGB
+    for i in range(10):
+        d.rectangle([134 + i * 10, 239, 140 + i * 10, 243], fill=[(255, 80, 120), (80, 220, 255), (255, 230, 90)][(i + int(t * 6)) % 3])
+    d.rectangle([250, 190, 292, 244], fill=OL); d.rectangle([254, 194, 288, 240], fill=(50, 54, 80))
+    d.ellipse([260, 204, 282, 226], fill=hue)
+    d.rectangle([0, 340, W, H], fill=(60, 44, 74))
+    for y in range(352, H, 22):
+        d.rectangle([0, y, W, y + 1], fill=(50, 36, 64))
+    d.ellipse([-20, 352, 70, 410], fill=(120, 80, 170), outline=OL, width=3)       # puf
+    d.ellipse([60, 372, 330, 520], fill=(40, 56, 110), outline=OL, width=3)        # alfombra
+    return img
+
+
+def _arcade_base(t):
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 255)); d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, W, 340], fill=(24, 22, 60))
+    for y in range(0, 340, 18):
+        for x in range(-(y // 18 % 2) * 20, W, 40):
+            d.rectangle([x, y, x + 38, y + 16], outline=(32, 30, 76))
+    for r, y in enumerate(range(340, H, 40)):
+        for c, x in enumerate(range(0, W, 40)):
+            d.rectangle([x, y, x + 39, y + 39], fill=(44, 34, 92) if (r + c) % 2 else (64, 50, 120))
+    d.rectangle([0, 340, W, 346], fill=(60, 230, 240))
+    flick = 0.7 + 0.3 * math.sin(t * 17)
+    for cx0, body in ((8, (52, 62, 140)), (282, (140, 52, 96))):      # máquinas arcade
+        d.rectangle([cx0, 120, cx0 + 70, 344], fill=OL); d.rectangle([cx0 + 3, 123, cx0 + 67, 344], fill=body)
+        d.rectangle([cx0 + 8, 134, cx0 + 62, 140], fill=(255, 230, 90))
+        d.rectangle([cx0 + 10, 146, cx0 + 60, 206], fill=OL)
+        scr = (int(60 * flick), int(200 * flick), int(160 * flick)) if cx0 < 100 else (int(240 * flick), int(90 * flick), int(150 * flick))
+        d.rectangle([cx0 + 12, 148, cx0 + 58, 204], fill=scr)
+        mx = int((t * 30) % 20)
+        d.rectangle([cx0 + 20 + mx, 170, cx0 + 28 + mx, 178], fill=(255, 255, 255))
+        d.rectangle([cx0 + 8, 214, cx0 + 62, 236], fill=sh(body, 0.7)); d.ellipse([cx0 + 14, 216, cx0 + 24, 226], fill=(255, 70, 70))
+        d.ellipse([cx0 + 40, 217, cx0 + 48, 225], fill=(80, 200, 255)); d.ellipse([cx0 + 50, 217, cx0 + 58, 225], fill=(255, 230, 90))
+    d.rectangle([84, 48, 276, 92], fill=OL)                                   # letrero de neón
+    txt(d, (180, 70), "CIBER 66", 38, (255, 110, 200), outline=(120, 20, 90))
+    return img
+
+
+def glow_img(img, box, color, strength, blur):
+    return Image.fromarray(__import__("numpy").asarray(glow(img, box, color, strength, blur))).convert("RGBA")
+
+
+def _extras(img, kind):
+    if kind == "arcade":
+        img = glow_img(img, (84, 48, 276, 92), (255, 60, 190), 160, 14)
+    if kind == "bedroom":
+        img = glow_img(img, (0, 8, W, 20), (90, 220, 255), 120, 10)
+    if kind == "street":
+        img = glow_img(img, (40, 196, 74, 214), (255, 220, 120), 160, 22)
+    return img
+
+
+def room(t, night=False, score=(0, 14), verdict="DERROTA", label="K / D", cans_n=0, kind="living"):
+    if kind == "living":
+        img = grade(_room_base(t, night))
+    else:
+        img = _extras(grade({"street": _street_base, "bedroom": _bedroom_base, "arcade": _arcade_base}[kind](t), 0.95, 1.0), kind)
+    if night and kind == "living":
         night_grade(img, 0.42)
     if cans_n:
         cans(img, cans_n)
-    tv(img, t, score, verdict, label, night)
-    if night:
-        img = Image.fromarray(__import__("numpy").asarray(glow(img, (104, 96, 258, 244), (70, 110, 220), 130, 26))).convert("RGBA")
+    if kind != "street":
+        tv(img, t, score, verdict, label, night or kind == "bedroom")
+        if night or kind == "bedroom":
+            img = glow_img(img, (104, 96, 258, 244), (70, 110, 220), 130, 26)
     out = Image.new("RGBA", (W, H))
     out.paste(img.crop((0, DY, W, H)), (0, 0))
     out.paste(img.crop((0, H - 2 * DY, W, H - DY)), (0, H - DY))
     return out
+
+
+def emote(img, x, y, kind, age):
+    """Globito de emoción que salta sobre la cabeza (! ? corazón)."""
+    d = ImageDraw.Draw(img)
+    pop = min(1.0, age / 0.18)
+    y = y - 10 * math.sin(min(age, 0.3) / 0.3 * math.pi)
+    col = {"!": (255, 214, 60), "?": (90, 160, 230), "love": (240, 90, 130)}[kind]
+    r = int(13 * min(1.0, 0.4 + pop))
+    d.ellipse([x - r, y - r, x + r, y + r], fill=(255, 255, 255), outline=OL, width=2)
+    d.polygon([(x - 4, y + r - 2), (x + 4, y + r - 2), (x, y + r + 6)], fill=(255, 255, 255), outline=OL)
+    if kind == "love":
+        d.rectangle([x - 6, y - 5, x - 2, y - 1], fill=col); d.rectangle([x + 2, y - 5, x + 6, y - 1], fill=col)
+        d.rectangle([x - 6, y - 2, x + 6, y + 2], fill=col); d.rectangle([x - 3, y + 2, x + 3, y + 5], fill=col)
+    else:
+        txt(d, (x, y), kind, 24, col, outline=OL)
+
+
+def speed_lines(img, cx, cy, t, strength=170):
+    """Líneas de impacto estilo manga/RPG alrededor de un punto."""
+    layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    rnd = random.Random(int(t * 14))
+    for k in range(34):
+        a = k * (2 * math.pi / 34) + rnd.uniform(-0.05, 0.05)
+        r1, r2 = rnd.randint(90, 130), rnd.randint(190, 330)
+        d.line([cx + math.cos(a) * r1, cy + math.sin(a) * r1, cx + math.cos(a) * r2, cy + math.sin(a) * r2],
+               fill=(255, 255, 255, strength), width=rnd.choice((2, 3, 4)))
+    img.alpha_composite(layer)
+
+
+def boom(img, x, y, text, age, color=(255, 214, 70)):
+    """Texto de impacto con rebote (¡PUM!, ¡ZAS!)."""
+    d = ImageDraw.Draw(img)
+    sc = 1 + 0.5 * math.exp(-age * 9) * math.cos(age * 22)
+    txt(d, (x, y), text, int(46 * sc), color, outline=(160, 30, 50))

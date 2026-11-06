@@ -45,7 +45,7 @@ def _outline(img):
 
 @lru_cache(maxsize=4096)
 def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=False,
-           headset=False, bags=False, shirt=None):
+           headset=False, bags=False, shirt=None, walk=0):
     ch = CHARS[name]
     skin, hair = ch["skin"] + (255,), ch["hair"] + (255,)
     coat = (shirt or ch["coat"]) + (255,)
@@ -69,16 +69,17 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         body(-11, 10, 11, 36, hair)
     # piernas y tenis (ropa moderna)
     kind, trim = ch["kind"], ch["trim"] + (255,)
-    body(-8, 48, -1, 65, pants); body(1, 48, 8, 65, pants)
-    R(-7, 56, -3, 57, lt(pants, 1.25)); R(2, 56, 6, 57, lt(pants, 1.25))
+    lL, lR = (3 if walk == 1 else 0), (3 if walk == 2 else 0)   # pierna levantada al caminar
+    body(-8, 48, -1, 65 - lL, pants); body(1, 48, 8, 65 - lR, pants)
+    R(-7, 56 - lL, -3, 57 - lL, lt(pants, 1.25)); R(2, 56 - lR, 6, 57 - lR, lt(pants, 1.25))
     if ch.get("jog"):
-        R(-8, 49, -7, 64, (236, 236, 240, 255)); R(7, 49, 8, 64, (236, 236, 240, 255))
+        R(-8, 49, -7, 64 - lL, (236, 236, 240, 255)); R(7, 49, 8, 64 - lR, (236, 236, 240, 255))
     shoe, sole = ch["shoe"] + (255,), ch["sole"] + (255,)
-    body(-9, 63, -1, 69, shoe); body(1, 63, 9, 69, shoe)
-    R(-9, 68, -1, 70, sole); R(1, 68, 9, 70, sole)
-    R(-9, 63, -4, 64, lt(shoe, 1.1)); R(1, 63, 6, 64, lt(shoe, 1.1))
+    body(-9, 63 - lL, -1, 69 - lL, shoe); body(1, 63 - lR, 9, 69 - lR, shoe)
+    R(-9, 68 - lL, -1, 70 - lL, sole); R(1, 68 - lR, 9, 70 - lR, sole)
+    R(-9, 63 - lL, -4, 64 - lL, lt(shoe, 1.1)); R(1, 63 - lR, 6, 64 - lR, lt(shoe, 1.1))
     for x in (-5, -3, 3, 5):
-        P(x, 65, dk(shoe, 0.6))
+        P(x, 65 - (lL if x < 0 else lR), dk(shoe, 0.6))
     # torso: hoodie o camiseta de selección
     body(-10, 26, 10, 50, coat)
     R(-10, 49, 10, 50, dk(coat, 0.7))

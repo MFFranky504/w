@@ -168,3 +168,59 @@ def save(track, path):
     pcm = (track / peak * 0.9 * 32767).astype(np.int16)
     with wave.open(str(path), "wb") as w:
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes(pcm.tobytes())
+
+
+def whoosh(track, t0, dur=0.28, vol=0.18):
+    n = int(dur * SR)
+    x = rng.uniform(-1, 1, n)
+    k = np.linspace(0.02, 0.35, n)
+    y = np.zeros(n); a = 0.0
+    for i in range(n):          # filtro pasabajas que se abre: "fiuuu"
+        a += k[i] * (x[i] - a); y[i] = a
+    put(track, t0, y * np.sin(np.linspace(0, np.pi, n)) * vol * 4)
+
+
+def airhorn(track, t0, vol=0.22):
+    for f in (392, 494, 587):
+        s = (square(f, 0.55, 0.5) + 0.5 * square(f * 1.006, 0.55, 0.3)) * env(int(0.55 * SR), a=0.01, rel=0.9) * vol * 0.5
+        put(track, t0, s)
+
+
+def step(track, t0, vol=0.16):
+    put(track, t0, noise(0.05, vol, 0.03)); put(track, t0, kick(0.12))
+
+
+def click(track, t0, vol=0.12):
+    put(track, t0, noise(0.012, vol, 0.01))
+
+
+def coin(track, t0, vol=0.16):
+    put(track, t0, note(midi(83), 0.07, vol, "sq", 0.25, 0.3)); put(track, t0 + 0.07, note(midi(88), 0.35, vol, "sq", 0.25, 0.6))
+
+
+def levelup(track, t0, vol=0.14):
+    for k, n in enumerate([72, 76, 79, 84, 88]):
+        put(track, t0 + k * 0.06, note(midi(n), 0.14, vol, "sq", 0.25, 0.35))
+
+
+def crowd(track, t0, dur=0.9, vol=0.1):
+    n = int(dur * SR)
+    y = rng.uniform(-1, 1, n)
+    k = 0.08
+    z = np.zeros(n); a = 0.0
+    for i in range(n):
+        a += k * (y[i] - a); z[i] = a
+    put(track, t0, z * np.sin(np.linspace(0, np.pi, n)) * vol * 6)
+
+
+def roll(track, t0, t1, vol=0.16):
+    n = 12
+    for k in range(n):
+        u = k / n
+        put(track, t0 + (t1 - t0) * (u ** 0.8), noise(0.07, vol * (0.4 + u), 0.05))
+    put(track, t1 - 0.01, kick(0.6))
+
+
+def rimshot(track, t0):
+    put(track, t0, noise(0.08, 0.2, 0.05)); put(track, t0 + 0.12, noise(0.08, 0.2, 0.05))
+    put(track, t0 + 0.3, noise(0.5, 0.12, 0.5)); put(track, t0 + 0.3, kick(0.5))

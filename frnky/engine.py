@@ -188,6 +188,7 @@ def render_video(ep, cta, out_mp4, workdir):
     ep["music"](track)
     for c in ep["cuts"]:
         audio.hit(track, c)
+        audio.whoosh(track, max(0, c - 0.22))
     for t0, t1, who, text in lines:
         for v in who.split("+"):
             audio.voice(track, (t0, t1, text), voices[v]["pitch"])
@@ -206,6 +207,11 @@ def render_video(ep, cta, out_mp4, workdir):
     for i in range(n):
         t = i / FPS
         canvas, cam, shake = ep["frame"](t)
+        k = cam[0]
+        for te, amp in ep.get("punches", ()):          # "golpes" de zoom al empezar cada frase y cada corte
+            if 0 <= t - te < 1.0:
+                k -= amp * math.exp(-(t - te) * 7)
+        cam = (k,) + tuple(cam[1:])
         img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t))
         bt = ep["banner"](t) if "banner" in ep else ""
         hook_on = any(h0 <= t < h1 for h0, h1, _ in ep["hooks"])
