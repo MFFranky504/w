@@ -12,6 +12,7 @@ from lib import WW, WH, BAY, ease
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FPS, VW, VH = 30, 1080, 1920
+LOOP_D = 0.9      # disolvencia final hacia el primer fotograma (bucle)
 SR = 44100
 SC = json.load(open(f'{ROOT}/script_stallone.json'))
 LINES = SC['lines']
@@ -64,7 +65,7 @@ def align_real(path):
     starts, ends = [first], []
     for a, b in bounds: ends.append(a); starts.append(b)
     ends.append(last)
-    return starts, ends, last + 0.9
+    return starts, ends, last + 1.0 + LOOP_D
 
 
 def estimate():
@@ -72,7 +73,7 @@ def estimate():
     for l in LINES:
         d = len(clean(l['t'])) / 15.0
         starts.append(t); ends.append(t + d); t += d + l['p']
-    return starts, ends, t + 0.7
+    return starts, ends, t + 1.0 + LOOP_D
 
 
 if narr:
@@ -187,6 +188,7 @@ for l in LINES:
 
 
 def draw_sub(img, t):
+    if t > TOTAL - LOOP_D: return
     ch = next(((a, b, g, lid) for a, b, g, lid in CHUNKS if a <= t < b + 0.0), None)
     if not ch and t >= CHUNKS[-1][1]: ch = CHUNKS[-1]            # la pregunta final se queda en pantalla
     if not ch: return
@@ -250,6 +252,12 @@ def overlay(base, t):
     return out
 
 
+_FIRST = []
+def first_img():
+    if not _FIRST: _FIRST.append(render_scene(0, 0.0))
+    return _FIRST[0]
+
+
 def frame(fi):
     t = fi / FPS
     idx = max(i for i, s in enumerate(SCENES) if s['t0'] <= t + 1e-6)
@@ -266,6 +274,10 @@ def frame(fi):
         prv = render_scene(idx - 1, t)
         m = (BAYF < ease(k))[..., None]
         img = Image.fromarray(np.where(m, np.array(img), np.array(prv)))
+    if t > TOTAL - LOOP_D:
+        k = min(1.0, (t - (TOTAL - LOOP_D)) / (LOOP_D - 1.0 / FPS))
+        m = (BAYF < ease(k))[..., None]
+        img = Image.fromarray(np.where(m, np.array(first_img()), np.array(img)))
     return overlay(img, t)
 
 
@@ -340,7 +352,8 @@ def synth_audio():
     chime(g('oscar')['t0'] + .1, [784, 988, 1175, 1568, 1976], .4)
     add(noise(2.5, 1400) * np.sin(np.pi * np.clip(tt(2.5) / 2.5, 0, 1)) * .5, g('oscar')['t0'], .6)
     chime(g('tu')['t0'] + .05, [659, 880, 1318], .3)
-    add(noise(.25, 2500) * np.exp(-tt(.25) * 14) * .3, TOTAL - .2, .5)
+    d = .5; env = np.sin(np.pi * np.clip(tt(d) / d, 0, 1)) ** 2
+    add(noise(d, 1800) * env * .3, TOTAL - LOOP_D - .1, .5)      # whoosh de la disolvencia al inicio
     sfx = L.copy()
     # ---- música
     song = subprocess.run(['ffmpeg', '-v', 'error', '-i', f'{ROOT}/audio/cancion.m4a', '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
@@ -359,7 +372,7 @@ def synth_audio():
     m[:len(p1)] += p1[:N]
     ps = int((drop - .03) * SR)
     p2 = song[ps:ps + (N - int((G - .03) * SR))].copy()
-    fo2 = np.minimum(1, (len(p2) - np.arange(len(p2))) / (SR * .5))
+    fo2 = np.minimum(1, (len(p2) - np.arange(len(p2))) / (SR * 1.3))
     p2 *= fo2[:, None] * .78
     o = int((G - .03) * SR); n2 = min(len(p2), N - o)
     m[o:o + n2] += p2[:n2]
