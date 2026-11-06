@@ -5,6 +5,10 @@ from PIL import Image, ImageDraw
 from lib import shade
 from cast import resolve
 from chars_anime import outline
+import json, os
+
+# ojos copiados píxel a píxel de la hoja de referencia del usuario (m = serios, f = con pestañas); incluyen cejas
+EYES_REF = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'eye_templates.json')))
 
 W, H = 56, 64
 HX, HY = 8, 6           # origen de la plantilla de cabeza (40 de ancho)
@@ -25,9 +29,9 @@ def rows_at(r0, c0, rows): return [(r0 + i, c0, row) for i, row in enumerate(row
 
 BROWS = {'n': [(10, 22, 'KKKKK'), (11, 18, 'KKKK'), (10, 7, 'KKKK'), (11, 11, 'KKK')],
          'sad': [(11, 23, 'KKKK'), (10, 18, 'KKKKK'), (11, 7, 'KKK'), (10, 10, 'KKKK')]}
-NOSE = [(21, 16, 's'), (22, 15, 'tt')]
-MOUTHS = {'n': [(25, 13, 'MMMM'), (26, 17, 'm')], 'smile': [(25, 12, 'MmmmM'), (26, 13, 'MMM')], 'sad': [(25, 13, 'mMMMm')],
-          'worry': [(25, 13, 'MMm'), (26, 16, 'MM')], 'wow': [(24, 14, 'MM'), (25, 13, 'MMMM'), (26, 14, 'MM')]}
+NOSE = [(22, 16, 's'), (23, 15, 'tt')]
+MOUTHS = {'n': [(26, 13, 'MMMM'), (27, 17, 'm')], 'smile': [(26, 12, 'MmmmM'), (27, 13, 'MMM')], 'sad': [(26, 13, 'mMMMm')],
+          'worry': [(26, 13, 'MMm'), (27, 16, 'MM')], 'wow': [(25, 14, 'MM'), (26, 13, 'MMMM'), (27, 14, 'MM')]}
 
 # pelo frontal: rejilla de 40 columnas; la primera línea es la fila -4
 HAIR = {
@@ -183,19 +187,28 @@ def portrait3(who='you', expr='n', blink=False, outfit=None):
             xl, xr = CONTOUR[r]
             for c in range(xl, xr - 4):
                 if r >= 26 or c <= xl + 2: face[HY + r, HX + c] = (*stub, 255)
-    # rasgos
+    # rasgos: ojos + cejas de la hoja de referencia
     closed = blink or expr == 'smile'
-    sleepy = CS.get('sleepy') and not closed
-    near = EYE_NEAR_CLOSED if closed else (EYE_NEAR_SLEEPY if sleepy else EYE_NEAR)
-    farr = EYE_FAR_CLOSED if closed else (EYE_FAR_SLEEPY if sleepy else EYE_FAR)
-    stamp(face, rows_at(13, 18, near) + rows_at(13, 7, farr), HX, HY, pal)
-    if style == 'tab' and not closed:
-        stamp(face, [(12, 27, 'K'), (13, 27, 'K'), (13, 6, 'K'), (12, 6, 'K')], HX, HY, pal)       # pestañas exteriores
-    stamp(face, BROWS['sad' if expr in ('sad', 'worry') else 'n'], HX, HY, {'K': hc['dd']})
+    r_, g_, b_ = CS['skin']
+    kw = .45 if style == 'tab' else .75                      # intensidad del sombreado rosa del párpado
+    epal = {'K': (40, 44, 58), 'w': tuple(int(v * (1 - kw) + w * kw) for v, w in zip(CS['skin'], (r_ * .9, g_ * .7, b_ * .71))), 'W': (252, 250, 248),
+            'H': (255, 240, 222), 'E': tuple(min(255, int(v * 1.25 + 10)) for v in iris)}
+    if closed:
+        stamp(face, rows_at(13, 18, EYE_NEAR_CLOSED) + rows_at(13, 7, EYE_FAR_CLOSED), HX, HY, pal)
+        stamp(face, BROWS['n'], HX, HY, {'K': hc['dd']})
+    else:
+        kind = 'm'                                                   # juego serio para todos (el femenino parecía gafas)
+        mood = 'sleepy' if CS.get('sleepy') else {'sad': 'sad', 'worry': 'sad', 'wow': 'flat'}.get(expr, 'flat' if kind == 'f' else 'n')
+        left, right = EYES_REF[f'{kind}_{mood}']
+        top = 11 + (10 - len(left)) // 2
+        stamp(face, rows_at(top, 17 - len(left[0]) + 1 - 1, left) if False else rows_at(top, 7, left), HX, HY, epal)
+        stamp(face, rows_at(top, 30 - len(right[0]), right), HX, HY, epal)
+        if style == 'tab':                                           # pestaña exterior para ella
+            stamp(face, [(top + 3, 6, 'K'), (top + 2, 5, 'K'), (top + 3, 30, 'K'), (top + 2, 31, 'K')], HX, HY, epal)
     stamp(face, NOSE, HX, HY, pal)
     stamp(face, MOUTHS.get(expr, MOUTHS['n']), HX, HY, pal)
     if style in ('tab', 'you'):
-        stamp(face, [(21, 8, 'mmm'), (21, 24, 'mmm')], HX, HY, {'m': (240, 150, 150)})
+        stamp(face, [(22, 8, 'mmm'), (22, 24, 'mmm')], HX, HY, {'m': (240, 150, 150)})
     out.alpha_composite(layer(face, shade(CS['skin'], .45)))
     # pelo frontal ceñido a la cabeza
     hair = np.zeros((H, W, 4), np.uint8)
