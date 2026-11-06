@@ -1,0 +1,5 @@
+music_quiz/stills/
+music_quiz/*.wav
+music_quiz/render.log
+music_quiz/delivery/*.mp4
+__pycache__/
