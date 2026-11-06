@@ -48,20 +48,32 @@ def align_real(path):
         else: i += 1
     first = int(np.argmax(sp)) * hop / 16000
     last = (n - int(np.argmax(sp[::-1]))) * hop / 16000
-    ch = np.array([len(clean(l['t'])) for l in LINES], float)
-    cum = np.cumsum(ch) / ch.sum()
-    # tiempo de habla -> tiempo real
-    gl = [(a, b) for _, a, b in gaps]
-    def real(frac):
-        target = first + frac * (last - first)
-        return target
-    bounds = []
-    for k in range(len(LINES) - 1):
-        tgt = real(cum[k])
-        if gaps:
-            g = min(gaps, key=lambda g: abs(g[0] - tgt))
-            if abs(g[0] - tgt) < 0.9: bounds.append((g[1], g[2])); continue
-        bounds.append((tgt, tgt))
+    # asignación óptima (programación dinámica) de las fronteras entre líneas a los huecos de silencio detectados
+    chars = np.array([len(clean(l['t'])) for l in LINES], float)
+    nint = np.array([len(re.findall(r'\.\.\.|[.?!:,;](?=\s*\S)', clean(l['t'][:-1]))) for l in LINES], float)   # pausas internas esperadas
+    K = len(LINES) - 1
+    G = [((a + b) / 2, a, b) for _, a, b in gaps]
+    # cps global: duración total = sum(chars)/cps + 0.4*pausas internas + 0.5*fronteras
+    T = last - first
+    cps = chars.sum() / max(1e-3, T - 0.4 * nint.sum() - 0.5 * K)
+    exp_d = chars / cps + 0.4 * nint + 0.5
+    INF = 1e18
+    n = len(G)
+    best = [[INF] * n for _ in range(K)]; prev = [[-1] * n for _ in range(K)]
+    for j in range(n):
+        best[0][j] = (G[j][0] - first - exp_d[0]) ** 2 - 2.0 * (G[j][2] - G[j][1])
+    for k in range(1, K):
+        for j in range(k, n):
+            for i in range(k - 1, j):
+                c = best[k - 1][i] + (G[j][0] - G[i][0] - exp_d[k]) ** 2 - 2.0 * (G[j][2] - G[j][1])
+                if c < best[k][j]: best[k][j] = c; prev[k][j] = i
+    tail = [(best[K - 1][j] + (last - G[j][0] - exp_d[-1]) ** 2, j) for j in range(K - 1, n)]
+    j = min(tail)[1]
+    sel = []
+    for k in range(K - 1, -1, -1):
+        sel.append(j); j = prev[k][j]
+    sel.reverse()
+    bounds = [(G[j][1], G[j][2]) for j in sel]
     starts, ends = [first], []
     for a, b in bounds: ends.append(a); starts.append(b)
     ends.append(last)
@@ -344,8 +356,8 @@ def synth_audio():
     add(rise * .55, G - rd - .25, .6)
     add(np.sin(2 * np.pi * (80 + 300 * (tt(rd) / rd) ** 3) * tt(rd)) * (tt(rd) / rd) * .25, G - rd - .25, .6)
     boom = np.sin(2 * np.pi * (55 * np.exp(-tt(1.8) * 1.2) + 28) * tt(1.8)) * np.exp(-tt(1.8) * 2.2)
-    add(boom * .95, G, 1.0)
-    add(noise(1.2, 6000) * np.exp(-tt(1.2) * 4) * .5, G, .6)
+    add(boom * .6, G, 1.0)
+    add(noise(1.2, 6000) * np.exp(-tt(1.2) * 4) * .35, G, .6)
     def chime(t0, notes, gain=.35):
         for k, f in enumerate(notes):
             add((np.sin(2 * np.pi * f * tt(1.0)) + .4 * np.sin(2 * np.pi * 2 * f * tt(1.0))) * np.exp(-tt(1.0) * 4.5) * .5, t0 + k * .09, gain)
@@ -355,33 +367,54 @@ def synth_audio():
     d = .5; env = np.sin(np.pi * np.clip(tt(d) / d, 0, 1)) ** 2
     add(noise(d, 1800) * env * .3, TOTAL - LOOP_D - .1, .5)      # whoosh de la disolvencia al inicio
     sfx = L.copy()
-    # ---- música: piano de Runaway (inicio) -> Touch The Sky (cuando lo aceptan / gana el premio)
+    # ---- música: piano de Runaway (inicio) -> Touch The Sky (desde el principio de la canción, al aceptar)
     def dec(path):
         raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
         return np.frombuffer(raw, np.float32).reshape(-1, 2)
     rms = lambda x: float(np.sqrt((x ** 2).mean()) + 1e-9)
-    song = dec(f'{ROOT}/audio/cancion.m4a')
-    w = int(.01 * SR); a0, a1 = int(31.0 * SR), int(33.0 * SR)
-    e = np.array([np.sqrt((song[i:i + w] ** 2).mean()) for i in range(a0, a1, w)])
-    dj = np.array([e[i:i + 5].mean() - e[max(0, i - 5):i].mean() for i in range(5, len(e) - 5)])
-    drop = 31.0 + (int(np.argmax(dj)) + 5) * .01
-    m = np.zeros((N, 2), np.float32)
-    # parte 1: piano de Runaway (suena solo ~38 s antes de que entren bajos y batería)
     run = dec(f'{ROOT}/audio/runaway.m4a')
-    d1 = min(G - 0.9, 37.5)
-    p1 = run[int(.0 * SR):int(d1 * SR)].copy()
-    p1 *= .075 / rms(p1[int(2 * SR):])                                   # nivelar el piano (grabación muy suave)
-    fi_ = np.minimum(1, np.arange(len(p1)) / (SR * .6)); fo_ = np.minimum(1, (len(p1) - np.arange(len(p1))) / (SR * .35))
-    p1 *= (fi_ * fo_)[:, None]
-    m[:len(p1)] += p1[:N]
-    # parte 2: Touch The Sky desde su drop, alineado con la escena
-    ps = int((drop - .03) * SR)
-    p2 = song[ps:ps + (N - int((G - .03) * SR))].copy()
+    song = dec(f'{ROOT}/audio/cancion.m4a')
+    # (1) rejilla de notas del piano: una nota (E6) cada ~1.38 s -> onsets medidos con ventanas de 5 ms
+    hw = int(.005 * SR)
+    mono = run[:int(37.5 * SR), 0]
+    en = np.array([np.sqrt(np.mean(mono[i:i + hw] ** 2)) for i in range(0, len(mono) - hw, hw)])
+    df = np.maximum(np.diff(en), 0); thr = np.percentile(df, 99)
+    cand = [i * .005 for i in range(2, len(df) - 2) if df[i] > thr and df[i] >= df[i - 1] and df[i] >= df[i + 1]]
+    ons = []
+    for t_ in cand:
+        if not ons or t_ - ons[-1] > .25: ons.append(t_)
+    ons = np.array([o for o in ons if o > 2.0])
+    per = float(np.median(np.diff(ons)[(np.diff(ons) > 1.3) & (np.diff(ons) < 1.45)]))
+    k0 = np.round((ons - ons[0]) / per)
+    phase = float(np.mean(ons - k0 * per))
+    grid = lambda n: phase + n * per
+    # (2) primer sonido de Touch The Sky
+    sw = int(.005 * SR); sm = song[:int(6 * SR), 0]
+    se = np.array([np.sqrt(np.mean(sm[i:i + sw] ** 2)) for i in range(0, len(sm) - sw, sw)])
+    T0 = next(i for i, v in enumerate(se) if v > .12 * se[:800].max()) * .005 - .02
+    # (3) una nota del piano cae exactamente en G (inicio de Touch The Sky): el vídeo arranca en r0 del instrumental de Runaway
+    n_ = int(np.ceil((G - phase) / per)); r_n = grid(n_)
+    while r_n < G: n_ += 1; r_n = grid(n_)
+    r0 = r_n - G
+    m = np.zeros((N, 2), np.float32)
+    seg = run[int(r0 * SR):int((r_n + 1.25) * SR)].copy()
+    seg *= .075 / rms(seg[int(2 * SR):int(G * SR)])                                    # nivelar el piano (grabación muy suave)
+    tl = len(seg) / SR
+    ramp_in = np.minimum(1, np.arange(len(seg)) / (SR * .5))
+    # la nota E que cae en G se deja sonar y se apaga justo antes de la siguiente nota
+    tt_ = np.arange(len(seg)) / SR
+    ramp_out = np.where(tt_ > (G - r0 + .15), np.clip(1 - (tt_ - (G - r0 + .15)) / 1.0, 0, 1), 1.0)
+    seg *= (ramp_in * ramp_out)[:, None]
+    m[:min(len(seg), N)] += seg[:N]
+    # Touch The Sky desde su inicio real, con el primer sonido en G
+    p2 = song[int(T0 * SR):int(T0 * SR) + (N - int(G * SR))].copy()
     p2 *= .105 / rms(p2[:int(8 * SR)])
+    fi2 = np.minimum(1, np.arange(len(p2)) / (SR * .04))
     fo2 = np.minimum(1, (len(p2) - np.arange(len(p2))) / (SR * 1.3))
-    p2 *= fo2[:, None]
-    o = int((G - .03) * SR); n2 = min(len(p2), N - o)
+    p2 *= (fi2 * fo2)[:, None]
+    o = int(G * SR); n2 = min(len(p2), N - o)
     m[o:o + n2] += p2[:n2]
+    print(f'piano: periodo {per:.4f}s, nota en G={G:.2f}s (r0={r0:.2f}s del instrumental); TouchTheSky desde {T0:.2f}s del original', file=sys.stderr)
     # ducking con la voz (si existe) o ligero constante
     voice = None
     if narr:
@@ -400,7 +433,7 @@ def synth_audio():
     out = (np.clip(mix, -1, 1) * 32767).astype('<i2')
     with wave.open(f'{ROOT}/audio/mezcla.wav', 'wb') as wf:
         wf.setnchannels(2); wf.setsampwidth(2); wf.setframerate(SR); wf.writeframes(out.tobytes())
-    return G, drop
+    return G, T0
 
 
 if __name__ == '__main__':

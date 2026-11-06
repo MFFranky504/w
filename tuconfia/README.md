@@ -39,3 +39,8 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 - Diseño de Stallone más fiel al actor: pelo oscuro y espeso peinado hacia un lado, cejas gruesas, párpados caídos, mandíbula cuadrada y barba de dos días (`cast.py`: `stallone`, `stallone_tux`).
 - Música: piano de *Runaway* (`audio/runaway.m4a`, solo ~38 s) al inicio; *Touch The Sky* (`audio/cancion.m4a`) entra al aceptar ("Al final aceptan") y suena en el Oscar.
 - Voz: generada con ElevenLabs (voz premade "Brian", vía vidIQ). El MP3 está en la URL de vidIQ; descárgalo como `audio/narracion_stallone.mp3` y ejecuta `cd src && python3 -I build_stallone.py` para el render final con tiempos ajustados a la voz.
+
+### Versión final con voz (Stallone)
+- `out/TU_CONFIA_Stallone_Rocky.mp4` — 1080×1920, 52,5 s, voz real (`audio/narracion_stallone.mp3`), en bucle.
+- Música: el instrumental de *Runaway* (solo piano, una nota E cada 1,38 s) abre el vídeo; la nota que cae justo en "Al final aceptan" coincide con el primer sonido de *Touch The Sky*, que suena desde el inicio de la canción original. Ambas giran en E, así que no hay desafine. Al final la música baja a silencio para el bucle.
+- Alineación voz↔escenas: asignación óptima de las 13 fronteras entre líneas a los silencios de la voz (`align_real` en `src/build_stallone.py`).
