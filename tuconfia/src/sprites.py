@@ -359,10 +359,16 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     else:
         P.add(lambda d: d.rounded_rectangle([cx - 12, 31, cx + 12, 36], radius=3, fill=255), (250, 248, 244) if outfit == 'plaid' else (252, 252, 250), edge_k=.55)
     # ---------- cabeza
-    P.add(lambda d: d.polygon([(cx - 17, 13), (cx + 17, 13), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx - 11, 32), (cx - 16, 28), (cx - 18, 21)], fill=255), sk, sh=False, hi=False, edge_k=.42)
+    fpts = [(cx - 17, 13), (cx + 17, 13), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx - 11, 32), (cx - 16, 28), (cx - 18, 21)]
+    if CS['strong']: fpts = [(cx - 17, 13), (cx + 17, 13), (cx + 19, 22), (cx + 19, 29), (cx + 14, 33), (cx - 14, 33), (cx - 19, 29), (cx - 19, 22)]
+    P.add(lambda d: d.polygon(fpts, fill=255), sk, sh=False, hi=False, edge_k=.42)
     m = P.mask(lambda d: d.polygon([(cx + 10, 15), (cx + 17, 16), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx + 6, 32), (cx + 12, 27), (cx + 13, 21)], fill=255))
     P.a[m & (P.a[..., 3] > 0)] = (*skd, 255)
     m2 = P.mask(lambda d: d.polygon([(cx - 15, 22), (cx - 13, 22), (cx - 12, 29), (cx - 15, 27)], fill=255)); P.a[m2 & (P.a[..., 3] > 0)] = (*sk_l, 255)
+    if CS['stubble']:       # sombra de barba: bloque suave en la mandíbula
+        for yy in range(28, 34):
+            for xx in range(cx - 17, cx + 18):
+                if P.a[yy, xx, 3] > 0 and tuple(P.a[yy, xx, :3]) in (tuple(sk), tuple(skd)) and (abs(xx - cx) > 5 or yy > 30): P.a[yy, xx] = (*shade(sk, .86), 255)
     # ojos grandes
     for ex in (cx - 10, cx + 7):
         P.rect(ex, 19, ex + 3, 19, (30, 22, 40))
@@ -373,11 +379,12 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     br = HR['dd']
     P.rect(cx - 11, 16, cx - 6, 17, br); P.rect(cx + 6, 16, cx + 11, 17, br)
     P.rect(cx - 6, 17, cx - 5, 17, br); P.rect(cx + 5, 17, cx + 6, 17, br)
+    if CS['strong']: P.rect(cx - 12, 15, cx - 6, 15, br); P.rect(cx + 6, 15, cx + 12, 15, br)
     if CS['sleepy']:
-        for ex in (cx - 10, cx + 7): P.rect(ex, 19, ex + 3, 21, skd); P.rect(ex, 22, ex + 3, 22, (30, 22, 40))
+        for ex in (cx - 10, cx + 7): P.rect(ex, 19, ex + 3, 20, skd); P.rect(ex, 21, ex + 3, 21, (30, 22, 40))
     # nariz, boca, rubor
     P.px(cx + 1, 26, skdd); P.rect(cx - 1, 28, cx + 2, 28, (176, 72, 84)); P.px(cx + 2, 27, (176, 72, 84))
-    if style != 'king':
+    if style not in ('king', 'short', 'shag'):
         for bx in (cx - 13, cx + 10): P.rect(bx, 26, bx + 2, 26, (246, 150, 150)); P.rect(bx + 1, 27, bx + 2, 27, (246, 150, 150))
     if CS['glasses']:   # gafas redondas
         for ex in (cx - 12, cx + 5):
@@ -386,7 +393,11 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
             P.rect(ex + 1, 25, ex + 2, 25, (210, 232, 255))
         P.rect(cx - 4, 21, cx + 3, 21, (34, 30, 48))
     # ---------- pelo frontal (4 tonos)
-    if style == 'short':
+    if style == 'shag':
+        P.add(lambda d: d.polygon([(cx - 21, 32), (cx - 22, 12), (cx - 15, 3), (cx - 5, 0), (cx + 6, 0), (cx + 15, 3), (cx + 21, 11), (cx + 22, 32), (cx + 18, 24), (cx + 15, 15), (cx + 8, 11), (cx - 2, 11), (cx - 10, 12), (cx - 15, 16), (cx - 18, 22)], fill=255), HR['b'], edge_k=.45)
+        P.add(lambda d: d.polygon([(cx - 14, 5), (cx - 6, 1), (cx + 6, 3), (cx + 14, 8), (cx + 4, 6), (cx - 6, 8)], fill=255), HR['l'], edge=False, sh=False, hi=False)
+        P.line([(cx - 4, 2), (cx - 8, 10)], HR['d'])
+    elif style == 'short':
         P.add(lambda d: d.polygon([(cx - 19, 24), (cx - 20, 11), (cx - 14, 4), (cx - 6, 1), (cx + 4, 0), (cx + 13, 3), (cx + 19, 9), (cx + 20, 24), (cx + 17, 15), (cx + 10, 11), (cx + 2, 10), (cx - 6, 12), (cx - 13, 15), (cx - 17, 20)], fill=255), HR['b'], edge_k=.45)
         P.line([(cx - 4, 3), (cx - 6, 10)], HR['d'])
     elif style == 'king':

@@ -34,3 +34,8 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 - Voz final: guarda el audio como `audio/narracion_stallone.mp3` y ejecuta `cd src && python3 -I build_stallone.py`.
 - Hechos usados (búsquedas web): escribió *Rocky* en muy pocos días; estaba sin dinero y vendió a su perro Butkus; los productores querían comprar el guion sin él de protagonista; se negó; al final aceptó cobrar poco por el papel; *Rocky* ganó el Oscar a Mejor Película y Butkus salió en la película. No se usan cifras discutidas (precio del perro, recompra, oferta) ni citas literales.
 - Escenas: `src/scenes4.py` · reparto ampliado en `src/cast.py` (stallone, stallone_tux, prod1, prod2) + perro Butkus en `src/sprites.py`.
+
+### Actualización Stallone (diseño + música + voz)
+- Diseño de Stallone más fiel al actor: pelo oscuro y espeso peinado hacia un lado, cejas gruesas, párpados caídos, mandíbula cuadrada y barba de dos días (`cast.py`: `stallone`, `stallone_tux`).
+- Música: piano de *Runaway* (`audio/runaway.m4a`, solo ~38 s) al inicio; *Touch The Sky* (`audio/cancion.m4a`) entra al aceptar ("Al final aceptan") y suena en el Oscar.
+- Voz: generada con ElevenLabs (voz premade "Brian", vía vidIQ). El MP3 está en la URL de vidIQ; descárgalo como `audio/narracion_stallone.mp3` y ejecuta `cd src && python3 -I build_stallone.py` para el render final con tiempos ajustados a la voz.

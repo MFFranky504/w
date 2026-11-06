@@ -97,7 +97,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     CS = resolve(who); style = CS['style']
     hr_ = CS['hair']
     p = dict(skin=CS['skin'], hair=hr_['b'], hair_d=hr_['d'], hair_l=hr_['l'], iris=CS['iris'], iris_l=tuple(min(255, int(v * 1.6 + 20)) for v in CS['iris']),
-             blush=None if style in ('king', 'short') else (244, 150, 150), brow=hr_['dd'])
+             blush=None if style in ('king', 'short', 'shag') else (244, 150, 150), brow=hr_['dd'])
     sk = p['skin']; skd = shade(sk, .84); skdd = shade(sk, .7)
     hb, hd, hl = p['hair'], p['hair_d'], p['hair_l']
     ol_skin = shade(sk, .5); ol_hair = shade(hd, .6)
@@ -111,7 +111,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
         bd.polygon([(cx - 27, 30), (cx - 31, 98), (cx - 20, 104), (cx + 20, 104), (cx + 31, 98), (cx + 27, 30), (cx + 16, 12), (cx - 16, 12)], fill=hb)
         bd.polygon([(cx + 18, 40), (cx + 31, 98), (cx + 20, 104), (cx + 22, 60)], fill=hd)
         for x in (cx - 24, cx - 18, cx + 18, cx + 24): bd.line([(x, 70), (x + (2 if x > cx else -2), 100)], fill=hd)
-    elif style in ('you', 'king', 'short'):
+    elif style in ('you', 'king', 'short', 'shag'):
         bd.polygon([(cx - 23, 34), (cx - 24, 58), (cx - 17, 60), (cx + 17, 60), (cx + 24, 58), (cx + 23, 34)], fill=hd)
     final.alpha_composite(outline(back, ol_hair))
 
@@ -168,10 +168,15 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     for e in ears: d.ellipse(e, fill=sk)
     d.point((cx - 19, 47), fill=skd); d.point((cx - 19, 48), fill=skd); d.point((cx + 19, 47), fill=skd); d.point((cx + 19, 48), fill=skd)
     fpoly = [(cx - 18, 24), (cx + 18, 24), (cx + 19, 48), (cx + 15, 58), (cx + 7, 66), (cx, 69), (cx - 7, 66), (cx - 15, 58), (cx - 19, 48)]
+    if CS['strong']: fpoly = [(cx - 18, 24), (cx + 18, 24), (cx + 21, 46), (cx + 20, 58), (cx + 12, 67), (cx, 70), (cx - 12, 67), (cx - 20, 58), (cx - 21, 46)]
     d.polygon(fpoly, fill=sk)
     d.polygon([(cx + 15, 30), (cx + 18, 26), (cx + 19, 48), (cx + 15, 58), (cx + 10, 63), (cx + 14, 52), (cx + 16, 44)], fill=skd)
     final.alpha_composite(outline(face, ol_skin))
     px = final.load()
+    if CS['stubble']:
+        for yy in range(54, 70):
+            for xx in range(cx - 19, cx + 20):
+                if (xx * 7 + yy * 13) % 9 == 0 and px[xx, yy][3] > 0 and tuple(px[xx, yy][:3]) in (tuple(sk), tuple(skd)): px[xx, yy] = (*shade(sk, .8), 255)
     # rubor
     if p['blush']:
         for bx in (cx - 14, cx + 9):
@@ -195,6 +200,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
                 for xx in range(x0, x0 + 10): px[xx, yy] = (*skd, 255)
             for xx in range(x0, x0 + 10): px[xx, ey + 3] = (*LASH, 255)
     # cejas
+    thick = 2 if CS['strong'] else 1
     br = p['brow']
     d = ImageDraw.Draw(final)
     lb, rb = (cx - 14, cx - 6), (cx + 6, cx + 14)
@@ -233,7 +239,12 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
 
     # ------------------------------------------------ pelo frontal
     hair, d = L()
-    if style == 'short':
+    if style == 'shag':
+        d.polygon([(cx - 24, 52), (cx - 27, 30), (cx - 23, 14), (cx - 13, 4), (cx, 0), (cx + 13, 3), (cx + 22, 10), (cx + 27, 26), (cx + 25, 52), (cx + 21, 42), (cx + 19, 32), (cx + 14, 24), (cx + 6, 18), (cx - 4, 17), (cx - 12, 21), (cx - 18, 28), (cx - 21, 40)], fill=hb)
+        d.polygon([(cx + 12, 5), (cx + 22, 10), (cx + 27, 26), (cx + 25, 52), (cx + 21, 42), (cx + 19, 30)], fill=hd)
+        for a_, b_ in [((cx - 20, 12), (cx - 6, 4)), ((cx - 4, 3), (cx + 12, 6)), ((cx - 16, 22), (cx - 8, 12)), ((cx + 2, 9), (cx + 14, 14))]: d.line([a_, b_], fill=hl)
+        d.line([(cx - 9, 5), (cx - 14, 18)], fill=hd); d.line([(cx - 2, 4), (cx - 5, 15)], fill=hd)
+    elif style == 'short':
         d.polygon([(cx - 22, 50), (cx - 24, 32), (cx - 20, 18), (cx - 12, 9), (cx - 2, 5), (cx + 9, 6), (cx + 18, 12), (cx + 23, 22), (cx + 24, 34), (cx + 22, 48), (cx + 19, 34), (cx + 15, 24), (cx + 8, 19), (cx, 18), (cx - 10, 20), (cx - 16, 25), (cx - 19, 38)], fill=hb)
         d.polygon([(cx + 14, 14), (cx + 23, 22), (cx + 24, 34), (cx + 22, 48), (cx + 19, 34), (cx + 18, 24)], fill=hd)
         d.line([(cx - 6, 8), (cx - 8, 22)], fill=hd)

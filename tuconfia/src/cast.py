@@ -18,11 +18,11 @@ CAST = {
  'kid_c':      dict(style='short', skin=(246, 208, 176), hair=ramp((178, 120, 66)), iris=(70, 110, 140), outfit='tee_red', kid=True),
 
  # --- historia 3: Stallone / Rocky
- 'stallone': dict(style='king', skin=(232, 184, 146), hair=ramp((54, 38, 34)), iris=(70, 50, 40), outfit='grey', sleepy=True),
- 'stallone_tux': dict(style='king', skin=(232, 184, 146), hair=ramp((54, 38, 34)), iris=(70, 50, 40), outfit='tux', sleepy=True),
+ 'stallone': dict(style='shag', skin=(224, 174, 132), hair=ramp((40, 30, 28)), iris=(66, 46, 36), outfit='grey', sleepy=True, strong=True, stubble=True),
+ 'stallone_tux': dict(style='shag', skin=(224, 174, 132), hair=ramp((40, 30, 28)), iris=(66, 46, 36), outfit='tux', sleepy=True, strong=True, stubble=True),
  'prod1': dict(style='short', skin=(240, 196, 160), hair=ramp((176, 176, 186)), iris=(80, 64, 52), outfit='blazer', beard=False),
  'prod2': dict(style='short', skin=(236, 190, 154), hair=ramp((60, 52, 50)), iris=(60, 84, 120), outfit='teacher', glasses=True),
 }
 def resolve(who):
-    c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False)
+    c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False)
     return c

@@ -165,7 +165,13 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
     if pose == 'toss':
         P.add(lambda d: d.ellipse([int(hndR[0]) - 3, int(hndR[1]) - 11, int(hndR[0]) + 5, int(hndR[1]) - 3], fill=255), (248, 246, 238))
     # ---------------- cabeza (≈ 6.5 cabezas de alto)
-    P.add(lambda d: d.polygon([(cx - 8, 8), (cx + 8, 8), (cx + 8.6, 16), (cx + 7, 21), (cx + 4, 25), (cx, 26.5), (cx - 4, 25), (cx - 7, 21), (cx - 8.6, 16)], fill=255), sk, sh=False, hi=False, edge_k=.42)
+    fp = [(cx - 8, 8), (cx + 8, 8), (cx + 8.6, 16), (cx + 7, 21), (cx + 4, 25), (cx, 26.5), (cx - 4, 25), (cx - 7, 21), (cx - 8.6, 16)]
+    if CS['strong']: fp = [(cx - 8, 8), (cx + 8, 8), (cx + 9.4, 16), (cx + 8.8, 22), (cx + 6, 26), (cx, 27.6), (cx - 6, 26), (cx - 8.8, 22), (cx - 9.4, 16)]
+    P.add(lambda d: d.polygon(fp, fill=255), sk, sh=False, hi=False, edge_k=.42)
+    if CS['stubble']:
+        for yy in range(22, 28):
+            for xx in range(int(cx - 9), int(cx + 10)):
+                if P.a[yy, xx, 3] > 0 and tuple(P.a[yy, xx, :3]) == tuple(sk) and (abs(xx - cx) > 3 or yy > 25): P.a[yy, xx] = (*shade(sk, .86), 255)
     for ex in (cx - 11, cx + 8):
         P.add(lambda d, ex=ex: d.ellipse([ex, 15, ex + 3, 20], fill=255), sk, sh=False, hi=False, edge_k=.42)
     m = P.mask(lambda d: d.polygon([(cx + 4, 10), (cx + 8.6, 14), (cx + 7, 21), (cx + 4, 25), (cx + 2, 25.5), (cx + 5, 20), (cx + 5, 14)], fill=255))
@@ -176,16 +182,20 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.rect(ex, 15, ex + 2, 18, (255, 255, 255)); P.rect(ex + 1, 15, ex + 2, 18, CS['iris'])
         P.rect(ex + 1, 16, ex + 2, 17, (24, 18, 32)); P.px(ex + 1, 15, (255, 255, 255))
     if CS['sleepy']:
-        for ex in (cx - 5, cx + 3): P.rect(ex, 14, ex + 2, 15, skd); P.rect(ex, 16, ex + 2, 16, (30, 22, 40))
+        for ex in (cx - 5, cx + 3): P.rect(ex, 14, ex + 2, 14, skd); P.rect(ex, 15, ex + 2, 15, (30, 22, 40))
     P.rect(cx - 6, 12, cx - 3, 12, hc['d']); P.rect(cx + 3, 12, cx + 6, 12, hc['d'])
+    if CS['strong']: P.rect(cx - 6, 11, cx - 3, 11, hc['dd']); P.rect(cx + 3, 11, cx + 6, 11, hc['dd'])
     P.px(cx + 1, 21, skdd); P.rect(cx - 1, 23, cx + 1, 23, (182, 78, 90))
-    if style not in ('king', 'short'):
+    if style not in ('king', 'short', 'shag'):
         P.rect(cx - 7, 20, cx - 6, 20, BLUSH); P.rect(cx + 6, 20, cx + 7, 20, BLUSH)
     if CS['glasses']:
         for ex in (cx - 7, cx + 2): P.add(lambda d, ex=ex: d.rectangle([ex, 13, ex + 5, 19], outline=255), (36, 32, 50), edge=False, sh=False, hi=False)
         P.rect(cx - 1, 16, cx + 1, 16, (36, 32, 50)); P.px(cx - 6, 18, (210, 232, 255))
     # ---------------- pelo
-    if style == 'short':
+    if style == 'shag':
+        P.add(lambda d: d.polygon([(cx - 11, 25), (cx - 11.6, 8), (cx - 6.5, 2), (cx, 0), (cx + 6.5, 1), (cx + 11, 6), (cx + 11.6, 25), (cx + 9, 18), (cx + 8, 11), (cx + 3, 8), (cx - 3, 9), (cx - 8, 12), (cx - 9.5, 19)], fill=255), hc['b'], edge_k=.45)
+        P.line([(cx - 7, 4), (cx, 2)], hc['l']); P.line([(cx + 1, 2), (cx + 7, 5)], hc['l'])
+    elif style == 'short':
         P.add(lambda d: d.polygon([(cx - 10, 18), (cx - 10.5, 8), (cx - 6, 2), (cx, 0), (cx + 6, 1), (cx + 10, 6), (cx + 10.5, 18), (cx + 8, 11), (cx + 3, 8), (cx - 3, 9), (cx - 7, 12)], fill=255), hc['b'], edge_k=.45)
     elif style == 'king':
         P.add(lambda d: d.polygon([(cx - 10, 17), (cx - 10.5, 8), (cx - 6, 2), (cx, 0), (cx + 6, 1), (cx + 10, 6), (cx + 10.5, 17), (cx + 8, 10), (cx + 5, 13), (cx + 2, 8), (cx - 1, 13), (cx - 4, 8), (cx - 8, 12)], fill=255), hc['b'], edge_k=.45)

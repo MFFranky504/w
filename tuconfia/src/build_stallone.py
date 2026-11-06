@@ -71,7 +71,7 @@ def align_real(path):
 def estimate():
     t, starts, ends = 0.25, [], []
     for l in LINES:
-        d = len(clean(l['t'])) / 15.0
+        d = len(clean(l['t'])) / 16.5
         starts.append(t); ends.append(t + d); t += d + l['p']
     return starts, ends, t + 1.0 + LOOP_D
 
@@ -91,7 +91,7 @@ PS = S2.portrait_scene
 SCENES = [
     dict(n='liquor', a='L1', b='L1', fn=lambda t, u: S4.liquor(t, u), cam=[(0, 80, 190, 1.25), (1, 82, 198, 1.7)]),
     dict(n='script', a='L2', b='L2', fn=lambda t, u: S4.script_prop(t, u), cam=[(0, 80, 150, 1.1), (1, 70, 150, 1.5)]),
-    dict(n='portS', a='L3a', b='L3a', fn=lambda t, u: PS(t, 'stallone', 'n', (0, 1), 'cold', tag='SYLVESTER STALLONE'), cam=[(0, 80, 160, 1.3), (1, 80, 150, 1.6)]),
+    dict(n='portS', a='L3a', b='L3a', fn=lambda t, u: PS(t, 'stallone', 'n', (0, 1), 'cold', tag='STALLONE'), cam=[(0, 80, 160, 1.3), (1, 80, 150, 1.6)]),
     dict(n='cinema', a='L3b', b='L3b', fn=lambda t, u: S4.cinema(t, u), cam=[(0, 80, 130, 1.0), (1, 60, 190, 1.4)]),
     dict(n='typing', a='L4', b='L4', fn=lambda t, u: S4.typing(t, u), cam=[(0, 80, 150, 1.05), (1, 80, 158, 1.55)]),
     dict(n='offer', a='L5', b='L5', fn=lambda t, u: S4.office(t, u, 'offer'), cam=[(0, 70, 168, 1.1), (1, 100, 176, 1.5)]),
@@ -115,7 +115,7 @@ for i in range(1, len(SCENES)):
     SCENES[i - 1]['t1'] = SCENES[i]['t0']
 
 TR = 0.28  # dissolve
-DROP_T = next(x['t0'] for x in SCENES if x['n'] == 'slam') + .02
+DROP_T = next(x['t0'] for x in SCENES if x['n'] == 'deal') + .02
 
 
 def cam_at(kf, u):
@@ -338,8 +338,8 @@ def synth_audio():
     add(np.sin(2 * np.pi * 70 * tt(.5)) * np.exp(-tt(.5) * 10) * .8, g('script')['t0'] + (g('script')['t1'] - g('script')['t0']) * .5, .9)
     add(np.sin(2 * np.pi * 60 * tt(.5)) * np.exp(-tt(.5) * 10) * .8, g('no')['t0'] + (g('no')['t1'] - g('no')['t0']) * .5, .9)
     # riser previo al drop (el drop cae en 'O la protagoniza él...') y golpe
-    G = g('slam')['t0'] + .02
-    rd = min(1.3, g('no')['t1'] - g('no')['t0'] - .5)
+    G = g('deal')['t0'] + .02
+    rd = min(1.3, g('slam')['t1'] - g('slam')['t0'] - .35)
     rise = noise(rd, 3000) * (tt(rd) / rd) ** 2.2
     add(rise * .55, G - rd - .25, .6)
     add(np.sin(2 * np.pi * (80 + 300 * (tt(rd) / rd) ** 3) * tt(rd)) * (tt(rd) / rd) * .25, G - rd - .25, .6)
@@ -355,25 +355,31 @@ def synth_audio():
     d = .5; env = np.sin(np.pi * np.clip(tt(d) / d, 0, 1)) ** 2
     add(noise(d, 1800) * env * .3, TOTAL - LOOP_D - .1, .5)      # whoosh de la disolvencia al inicio
     sfx = L.copy()
-    # ---- música
-    song = subprocess.run(['ffmpeg', '-v', 'error', '-i', f'{ROOT}/audio/cancion.m4a', '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
-    song = np.frombuffer(song, np.float32).reshape(-1, 2)
-    # inicio del "momento interesante": mayor salto de energía cerca de 31.9 s
+    # ---- música: piano de Runaway (inicio) -> Touch The Sky (cuando lo aceptan / gana el premio)
+    def dec(path):
+        raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
+        return np.frombuffer(raw, np.float32).reshape(-1, 2)
+    rms = lambda x: float(np.sqrt((x ** 2).mean()) + 1e-9)
+    song = dec(f'{ROOT}/audio/cancion.m4a')
     w = int(.01 * SR); a0, a1 = int(31.0 * SR), int(33.0 * SR)
     e = np.array([np.sqrt((song[i:i + w] ** 2).mean()) for i in range(a0, a1, w)])
     dj = np.array([e[i:i + 5].mean() - e[max(0, i - 5):i].mean() for i in range(5, len(e) - 5)])
     drop = 31.0 + (int(np.argmax(dj)) + 5) * .01
-    start1 = 2.2
-    d1 = min(G - 0.95, 14.0)
     m = np.zeros((N, 2), np.float32)
-    p1 = song[int(start1 * SR):int((start1 + d1) * SR)].copy()
-    fi_ = np.minimum(1, np.arange(len(p1)) / (SR * .8)); fo_ = np.minimum(1, (len(p1) - np.arange(len(p1))) / (SR * (1.0 if d1 < G - 0.95 else .08)))
-    p1 *= (fi_ * fo_)[:, None] * .42
+    # parte 1: piano de Runaway (suena solo ~38 s antes de que entren bajos y batería)
+    run = dec(f'{ROOT}/audio/runaway.m4a')
+    d1 = min(G - 0.9, 37.5)
+    p1 = run[int(.0 * SR):int(d1 * SR)].copy()
+    p1 *= .075 / rms(p1[int(2 * SR):])                                   # nivelar el piano (grabación muy suave)
+    fi_ = np.minimum(1, np.arange(len(p1)) / (SR * .6)); fo_ = np.minimum(1, (len(p1) - np.arange(len(p1))) / (SR * .35))
+    p1 *= (fi_ * fo_)[:, None]
     m[:len(p1)] += p1[:N]
+    # parte 2: Touch The Sky desde su drop, alineado con la escena
     ps = int((drop - .03) * SR)
     p2 = song[ps:ps + (N - int((G - .03) * SR))].copy()
+    p2 *= .105 / rms(p2[:int(8 * SR)])
     fo2 = np.minimum(1, (len(p2) - np.arange(len(p2))) / (SR * 1.3))
-    p2 *= fo2[:, None] * .78
+    p2 *= fo2[:, None]
     o = int((G - .03) * SR); n2 = min(len(p2), N - o)
     m[o:o + n2] += p2[:n2]
     # ducking con la voz (si existe) o ligero constante
