@@ -19,15 +19,18 @@ def lt(c, f=1.16):   # luz: sube valor y se calienta
     return (min(255, int(c[0] * f + 8)), min(255, int(c[1] * f + 5)), min(255, int(c[2] * f)), 255)
 
 
-CHARS = {
-    "bro": dict(skin=(214, 168, 136), hair=(78, 54, 44), coat=(54, 70, 116), pants=(46, 48, 68),
-                boot=(74, 58, 54), eye=(96, 128, 160), style="spiky", accent=(150, 120, 70)),
-    "chuy": dict(skin=(226, 182, 146), hair=(36, 30, 36), coat=(72, 98, 78), pants=(58, 62, 86),
-                 boot=(96, 62, 50), eye=(120, 86, 56), style="cap", cap=(146, 46, 54), accent=(190, 160, 90)),
-    "nati": dict(skin=(204, 154, 122), hair=(70, 50, 104), coat=(150, 84, 112), pants=(52, 52, 66),
-                 boot=(60, 50, 60), eye=(130, 96, 160), style="pony", accent=(210, 190, 130)),
-    "memo": dict(skin=(150, 108, 82), hair=(48, 36, 32), coat=(172, 138, 62), pants=(66, 64, 84),
-                 boot=(56, 52, 64), eye=(70, 110, 84), style="curly", glasses=True, accent=(110, 80, 50)),
+CHARS = {   # Bro (Chile), Chuy (México), Nati (Argentina), Memo (Venezuela)
+    "bro": dict(skin=(214, 168, 136), hair=(78, 54, 44), coat=(54, 70, 116), kind="hoodie", trim=(226, 226, 232),
+                pants=(66, 86, 126), shoe=(226, 224, 222), sole=(120, 120, 140), eye=(96, 128, 160), style="spiky"),
+    "chuy": dict(skin=(226, 182, 146), hair=(36, 30, 36), coat=(34, 112, 72), kind="jersey", trim=(236, 236, 232),
+                 pants=(46, 52, 74), shoe=(232, 232, 232), sole=(176, 60, 66), eye=(120, 86, 56), style="cap",
+                 cap=(146, 46, 54), band=True),
+    "nati": dict(skin=(204, 154, 122), hair=(70, 50, 104), coat=(122, 180, 224), kind="jersey", trim=(30, 40, 90),
+                 stripes=(238, 238, 242), pants=(34, 34, 46), shoe=(236, 236, 240), sole=(150, 150, 170),
+                 eye=(130, 96, 160), style="pony"),
+    "memo": dict(skin=(150, 108, 82), hair=(48, 36, 32), coat=(122, 34, 54), kind="jersey", trim=(214, 176, 60),
+                 pants=(88, 92, 108), shoe=(52, 52, 64), sole=(220, 220, 224), eye=(70, 110, 84), style="curly",
+                 glasses=True, jog=True),
 }
 
 
@@ -46,7 +49,7 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
     ch = CHARS[name]
     skin, hair = ch["skin"] + (255,), ch["hair"] + (255,)
     coat = (shirt or ch["coat"]) + (255,)
-    pants, boot, acc = ch["pants"] + (255,), ch["boot"] + (255,), ch["accent"] + (255,)
+    pants = ch["pants"] + (255,)
     style = ch["style"]
     img = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
@@ -64,39 +67,62 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
 
     if style == "pony":  # pelo largo detrás del cuerpo
         body(-11, 10, 11, 36, hair)
-    # piernas y botas
-    body(-8, 46, -1, 64, pants); body(1, 46, 8, 64, pants)
-    body(-9, 62, -1, 70, boot); body(1, 62, 9, 70, boot)
-    R(-9, 69, -1, 70, dk(boot, 0.6)); R(1, 69, 9, 70, dk(boot, 0.6))
-    R(-9, 62, -1, 63, lt(boot, 1.3)); R(1, 62, 9, 63, lt(boot, 1.3))
-    # abrigo / torso
-    body(-10, 26, 10, 48, coat)
-    R(-10, 46, 10, 56, coat); R(8, 46, 10, 56, dk(coat, 0.78)); R(-10, 46, -9, 56, lt(coat, 1.12)); R(-10, 55, 10, 56, dk(coat, 0.7))
-    R(-10, 47, 10, 48, dk(acc, 0.8)); R(-1, 47, 1, 49, lt(acc, 1.2))          # cinturón y hebilla
-    R(-3, 26, 3, 36, dk(coat, 0.6)); R(-4, 26, -3, 38, lt(coat, 1.2)); R(3, 26, 4, 38, dk(coat, 0.7))  # solapa en V
-    R(-1, 36, 1, 47, dk(coat, 0.7))
-    for yy in (39, 43):
-        P(-2, yy, lt(acc, 1.1)); P(1, yy, lt(acc, 1.1))
-    if name == "nati":
-        R(-10, 26, 10, 29, dk(coat, 0.85)); R(-9, 28, 9, 29, acc)
-    if name == "memo":
-        R(-10, 26, 10, 28, dk(coat, 0.75)); R(-6, 34, 6, 36, dk(coat, 0.85))
-    # brazos
+    # piernas y tenis (ropa moderna)
+    kind, trim = ch["kind"], ch["trim"] + (255,)
+    body(-8, 48, -1, 65, pants); body(1, 48, 8, 65, pants)
+    R(-7, 56, -3, 57, lt(pants, 1.25)); R(2, 56, 6, 57, lt(pants, 1.25))
+    if ch.get("jog"):
+        R(-8, 49, -7, 64, (236, 236, 240, 255)); R(7, 49, 8, 64, (236, 236, 240, 255))
+    shoe, sole = ch["shoe"] + (255,), ch["sole"] + (255,)
+    body(-9, 63, -1, 69, shoe); body(1, 63, 9, 69, shoe)
+    R(-9, 68, -1, 70, sole); R(1, 68, 9, 70, sole)
+    R(-9, 63, -4, 64, lt(shoe, 1.1)); R(1, 63, 6, 64, lt(shoe, 1.1))
+    for x in (-5, -3, 3, 5):
+        P(x, 65, dk(shoe, 0.6))
+    # torso: hoodie o camiseta de selección
+    body(-10, 26, 10, 50, coat)
+    R(-10, 49, 10, 50, dk(coat, 0.7))
+    if ch.get("stripes"):
+        for x0 in range(-10, 8, 6):
+            R(x0 + 3, 27, x0 + 6, 49, ch["stripes"] + (255,))
+        R(8, 27, 10, 49, dk(coat, 0.78))
+    if kind == "hoodie":
+        R(-7, 25, 7, 29, dk(coat, 0.62)); R(-6, 25, 6, 27, dk(coat, 0.8))      # capucha
+        R(-3, 29, -2, 37, trim); R(2, 29, 3, 36, trim)                       # cordones
+        R(-6, 42, 6, 48, dk(coat, 0.8)); R(-6, 42, 6, 43, lt(coat, 1.1))     # bolsillo
+    else:
+        R(-4, 26, 4, 28, trim); R(-3, 28, 3, 29, trim); R(-1, 29, 1, 30, trim)  # cuello en V
+        R(-10, 26, -7, 28, trim); R(7, 26, 10, 28, trim)                        # hombros con vivos
+        R(5, 33, 8, 36, (236, 236, 236, 255) if name != "nati" else (30, 40, 90, 255))  # escudo
+        P(6, 34, (196, 50, 60, 255))
+    sleeve_end = 43 if kind == "hoodie" else 34
     hand = skin
+    L = sleeve_end - 27
+
+    def vert_arm(x0, x1, y0, y1, hang=True):
+        R(x0, y0, x1, y1, hand)
+        if hang:
+            body(x0, y0, x1, min(y1, y0 + L), coat)
+        else:
+            body(x0, max(y0, y1 - L), x1, y1, coat)
+        R(x0, y1 - 1, x1, y1, dk(hand, 0.8)) if hang else None
+
     if pose != "cheer":
-        body(-13, 27, -10, 43, coat); R(-13, 43, -10, 46, hand); R(-13, 45, -10, 46, dk(hand, 0.8))
+        vert_arm(-13, -10, 27, 46)
+        if ch.get("band"):
+            R(-13, 40, -10, 41, (34, 112, 72, 255)); R(-13, 41, -10, 42, WHITE); R(-13, 42, -10, 43, (196, 50, 60, 255))
     if pose == "down":
-        body(10, 27, 13, 43, coat); R(10, 43, 13, 46, hand); R(10, 45, 13, 46, dk(hand, 0.8))
+        vert_arm(10, 13, 27, 46)
     elif pose == "fist":
-        body(10, 16, 13, 30, coat); R(9, 11, 14, 17, hand); R(9, 16, 14, 17, dk(hand, 0.8))
+        vert_arm(10, 13, 14, 30, hang=False); R(9, 9, 14, 15, hand); R(9, 14, 14, 15, dk(hand, 0.8))
     elif pose == "point":
-        body(10, 27, 21, 31, coat); R(21, 26, 26, 31, hand); R(24, 26, 26, 28, hand); R(21, 30, 26, 31, dk(hand, 0.8))
+        R(10, 27, 26, 31, hand); body(10, 27, 10 + L + 1, 31, coat); R(24, 26, 26, 28, hand)
     elif pose == "cheer":
         for x0, x1 in ((-13, -10), (10, 13)):
-            body(x0, 14, x1, 30, coat); R(x0 - 1, 9, x1 + 1, 15, hand)
+            vert_arm(x0, x1, 14, 30, hang=False); R(x0 - 1, 9, x1 + 1, 15, hand)
     elif pose == "ctrl":
-        body(10, 27, 13, 38, coat)
-        R(-13, 37, 13, 41, dk(coat, 0.9)); R(-12, 37, 12, 38, lt(coat, 1.1))
+        vert_arm(10, 13, 27, 40)
+        R(-13, 37, 13, 41, coat if kind == "hoodie" else hand)
         R(-7, 38, -4, 42, hand); R(4, 38, 7, 42, hand)
         body(-5, 37, 5, 43, (62, 66, 90, 255))
         R(-4, 38, -3, 39, (170, 70, 70, 255)); R(3, 38, 4, 39, (80, 150, 180, 255)); R(-1, 40, 1, 41, (200, 180, 100, 255))

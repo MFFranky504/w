@@ -14,27 +14,34 @@ T = 25.2
 CUTS = [3.6, 8.0, 12.6, 16.6, 20.5, 22.0]
 HOOK = "MI BRO ES EL PEOR DEL EQUIPO"
 
+G, Wh, R_, Y, B, SK = (0, 104, 71), (240, 240, 240), (206, 17, 38), (252, 209, 22), (0, 56, 147), (116, 172, 223)
+FLAGS = {  # (x0, y0, x1, y1, color) en 0..1
+    "MX": [(0, 0, 1 / 3, 1, G), (1 / 3, 0, 2 / 3, 1, Wh), (2 / 3, 0, 1, 1, R_)],
+    "AR": [(0, 0, 1, 1 / 3, SK), (0, 1 / 3, 1, 2 / 3, Wh), (0, 2 / 3, 1, 1, SK)],
+    "VE": [(0, 0, 1, 1 / 3, Y), (0, 1 / 3, 1, 2 / 3, B), (0, 2 / 3, 1, 1, R_)],
+    "CL": [(0, 0, 1, 0.5, Wh), (0, 0.5, 1, 1, R_), (0, 0, 0.36, 0.5, B)],
+}
 VOICES = {
-    "bro": dict(label="BRO", color=(226, 200, 120), pitch=230),
-    "chuy": dict(label="CHUY", color=(222, 140, 130), pitch=170),
-    "nati": dict(label="NATI", color=(214, 150, 190), pitch=340),
-    "memo": dict(label="MEMO", color=(130, 190, 210), pitch=270),
+    "bro": dict(label="BRO", color=(226, 200, 120), pitch=230, flag=FLAGS["CL"]),     # Chile
+    "chuy": dict(label="CHUY", color=(222, 140, 130), pitch=170, flag=FLAGS["MX"]),   # México
+    "nati": dict(label="NATI", color=(214, 150, 190), pitch=340, flag=FLAGS["AR"]),   # Argentina
+    "memo": dict(label="MEMO", color=(130, 190, 210), pitch=270, flag=FLAGS["VE"]),   # Venezuela
     "todos": dict(label="TODOS", color=(255, 255, 255), pitch=250),
 }
 LINES = [
-    (0.1, 2.2, "chuy", "¡0 y 14, bro! ¡Ni estorbar sabes!"),
-    (2.3, 3.5, "memo", "Hasta el bot te ganó."),
-    (3.7, 5.2, "nati", "¿Agarras el control o lo abrazas?"),
-    (5.3, 6.4, "bro", "Es que me sudan las manos…"),
-    (6.5, 7.9, "chuy", "¡Estás fuera del equipo!"),
+    (0.1, 2.2, "chuy", "¡No manches, 0 y 14, bro!"),
+    (2.3, 3.5, "memo", "Hasta el bot te ganó, chamo."),
+    (3.7, 5.2, "nati", "¿Agarrás el control o lo abrazás?"),
+    (5.3, 6.4, "bro", "Es que me sudan las manos, po…"),
+    (6.5, 7.9, "chuy", "¡Estás fuera del equipo, güey!"),
     (8.1, 9.3, "bro", "Hoy me vuelvo bueno."),
     (11.1, 12.5, "bro", "Ya entendí el juego."),
-    (12.7, 13.8, "nati", "¡¡25 y 0!! ¡Bro!"),
+    (12.7, 13.8, "nati", "¡25 y 0! ¡Mirá vos, bro!"),
     (13.8, 14.8, "chuy", "¡Ese es mi bro!"),
     (14.9, 16.5, "bro", "Cállense, bots. Me atrasan."),
-    (16.7, 17.8, "memo", "¿Qué le pasó a mi bro?"),
+    (16.7, 17.8, "memo", "¿Qué le pasó a mi bro, chamo?"),
     (17.9, 19.3, "bro", "Chuy, ¿ese fue tu mejor intento?"),
-    (19.4, 20.4, "nati", "Era más feliz perdiendo…"),
+    (19.4, 20.4, "nati", "Era más feliz perdiendo, che…"),
     (20.6, 21.9, "bro", "¿Mejor volvemos a ser malos?"),
     (22.0, 23.0, "todos", "¡ESE ES MI BRO!"),
 ]

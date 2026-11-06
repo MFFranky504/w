@@ -83,7 +83,7 @@ def post_fx(img):
     return Image.fromarray(np.clip(a, 0, 255).astype("uint8"))
 
 
-def rpg_box(img, who_label, color, text, shown, y0=1150, y1=1370, gold=False):
+def rpg_box(img, who_label, color, text, shown, flag=None, y0=1150, y1=1370, gold=False):
     """Caja de diálogo estilo JRPG con etiqueta de nombre y texto que se escribe solo."""
     layer = Image.new("RGBA", OUT, (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
@@ -92,9 +92,15 @@ def rpg_box(img, who_label, color, text, shown, y0=1150, y1=1370, gold=False):
     d.rounded_rectangle([80, y0 + 16, 914, y1 - 16], radius=18, outline=(120, 130, 230, 255) if not gold else (190, 140, 30, 255), width=3)
     if who_label:
         f = ImageFont.truetype(FONT, 34)
-        tw = d.textlength(who_label, font=f) + 44
+        fw = 58 if flag else 0
+        tw = d.textlength(who_label, font=f) + 44 + fw
         d.rounded_rectangle([80, y0 - 40, 80 + tw, y0 + 10], radius=12, fill=color + (255,), outline=(20, 16, 40, 255), width=5)
-        d.text((80 + tw / 2, y0 - 15), who_label, font=f, fill=(30, 20, 40), anchor="mm")
+        d.text((80 + fw + (tw - fw) / 2, y0 - 15), who_label, font=f, fill=(30, 20, 40), anchor="mm")
+        if flag:  # bandera del país del personaje
+            fx0, fy0, fx1, fy1 = 96, y0 - 28, 96 + 42, y0 - 2
+            for (a, b, c2, d2_, col) in flag:
+                d.rectangle([fx0 + a * 42, fy0 + b * 26, fx0 + c2 * 42 - 1, fy0 + d2_ * 26 - 1], fill=col)
+            d.rectangle([fx0, fy0, fx1, fy1], outline=(20, 16, 40, 255), width=2)
     img.paste(Image.alpha_composite(img.convert("RGBA"), layer).convert("RGB"))
     d2 = ImageDraw.Draw(img)
     f = ImageFont.truetype(FONT, 70 if gold else 56)
@@ -167,7 +173,7 @@ def render_video(ep, cta, out_mp4, workdir):
                 col = voices[who.split("+")[0]]["color"] if "+" not in who else (255, 255, 255)
                 tag = " + ".join(voices[v]["label"] for v in who.split("+"))
                 shown = int(len(text) * min(1.0, (t - t0) / (0.45 * (t1 - t0))) + 1)
-                rpg_box(img, tag, col, text, shown)
+                rpg_box(img, tag, col, text, shown, flag=None if '+' in who else voices[who].get('flag'))
         # gancho (primeros segundos): arranca ya en el fotograma 0
         if t < HOOK_SECONDS:
             text_block(img, ep["hook"], 592, 72, (236, 214, 130), stroke=11, width=900)
