@@ -151,6 +151,8 @@ def sparkles(img, t, cx, cy, n=5, spread=70):
     for i in range(n):
         a = i * 2.4 + 0.5
         x = cx + math.cos(a) * spread * (0.6 + 0.4 * (i % 2)); y = cy + math.sin(a * 1.3) * spread * 0.9
+        if abs(x - cx) < 42 and abs(y - cy) < 75:   # no tapar la cara
+            continue
         r = 2 + int((math.sin(t * 6 + i * 1.7) + 1) * 2.2)
         c = (255, 255, 255, 255)
         d.rectangle([x - r, y - 1, x + r, y + 1], fill=c); d.rectangle([x - 1, y - r, x + 1, y + r], fill=c)

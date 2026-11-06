@@ -117,7 +117,7 @@ def frame(t):
         char(c, t, "bro", expr="sad", fx=("tear",), look=-1, oy=4)
         char(c, t, "nati", expr="shock", fx=("sweat",), pose="ctrl")
         char(c, t, "memo", expr="happy", pose="down", flip=True)
-        keys = [(0, 40, 180, 290), (2.0, 36, 160, 290), (2.3, 26, 308, 296), (3.6, 24, 308, 296)]
+        keys = [(0, 40, 180, 290), (2.0, 36, 160, 290), (2.3, 26, 308, 250), (3.6, 24, 308, 250)]
         shake = 1 if t < 0.4 else 0
     elif t < 8.0:  # S2: lo corren
         light_shaft(c)
@@ -126,17 +126,17 @@ def frame(t):
         char(c, t, "nati", expr="angry" if t < 5.3 else "shock", pose="point" if pt else "ctrl", flip=pt)
         char(c, t, "memo", expr="angry", pose="point" if pt else "down", flip=True)
         char(c, t, "bro", expr="sad", fx=("tear", "sweat"), look=1, oy=8 if t > 5.3 else 3)
-        keys = [(3.6, 26, 222, 296), (5.2, 26, 222, 296), (5.3, 24, 135, 296), (6.4, 24, 135, 296),
+        keys = [(3.6, 26, 222, 250), (5.2, 26, 222, 250), (5.3, 24, 135, 250), (6.4, 24, 135, 250),
                 (6.5, 40, 180, 290), (8.0, 34, 150, 296)]
         shake = 2 if pt else 0
     elif t < 12.6:  # S3: entrenamiento nocturno
         dn = 0 if t < 9.4 else (1 if t < 10.2 else (2 if t < 11.0 else 3))
         expr = ["neutral", "angry", "angry", "shock"][dn]
-        char(c, t, "bro", x=180, feet=366, scale=3, expr=expr, pose="ctrl", bags=dn >= 2,
+        char(c, t, "bro", x=180, scale=2, expr=expr, pose="ctrl", bags=dn >= 2,
              fx=("sweat",) if dn >= 2 else (), shake=1 if dn >= 2 else 0)
         if dn:
-            sparkles(c, t, 180, 250, 6, 110)
-        keys = [(8.0, 36, 180, 296), (9.4, 30, 180, 296), (12.6, 24, 180, 296)]
+            sparkles(c, t, 180, 262, 7, 110)
+        keys = [(8.0, 36, 180, 296), (9.4, 30, 180, 250), (12.6, 24, 180, 250)]
         shake = 1 if dn >= 2 else 0
     elif t < 16.6:  # S4: vuelve "pro"
         light_shaft(c)
@@ -148,24 +148,24 @@ def frame(t):
         char(c, t, "memo", expr="happy", pose="down", flip=True)
         char(c, t, "bro", x=bx, oy=bob, pose="ctrl", **PRO)
         if t > 13.6:
-            sparkles(c, t, SEAT["bro"], 260, 5, 60)
-        keys = [(12.6, 40, 180, 290), (14.8, 40, 180, 290), (14.9, 24, 135, 296), (16.6, 24, 135, 296)]
+            sparkles(c, t, SEAT["bro"], 262, 6, 100)
+        keys = [(12.6, 40, 180, 290), (14.8, 40, 180, 290), (14.9, 24, 135, 250), (16.6, 24, 135, 250)]
     elif t < 20.5:  # S5: se pone insoportable
         light_shaft(c)
         char(c, t, "chuy", expr="sad", fx=("tear",), oy=4 if t > 17.9 else 0, pose="down")
         char(c, t, "nati", expr="sad" if t > 19.3 else "shock", pose="down")
         char(c, t, "memo", expr="shock", fx=("sweat",), pose="down", flip=True)
         char(c, t, "bro", pose="ctrl", **PRO)
-        sparkles(c, t, SEAT["bro"], 260, 4, 60)
-        keys = [(16.6, 26, 308, 296), (17.8, 26, 308, 296), (17.9, 24, 135, 296), (19.3, 24, 135, 296),
-                (19.4, 26, 222, 296), (20.5, 26, 222, 296)]
+        sparkles(c, t, SEAT["bro"], 262, 6, 100)
+        keys = [(16.6, 26, 308, 250), (17.8, 26, 308, 250), (17.9, 24, 135, 250), (19.3, 24, 135, 250),
+                (19.4, 26, 222, 250), (20.5, 26, 222, 250)]
     elif t < 22.0:  # S6: se arrepiente
         gone = t > 21.3
         light_shaft(c)
         for n_ in ("chuy", "nati", "memo"):
             char(c, t, n_, expr="shock", pose="down", flip=(n_ == "memo"))
         char(c, t, "bro", expr="shy", pose="down" if gone else "ctrl", look=-1, shirt=(34, 34, 46))
-        keys = [(20.5, 24, 135, 296), (22.0, 24, 135, 296)]
+        keys = [(20.5, 24, 135, 250), (22.0, 24, 135, 250)]
     else:  # final: todos felices, bro de nuevo "malo" (cierra el bucle con el primer plano)
         light_shaft(c)
         for n_ in ("chuy", "nati", "bro", "memo"):

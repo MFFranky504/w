@@ -14,14 +14,12 @@ from .bg import W, H
 
 FPS, SCALE = 24, 3
 OUT = (W * SCALE, H * SCALE)
-FONT_PATH = str(pathlib.Path(__file__).resolve().parent.parent / "assets" / "fonts" / "PixelifySans.ttf")  # OFL
+FONT_PATH = str(pathlib.Path(__file__).resolve().parent.parent / "assets" / "fonts" / "Jersey10-Regular.ttf")  # OFL
 
 
 def pf(size):
-    """Pixelify Sans Bold: fuente pixel art con acentos y ñ."""
-    f = ImageFont.truetype(FONT_PATH, int(size * 1.12))
-    f.set_variation_by_name("Bold")
-    return f
+    """Jersey 10: fuente pixel art con ¡ ¿ ñ y tildes bien distinguibles (la C no se confunde con la O)."""
+    return ImageFont.truetype(FONT_PATH, int(size * 1.35))
 
 
 def smooth(x):
@@ -50,6 +48,31 @@ def apply_cam(img, k, fx, fy, shake=0, t=0):
     return img.crop((x0, y0, x0 + w, y0 + h)).resize(OUT, Image.NEAREST)
 
 
+def draw_line(img, xy, s, font, fill, anchor="lm", stroke=0, stroke_fill=None):
+    """Dibuja texto; la fuente pixel no distingue «¡» de «i», así que se dibuja como «!» girada 180°."""
+    d = ImageDraw.Draw(img)
+    if "¡" not in s:
+        d.text(xy, s, font=font, fill=fill, anchor=anchor, stroke_width=stroke, stroke_fill=stroke_fill)
+        return
+    segs = [p for p in s.replace("¡", "\x00¡\x00").split("\x00") if p]
+    widths = [d.textlength("!" if p == "¡" else p, font=font) for p in segs]
+    x, y = xy
+    x0 = x - sum(widths) / 2 if anchor[0] == "m" else x
+    for p, w in zip(segs, widths):
+        if p == "¡":
+            th = int(font.size * 2)
+            tile = Image.new("RGBA", (int(w) + 24, th), (0, 0, 0, 0))
+            ImageDraw.Draw(tile).text((12, th / 2), "!", font=font, fill=fill, anchor="lm")
+            bb = tile.getbbox()
+            if bb:
+                flipped = Image.new("RGBA", tile.size, (0, 0, 0, 0))
+                flipped.paste(tile.crop(bb).rotate(180), (bb[0], bb[1]))
+                img.paste(flipped, (int(x0 - 12), int(y - th / 2 + font.size * 0.22)), flipped)  # baja bajo la línea base
+        else:
+            d.text((x0, y), p, font=font, fill=fill, anchor="lm", stroke_width=stroke, stroke_fill=stroke_fill)
+        x0 += w
+
+
 def _wrap(draw, text, font, width):
     lines, cur = [], ""
     for w in text.split():
@@ -67,7 +90,7 @@ def text_block(img, text, cy, size, fill, stroke=10, width=940, line_gap=1.12, s
     lines = _wrap(d, text, f, width)
     y = cy - (len(lines) - 1) * size * line_gap / 2
     for ln in lines:
-        d.text((OUT[0] / 2, y), ln, font=f, fill=fill, anchor="mm", stroke_width=stroke, stroke_fill=stroke_fill)
+        draw_line(img, (OUT[0] / 2, y), ln, f, fill, "mm", stroke, stroke_fill)
         y += size * line_gap
 
 
@@ -98,8 +121,8 @@ def rpg_box(img, who_label, color, text, shown, flag=None, y0=1150, y1=1370, gol
     d.rounded_rectangle([64, y0, 930, y1], radius=26, fill=fill, outline=edge, width=7)
     d.rounded_rectangle([80, y0 + 16, 914, y1 - 16], radius=18, outline=(120, 130, 230, 255) if not gold else (190, 140, 30, 255), width=3)
     if who_label:
-        f = ImageFont.truetype(FONT_PATH.replace('PixelifySans', 'PressStart2P'), 26)  # etiquetas: la C se distingue de la O
-        fw = 58 if flag else 0
+        f = pf(32)
+        fw = 60 if flag else 0
         tw = d.textlength(who_label, font=f) + 44 + fw
         d.rounded_rectangle([80, y0 - 40, 80 + tw, y0 + 10], radius=12, fill=color + (255,), outline=(20, 16, 40, 255), width=5)
         d.text((80 + fw + (tw - fw) / 2, y0 - 15), who_label, font=f, fill=(30, 20, 40), anchor="mm")
@@ -117,10 +140,24 @@ def rpg_box(img, who_label, color, text, shown, flag=None, y0=1150, y1=1370, gol
     y = (y0 + y1) / 2 - (len(lines) - 1) * (42 if gold else 34)
     left = shown
     for ln in lines:
-        d2.text((497 if gold else 104, y), ln[:max(0, left)], font=f,
-                fill=(255, 255, 255) if not gold else (255, 236, 130), anchor="mm" if gold else "lm")
+        draw_line(img, (497 if gold else 104, y), ln[:max(0, left)], f,
+                  (255, 255, 255) if not gold else (255, 236, 130), "mm" if gold else "lm")
         left -= len(ln) + 1
         y += 84 if gold else 68
+
+
+def title_card(img, text, cy, size=80, width=860):
+    """Cartel de título con placa oscura: se lee sobre cualquier fondo (marcador, caras)."""
+    d = ImageDraw.Draw(img)
+    f = pf(size)
+    lines = _wrap(d, text, f, width)
+    lw = max(d.textlength(l, font=f) for l in lines)
+    h = len(lines) * size * 1.15
+    layer = Image.new("RGBA", OUT, (0, 0, 0, 0))
+    ImageDraw.Draw(layer).rounded_rectangle([OUT[0] / 2 - lw / 2 - 44, cy - h / 2 - 26, OUT[0] / 2 + lw / 2 + 44, cy + h / 2 + 26],
+                                            radius=28, fill=(14, 16, 44, 225), outline=(226, 186, 90, 255), width=6)
+    img.paste(Image.alpha_composite(img.convert("RGBA"), layer).convert("RGB"))
+    text_block(img, text, cy, size, (252, 224, 110), stroke=0, width=width, line_gap=1.15)
 
 
 def hud(img, level, vibe):
@@ -170,23 +207,25 @@ def render_video(ep, cta, out_mp4, workdir):
         t = i / FPS
         canvas, cam, shake = ep["frame"](t)
         img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t))
-        if "banner" in ep and ep["banner"](t):
-            bt = ep["banner"](t)
-            text_block(img, bt, 520, 130 if len(bt) < 9 else 80, (252, 224, 110), stroke=14, width=900)
-        if "hud" in ep:
+        bt = ep["banner"](t) if "banner" in ep else ""
+        hook_on = any(h0 <= t < h1 for h0, h1, _ in ep["hooks"])
+        if "hud" in ep and not bt and not hook_on:   # el HUD cede su lugar a los carteles de título
             hud(img, *ep["hud"](t))
+        if bt:
+            title_card(img, bt, 340, 104 if len(bt) < 9 else 80)
         # diálogo estilo RPG (se escribe letra por letra)
         for t0, t1, who, text in lines:
             if t0 <= t < t1:
                 col = voices[who.split("+")[0]]["color"] if "+" not in who else (255, 255, 255)
                 tag = " + ".join(voices[v]["label"] for v in who.split("+"))
-                shown = int(len(text) * min(1.0, (t - t0) / (0.45 * (t1 - t0))) + 1)
+                frac = min(1.0, (t - t0) / (0.45 * (t1 - t0)))
+                shown = int(len(text) * (max(frac, 0.5) if t0 < 0.5 else frac)) + 1
                 rpg_box(img, tag, col, text, shown, flag=None if '+' in who else voices[who].get('flag'))
         # gancho (primeros segundos): arranca ya en el fotograma 0
         for h0, h1, htext in ep["hooks"]:
             if h0 <= t < h1:
-                pop = 1 + 0.10 * math.sin(min((t - h0) / 0.25, 1) * math.pi)
-                text_block(img, htext, 592, int(74 * pop), (252, 224, 110), stroke=11, width=900)
+                pop = 1 + 0.08 * math.sin(min((t - h0) / 0.25, 1) * math.pi)
+                title_card(img, htext, 340, int(84 * pop))
         # flash en cada corte
         for c in ep["cuts"]:
             if 0 <= t - c < 2.5 / FPS:

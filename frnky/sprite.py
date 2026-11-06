@@ -116,7 +116,12 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
     elif pose == "fist":
         vert_arm(10, 13, 14, 30, hang=False); R(9, 9, 14, 15, hand); R(9, 14, 14, 15, dk(hand, 0.8))
     elif pose == "point":
-        R(10, 27, 26, 31, hand); body(10, 27, 10 + L + 1, 31, coat); R(24, 26, 26, 28, hand)
+        for i, (x0, y0) in enumerate(((10, 27), (14, 29), (18, 31))):   # brazo en escalera, apunta hacia abajo
+            if i < (3 if kind == "hoodie" else 1):
+                body(x0, y0, x0 + 5, y0 + 4, coat)
+            else:
+                R(x0, y0, x0 + 5, y0 + 4, hand); R(x0, y0 + 3, x0 + 5, y0 + 4, dk(hand, 0.8))
+        R(22, 32, 27, 37, hand); R(26, 33, 28, 35, hand); R(22, 36, 27, 37, dk(hand, 0.8))
     elif pose == "cheer":
         for x0, x1 in ((-13, -10), (10, 13)):
             vert_arm(x0, x1, 14, 30, hang=False); R(x0 - 1, 9, x1 + 1, 15, hand)
