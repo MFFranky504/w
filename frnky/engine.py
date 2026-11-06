@@ -98,7 +98,7 @@ def rpg_box(img, who_label, color, text, shown, flag=None, y0=1150, y1=1370, gol
     d.rounded_rectangle([64, y0, 930, y1], radius=26, fill=fill, outline=edge, width=7)
     d.rounded_rectangle([80, y0 + 16, 914, y1 - 16], radius=18, outline=(120, 130, 230, 255) if not gold else (190, 140, 30, 255), width=3)
     if who_label:
-        f = pf(42)
+        f = ImageFont.truetype(FONT_PATH.replace('PixelifySans', 'PressStart2P'), 26)  # etiquetas: la C se distingue de la O
         fw = 58 if flag else 0
         tw = d.textlength(who_label, font=f) + 44 + fw
         d.rounded_rectangle([80, y0 - 40, 80 + tw, y0 + 10], radius=12, fill=color + (255,), outline=(20, 16, 40, 255), width=5)
