@@ -19,7 +19,7 @@ Hipótesis (a verificar, no hechos): Kanye es más conocido, el tema "accidente 
 ## 2. Plantilla fija (ya en `src/captions.py`)
 - Gancho: «¿Sabías que [famoso] transformó [fracaso o rechazo] en [logro]?» (primera frase del video y del caption).
 - Estructura: gancho → fracaso → giro → pregunta.
-- Cierre del video y del caption: «¿Cuál fue tu mayor rechazo?»
+- Cierre del video y del caption: «¿Qué vas a empezar hoy para demostrarte que sí puedes?»
 - Hashtags: `#Motivación #Superación #HistoriasQueInspiran` + 1 de la persona (`#KanyeWest`). Sin hashtags ultra específicos (#RockyBalboa).
 - Generar: `python3 src/captions.py "Steve Jobs" "su despido de Apple" "el regreso que cambió la tecnología"`
 - Nota: el video de Jobs en curso tiene gancho/cierre anteriores; si quieres, lo reescribo al nuevo formato antes de renderizar.

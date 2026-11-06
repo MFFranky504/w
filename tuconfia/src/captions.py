@@ -4,7 +4,7 @@ Uso: python3 src/captions.py "Kanye West" "un accidente que casi lo mata" "su pr
 import sys
 
 HASHTAGS_FIJOS = ["#Motivación", "#Superación", "#HistoriasQueInspiran"]
-CIERRE = "¿Cuál fue tu mayor rechazo?"          # pregunta final del video y del caption
+CIERRE = "¿Qué vas a empezar hoy para demostrarte que sí puedes?"   # pregunta final: mira al futuro y a la capacidad
 
 
 def gancho(famoso, fracaso, logro):
