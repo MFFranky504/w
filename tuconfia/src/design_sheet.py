@@ -7,7 +7,7 @@ BG=(52,110,112)
 chars=[('STEPHEN KING','king',['plaid','teacher']),('TABITHA','tab',['cardigan','uniform']),('TÚ (espectador)','you',['hoodie'])]
 RH=520
 sheet=Image.new('RGB',(1700,60+RH*3),BG); d=ImageDraw.Draw(sheet)
-for x,t in ((40,'1 · RPG  (planos MUY lejanos)'),(480,'2 · BATALLA  (planos medios / lejanos)'),(1180,'3 · PORTRAIT  (solo primeros planos)')):
+for x,t in ((40,'1 · RPG  (planos MUY lejanos)'),(520,'2 · BATALLA  (planos medios / lejanos)'),(1180,'3 · PORTRAIT  (solo primeros planos)')):
     d.text((x,14),t,font=F(26),fill=(255,236,150))
 for r,(name,who,outs) in enumerate(chars):
     y0=60+r*RH
@@ -15,9 +15,9 @@ for r,(name,who,outs) in enumerate(chars):
     x=40
     for o in outs:
         for st in (0,1):
-            im=S.overworld(who,o,step=st); big=im.resize((im.width*4,im.height*4),Image.NEAREST); sheet.paste(big,(x,y0+RH-90-big.height),big); x+=big.width+6
-        x+=14
-    x=480
+            im=S.rpg(who,o,step=st); big=im.resize((im.width*4,im.height*4),Image.NEAREST); sheet.paste(big,(x,y0+RH-60-big.height),big); x+=big.width-14
+        x+=24
+    x=520
     for o in outs[:2]:
         for pose in ('hold','stand'):
             if o in('teacher','uniform') and pose=='hold': continue

@@ -249,3 +249,135 @@ def overworld(who='king', outfit=None, step=0, W=30, H=40):
         P.add(lambda d: d.polygon([(cx - 10, 14), (cx - 11, 6), (cx - 5, 1), (cx + 2, 0), (cx + 8, 3), (cx + 10, 7), (cx + 10, 14), (cx + 7, 8), (cx + 3, 11), (cx, 6), (cx - 4, 10), (cx - 8, 8)], fill=255), hr, edge=False)
         P.add(lambda d: d.polygon([(cx - 1, 2), (cx + 3, -1 + 2), (cx + 4, 3)], fill=255), hr, edge=False)
     return P.final()
+
+
+# ------------------------------------------------------------------ CHIBI RPG v2 (estilo del sprite de referencia: cabeza grande, 4 tonos, accesorios)
+def rpg(who='king', outfit=None, step=0, W=46, H=70):
+    P = Paint(W, H)
+    cx = W // 2
+    sk = SKIN[who]
+    outfit = outfit or {'king': 'plaid', 'tab': 'cardigan', 'you': 'hoodie'}[who]
+    skd = shade(sk, .84); skdd = shade(sk, .68); sk_l = shade(sk, 1.06)
+    NAVY = (30, 34, 78)
+    HR = {'king': dict(b=(52, 50, 78), d=(32, 30, 54), dd=(22, 20, 38), l=(110, 120, 176)),
+          'tab': dict(b=(150, 88, 54), d=(112, 62, 40), dd=(78, 42, 30), l=(214, 150, 92)),
+          'you': dict(b=(72, 86, 160), d=(48, 58, 118), dd=(32, 38, 82), l=(130, 160, 232))}[who]
+    cl = {'plaid': dict(b=(214, 74, 66), d=(158, 44, 52), l=(246, 124, 108), pants=(70, 106, 176), boots=(110, 70, 52)),
+          'teacher': dict(b=(236, 232, 218), d=(190, 186, 176), l=(255, 255, 250), pants=(128, 104, 80), boots=(84, 58, 46)),
+          'cardigan': dict(b=(236, 182, 76), d=(188, 134, 48), l=(255, 220, 124), pants=(84, 112, 160), boots=(116, 70, 54)),
+          'uniform': dict(b=(248, 126, 166), d=(208, 86, 128), l=(255, 176, 204), pants=(252, 252, 254), boots=(206, 206, 216)),
+          'hoodie': dict(b=(86, 102, 212), d=(56, 68, 156), l=(134, 154, 244), pants=(52, 58, 106), boots=(248, 248, 252))}[outfit]
+    cb, cd, clt = cl['b'], cl['d'], cl['l']
+    pants, boots = cl['pants'], cl['boots']
+    mint = (126, 232, 196)
+    lo = step
+    # ---------- pelo trasero (largo en Tabitha, mechón lateral en los demás)
+    if who == 'tab':
+        P.add(lambda d: d.polygon([(2, 14), (3, 6), (12, 1), (32, 1), (41, 6), (42, 14), (43, 40), (38, 46), (33, 44), (33, 30), (11, 30), (11, 44), (6, 46), (1, 40)], fill=255), HR['d'], edge_k=.4)
+    elif who == 'you':
+        P.add(lambda d: d.polygon([(3, 18), (4, 8), (12, 3), (32, 3), (40, 8), (41, 18), (40, 30), (34, 30), (11, 30), (5, 30)], fill=255), HR['dd'], edge_k=.4)
+    # ---------- piernas
+    P.add(lambda d: d.rectangle([cx - 10, 50, cx - 1, 61 - lo], fill=255), pants, edge_k=.45)
+    P.add(lambda d: d.rectangle([cx + 1, 50, cx + 10, 61 + lo], fill=255), pants, edge_k=.45)
+    # botas con puño y suela
+    for sx, dy in ((-1, -lo), (1, lo)):
+        x0 = cx - 11 if sx < 0 else cx + 1
+        y0 = 60 + dy
+        P.add(lambda d, x0=x0, y0=y0: d.rectangle([x0, y0, x0 + 10, y0 + 6], fill=255), boots, edge_k=.4)
+        if outfit != 'hoodie': P.rect(x0 + 1, y0, x0 + 9, y0 + 1, mint if outfit in ('plaid', 'cardigan') else shade(boots, 1.2))
+        P.rect(x0, y0 + 6, x0 + 10, y0 + 6, (238, 228, 206) if outfit != 'hoodie' else (210, 210, 224))
+    # ---------- torso y brazos
+    P.add(lambda d: d.rounded_rectangle([cx - 12, 34, cx + 12, 52], radius=3, fill=255), cb, edge_k=.42)
+    P.add(lambda d: d.rounded_rectangle([cx - 17, 35, cx - 11, 47], radius=2, fill=255), cb, edge_k=.42)
+    P.add(lambda d: d.rounded_rectangle([cx + 11, 35, cx + 17, 47], radius=2, fill=255), cb, edge_k=.42)
+    P.rect(cx - 17, 45, cx - 11, 46, mint if outfit in ('plaid', 'cardigan', 'uniform') else cd); P.rect(cx + 11, 45, cx + 17, 46, mint if outfit in ('plaid', 'cardigan', 'uniform') else cd)
+    P.add(lambda d: d.ellipse([cx - 18, 46, cx - 10, 53], fill=255), sk, edge_k=.45)
+    P.add(lambda d: d.ellipse([cx + 10, 46, cx + 18, 53], fill=255), sk, edge_k=.45)
+    P.rect(cx - 14, 50, cx - 12, 51, skdd); P.rect(cx + 14, 50, cx + 16, 51, skdd)
+    # detalles de la ropa
+    if outfit == 'plaid':
+        for y in (38, 42, 46, 50): P.rect(cx - 11, y, cx + 11, y, cd)
+        for x in (cx - 10, cx - 4, cx + 6, cx + 11): P.rect(x, 36, x, 51, cd)
+        P.add(lambda d: d.polygon([(cx - 4, 34), (cx + 4, 34), (cx + 3, 52), (cx - 3, 52)], fill=255), (250, 248, 244), edge_k=.6)   # camiseta
+        P.rect(cx - 12, 51, cx + 12, 52, (74, 52, 44)); P.rect(cx - 1, 51, cx + 1, 52, (240, 200, 90))   # cinturón
+        P.rect(cx + 6, 40, cx + 11, 44, (250, 248, 238)); P.rect(cx + 7, 41, cx + 10, 41, (140, 140, 156)); P.rect(cx + 7, 43, cx + 10, 43, (140, 140, 156))  # hojas en el bolsillo
+    elif outfit == 'teacher':
+        P.add(lambda d: d.polygon([(cx - 2, 36), (cx + 2, 36), (cx + 3, 48), (cx, 51), (cx - 3, 48)], fill=255), (56, 94, 170), edge_k=.5)
+        P.line([(cx - 8, 34), (cx, 40), (cx + 8, 34)], (252, 252, 250)); P.rect(cx - 12, 51, cx + 12, 52, (74, 52, 44))
+    elif outfit == 'cardigan':
+        P.add(lambda d: d.polygon([(cx - 7, 34), (cx + 7, 34), (cx, 50)], fill=255), (252, 242, 226), sh=False, edge_k=.55)
+        P.line([(cx - 8, 34), (cx, 51)], cd); P.line([(cx + 8, 34), (cx, 51)], cd)
+        for y in (44, 48): P.rect(cx + 2, y, cx + 3, y, (124, 82, 34))
+        P.rect(cx - 12, 51, cx + 12, 52, cd)
+    elif outfit == 'uniform':
+        P.add(lambda d: d.polygon([(cx - 8, 34), (cx + 8, 34), (cx, 42)], fill=255), (255, 255, 255), sh=False, edge_k=.6)
+        P.add(lambda d: d.rectangle([cx - 12, 44, cx + 12, 52], fill=255), (255, 178, 114), edge_k=.5)
+        P.rect(cx + 5, 38, cx + 10, 41, (255, 255, 255)); P.rect(cx + 6, 40, cx + 9, 40, cd)
+    else:  # hoodie
+        P.rect(cx - 5, 38, cx - 5, 48, (246, 246, 252)); P.rect(cx + 5, 38, cx + 5, 46, (246, 246, 252))
+        P.add(lambda d: d.polygon([(cx - 9, 44), (cx + 9, 44), (cx + 11, 51), (cx - 11, 51)], fill=255), clt, edge_k=.55)
+        P.add(lambda d: d.rounded_rectangle([cx - 11, 29, cx + 11, 35], radius=3, fill=255), cd, edge_k=.5)
+        P.rect(cx - 12, 51, cx + 12, 52, cd)
+    # ---------- bufanda / cuello (grande como en la referencia)
+    if who == 'tab':
+        P.add(lambda d: d.rounded_rectangle([cx - 14, 31, cx + 14, 39], radius=3, fill=255), (250, 240, 222), edge_k=.5)
+        P.add(lambda d: d.rectangle([cx - 14, 37, cx - 7, 48], fill=255), (250, 240, 222), edge_k=.5)
+        for y in (33, 36): P.rect(cx - 15, y, cx + 15, y, (226, 206, 176))
+        for y in (40, 43, 46): P.rect(cx - 13, y, cx - 8, y, (226, 206, 176))
+    elif who == 'you':
+        P.add(lambda d: d.arc([cx - 13, 28, cx + 13, 48], 20, 160, fill=255, width=2), (46, 46, 60), sh=False, hi=False, edge_k=.4)
+        P.add(lambda d: d.ellipse([cx - 16, 33, cx - 9, 43], fill=255), (60, 60, 80)); P.add(lambda d: d.ellipse([cx + 9, 33, cx + 16, 43], fill=255), (60, 60, 80))
+        P.rect(cx - 14, 36, cx - 11, 40, (255, 170, 64)); P.rect(cx + 11, 36, cx + 14, 40, (255, 170, 64))
+        P.rect(cx - 14, 36, cx - 13, 37, (255, 218, 140)); P.rect(cx + 11, 36, cx + 12, 37, (255, 218, 140))
+    else:
+        P.add(lambda d: d.rounded_rectangle([cx - 12, 31, cx + 12, 36], radius=3, fill=255), (250, 248, 244) if outfit == 'plaid' else (252, 252, 250), edge_k=.55)
+    # ---------- cabeza
+    P.add(lambda d: d.polygon([(cx - 17, 13), (cx + 17, 13), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx - 11, 32), (cx - 16, 28), (cx - 18, 21)], fill=255), sk, sh=False, hi=False, edge_k=.42)
+    m = P.mask(lambda d: d.polygon([(cx + 10, 15), (cx + 17, 16), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx + 6, 32), (cx + 12, 27), (cx + 13, 21)], fill=255))
+    P.a[m & (P.a[..., 3] > 0)] = (*skd, 255)
+    m2 = P.mask(lambda d: d.polygon([(cx - 15, 22), (cx - 13, 22), (cx - 12, 29), (cx - 15, 27)], fill=255)); P.a[m2 & (P.a[..., 3] > 0)] = (*sk_l, 255)
+    # ojos grandes
+    for ex in (cx - 10, cx + 7):
+        P.rect(ex, 19, ex + 3, 19, (30, 22, 40))
+        P.rect(ex, 20, ex + 2, 24, NAVY if who != 'tab' else (74, 42, 30)); P.rect(ex + 3, 20, ex + 3, 23, (255, 255, 255))
+        P.rect(ex, 20, ex, 20, (255, 255, 255)); P.rect(ex + 1, 20, ex + 1, 20, (255, 255, 255)); P.rect(ex + 1, 21, ex + 1, 22, (40, 54, 120) if who != 'tab' else (120, 74, 46))
+        P.rect(ex, 25, ex + 2, 25, skd)
+    # cejas gruesas
+    br = HR['dd']
+    P.rect(cx - 11, 16, cx - 6, 17, br); P.rect(cx + 6, 16, cx + 11, 17, br)
+    P.rect(cx - 6, 17, cx - 5, 17, br); P.rect(cx + 5, 17, cx + 6, 17, br)
+    # nariz, boca, rubor
+    P.px(cx + 1, 26, skdd); P.rect(cx - 1, 28, cx + 2, 28, (176, 72, 84)); P.px(cx + 2, 27, (176, 72, 84))
+    if who != 'king':
+        for bx in (cx - 13, cx + 10): P.rect(bx, 26, bx + 2, 26, (246, 150, 150)); P.rect(bx + 1, 27, bx + 2, 27, (246, 150, 150))
+    if who == 'king':   # gafas redondas
+        for ex in (cx - 12, cx + 5):
+            P.rect(ex, 18, ex + 7, 18, (34, 30, 48)); P.rect(ex, 26, ex + 7, 26, (34, 30, 48))
+            P.rect(ex, 18, ex, 26, (34, 30, 48)); P.rect(ex + 7, 18, ex + 7, 26, (34, 30, 48))
+            P.rect(ex + 1, 25, ex + 2, 25, (210, 232, 255))
+        P.rect(cx - 4, 21, cx + 3, 21, (34, 30, 48))
+    # ---------- pelo frontal (4 tonos)
+    if who == 'king':
+        P.add(lambda d: d.polygon([(cx - 19, 22), (cx - 20, 11), (cx - 14, 4), (cx - 6, 1), (cx + 4, 0), (cx + 13, 3), (cx + 19, 9), (cx + 20, 22), (cx + 16, 15), (cx + 13, 19), (cx + 9, 13), (cx + 4, 19), (cx, 13), (cx - 5, 18), (cx - 9, 13), (cx - 14, 19), (cx - 17, 14)], fill=255), HR['b'], edge_k=.45)
+        P.add(lambda d: d.polygon([(cx - 8, 3), (cx - 3, -3 + 3), (cx + 1, 3)], fill=255), HR['b'], edge=False)
+        P.add(lambda d: d.polygon([(cx + 5, 2), (cx + 12, -2 + 3), (cx + 13, 8)], fill=255), HR['b'], edge=False)
+    elif who == 'tab':
+        P.add(lambda d: d.polygon([(cx - 20, 34), (cx - 21, 12), (cx - 14, 4), (cx - 2, 1), (cx + 12, 3), (cx + 20, 10), (cx + 21, 34), (cx + 17, 22), (cx + 15, 17), (cx + 10, 16), (cx + 5, 12), (cx, 17), (cx - 6, 12), (cx - 11, 17), (cx - 16, 16), (cx - 17, 24)], fill=255), HR['b'], edge_k=.45)
+    else:
+        P.add(lambda d: d.polygon([(cx - 19, 24), (cx - 20, 11), (cx - 12, 3), (cx - 2, 1), (cx + 10, 2), (cx + 18, 8), (cx + 20, 22), (cx + 17, 15), (cx + 13, 20), (cx + 10, 13), (cx + 5, 19), (cx + 1, 12), (cx - 5, 19), (cx - 9, 13), (cx - 14, 20), (cx - 17, 16)], fill=255), HR['b'], edge_k=.45)
+        P.add(lambda d: d.polygon([(cx - 2, 3), (cx + 3, -3 + 3), (cx + 6, 3)], fill=255), HR['b'], edge=False)
+    # sombra lateral derecha + brillos
+    mh = P.mask(lambda d: d.polygon([(cx + 10, 4), (cx + 19, 9), (cx + 20, 22), (cx + 17, 15), (cx + 14, 8)], fill=255))
+    P.a[mh & (P.a[..., 3] > 0) & (P.a[..., :3] == HR['b']).all(-1)] = (*HR['d'], 255)
+    for (x0, y0, x1, y1) in [(cx - 14, 6, cx - 8, 4), (cx - 6, 4, cx, 3), (cx - 16, 12, cx - 14, 9)]:
+        P.line([(x0, y0), (x1, y1)], HR['l'])
+    P.line([(cx - 12, 14), (cx - 9, 13)], HR['dd']); P.line([(cx + 2, 14), (cx + 5, 13)], HR['dd'])
+    if who == 'tab' and outfit == 'uniform':
+        P.add(lambda d: d.polygon([(cx - 19, 14), (cx - 15, 3), (cx, 0), (cx + 15, 3), (cx + 19, 14)], fill=255), cb, edge_k=.45)
+        P.add(lambda d: d.polygon([(cx - 21, 14), (cx + 24, 14), (cx + 26, 18), (cx - 19, 18)], fill=255), cd, edge_k=.45)
+        P.rect(cx - 8, 5, cx - 2, 5, clt)
+    if who == 'king':   # lápiz tras la oreja
+        P.rect(cx + 18, 20, cx + 19, 26, (255, 200, 70)); P.rect(cx + 18, 27, cx + 19, 27, (240, 150, 140)); P.px(cx + 18, 19, (60, 50, 60))
+    if who == 'tab':    # horquilla
+        P.rect(cx - 17, 14, cx - 14, 15, (255, 240, 170)); P.px(cx - 15, 14, (255, 255, 255))
+    return P.final()
