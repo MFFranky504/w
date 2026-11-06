@@ -134,21 +134,23 @@ def build(who='you', expr='n', blink=False, outfit=None, gesture='fists', turn=2
 
     P = PH                                                                           # a partir de aquí: capa de la cabeza
     # ------------------------------------------------ cabeza: cráneo + mandíbula en V (3/4)
-    FP = [(28, 38), (30, 28), (37, 20), (48, 17), (59, 20), (66, 28), (68, 38), (68, 47), (65, 53), (60, 58), (54, 62), (fc + 1, 66), (fc - 5, 62), (37, 58), (31, 53), (28, 47)]
-    if CS['strong']: FP = [(28, 38), (30, 28), (37, 20), (48, 17), (59, 20), (66, 28), (68, 38), (69, 48), (67, 56), (62, 62), (55, 66), (fc + 1, 69), (fc - 6, 66), (36, 62), (30, 56), (27, 48)]
+    jr, jh = (21, 20) if CS['strong'] else (20, 19)                                    # radio y alto de la mandíbula
+    jaw = [(cx + (fc - cx) * .6 * math.sin(math.radians(t)) + jr * (1 - .22 * math.sin(math.radians(t)) ** 3) * math.cos(math.radians(t)), 47 + jh * math.sin(math.radians(t))) for t in np.linspace(0, 180, 21)]
+    FP = [(28, 38), (30, 28), (37, 20), (48, 17), (59, 20), (66, 28), (68, 38)] + jaw + [(28, 38)]
     for ex in (27, 67):                                                                # orejas
         P.add(lambda d, ex=ex: d.ellipse([ex - 2, 42, ex + 4, 52], fill=255), sk if ex < 48 else skd, sh=False, hi=False, edge_k=.5)
     fm = poly(FP, sk, sh=False, hi=False, edge_k=.42)
     def face_fill(pts, col):
         P.a[P.mask(lambda d: d.polygon([(float(x), float(y)) for x, y in pts], fill=255)) & fm] = (*col, 255)
-    face_fill([(57, 24), (68, 38), (68, 47), (65, 53), (60, 58), (54, 62), (fc + 1, 66), (fc + 1, 61), (59, 54), (61, 46)], skd)     # lado en sombra (cel)
-    face_fill([(31, 38), (37, 30), (41, 34), (35, 46)], skl)                                                                         # luz en la frente/sien
-    face_fill([(33, 50), (39, 48), (37, 56), (33, 54)], skl)                                                                         # luz en el pómulo
+    edge_r = fm & ~np.roll(fm, -4, axis=1)                                                  # borde derecho (4 px)
+    edge_b = fm & ~np.roll(fm, -3, axis=0) & (xx > fc)                                      # borde inferior derecho (3 px)
+    P.a[edge_r | edge_b] = (*skd, 255)                                                      # sombra suave en el contorno
+    face_fill([(32, 36), (37, 30), (40, 33), (35, 42)], skl)                                                                         # luz en la frente/sien
     if style in ('tab', 'you'):                                                                                                      # rubor
         P.rect(31, 53, 36, 54, (244, 160, 156)); P.rect(32, 55, 35, 55, (244, 160, 156)); P.rect(59, 53, 64, 54, (236, 150, 146))
     if CS['stubble']:
         stub = tuple(int(a * .8 + b * .2) for a, b in zip(sk, hc['b']))
-        face_fill([(29, 52), (35, 57), (42, 61), (fc - 4, 65), (fc + 1, 66), (54, 62), (62, 58), (67, 52), (64, 50), (58, 54), (44, 56), (34, 52)], stub)
+        face_fill([(32, 56), (38, 62), (44, 64), (fc + 1, 65), (54, 64), (60, 60), (64, 54), (60, 53), (54, 58), (44, 60), (36, 56)], stub)
 
     # ------------------------------------------------ ojos de la hoja de referencia (+cejas), a escala con la cara
     closed = blink or expr == 'smile'
@@ -167,10 +169,10 @@ def build(who='you', expr='n', blink=False, outfit=None, gesture='fists', turn=2
             for c, ch in enumerate(row):
                 if ch != '.' and ch in pal: P.a[y0 + r, x0 + c] = (*pal[ch], 255)
     ey = 39
-    if closed:
+    if closed:                                                                                       # ojos cerrados: arcos "^" (sonrisa)
         for xs in ((fc - 15, fc - 4), (fc + 4, fc + 15)):
-            P.line([(xs[0], ey + 8), (xs[0] + 4, ey + 6), (xs[1] - 2, ey + 6), (xs[1], ey + 8)], (40, 44, 58))
-            P.line([(xs[0], ey + 9), (xs[1], ey + 9)], (40, 44, 58))
+            for k in (0, 1):
+                P.line([(xs[0], ey + 8 + k), (xs[0] + 2, ey + 6 + k), (xs[0] + 5, ey + 5 + k), (xs[1] - 2, ey + 6 + k), (xs[1], ey + 8 + k)], (40, 44, 58))
     else:
         stamp(left, fc - 4 - len(left[0]), ey, ep); stamp(right, fc + 4, ey, ep)
     if style == 'tab' and not closed and kind == 'm':                                                                                  # pestañas exteriores (solo con ojos 'm')
