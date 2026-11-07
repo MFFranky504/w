@@ -59,3 +59,7 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 - `src/build_rowling.py` + `src/scenes6.py`, guion `guion_rowling.md`, caption `caption_rowling.txt`.
 - Voz Liam (eleven_v3, español, campo `tts` con fonética) + alineación forzada (`audio/alineacion_rowling.json`), música "Congratulations" (piano) que crece desde el giro.
 - Fuente de subtítulos: Silkscreen (la "C" de Pixelify se confundía con "O"). Cierre: «Quizás hoy no estás en el final de tu historia... ¿cómo quieres que termine?».
+
+## Video 7 — Jim Carrey (de la furgoneta al cheque)
+- `src/build_carrey.py` + `src/scenes7.py`, guion `guion_carrey.md`, caption `caption_carrey.txt`, voz Charlie con etiquetas de emoción + alineación forzada, música "Mrs Magic".
+- Dato a verificar antes de publicar: la anécdota del cheque está contada por el propio Carrey; la cifra/película del cobro es discutida, por eso el guion dice "según cuenta él".
