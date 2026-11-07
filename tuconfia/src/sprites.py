@@ -335,9 +335,10 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.add(lambda d: d.rounded_rectangle([cx - 11, 29, cx + 11, 35], radius=3, fill=255), cd, edge_k=.5)
         P.rect(cx - 12, 51, cx + 12, 52, cd)
     if outfit in ('tux', 'suit85'):
-        P.add(lambda d: d.polygon([(cx - 6, 34), (cx + 6, 34), (cx + 2, 50), (cx - 2, 50)], fill=255), (250, 250, 252), edge_k=.6)
-        bow = (180, 30, 50) if outfit == 'tux' else (22, 26, 60)
-        P.rect(cx - 3, 35, cx + 3, 37, bow); P.px(cx, 36, (230, 70, 90) if outfit == 'tux' else (70, 80, 150))
+        if outfit == 'tux': P.add(lambda d: d.polygon([(cx - 6, 34), (cx + 6, 34), (cx + 2, 50), (cx - 2, 50)], fill=255), (250, 250, 252), edge_k=.6)
+        else: P.add(lambda d: d.polygon([(cx - 4, 34), (cx + 4, 34), (cx + 1, 45), (cx - 1, 45)], fill=255), (250, 250, 252), edge_k=.6)
+        bow = (180, 30, 50) if outfit == 'tux' else (214, 48, 72)
+        P.rect(cx - 3, 35, cx + 3, 37, bow); P.px(cx, 36, (230, 70, 90) if outfit == 'tux' else (255, 130, 150))
     elif outfit == 'grey':
         P.rect(cx - 6, 34, cx + 6, 35, cd); P.add(lambda d: d.polygon([(cx - 8, 44), (cx + 8, 44), (cx + 10, 51), (cx - 10, 51)], fill=255), cd, edge_k=.55)
     if outfit == 'argentina':

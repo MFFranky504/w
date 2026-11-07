@@ -28,8 +28,12 @@ def _sign(c, x, y, txt, col, k=3):
 
 # ============================================================ 1 + 9. la puerta (Jobs con la caja / tú con la caja)
 def door(t, u, who='jobs85', sign='APPLE', col=(255, 216, 74)):
-    c = Canvas(vgrad([(0, '#2b1a4a'), (.45, '#d8784f'), (.62, '#e8a060'), (1, '#2a2038')]))
+    c = Canvas(vgrad([(0, '#3a1a6a'), (.3, '#c0409a'), (.55, '#ff8a4a'), (.75, '#ffc060'), (1, '#2a2038')]))
     hope = ease((u - .35) / .5) if who == 'you' else 0          # el final: amanece desde la caja
+    # nubes y pájaros (dinamismo en el cielo)
+    for k in range(3):
+        cxk = (t * (4 + k * 2) + k * 70) % 220 - 30
+        c.R(cxk, 8 + k * 14, 34, 5, (255, 170, 190)); c.R(cxk + 6, 4 + k * 14, 20, 5, (255, 200, 210))
     # fachada alta (sale por arriba del cuadro): la persona es pequeña frente al edificio
     c.R(0, 0, WW, 204, (34, 40, 74))
     rnd = random.Random(5)
@@ -39,7 +43,8 @@ def door(t, u, who='jobs85', sign='APPLE', col=(255, 216, 74)):
             if on and rnd.random() < .08 and int(t * 4 + r + k) % 5 == 0: on = False             # parpadeo
             x0, y0 = 8 + k * 19, 6 + r * 20
             c.R(x0 - 1, y0 - 1, 16, 18, (24, 28, 56))
-            c.R(x0, y0, 14, 16, (236, 176, 98) if on else (46, 54, 98))
+            lc = ((255, 190, 90), (120, 230, 255), (255, 120, 200), (255, 220, 110))[(r + k) % 4]
+            c.R(x0, y0, 14, 16, lc if on else (50, 56, 112))
             c.R(x0 + 6, y0, 2, 16, (24, 28, 56)); c.R(x0, y0 + 7, 14, 1, (24, 28, 56))
     c.R(0, 60, WW, 36, (28, 32, 62)); c.R(0, 60, WW, 2, (90, 100, 150))              # friso del letrero
     c.light(80, 100, 90, 90, (255, 180, 100), .25)
@@ -52,10 +57,6 @@ def door(t, u, who='jobs85', sign='APPLE', col=(255, 216, 74)):
     if who == 'you': x = 58 + 42 * ease(u * 1.1)                 # camina hacia la puerta (donde empieza el bucle)
     else: x = 88 - 34 * ease(u * 1.15)                           # sale por la puerta y camina
     bob = math.sin(t * 6) * .8
-    if hope > .3:
-        for i in range(9):
-            a = -math.pi / 2 + (i - 4) * .26
-            c.d.polygon([(x, 176), (x + 90 * math.cos(a - .07), 176 + 90 * math.sin(a - .07)), (x + 90 * math.cos(a + .07), 176 + 90 * math.sin(a + .07))], fill=(150, 112, 120))
     place(c, fig(bat(who, 'box'), .75), x, 208 + bob)
     if hope > .3: _sign(c, 80 - ptext_w(sign, 3 if len(sign) < 7 else 2) // 2, 70, sign, col, 3 if len(sign) < 7 else 2)
     if hope > 0: c.light(x, 176, 44, 44, (255, 214, 140), .45 * hope)
@@ -63,14 +64,17 @@ def door(t, u, who='jobs85', sign='APPLE', col=(255, 216, 74)):
         ph = (t * (.25 if not hope else .45) + i * .11) % 1
         px = (i * 37 + ph * 60) % WW; py = (100 + (1 - ph) * 110) if hope else (100 + ph * 110)
         c.R(px, py, 2 if hope else 3, 2, (255, 236, 170) if hope else (250, 248, 240))
-    c.amb = (.95 + .08 * hope, .86 + .1 * hope, .92); c.vig = .75
+    for k in range(4):                                            # pájaros
+        bx = (t * 22 + k * 50) % 190 - 20; by = 30 + k * 11 + math.sin(t * 6 + k) * 2
+        by = int(by); c.R(int(bx), by, 2, 1, (40, 20, 50)); c.R(int(bx) + 2, by - 1, 2, 1, (40, 20, 50)); c.R(int(bx) + 4, by, 2, 1, (40, 20, 50))
+    c.amb = (1.0 + .05 * hope, .92 + .08 * hope, .96); c.vig = .7
     return c.render()
 
 
 # ============================================================ 2. la junta (chibis, 1985)
 def boardroom(t, u):
-    c = Canvas(vgrad([(0, '#16283a'), (1, '#0e1824')]))
-    c.R(8, 70, 144, 70, (36, 62, 96)); c.R(8, 70, 144, 2, (100, 140, 190))
+    c = Canvas(vgrad([(0, '#3a1a5a'), (.5, '#1c3a6a'), (1, '#12243a')]))
+    c.R(8, 70, 144, 70, (60, 110, 190)); c.R(8, 70, 144, 2, (100, 140, 190))
     for i in range(12):
         h = 16 + (i * 17) % 36; c.R(10 + i * 12, 140 - h, 9, h, (22, 36, 62))
         for j in range(h // 8):
@@ -79,13 +83,18 @@ def boardroom(t, u):
     w = ptext_w('1985', 5)
     if u < .52: c.R(80 - w // 2 - 6, 60, w + 12, 34, (14, 22, 40)); ptext(c.ed, 80 - w // 2, 66, '1985', (255, 216, 74), 5)
     c.light(80, 110, 90, 50, (140, 180, 255), .35)
-    c.R(0, 198, WW, 100, (58, 38, 30)); c.R(0, 198, WW, 2, (110, 74, 50))
-    for yy in range(208, 290, 12): c.R(0, yy, WW, 1, (44, 28, 22))
+    c.R(0, 198, WW, 100, (96, 52, 44)); c.R(0, 198, WW, 2, (170, 100, 70))
+    for yy in range(208, 290, 12): c.R(0, yy, WW, 1, (70, 36, 32))
+    for lx in (30, 80, 130):                                   # lámparas colgantes que se balancean
+        sw = math.sin(t * 1.6 + lx) * 1.5
+        c.R(lx, 0, 1, 40, (20, 20, 30)); c.d.polygon([(lx - 7 + sw, 48), (lx + 7 + sw, 48), (lx + 4 + sw, 40), (lx - 4 + sw, 40)], fill=(255, 190, 90))
+        c.light(lx + sw, 52, 26, 24, (255, 200, 110), .55)
+    c.R(136, 100, 14, 14, (240, 240, 244)); c.d.ellipse([137, 101, 149, 113], outline=(40, 40, 60)); a_ = t * 3; c.d.line([(143, 107), (143 + 4 * math.cos(a_), 107 + 4 * math.sin(a_))], fill=(200, 40, 50))   # reloj
     # junta (más pequeña que Jobs en primer plano); asienten y señalan
-    mem = (('prod1', 50), ('prod2', 82), ('prod1', 114), ('prod2', 140))
-    for k, (who, x) in enumerate(mem):
+    mem = (('prod1', 50, 'blazer'), ('prod2', 82, 'teacher'), ('prod1', 114, 'cardigan'), ('prod2', 140, 'plaid'))
+    for k, (who, x, of) in enumerate(mem):
         nod = 1.5 * max(0, math.sin(t * 5 + k)) if u > .35 else math.sin(t * 2 + k) * .5
-        place(c, fig(rpg(who, 0), .62), x, 172 + nod, sh=False)
+        place(c, fig(rpg(who, 0, of), .62), x, 172 + nod, sh=False)
     c.R(14, 164, 132, 16, (136, 88, 54)); c.R(14, 164, 132, 2, (196, 136, 90)); c.R(14, 180, 132, 14, (86, 54, 36)); c.R(14, 192, 132, 2, (50, 30, 22))
     # documento que se desliza hacia Jobs
     if u > .45:
@@ -128,8 +137,15 @@ def next_pixar(t, u):
     place(c, fig(rpg('jobs85', step), .7), x, 214, flip=(u < .45))
     if u > .22:
         c.R(60, 205, 9, 7, (190, 150, 98)); c.R(60, 205, 9, 2, (222, 184, 130))        # la caja se queda ante NeXT
-    c.light(80, 200, 100, 70, (160, 140, 255), .3)
-    c.amb = (.85, .86, 1); c.vig = .7
+    for k in range(2):                                            # coches que pasan
+        cxk = (t * (70 + 25 * k) + k * 90) % 260 - 50
+        cxk = cxk if k == 0 else 160 - cxk
+        c.R(cxk, 222, 22, 7, (200, 60, 90) if k == 0 else (60, 160, 230)); c.R(cxk + 5, 218, 12, 5, (60, 40, 80)); c.R(cxk + (21 if k == 0 else -3), 224, 3, 3, (255, 240, 170), c.ed)
+        c.light(cxk + (26 if k == 0 else -8), 226, 20, 8, (255, 230, 160), .7)
+    sx = ((t * 40) % 160) if int(t / 3) % 2 == 0 else -50                              # estrella fugaz
+    if sx > 0: c.d.line([(sx, 10 + sx * .3), (sx - 14, 6 + sx * .3 - 4)], fill=(255, 255, 255), width=1)
+    c.light(80, 200, 100, 70, (160, 140, 255), .5)
+    c.amb = (.9, .86, 1.05); c.vig = .65
     return c.render()
 
 
@@ -149,20 +165,27 @@ def crash(t, u):
         ph = (t * .5 + i * .1) % 1
         c.R((i * 29) % WW, 20 + ph * 250, 4, 3, (250, 246, 236)); 
     sh = math.sin(t * 40) * 1.2 if .4 < u < .6 else 0
-    c.light(80, 140, 90, 100, (255, 40, 60), .35)
-    c.amb = (1, .8, .85); c.vig = .85
+    pulse = .35 + .35 * (math.sin(t * 9) > 0)
+    c.light(20, 40, 70, 60, (255, 40, 60), pulse); c.light(140, 40, 70, 60, (255, 40, 60), pulse)
+    for i in range(8):
+        ph = (t * .6 + i * .125) % 1; xx = 14 + (i * 41) % 130
+        c.d.ellipse([xx, 20 + ph * 250, xx + 4, 24 + ph * 250], fill=(255, 196, 60), outline=(170, 110, 20))
+    c.light(80, 140, 90, 100, (255, 40, 60), .4)
+    c.amb = (1, .82, .9); c.vig = .8
     return c.render()
 
 
 # ============================================================ 6. el teléfono suena (1997)
 def phone(t, u):
-    c = Canvas(vgrad([(0, '#0c1230'), (1, '#1a2450')]))
+    ring = int(t * 4) % 2 == 0
+    c = Canvas(vgrad([(0, '#1a1260' if ring else '#0c1230'), (.6, '#3a2a8a' if ring else '#1a2450'), (1, '#1a2450')]))
     w = ptext_w('1997', 6)
     ptext(c.ed, 80 - w // 2, 64, '1997', (255, 216, 74), 6)
     c.light(80, 70, 80, 40, (255, 216, 74), .5)
     c.R(0, 182, WW, 114, (26, 22, 44))
-    ring = int(t * 4) % 2 == 0
     sh = int(math.sin(t * 60) * 1.5) if ring else 0
+    if ring:
+        ptext(c.ed, 14, 104, 'RING', (255, 120, 200), 2); ptext(c.ed, 112, 110, 'RING', (120, 220, 255), 2)
     # base roja con disco giratorio
     c.R(36, 152, 88, 30, (190, 58, 62)); c.R(36, 152, 88, 3, (240, 120, 110)); c.R(36, 179, 88, 3, (120, 32, 40))
     c.R(44, 144, 72, 12, (170, 48, 54))
@@ -215,6 +238,10 @@ def devices(t, u):
     for i in range(14):
         ph = (t * .6 + i * .07) % 1; xx = 10 + (i * 47) % 140; yy = 260 - ph * 220
         for dx, dy in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)): c.d.point((xx + dx, yy + dy), fill=(255, 240, 180))
+    cols = ((255, 90, 120), (90, 220, 255), (255, 230, 90), (140, 255, 140))
+    for i in range(36):
+        ph = (t * .5 + i * .031) % 1; xx = (i * 53 + math.sin(t * 3 + i) * 6) % 150 + 4; yy = ph * 270
+        c.R(xx, yy, 2, 3, cols[i % 4])
     c.light(80, 120, 90, 90, (255, 220, 150), .5)
-    c.amb = (1, .96, .96); c.vig = .6
+    c.amb = (1.02, .98, .98); c.vig = .55
     return c.render()
