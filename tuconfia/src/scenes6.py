@@ -97,7 +97,7 @@ def cafe(t, u):
     px = 34 + (t * 14) % 14; c.R(px, 160 + int(math.sin(t * 12) * 1), 1, 5, (30, 30, 80))
     PR.keep(c, PR.stroller(), 104, 164)
     zz = (t * 1.1) % 1; ptext(c.ed, 124 + int(zz * 4), 156 - int(zz * 10), 'Z', (200, 220, 255), 2)
-    c.light(56, 156, 56, 46, (255, 210, 130), .75)
+    c.light(56, 156, 56, 46, (255, 210, 130), .3)
     c.amb = (1.02, .93, .86); c.vig = .7
     return c.render()
 
