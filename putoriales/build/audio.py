@@ -91,37 +91,18 @@ add(37.55,sweep(150,500,0.25,g=0.5),0.6); add(38.4,thud(0.2),0.7)
 add(40.6,boom(0.7),0.9)
 add(40.75,trombone(311,0.55),0.9); add(41.3,trombone(294,0.5),0.9); add(41.8,trombone(262,1.0),0.5)
 
-# music: dull elevator loop, very low, ducked
-t=np.arange(N)/SR
-bpm=96;beat=60/bpm
-notes=[110,110,146.8,130.8,110,110,164.8,146.8]
-mus=np.zeros(N)
-for i in range(int(D/beat)):
-    f=notes[i%8]; d=beat*0.9; s=int(i*beat*SR); x=np.sin(2*np.pi*f*tt(d))*np.exp(-tt(d)*3)
-    e=min(N,s+len(x)); mus[s:e]+=x[:e-s]*0.5
-    # soft chord pad on the offbeat
-    if i%2==1:
-        pad=sum(np.sin(2*np.pi*f*m*tt(d)) for m in (2,2.52,3))/3*np.exp(-tt(d)*5)*0.2
-        mus[s:e]+=pad[:e-s]
-# mute music in void-silence beats and at end
-gate=np.ones(N); 
-def mute(a,b,fade=0.2):
-    a=warpn(a);b=warpn(b)
-    i,j=int(a*SR),int(b*SR); gate[i:j]=0
-    for k in range(int(fade*SR)):
-        if i-k>0: gate[i-k]=min(gate[i-k],k/(fade*SR))
-        if j+k<N: gate[j+k]=min(gate[j+k],k/(fade*SR))
-mute(27.9,28.5);mute(34.6,37.6,0.4);mute(40.5,42.0,0.05)
-mus*=gate*0.13
-# also lowpass music a bit
-mus=np.convolve(mus,np.ones(3)/3,mode='same')
-
+# music: Not Like Us instrumental, low volume under voice
+m=subprocess.run(['ffmpeg','-v','error','-ss','0','-t',str(D),'-i','assets/music.m4a','-vn','-ac','1','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout
+mus=np.zeros(N); mm=np.frombuffer(m,dtype=np.float32).astype(np.float64); mus[:min(N,len(mm))]=mm[:N]
+fi=int(0.6*SR); mus[:fi]*=np.linspace(0,1,fi)
+fo=int(1.8*SR); mus[-fo:]*=np.linspace(1,0,fo)
+mus*=0.065
 # mix voice
 v=subprocess.run(['ffmpeg','-v','error','-i','assets/voice.mp3','-ac','1','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout
 voice=np.frombuffer(v,dtype=np.float32).astype(np.float64)
 vo=np.zeros(N); vo[:min(N,len(voice))]=voice[:N]*1.0
 # duck music/sfx under voice slightly
-envv=np.convolve(np.abs(vo),np.ones(int(0.1*SR))/int(0.1*SR),mode='same'); duck=1-0.35*np.clip(envv*8,0,1)
+envv=np.convolve(np.abs(vo),np.ones(int(0.1*SR))/int(0.1*SR),mode='same'); duck=1-0.5*np.clip(envv*8,0,1)
 mix=vo+ (sfx*0.5)*duck*0+sfx*0.45+mus*duck
 mix/= max(1.0,np.abs(mix).max()/0.95)
 pcm=(mix*32767).astype(np.int16)

@@ -9,8 +9,8 @@ LINES=[
 ]
 text=" ".join(LINES)
 body={"text":text,"model_id":"eleven_multilingual_v2","language_code":"es",
- "voice_settings":{"stability":0.35,"similarity_boost":0.75,"style":0.55,"speed":1.15}}
-req=urllib.request.Request("https://api.elevenlabs.io/v1/text-to-speech/TX3LPaxmHKxFdv7VOQHJ/with-timestamps?output_format=mp3_44100_128",
+ "voice_settings":{"stability":0.5,"similarity_boost":0.8,"style":0.25,"speed":1.2}}
+req=urllib.request.Request("https://api.elevenlabs.io/v1/text-to-speech/bIHbv24MWmeRgasZH58o/with-timestamps?output_format=mp3_44100_128",
  data=json.dumps(body).encode(),headers={"Content-Type":"application/json"})
 r=json.load(urllib.request.urlopen(req))
 open("assets/voice.mp3","wb").write(base64.b64decode(r["audio_base64"]))
