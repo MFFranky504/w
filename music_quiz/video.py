@@ -258,6 +258,19 @@ def snoop_layer(t, mode="col"):
     hdx, hdy, tdx, ldx, nxx, nyy, fxx, fyy = dance_at(t); fy = 124; X0 = 55            # layer is 110 wide (x offset 5)
     sx, sy = X0 + tdx + .3 * hdx, fy - 90 + .4 * hdy; hx, hy = X0 + .3 * tdx + .7 * ldx, fy - 52
     cx, cy = X0 + hdx, sy - 10 + hdy * .6; look = max(-1, min(1, hdx / 8))
+    BR, BRH = (74, 46, 34, 255), (128, 90, 66, 255)
+    for s in (-1, 1):                                                   # two braids (one per side), hanging BEHIND the body
+        sw = 1.6 * math.sin(t * 8.6 + s) + .35 * hdx
+        p0 = (cx + s * 6, cy + 4); mid = (sx + s * 14 + sw * .5, sy + 8); p1 = (sx + s * 16 + sw, sy + 30)
+        for (a_, b_) in ((p0, mid), (mid, p1)):
+            if col:
+                d.line([a_, b_], fill=OUT, width=5); d.line([a_, b_], fill=BR, width=3)
+            else: d.line([a_, b_], fill=DK, width=5)
+        if col:
+            for j in range(1, 9):
+                q = ((p0[0] + (mid[0] - p0[0]) * j / 8, p0[1] + (mid[1] - p0[1]) * j / 8) if j <= 4 else (mid[0] + (p1[0] - mid[0]) * (j - 4) / 5, mid[1] + (p1[1] - mid[1]) * (j - 4) / 5))
+                d.point(q, fill=BRH)
+            d.rectangle((p1[0] - 2, p1[1], p1[0] + 2, p1[1] + 3), fill=(200, 170, 90, 255))        # bead tip
     for s in (-1, 1):                                                   # legs: planted, counter-shifting like the reference
         hip = (hx + s * 5, hy + 6); ank = (X0 + s * 7 + ldx, fy - 1)
         knee, _ = ik(hip, ank, 23.5, 23.5, lambda c, s=s: s * c[0])
@@ -267,16 +280,6 @@ def snoop_layer(t, mode="col"):
     if col:
         d.ellipse((sx - 2, sy + 8, sx + 8, sy + 18), outline=(240, 240, 248, 255)); d.line([(hx - 13, hy + 10), (hx + 13, hy + 10)], fill=(60, 60, 84, 255))
         d.polygon([(sx - 5, sy - 1), (sx + 5, sy - 1), (sx, sy + 5)], fill=(238, 238, 246, 255))         # white tee collar
-    BR, BRH = (74, 46, 34, 255), (122, 84, 62, 255)
-    for s in (-1, 1):                                                   # braids: hang over the shoulders and swing with the sway
-        for k in (0, 1, 2):
-            sw = 1.5 * math.sin(t * 8.6 + k * .9 + s) + .3 * hdx * (1 if k else .6)
-            p0 = (cx + s * (6 + k * 1.6), cy + 4); p1 = (sx + s * (9 + k * 2.6) + sw, sy + 22 + k * 2)
-            if col:
-                d.line([p0, p1], fill=BR, width=2)
-                for j in range(1, 6): d.point((p0[0] + (p1[0] - p0[0]) * j / 6, p0[1] + (p1[1] - p0[1]) * j / 6), fill=BRH)
-                d.rectangle((p1[0] - 1, p1[1], p1[0] + 1, p1[1] + 2), fill=(200, 170, 90, 255))     # bead tip
-            else: d.line([p0, p1], fill=DK, width=2)
     for s in (1, -1):                                                   # s=-1 circling hand (viewer's left), s=+1 low palm-down hand
         shd = (sx + s * 14, sy + 3)
         if s == -1:                                                     # elbow stays near the body; the forearm sweeps the circle
