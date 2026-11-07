@@ -17,7 +17,13 @@ def validar(path):
     d = json.load(open(path)); L = d['lines']; errs, avisos = [], []
     roles = [l.get('rol') for l in L]
     if any(r not in ROLES for r in roles): errs.append(f'roles inválidos: {roles}')
-    if [ROLES.index(r) for r in roles if r in ROLES] != sorted(ROLES.index(r) for r in roles if r in ROLES): errs.append('los roles no siguen el orden gancho→fracaso→giro→frase_final→pregunta')
+    # video corto: orden estricto. Video largo (>1 ciclo): fracaso y giro pueden alternarse, pero gancho va primero, frase_final y pregunta al final.
+    largo = d.get('meta', {}).get('duracion_objetivo_s', 0) > 75
+    if not largo and [ROLES.index(r) for r in roles if r in ROLES] != sorted(ROLES.index(r) for r in roles if r in ROLES): errs.append('los roles no siguen el orden gancho→fracaso→giro→frase_final→pregunta')
+    if largo:
+        mid = [r for r in roles[1:-1] if r != 'frase_final']
+        if roles[-1] != 'pregunta' or roles[0] != 'gancho' or any(r not in ('fracaso', 'giro') for r in mid): errs.append('video largo: gancho al inicio, pregunta al final, fracaso/giro alternados en medio')
+        if 'frase_final' in roles and roles.index('frase_final') < max(i for i, r in enumerate(roles) if r in ('fracaso', 'giro')): errs.append('frase_final debe ir después del último fracaso/giro')
     for r in ROLES:
         if r not in roles: errs.append(f'falta el rol {r}')
     g = clean(L[0]['t'])
@@ -28,7 +34,8 @@ def validar(path):
     if not q.endswith('?'): errs.append('la última línea debe ser la pregunta')
     if 'rechazo' not in q.lower(): avisos.append('la pregunta final no menciona el rechazo (no es la pregunta base)')
     total = sum(len(l.get('tts', l['t'])) for l in L)
-    if total > 760: avisos.append(f'texto largo ({total} car.): la voz pasará de ~55 s')
+    limite = 760 if not largo else 3300
+    if total > limite: avisos.append(f'texto largo ({total} car.): la voz pasará de ~{round(total / 17.2)} s')
     return errs, avisos
 
 

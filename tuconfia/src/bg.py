@@ -332,3 +332,94 @@ def skyline(c, y0, base, cols=((40, 30, 80), (58, 44, 110)), seed=3, lit=.4, t=0
             for k in range(w // 5):
                 if rnd.random() < lit and int(t * 2 + r + k) % 17: c.R(x + 2 + k * 5, base - h + 3 + r * 8, 3, 4, (255, rnd.randint(190, 235), 120))
         x += w
+
+
+# ================================================================ historia Hawking: ciencia y espacio
+def blackboard(c, x, y, w, h, t=0, seed=1, lines=None, prog=1.0):
+    """pizarra verde con fórmulas a tiza que se van escribiendo (prog 0..1)."""
+    c.R(x - 2, y - 2, w + 4, h + 4, (110, 74, 48)); c.R(x, y, w, h, (34, 66, 56)); c.R(x, y, w, 1, (60, 96, 84)); c.R(x - 2, y + h + 2, w + 4, 2, (170, 130, 90))
+    rnd = random.Random(seed); F = ['E=mc2', 'S=A/4', 'T~1/M', 'dS>=0', 'R=2GM/c2', 'F=ma', 'PSI', 'G=8PT', 'A+B=C', 'H=hf']
+    n = int(prog * (h // 9)); 
+    for i in range(n):
+        txt = lines[i % len(lines)] if lines else rnd.choice(F)
+        wtext(c, x + 3 + rnd.randint(0, 6), y + 3 + i * 9, txt, (230, 236, 226), 8, outline=None)
+    c.R(x + w - 16, y + h - 3, 10, 2, (240, 240, 232))
+
+
+def black_hole(c, cx, cy, r, t, particles=True):
+    """agujero negro con disco de acreción, anillo de fotones y partículas que escapan (radiación de Hawking)."""
+    for k in range(6):                                                                       # halo
+        rr = r + 22 - k * 3; c.ed.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=(255, 150, 60, 10 + k * 4))
+    for i in range(34):                                                                      # disco en espiral
+        a = t * 1.8 + i * .19; rr = r + 5 + (i % 12) * 2.6; sx = cx + math.cos(a) * rr * 1.7; sy = cy + math.sin(a) * rr * .5
+        c.R(int(sx), int(sy), 3, 2, (255, int(150 + (i % 5) * 20), 70 + (i % 4) * 30))
+    c.d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(2, 2, 8)); c.d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=(255, 214, 140))
+    c.d.ellipse([cx - r - 2, cy - r - 2, cx + r + 2, cy + r + 2], outline=(150, 110, 70))
+    if particles:
+        for i in range(24):
+            ph = (t * .35 + i * .0417) % 1; a = i * 2.4; rr = r + 4 + ph * 80
+            c.R(int(cx + math.cos(a) * rr), int(cy + math.sin(a) * rr), 2, 2, (200, 230, 255), c.ed)
+    c.light(cx, cy, r * 3, r * 3, (255, 160, 80), .55)
+
+
+def nebula(c, t, seed=2, cols=((120, 60, 200), (60, 120, 220), (220, 80, 160))):
+    rnd = random.Random(seed)
+    for i in range(9):
+        x, y, w, h = rnd.randint(0, 160), rnd.randint(20, 200), rnd.randint(40, 90), rnd.randint(20, 50)
+        col = cols[i % 3]
+        for k in range(4): c.ed.ellipse([x - w // 2 + k * 6, y - h // 2 + k * 3, x + w // 2 - k * 6, y + h // 2 - k * 3], fill=(*col, 12 + k * 5))
+
+
+def shooting_star(c, t, seed=0, period=3.0):
+    ph = ((t + seed * 1.3) % period) / period
+    if ph < .22:
+        x = 150 - ph * 4.5 * 130 - seed * 20; y = 30 + ph * 4.5 * 60 + seed * 14
+        c.d.line([(x, y), (x + 14, y - 7)], fill=(255, 255, 255)); c.R(int(x), int(y), 2, 2, (255, 255, 230), c.ed)
+
+
+def hill(c, y0, col=(20, 18, 46), t=0):
+    c.d.polygon([(0, y0 + 26), (30, y0 + 6), (70, y0 + 18), (110, y0), (160, y0 + 16), (160, 300), (0, 300)], fill=col)
+    c.R(0, y0 + 24, WW, 100, shade(col, .9))
+
+
+def stone_college(c, x0, y0, w, h, base=(216, 182, 124), seed=5, lit=.6, t=0):
+    """fachada gótica de piedra dorada con ventanas ojivales, contrafuertes y almenas."""
+    brick(c, x0, y0, w, h, base=base, mortar=shade(base, .62), seed=seed, bh=7, bw=14)
+    for x in range(x0, x0 + w, 5): c.R(x, y0 - 4, 3, 4, shade(base, .9))                      # almenas
+    rnd = random.Random(seed)
+    n = max(2, w // 26)
+    for k in range(n):
+        wx = x0 + 8 + k * (w - 16) // n
+        for r in range(max(1, (h - 12) // 34)):
+            wy = y0 + 10 + r * 34
+            c.R(wx, wy + 6, 12, 20, (50, 36, 40)); c.d.pieslice([wx, wy, wx + 11, wy + 12], 180, 360, fill=(50, 36, 40))
+            on = rnd.random() < lit
+            c.R(wx + 2, wy + 8, 8, 17, (255, 206, 120) if on else (60, 70, 120)); c.d.pieslice([wx + 2, wy + 2, wx + 9, wy + 10], 180, 360, fill=(255, 206, 120) if on else (60, 70, 120))
+            c.R(wx + 5, wy + 8, 2, 17, (50, 36, 40)); c.R(wx + 1, wy + 26, 10, 2, shade(base, 1.2))
+    for k in range(0, n + 1):
+        px = x0 + k * (w - 6) // n; c.R(px, y0, 6, h, shade(base, .85)); c.R(px, y0, 1, h, shade(base, 1.15))
+
+
+def brick(c, x0, y0, w, h, base=(150, 80, 64), mortar=(70, 40, 40), seed=1, bh=6, bw=12):
+    rnd = random.Random(seed)
+    c.R(x0, y0, w, h, mortar)
+    for r, y in enumerate(range(y0, y0 + h, bh)):
+        off = (bw // 2) if r % 2 else 0
+        for x in range(x0 - off, x0 + w, bw):
+            xa, xb = max(x0, x + 1), min(x0 + w, x + bw)
+            if xb <= xa: continue
+            ya, yb = y + 1, min(y0 + h, y + bh)
+            if yb <= ya: continue
+            col = tuple(max(0, min(255, v + rnd.randint(-14, 14))) for v in base)
+            c.R(xa, ya, xb - xa, yb - ya, col); c.R(xa, ya, xb - xa, 1, shade(col, 1.18)); c.R(xa, yb - 1, xb - xa, 1, shade(col, .82))
+
+
+def hospital_wall(c, t=0):
+    c.R(0, 0, WW, 206, (150, 206, 204))
+    for x in range(0, WW, 16):
+        for y in range(0, 150, 16): c.R(x + 1, y + 1, 14, 14, (176, 226, 224)); c.R(x + 1, y + 1, 14, 1, (210, 244, 242))
+    c.R(0, 150, WW, 56, (120, 176, 178)); c.R(0, 150, WW, 3, (230, 250, 250))
+    for x in range(0, WW, 40): c.R(x + 6, 158, 28, 40, (104, 160, 162)); c.R(x + 6, 158, 28, 1, (150, 206, 206))
+    for yy in range(206, 296, 14):
+        for xx in range(-(yy // 14 % 2) * 14, WW, 28): c.R(xx, yy, 14, 14, (228, 232, 238)); c.R(xx + 14, yy, 14, 14, (200, 208, 220))
+    c.R(0, 204, WW, 3, (90, 140, 142))

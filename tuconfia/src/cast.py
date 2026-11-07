@@ -41,6 +41,13 @@ CAST = {
  'elvis': dict(style='shag', skin=(246, 212, 180), hair=ramp((28, 24, 30)), iris=(70, 56, 46), outfit='coat'),
  'whitney': dict(style='tab', skin=(188, 134, 102), hair=ramp((38, 28, 28)), iris=(60, 40, 34), outfit='tee_yellow'),
 
+ # --- historia 8: Stephen Hawking
+ 'hawking_k': dict(style='short', skin=(246, 208, 176), hair=ramp((96, 70, 50)), iris=(80, 100, 130), outfit='tee_blue', kid=True),
+ 'hawking_y': dict(style='short', skin=(244, 204, 172), hair=ramp((96, 70, 50)), iris=(80, 100, 130), outfit='blazer', glasses=True),
+ 'hawking': dict(style='short', skin=(240, 200, 170), hair=ramp((120, 112, 108)), iris=(80, 100, 130), outfit='blazer', glasses=True),
+ 'jane': dict(style='tab', skin=(250, 214, 186), hair=ramp((100, 66, 46)), iris=(96, 70, 52), outfit='tee_green'),
+ 'nurse': dict(style='tab', skin=(246, 208, 176), hair=ramp((60, 44, 40)), iris=(70, 56, 44), outfit='coat'),
+
  # --- historia 4: Steve Jobs
  'jobs':   dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='turtle', glasses=True),
  'jobs85': dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='suit85'),

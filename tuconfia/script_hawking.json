@@ -1,0 +1,282 @@
+{
+ "titulo": "Stephen Hawking: dos años de vida",
+ "meta": {
+  "famoso": "Stephen Hawking",
+  "persona_hashtag": "#StephenHawking",
+  "tipo_gancho": "se_nego",
+  "pregunta": "Y tú... si hoy supieras que el tiempo es más corto de lo que crees... ¿qué dejarías de aplazar... y qué harías mañana?",
+  "duracion_objetivo_s": 180
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Stephen Hawking podía rendirse... pero *se negó*.",
+   "tts": "Stíven Jóking podía rendirse... pero se negó.",
+   "gen": "[bold] Stíven Jóking podía rendirse... [pause] pero se negó.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "Nació en mil novecientos cuarenta y dos, en Oxford, Inglaterra. Y desde niño miraba el cielo con una *curiosidad* enorme.",
+   "tts": "Nació en mil novecientos cuarenta y dos, en Óksford, Inglaterra. Y desde niño miraba el cielo con una curiosidad enorme.",
+   "gen": "[warmly] Nació en mil novecientos cuarenta y dos, en Óksford, Inglaterra. Y desde niño miraba el cielo con una curiosidad enorme.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "fracaso",
+   "t": "No era el mejor alumno... pero sus amigos ya lo llamaban *Einstein*.",
+   "tts": "No era el mejor alumno... pero sus amigos ya lo llamaban Áinstain.",
+   "gen": "[playful] No era el mejor alumno... pero sus amigos ya lo llamaban Áinstain.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "fracaso",
+   "t": "Estudió en Oxford y después en Cambridge, para entender cómo funciona el *universo*.",
+   "tts": "Estudió en Óksford y después en Cámbridge, para entender cómo funciona el universo.",
+   "gen": "[determined] Estudió en Óksford y después en Cámbridge, para entender cómo funciona el universo.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "fracaso",
+   "t": "Tenía veintiún años cuando su cuerpo empezó a *fallar*. Se tropezaba... se le caían las cosas... y hablaba cada vez peor.",
+   "tts": "Tenía veintiún años cuando su cuerpo empezó a fallar. Se tropezaba... se le caían las cosas... y hablaba cada vez peor.",
+   "gen": "[tense] Tenía veintiún años cuando su cuerpo empezó a fallar. [pause] Se tropezaba... se le caían las cosas... y hablaba cada vez peor.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "fracaso",
+   "t": "Los médicos lo diagnosticaron: una enfermedad que va apagando los músculos, poco a poco. Y le dieron *dos años* de vida.",
+   "tts": "Los médicos lo diagnosticaron: una enfermedad que va apagando los músculos, poco a poco. Y le dieron dos años de vida.",
+   "gen": "[sad] Los médicos lo diagnosticaron: una enfermedad que va apagando los músculos, poco a poco. [heavy sigh] Y le dieron dos años de vida.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "rol": "fracaso",
+   "t": "Imagina tener veintiún años... y que te digan cuánto *tiempo* te queda.",
+   "tts": "Imagina tener veintiún años... y que te digan cuánto tiempo te queda.",
+   "gen": "[softly] Imagina tener veintiún años... [pause] y que te digan cuánto tiempo te queda.",
+   "p": 0.5,
+   "tag": "",
+   "id": "L7"
+  },
+  {
+   "id": "L8",
+   "rol": "fracaso",
+   "t": "Según contó años después, antes de enfermar la vida le parecía *aburrida*. Pero al saber que podía perderlo todo... algo *cambió*.",
+   "tts": "Según contó años después, antes de enfermar la vida le parecía aburrida. Pero al saber que podía perderlo todo... algo cambió.",
+   "gen": "[softly, reflective] Según contó años después, antes de enfermar la vida le parecía aburrida. [pause] Pero al saber que podía perderlo todo... algo cambió.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "rol": "fracaso",
+   "t": "Al principio, la tristeza lo *hundió*.",
+   "tts": "Al principio, la tristeza lo hundió.",
+   "gen": "[sad] Al principio, la tristeza lo hundió.",
+   "p": 0.5,
+   "tag": "",
+   "id": "L9"
+  },
+  {
+   "id": "L10",
+   "rol": "giro",
+   "t": "Se enamoró de *Jane*. Se casaron en mil novecientos sesenta y cinco... y con ella decidió seguir.",
+   "tts": "Se enamoró de Yein. Se casaron en mil novecientos sesenta y cinco... y con ella decidió seguir.",
+   "gen": "[warmly] Se enamoró de Yein. Se casaron en mil novecientos sesenta y cinco... y con ella decidió seguir.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L11",
+   "rol": "giro",
+   "t": "Terminó su doctorado, con una investigación sobre el origen del universo. Caminaba con un bastón... y trabajaba *sin parar*.",
+   "tts": "Terminó su doctorado, con una investigación sobre el origen del universo. Caminaba con un bastón... y trabajaba sin parar.",
+   "gen": "[determined] Terminó su doctorado, con una investigación sobre el origen del universo. Caminaba con un bastón... y trabajaba sin parar.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "rol": "giro",
+   "t": "Fue padre de tres hijos... mientras seguía *investigando*.",
+   "tts": "Fue padre de tres hijos... mientras seguía investigando.",
+   "gen": "[warmly] Fue padre de tres hijos... mientras seguía investigando.",
+   "p": 0.5,
+   "tag": "",
+   "id": "L12"
+  },
+  {
+   "id": "L13",
+   "rol": "giro",
+   "t": "Cada año su cuerpo tenía menos fuerza... pero su mente iba *más lejos*.",
+   "tts": "Cada año su cuerpo tenía menos fuerza... pero su mente iba más lejos.",
+   "gen": "[building] Cada año su cuerpo tenía menos fuerza... [excited] pero su mente iba más lejos.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "rol": "giro",
+   "t": "Y nunca perdió el *humor*: hizo apuestas, bromas... y se rió de sí mismo hasta el final.",
+   "tts": "Y nunca perdió el humor: hizo apuestas, bromas... y se rió de sí mismo hasta el final.",
+   "gen": "[playful] Y nunca perdió el humor: hizo apuestas, bromas... y se rió de sí mismo hasta el final.",
+   "p": 0.5,
+   "tag": "",
+   "id": "L14"
+  },
+  {
+   "id": "L15",
+   "rol": "giro",
+   "t": "En mil novecientos setenta y cuatro hizo un descubrimiento que sorprendió al mundo: los *agujeros negros* no son del todo negros. Brillan... y poco a poco se evaporan.",
+   "tts": "En mil novecientos setenta y cuatro hizo un descubrimiento que sorprendió al mundo: los agujeros negros no son del todo negros. Brillan... y poco a poco se evaporan.",
+   "gen": "[amazed] En mil novecientos setenta y cuatro hizo un descubrimiento que sorprendió al mundo: los agujeros negros no son del todo negros. [whispers] Brillan... y poco a poco se evaporan.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "rol": "giro",
+   "t": "Una idea que nació de unir dos mundos: lo más *grande*... y lo más *pequeño*.",
+   "tts": "Una idea que nació de unir dos mundos: lo más grande... y lo más pequeño.",
+   "gen": "[amazed] Una idea que nació de unir dos mundos: lo más grande... y lo más pequeño.",
+   "p": 0.5,
+   "tag": "",
+   "id": "L16"
+  },
+  {
+   "id": "L17",
+   "rol": "giro",
+   "t": "A los treinta y dos años lo eligieron miembro de la Sociedad Real de Londres, una de las academias científicas más *antiguas* del mundo.",
+   "tts": "A los treinta y dos años lo eligieron miembro de la Sociedad Real de Londres, una de las academias científicas más antiguas del mundo.",
+   "gen": "[proud] A los treinta y dos años lo eligieron miembro de la Sociedad Real de Londres, una de las academias científicas más antiguas del mundo.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L18",
+   "rol": "giro",
+   "t": "Y en mil novecientos setenta y nueve ocupó la cátedra que había tenido *Isaac Newton*, más de trescientos años antes.",
+   "tts": "Y en mil novecientos setenta y nueve ocupó la cátedra que había tenido Áisak Niúton, más de trescientos años antes.",
+   "gen": "[excited] Y en mil novecientos setenta y nueve ocupó la cátedra que había tenido Áisak Niúton, más de trescientos años antes.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L19",
+   "rol": "fracaso",
+   "t": "Pero la vida volvió a golpear. En mil novecientos ochenta y cinco, una neumonía casi lo mata... y lo dejó *sin voz*.",
+   "tts": "Pero la vida volvió a golpear. En mil novecientos ochenta y cinco, una neumonía casi lo mata... y lo dejó sin voz.",
+   "gen": "[serious] Pero la vida volvió a golpear. [pause] En mil novecientos ochenta y cinco, una neumonía casi lo mata... [heavy sigh] y lo dejó sin voz.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "rol": "fracaso",
+   "t": "Pudo haberse detenido ahí... pero *volvió a empezar*.",
+   "tts": "Pudo haberse detenido ahí... pero volvió a empezar.",
+   "gen": "[determined] Pudo haberse detenido ahí... [pause] pero volvió a empezar.",
+   "p": 0.5,
+   "tag": "",
+   "id": "L20"
+  },
+  {
+   "id": "L21",
+   "rol": "giro",
+   "t": "Con una computadora y un sintetizador, eligió palabra por palabra: primero con un pequeño movimiento de la mano... y años después, con un *músculo* de la mejilla.",
+   "tts": "Con una computadora y un sintetizador, eligió palabra por palabra: primero con un pequeño movimiento de la mano... y años después, con un músculo de la mejilla.",
+   "gen": "[determined] Con una computadora y un sintetizador, eligió palabra por palabra: primero con un pequeño movimiento de la mano... [warmly] y años después, con un músculo de la mejilla.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L22",
+   "rol": "giro",
+   "t": "Así escribió libros, dio conferencias por todo el mundo... y volvió a *hablarle* a la humanidad.",
+   "tts": "Así escribió libros, dio conferencias por todo el mundo... y volvió a hablarle a la humanidad.",
+   "gen": "[proud] Así escribió libros, dio conferencias por todo el mundo... y volvió a hablarle a la humanidad.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L23",
+   "rol": "giro",
+   "t": "En mil novecientos ochenta y ocho publicó *Breve historia del tiempo*. Se vendieron más de diez millones de ejemplares.",
+   "tts": "En mil novecientos ochenta y ocho publicó Breve historia del tiempo. Se vendieron más de diez millones de ejemplares.",
+   "gen": "[excited] En mil novecientos ochenta y ocho publicó Breve historia del tiempo. [amazed] Se vendieron más de diez millones de ejemplares.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L24",
+   "rol": "giro",
+   "t": "Apareció hasta en *Los Simpson*... y mostró que un cuerpo limitado no limita una mente.",
+   "tts": "Apareció hasta en Los Simpson... y mostró que un cuerpo limitado no limita una mente.",
+   "gen": "[playful] Apareció hasta en Los Simpson... [warmly] y mostró que un cuerpo limitado no limita una mente.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "rol": "giro",
+   "t": "Decía que, por muy difícil que parezca la vida, siempre hay algo que puedes hacer... y en lo que puedes *triunfar*.",
+   "tts": "Decía que, por muy difícil que parezca la vida, siempre hay algo que puedes hacer... y en lo que puedes triunfar.",
+   "gen": "[warmly] Decía que, por muy difícil que parezca la vida, siempre hay algo que puedes hacer... [proud] y en lo que puedes triunfar.",
+   "p": 0.5,
+   "tag": "",
+   "id": "L25"
+  },
+  {
+   "id": "L26",
+   "rol": "giro",
+   "t": "Los médicos hablaron de dos años. Él vivió *cincuenta y cinco* más.",
+   "tts": "Los médicos hablaron de dos años. Él vivió cincuenta y cinco más.",
+   "gen": "[intense] Los médicos hablaron de dos años. [pause] Él vivió cincuenta y cinco más.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L27",
+   "rol": "frase_final",
+   "t": "Murió en dos mil dieciocho, a los setenta y seis años... pero sus ideas siguen abriendo *preguntas*.",
+   "tts": "Murió en dos mil dieciocho, a los setenta y seis años... pero sus ideas siguen abriendo preguntas.",
+   "gen": "[softly] Murió en dos mil dieciocho, a los setenta y seis años... pero sus ideas siguen abriendo preguntas.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L28",
+   "rol": "frase_final",
+   "t": "En dos mil doce, ante el mundo entero, pidió algo simple: *mira hacia las estrellas*... y no hacia tus pies. Y añadió: sé *curioso*.",
+   "tts": "En dos mil doce, ante el mundo entero, pidió algo simple: mira hacia las estrellas... y no hacia tus pies. Y añadió: sé curioso.",
+   "gen": "[warmly] En dos mil doce, ante el mundo entero, pidió algo simple: [whispers] mira hacia las estrellas... y no hacia tus pies. [softly] Y añadió: sé curioso.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L29",
+   "rol": "frase_final",
+   "t": "Porque nadie sabe cuánto tiempo tiene... pero todos podemos decidir cómo *usarlo*.",
+   "tts": "Porque nadie sabe cuánto tiempo tiene... pero todos podemos decidir cómo usarlo.",
+   "gen": "[softly] Porque nadie sabe cuánto tiempo tiene... pero todos podemos decidir cómo usarlo.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L30",
+   "rol": "pregunta",
+   "t": "Y tú... si hoy supieras que el tiempo es *más corto* de lo que crees... ¿qué dejarías de aplazar... y qué harías *mañana*?",
+   "tts": "Y tú... si hoy supieras que el tiempo es más corto de lo que crees... ¿qué dejarías de aplazar... y qué harías mañana?",
+   "gen": "[softly, reflective] Y tú... si hoy supieras que el tiempo es más corto de lo que crees... [pause] ¿qué dejarías de aplazar... [emotional] y qué harías mañana?",
+   "p": 0.5,
+   "tag": ""
+  }
+ ]
+}

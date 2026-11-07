@@ -337,3 +337,120 @@ def bus():
             P.add(lambda d, cx=cx: d.ellipse([cx - 3, 34, cx + 3, 40], fill=255), (190, 190, 206), edge=False, sh=False, hi=False)
         return P.final()
     return cached('bus', mk)
+
+
+# ================================================================ historia Hawking
+def wheelchair_back(r=14):
+    """respaldo y estructura (va DETRÁS de la persona sentada)."""
+    def mk():
+        w = r * 4 + 6; h = r * 2 + 12
+        P = Paint(w, h)
+        P.add(lambda d: d.rounded_rectangle([r + 3, 2, w - r - 4, h - 8], radius=3, fill=255), (54, 58, 80), edge_k=.5)
+        P.add(lambda d: d.rectangle([r + 5, h - 12, w - r - 6, h - 6], fill=255), (40, 44, 64), edge_k=.5)
+        return P.final()
+    return cached(('wcb', r), mk)
+
+
+def wheelchair_front(r=14):
+    """ruedas, reposabrazos y reposapiés (va DELANTE)."""
+    def mk():
+        w = r * 4 + 6; h = r * 2 + 12
+        P = Paint(w, h)
+        for cx in (r + 2, w - r - 3):
+            P.add(lambda d, cx=cx: d.ellipse([cx - r, h - 2 * r - 2, cx + r, h - 2], fill=255), (36, 38, 54), edge_k=.5, sh=False)
+            P.add(lambda d, cx=cx: d.ellipse([cx - r + 3, h - 2 * r + 1, cx + r - 3, h - 5], fill=255), (0, 0, 0), edge=False, sh=False, hi=False)
+            P.a[(P.a[..., 3] > 0) & (P.a[..., :3] == 0).all(-1)] = 0                                       # hueco de la rueda
+            P.add(lambda d, cx=cx: d.ellipse([cx - 2, h - r - 4, cx + 2, h - r], fill=255), (190, 192, 210), edge=False, sh=False, hi=False)
+            for k in range(8):
+                a = k * math.pi / 4; P.line([(cx, h - r - 2), (cx + int((r - 3) * math.cos(a)), h - r - 2 + int((r - 3) * math.sin(a)))], (130, 134, 160))
+        P.add(lambda d: d.rounded_rectangle([r + 4, h - 2 * r + 2, r + 9, h - 14], radius=1, fill=255), (80, 84, 112), edge_k=.5)
+        P.add(lambda d: d.rounded_rectangle([w - r - 10, h - 2 * r + 2, w - r - 5, h - 14], radius=1, fill=255), (80, 84, 112), edge_k=.5)
+        return P.final()
+    return cached(('wcf', r), mk)
+
+
+def telescope():
+    def mk():
+        P = Paint(34, 48)
+        P.add(lambda d: d.polygon([(4, 30), (26, 2), (31, 8), (9, 36)], fill=255), (190, 150, 90), edge_k=.5)
+        P.add(lambda d: d.polygon([(2, 32), (8, 24), (13, 30), (6, 38)], fill=255), (120, 84, 50), edge_k=.5)
+        P.line([(8, 36), (4, 47)], (96, 70, 50)); P.line([(8, 36), (14, 47)], (96, 70, 50)); P.line([(8, 36), (22, 47)], (96, 70, 50))
+        P.rect(26, 2, 31, 8, (240, 214, 150))
+        return P.final()
+    return cached('telescope', mk)
+
+
+def hospital_bed():
+    def mk():
+        P = Paint(76, 40)
+        P.add(lambda d: d.rounded_rectangle([2, 14, 73, 28], radius=3, fill=255), (240, 244, 252), edge_k=.55)
+        P.add(lambda d: d.rounded_rectangle([4, 10, 22, 20], radius=4, fill=255), (252, 252, 255), edge_k=.55)
+        P.add(lambda d: d.rounded_rectangle([20, 16, 73, 28], radius=3, fill=255), (130, 190, 210), edge_k=.55)
+        P.rect(2, 4, 3, 36, (170, 176, 200)); P.rect(72, 8, 73, 36, (170, 176, 200)); P.rect(2, 4, 8, 4, (170, 176, 200))
+        P.rect(2, 28, 73, 30, (150, 156, 180)); P.rect(6, 31, 8, 38, (90, 96, 120)); P.rect(66, 31, 68, 38, (90, 96, 120))
+        return P.final()
+    return cached('hbed', mk)
+
+
+def monitor_ecg(t_unused=0):
+    def mk():
+        P = Paint(40, 34)
+        P.add(lambda d: d.rounded_rectangle([0, 0, 39, 26], radius=3, fill=255), (40, 44, 60), edge_k=.5)
+        P.rect(3, 3, 36, 22, (10, 30, 24)); P.rect(14, 26, 25, 32, (70, 74, 96)); P.rect(8, 32, 31, 33, (70, 74, 96))
+        return P.final()
+    return cached('ecg', mk)
+
+
+def computer_old():
+    def mk():
+        P = Paint(40, 38)
+        P.add(lambda d: d.rounded_rectangle([2, 0, 37, 26], radius=3, fill=255), (214, 208, 190), edge_k=.5)
+        P.rect(5, 3, 34, 22, (20, 50, 40)); P.rect(14, 26, 25, 31, (190, 184, 168))
+        P.add(lambda d: d.rounded_rectangle([0, 31, 39, 37], radius=2, fill=255), (200, 194, 176), edge_k=.5)
+        for x in range(3, 37, 4): P.rect(x, 33, x + 2, 34, (110, 106, 96))
+        return P.final()
+    return cached('pc', mk)
+
+
+def frame_portrait(w=34, h=42, wig=True):
+    """retrato enmarcado de un sabio con peluca (Newton)."""
+    def mk():
+        P = Paint(w, h)
+        P.add(lambda d: d.rectangle([0, 0, w - 1, h - 1], fill=255), (190, 140, 60), edge_k=.5)
+        P.rect(3, 3, w - 4, h - 4, (46, 38, 60))
+        c = w // 2
+        P.add(lambda d: d.ellipse([c - 10, 8, c + 10, 34], fill=255), (210, 200, 210), edge=False, sh=False, hi=False)             # peluca
+        P.add(lambda d: d.ellipse([c - 6, 12, c + 6, 28], fill=255), (240, 200, 168), edge=False, sh=False, hi=False)              # cara
+        P.rect(c - 3, 19, c - 2, 19, (50, 40, 40)); P.rect(c + 2, 19, c + 3, 19, (50, 40, 40)); P.rect(c - 1, 24, c + 1, 24, (180, 90, 90))
+        P.add(lambda d: d.rectangle([c - 12, h - 10, c + 12, h - 4], fill=255), (60, 70, 110), edge=False, sh=False, hi=False)
+        return P.final()
+    return cached(('frame', w, h), mk)
+
+
+def heart(sz=9, col=(255, 90, 130)):
+    def mk():
+        P = Paint(sz, sz)
+        P.add(lambda d: d.polygon([(sz // 2, sz - 1), (0, sz // 3), (1, 0), (sz // 3, 0), (sz // 2, sz // 4), (sz - sz // 3, 0), (sz - 2, 0), (sz - 1, sz // 3)], fill=255), col, edge_k=.55)
+        return P.final()
+    return cached(('heart', sz, col), mk)
+
+
+def book_stack(n=4):
+    def mk():
+        P = Paint(34, 8 * n + 2)
+        cols = ((60, 90, 200), (220, 70, 90), (240, 200, 70), (90, 190, 120))
+        for i in range(n):
+            y = 8 * (n - 1 - i) + 1; w = 30 - (i % 2) * 3
+            P.add(lambda d, y=y, w=w: d.rectangle([1, y, w, y + 6], fill=255), cols[i % 4], edge_k=.45)
+            P.rect(w - 2, y + 1, w, y + 5, (244, 236, 214)); P.rect(3, y + 3, 9, y + 3, (250, 232, 170))
+        return P.final()
+    return cached(('stack', n), mk)
+
+
+def cane():
+    def mk():
+        P = Paint(14, 40)
+        P.add(lambda d: d.rectangle([5, 6, 7, 39], fill=255), (120, 84, 50), edge_k=.5)
+        P.add(lambda d: d.arc([3, 0, 13, 10], 180, 360, fill=255, width=3), (120, 84, 50), edge_k=.5)
+        return P.final()
+    return cached('cane', mk)

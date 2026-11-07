@@ -27,3 +27,8 @@ Revisar a las 48 h de cada publicación. No sacar conclusiones con menos de 14 v
 
 ## Reglas fijas de cada video
 1. Gancho en los primeros 2 s (tipo «rechazado» o «se negó»). 2. Fracaso → giro → frase final. 3. Pregunta personal final: «¿Cuál fue tu mayor rechazo... y qué hiciste con él?» (en el video y en el caption). 4. En pantalla: «Guárdalo para cuando lo necesites» + botón. 5. Hashtags idénticos: `#Motivación #Superación #HistoriasQueInspiran` + uno de la persona.
+
+## Video largo (3 min): Stephen Hawking
+- `src/build_hawking.py` + `src/scenes9.py`, guion `guion_hawking.md` (formato de la skill `guiones-reels-videos-cortos`), textos de voz `elevenlabs_hawking_v3.txt` (~3.400 caracteres).
+- Se publica como video largo / Short de 3 min en YouTube y como video normal en TikTok e Instagram; el mismo guion se puede recortar a 60 s con las líneas L1, L5-L7, L19, L26-L27 y L30.
+- Voz: pendiente por cuota (ver `README.md`).

@@ -29,6 +29,7 @@ def caption(d, plataforma):
     gancho = clean(next(l['t'] for l in L if l.get('rol') == 'gancho'))
     pregunta = clean(L[-1]['t']).replace('Y tú... ', '').strip()
     pregunta = re.sub(r'¿(\w)', lambda m_: '¿' + m_.group(1).upper(), pregunta, count=1)
+    pregunta = pregunta[:1].upper() + pregunta[1:]
     resumen = ' '.join(clean(l['t']) for l in L if l.get('rol') in ('fracaso', 'giro'))
     resumen = re.sub(r'\.\.\.', '…', resumen)
     persona = m.get('famoso', d.get('titulo', 'Historia').split(':')[0])
