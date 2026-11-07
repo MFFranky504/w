@@ -134,213 +134,7 @@ def dyn_sunset(im, t, ts, tag):
     for k in range(10):  # dust
         x = (k * 29 + t * 5) % W; y = 200 - ((t * 9 + k * 31) % 150); d.point((x, y), fill=(255, 215, 120))
 
-def base_home():
-    a = np.zeros((H, W, 3), np.uint8)
-    for x in range(0, W, 12): a[:266, x:x + 6] = (52, 28, 82); a[:266, x + 6:x + 12] = (44, 22, 70)
-    a[190:266] = (62, 34, 52); a[188:190] = (140, 90, 60)
-    for y in range(266, H, 10): a[y:y + 9] = (96, 54, 42) if (y // 10) % 2 else (80, 44, 36)
-    return Image.fromarray(a)
-HOME = base_home()
-def halftone(d, x0, y0, x1, y1, col):
-    for y in range(y0, y1, 4):
-        for x in range(x0 + (2 if (y // 4) % 2 else 0), x1, 4): d.point((x, y), fill=col)
-def dyn_home(im, t, ts, tag):
-    d = ImageDraw.Draw(im); arr = np.array(im)
-    glow(arr, 250, 50, 110, (255, 190, 90), .45); glow(arr, 40, 100, 100, (255, 150, 80), .25)
-    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
-    d.rectangle((236, 24, 264, 29), fill=(120, 80, 40)); d.polygon([(238, 29), (262, 29), (257, 50), (243, 50)], fill=(255, 210, 120))  # lamp
-    panels = [(8, 0.5), (92, 0.8), (176, 1.1)]; cols = [(130, 200, 255), (255, 240, 170), (255, 170, 200)]
-    for i, ((x, st), c) in enumerate(zip(panels, cols)):
-        k = ease((ts - st) / .25)
-        if k <= 0: continue
-        h = int(40 * k); y0 = 164 - h
-        d.rectangle((x - 2, y0 - 2, x + 78, 166), fill=(20, 12, 30)); d.rectangle((x, y0, x + 76, 164), fill=c)
-        if h < 38: continue
-        halftone(d, x + 2, 126, x + 75, 163, tuple(int(v * .82) for v in c))
-        if i == 0:  # kennel + dog silhouette on roof
-            d.rectangle((x + 20, 150, x + 56, 168), fill=(150, 60, 50)); d.polygon([(x + 16, 150), (x + 38, 136), (x + 60, 150)], fill=(200, 80, 60))
-            d.ellipse((x + 33, 154, x + 43, 166), fill=(20, 10, 30))
-            d.ellipse((x + 22, 128, x + 48, 138), fill=(15, 8, 25)); d.ellipse((x + 44, 124, x + 56, 136), fill=(15, 8, 25)); d.rectangle((x + 52, 130, x + 62, 133), fill=(15, 8, 25)); d.polygon([(x + 46, 124), (x + 50, 124), (x + 48, 132)], fill=(15, 8, 25))
-        else:
-            d.ellipse((x + 12, 134, x + 64, 158), fill=WHITE, outline=(20, 12, 30)); d.polygon([(x + 28, 156), (x + 24, 164), (x + 36, 157)], fill=WHITE, outline=(20, 12, 30))
-            d.rectangle((x + 13, 140, x + 63, 152), fill=WHITE)
-            txt = "..." if i == 1 else "HA HA"
-            n = len(txt) if i == 2 else (int(t * 3) % 4)
-            d.text((x + 38, 146), (txt if i == 2 else "." * n)[: len(txt)] if (i == 2 and int(t * 2) % 2 == 0) or i == 1 else "", font=F(11), fill=(20, 12, 30), anchor="mm")
-    d.rectangle((0, 262, W, 266), fill=(120, 70, 50))
-
-def base_studio():
-    a = np.zeros((H, W, 3), np.uint8); a[:266] = (38, 20, 48)
-    im = Image.fromarray(a); d = ImageDraw.Draw(im)
-    for r, y in enumerate(range(0, 266, 8)):
-        off = 0 if r % 2 else 9
-        for x in range(-9, W, 18):
-            c = rnd.choice([(48, 26, 58), (42, 22, 52), (54, 30, 62)]); d.rectangle((x + off, y, x + off + 16, y + 6), fill=c)
-    for (x0, x1) in ((6, 42), (228, 264)):
-        d.rectangle((x0 - 2, 52, x1 + 2, 132), fill=(20, 10, 30)); d.ellipse((x0 - 2, 36, x1 + 2, 80), fill=(20, 10, 30))
-        d.rectangle((x0, 54, x1, 132), fill=(255, 190, 70)); d.ellipse((x0, 38, x1, 78), fill=(255, 190, 70))
-        for gx in range(x0 + 12, x1, 12): d.line([(gx, 40), (gx, 132)], fill=(120, 60, 30))
-        d.line([(x0, 92), (x1, 92)], fill=(120, 60, 30))
-    for y in range(266, H, 12):
-        for x in range(0, W, 24): d.rectangle((x + (12 if (y // 12) % 2 else 0), y, x + (12 if (y // 12) % 2 else 0) + 11, y + 11), fill=(26, 14, 38))
-    d.rectangle((0, 264, W, 268), fill=(190, 140, 50))
-    return im
-STUDIO = base_studio()
-def dyn_studio(im, t, ts, tag):
-    arr = np.array(im)
-    for k, bx in enumerate((70, 200)):
-        sw = 22 * math.sin(t * .9 + k * 2)
-        beam(arr, bx, bx + sw + (k - .5) * 50, 0, 266, 6, 70, (255, 200, 120), .22)
-    glow(arr, 135, 215, 80, (255, 160, 60), .35)
-    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
-    cx, cy, R = 135, 212, 46   # vinyl halo
-    d.ellipse((cx - R - 2, cy - R - 2, cx + R + 2, cy + R + 2), fill=(255, 200, 70)); d.ellipse((cx - R, cy - R, cx + R, cy + R), fill=(18, 14, 24))
-    for r in range(8, R, 5): d.ellipse((cx - r, cy - r, cx + r, cy + r), outline=(44, 38, 56))
-    a = t * 2.0; d.line([(cx, cy), (cx + math.cos(a) * R, cy + math.sin(a) * R)], fill=(70, 60, 90))
-    d.line([(cx, cy), (cx + math.cos(a + 3.14) * R, cy + math.sin(a + 3.14) * R)], fill=(70, 60, 90))
-    d.ellipse((cx - 13, cy - 13, cx + 13, cy + 13), fill=(220, 50, 90)); d.ellipse((cx - 3, cy - 3, cx + 3, cy + 3), fill=(14, 8, 34))
-    d.line([(cx + math.cos(a) * 4, cy + math.sin(a) * 4), (cx + math.cos(a) * 12, cy + math.sin(a) * 12)], fill=(255, 220, 90))
-    for i in range(2): d.arc((cx - R - 6 - i * 4, cy - R - 6 - i * 4, cx + R + 6 + i * 4, cy + R + 6 + i * 4), 200, 250, fill=(255, 235, 150))
-    # speaker stack (left) pulsing to beat
-    pul = 1 if (t * 92 / 60) % 1 < .18 else 0
-    d.rectangle((12, 190, 52, 266), fill=(24, 14, 30), outline=(90, 60, 100))
-    for cy2 in (208, 244): d.ellipse((20 - pul, cy2 - 12 - pul, 44 + pul, cy2 + 12 + pul), fill=(40, 28, 50), outline=(130, 100, 150)); d.ellipse((28, cy2 - 4, 36, cy2 + 4), fill=(90, 70, 110))
-    # billboard chart (right): bars climb, #1 crown late
-    hs = [14, 24, 36, 50, 66]
-    for i, hh in enumerate(hs):
-        k = ease((ts - 1.8 - i * .5) / .5); hh = int(hh * k)
-        if hh: d.rectangle((196 + i * 12, 266 - hh, 205 + i * 12, 266), fill=(255, 90, 160) if i < 4 else (255, 205, 60))
-    if ts > 4.6:
-        pop = 1 + int(2 * (ts - 4.6 < .25))
-        d.polygon([(244, 190), (248, 182), (252, 188), (256, 180), (260, 190), (260, 195), (244, 195)], fill=GOLD)
-        d.text((252, 180 - pop), "1", font=F(24), fill=WHITE, anchor="mm"); d.text((253, 181 - pop), "1", font=F(24), fill=(255, 205, 60), anchor="mm")
-        for k in range(6):
-            a2 = ts * 6 + k; d.point((252 + math.cos(a2) * 18, 190 + math.sin(a2) * 12), fill=WHITE)
-
-def base_night():
-    a = np.zeros((H, W, 3), np.uint8)
-    a[:266] = dgrad(W, 266, (6, 8, 30), (78, 24, 72), 9); a[266:] = (16, 8, 26)
-    im = Image.fromarray(a); d = ImageDraw.Draw(im); x = -4
-    while x < W:
-        w = rnd.randint(18, 34); h = rnd.randint(60, 150); d.rectangle((x, 266 - h, x + w, 266), fill=(14, 10, 32), outline=(26, 18, 52))
-        x += w + rnd.randint(0, 3)
-    return im
-NIGHT = base_night()
-WINS = [(rnd.randint(2, W - 3), rnd.randint(100, 262), rnd.random() * 9) for _ in range(90)]
-def flame(d, x, base, h, t, seed):
-    tip = h * (.7 + .3 * math.sin(t * 9 + seed * 2.3)) * (.6 + .4 * math.sin(t * 5.1 + seed))
-    d.polygon([(x - 5, base), (x - 1 + math.sin(t * 7 + seed) * 2, base - tip * .7), (x + math.sin(t * 8 + seed) * 3, base - tip), (x + 2, base - tip * .6), (x + 5, base)], fill=(230, 50, 30))
-    d.polygon([(x - 3, base), (x, base - tip * .75), (x + 3, base)], fill=(255, 160, 40))
-    d.polygon([(x - 1, base), (x, base - tip * .45), (x + 1, base)], fill=(255, 240, 150))
-def dyn_night(im, t, ts, tag):
-    d = ImageDraw.Draw(im)
-    for (x, y, p) in WINS:
-        if math.sin(t * .8 + p) > -.2: d.point((x, y), fill=(255, 200, 100) if p > 4 else (120, 220, 255))
-    arr = np.array(im); k = ease((ts - .4) / .8)
-    glow(arr, 135, 262, 150, (255, 90, 30), .55 * k)
-    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
-    d.rectangle((0, 266, W, 270), fill=(70, 30, 50))
-    for x in range(2, W, 9): flame(d, x, 268, 46 * k + 6 * k, t, x)
-    for x in range(6, W, 17): flame(d, x, 274, 30 * k, t + .4, x * 3)
-    for i in range(22):  # sparks
-        x = (i * 37 + math.sin(t * 2 + i) * 6) % W; y = 262 - ((t * 40 + i * 53) % 200) * k
-        d.point((x, y), fill=(255, 200 - (i % 3) * 50, 60))
-
-def base_stadium():
-    a = np.zeros((H, W, 3), np.uint8)
-    a[:266] = dgrad(W, 266, (4, 14, 36), (20, 70, 90), 9)
-    a[266:] = (22, 94, 52)
-    for i, y in enumerate(range(266, H, 14)):
-        if i % 2: a[y:y + 14] = (28, 108, 60)
-    im = Image.fromarray(a); d = ImageDraw.Draw(im)
-    for k in range(4):   # stands
-        y = 140 + k * 28; d.rectangle((0, y, W, y + 26), fill=(18 + k * 4, 22 + k * 4, 52 + k * 5))
-    for x in (40, 230):
-        d.rectangle((x - 2, 90, x + 2, 266), fill=(40, 40, 60)); d.rectangle((x - 18, 62, x + 18, 92), fill=(30, 30, 46))
-    d.line([(0, 266), (W, 266)], fill=(240, 240, 240))
-    for k in range(-6, 7): d.line([(135 + k * 5, 268), (135 + k * 70, H)], fill=(60, 140, 80))
-    return im
-STAD = base_stadium()
-CROWD = [(rnd.randint(0, W), rnd.randint(150, 260), rnd.random() * 6, rnd.choice([(255, 210, 90), (255, 90, 160), (90, 230, 255), (240, 240, 240)])) for _ in range(260)]
 CONF = [(rnd.random() * W, rnd.random() * H, rnd.uniform(25, 60), rnd.choice([(255, 210, 60), (255, 80, 170), (80, 240, 230), (170, 130, 255)]), rnd.random() * 6) for _ in range(70)]
-def dyn_stadium(im, t, ts, tag):
-    d = ImageDraw.Draw(im)
-    for (x, y, p, c) in CROWD:
-        if math.sin(t * 6 + p * 3) > -.1: d.point((x, y), fill=c)
-    arr = np.array(im)
-    for x in (40, 230): glow(arr, x, 76, 70, (255, 250, 220), .8)
-    for k, bx in enumerate((60, 210)):
-        beam(arr, 135 + (k - .5) * 120, 135 + math.sin(t * 1.1 + k * 2) * 80 + (k - .5) * 20, 70, 266, 6, 60, (200, 230, 255), .14)
-    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
-    for x in (40, 230):
-        for r in range(3):
-            for c in range(4): d.rectangle((x - 15 + c * 8, 64 + r * 8, x - 10 + c * 8, 69 + r * 8), fill=(255, 255, 235))
-    for (bt, bx, by) in ((3.0, 80, 100), (5.2, 195, 90)):  # fireworks
-        e = ts - bt
-        if 0 < e < 1.2:
-            for k in range(14):
-                a2 = k / 14 * 6.283; r = 36 * ease(e / 1.0); c = [(255, 210, 60), (255, 80, 170), (90, 240, 255)][k % 3]
-                d.rectangle((bx + math.cos(a2) * r, by + math.sin(a2) * r + 10 * e * e, bx + math.cos(a2) * r + 2, by + math.sin(a2) * r + 2 + 10 * e * e), fill=c)
-    for (x, y, v, c, p) in CONF:   # confetti
-        yy = (y + v * t) % H; xx = x + math.sin(t * 2 + p) * 6
-        d.rectangle((xx, yy, xx + 1, yy + 2), fill=c)
-
-
-# ---------------- Biggie (original pixel-art tribute) ----------------
-def make_biggie():
-    w, h = 64, 110
-    SK = (150, 98, 68); SKD = (112, 70, 48); SKL = (184, 126, 92)
-    im = Image.new("RGBA", (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    for x0 in (17, 34):
-        d.rectangle((x0, 88, x0 + 13, 105), fill=(46, 58, 120)); d.rectangle((x0, 88, x0 + 2, 105), fill=(32, 42, 92))
-    for x0 in (14, 33):
-        d.rectangle((x0, 102, x0 + 17, 109), fill=(240, 240, 248)); d.rectangle((x0, 107, x0 + 17, 109), fill=(150, 150, 175))
-    # sweater (zig-zag bands) masked to torso+arms
-    mask = Image.new("L", (w, h), 0); md = ImageDraw.Draw(mask)
-    md.rounded_rectangle((8, 44, 56, 92), 6, fill=255); md.rectangle((0, 48, 10, 86), fill=255); md.rectangle((54, 48, 64, 86), fill=255)
-    layer = Image.new("RGBA", (w, h), (255, 205, 60, 255)); ld = ImageDraw.Draw(layer)
-    bands = [(255, 80, 160), (80, 230, 255), (150, 110, 255), (255, 205, 60)]
-    for i, y in enumerate(range(44, 96, 6)):
-        for x in range(0, w):
-            yy = y + (2 if (x // 4) % 2 else 0); ld.rectangle((x, yy, x, yy + 2), fill=bands[i % 4])
-    im.paste(layer, (0, 0), mask)
-    d.rectangle((1, 86, 9, 94), fill=SK); d.rectangle((55, 86, 63, 94), fill=SK); d.rectangle((1, 91, 9, 94), fill=SKD)
-    d.rectangle((26, 38, 38, 46), fill=SKD)
-    d.line([(24, 46), (32, 64), (40, 46)], fill=(255, 215, 80), width=2); d.ellipse((27, 62, 37, 72), fill=(255, 215, 80), outline=(170, 115, 20)); d.rectangle((31, 66, 33, 68), fill=(170, 115, 20))
-    d.ellipse((17, 12, 47, 44), fill=SK); d.rectangle((15, 27, 18, 33), fill=SKD); d.rectangle((46, 27, 49, 33), fill=SKD)
-    d.rectangle((23, 20, 29, 21), fill=SKL)
-    d.polygon([(19, 33), (45, 33), (43, 43), (21, 43)], fill=(72, 44, 34)); d.rectangle((28, 36, 36, 37), fill=(40, 20, 22))
-    d.rectangle((19, 25, 31, 31), fill=(15, 12, 22)); d.rectangle((33, 25, 45, 31), fill=(15, 12, 22)); d.rectangle((31, 27, 33, 28), fill=(15, 12, 22))
-    d.point((21, 26), fill=WHITE); d.point((22, 26), fill=WHITE); d.point((35, 26), fill=WHITE); d.point((36, 26), fill=WHITE)
-    d.ellipse((20, 2, 44, 20), fill=(78, 54, 140)); d.rectangle((14, 15, 50, 19), fill=(54, 38, 104)); d.rectangle((20, 14, 44, 15), fill=(255, 205, 60))
-    d.rectangle((24, 5, 30, 6), fill=(130, 100, 200))
-    a = np.array(im)[..., 3] > 0
-    ol = np.zeros_like(a)
-    for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)): ol |= np.roll(np.roll(a, dy, 0), dx, 1)
-    ol &= ~a
-    arr = np.array(im); arr[ol] = (14, 8, 34, 255)
-    col = Image.fromarray(arr, "RGBA")
-    full = a | ol
-    sil = np.zeros_like(arr); sil[full] = (14, 8, 34, 255)
-    left = full & ~np.roll(full, 1, 1); right = full & ~np.roll(full, -1, 1); top = full & ~np.roll(full, 1, 0)
-    sil[left] = (70, 230, 255, 255); sil[right] = (255, 70, 190, 255); sil[top & ~left & ~right] = (255, 215, 90, 255)
-    return col, Image.fromarray(sil, "RGBA")
-BIG_COL, BIG_SIL = make_biggie()
-CROWN = ["0010010010", "0110110110", "0111111110", "1111111111", "1311211311", "1111111111"]
-def crown(im, x, y):
-    d = ImageDraw.Draw(im)
-    for j, row in enumerate(CROWN):
-        for i, c in enumerate(row):
-            if c != "0": d.rectangle((x + i * 2, y + j * 2, x + i * 2 + 1, y + j * 2 + 1), fill={"1": (255, 205, 60), "2": (255, 245, 170), "3": (240, 60, 130)}[c])
-def biggie(im, t, ts, x=135, feet=266):
-    if ts < REVEAL:
-        im.paste(BIG_SIL, (x - 32, feet - 110 + (1 if int(t * 2.2) % 2 else 0)), BIG_SIL)
-        qmark(im, x - 6, feet - 138 + int(3 * math.sin(t * 4)), 3)
-    else:
-        e = ts - REVEAL; jump = -int(abs(14 * math.exp(-e * 3.5) * math.cos(e * 16)))
-        dance = 1 if (int(t * 92 / 60 * 2) % 2 and ts > WIN0) else 0
-        im.paste(BIG_COL, (x - 32 + dance, feet - 110 + jump + (1 if int(t * 2.2) % 2 else 0)), BIG_COL)
-        crown(im, x - 10, feet - 130 + jump + int(2 * math.sin(t * 3)))
 
 # ---------------- Brooklyn night (recap) ----------------
 def base_brooklyn():
@@ -407,8 +201,6 @@ def notes(im, t):
         c = [(255, 205, 60), (255, 90, 170), (90, 235, 255)][k % 3]
         d.rectangle((x + 2, y, x + 2, y + 6), fill=c); d.rectangle((x, y + 5, x + 2, y + 7), fill=c); d.rectangle((x + 3, y, x + 5, y + 1), fill=c)
 
-SCENES = [(SUNSET, dyn_sunset), (BROOK, dyn_brooklyn), (HOME, dyn_home), (STUDIO, dyn_studio), (NIGHT, dyn_night), (STAD, dyn_stadium), (SUNSET, dyn_sunset)]
-
 # ---------------- UI ----------------
 def lt(d, xy, s, sz, fill, shadow=(10, 4, 30), anchor="mm"):
     f = F(sz); d.fontmode = "1"
@@ -439,41 +231,267 @@ def layout(text):
     lines.append(line); return lines, sp
 LAY = [layout(c["text"]) for c in CLUES]
 
+
+
+# ======================= v4: Snoop (crip walk), Nas-inspired NYC scenes =======================
+def snoop_layer(t, mode="col"):
+    col = mode == "col"; OUT = (14, 8, 34, 255); DK = (14, 8, 34, 255)
+    L_ = Image.new("RGBA", (100, 130), (0, 0, 0, 0)); d = ImageDraw.Draw(L_)
+    SKIN = (150, 98, 68, 255); SHIRT = (34, 34, 50, 255); PANT = (62, 88, 160, 255); PANTD = (44, 64, 124, 255)
+    CAP = (24, 24, 34, 255); BRAID = (50, 32, 28, 255); SHOE = (240, 240, 248, 255); GOLDC = (255, 215, 80, 255)
+    C = (lambda c: c) if col else (lambda c: DK)
+    def line(p, q, w, c):
+        if col: d.line([p, q], fill=OUT, width=w + 2)
+        d.line([p, q], fill=C(c), width=w)
+    ph = t * 13.0; fy = 124; sway = 2 * math.sin(ph * .5)
+    hx, hy = 50 - sway, fy - 52; sx, sy = 50 + sway, fy - 90; cx, cy = sx + sway * .5, sy - 14
+    for s in (-1, 1):                                   # braids (behind)
+        for k in (0, 1):
+            wig = math.sin(ph * .5 + k + s) * 2
+            line((cx + s * 7, cy + 2), (cx + s * (9 + k * 2) + wig, sy + 14), 2, BRAID)
+    for s in (-1, 1):                                   # legs: crip-walk slide / heel-toe flick
+        p = ph + (0 if s < 0 else math.pi)
+        fx = 50 + s * 3 + 15 * math.sin(p); fyy = fy - 6 * max(0, math.sin(p + 1.2))
+        knee = ((hx + fx) / 2 + s * 3 + 3 * math.sin(p), (hy + fyy) / 2 + 3)
+        line((hx + s * 4, hy), knee, 8, PANT); line(knee, (fx, fyy - 3), 7, PANTD)
+        sg = 1 if math.cos(p) > 0 else -1
+        x0, x1 = sorted((fx - 3 * sg, fx + 7 * sg))
+        d.rectangle((x0, fyy - 4, x1, fyy), fill=C(SHOE), outline=OUT if col else DK)
+    d.polygon([(sx - 13, sy), (sx + 13, sy), (hx + 10, hy + 4), (hx - 10, hy + 4)], fill=C(SHIRT), outline=OUT if col else DK)
+    if col: d.line([(hx - 10, hy + 2), (hx + 10, hy + 2)], fill=(80, 80, 112, 255), width=1)
+    for s in (-1, 1):                                   # arms swing + cross
+        shd = (sx + s * 13, sy + 3); a1 = .35 * s + .9 * math.sin(ph + (0 if s < 0 else math.pi) + .5)
+        el = (shd[0] + 16 * math.sin(a1), shd[1] + 16 * math.cos(a1))
+        a2 = a1 - s * .9 + 1.0 * math.sin(2 * ph + s * 1.3)
+        hd = (el[0] + 14 * math.sin(a2), el[1] + 14 * math.cos(a2))
+        line(shd, el, 7, SHIRT); line(el, hd, 5, SKIN)
+        d.ellipse((hd[0] - 3, hd[1] - 3, hd[0] + 3, hd[1] + 3), fill=C(SKIN), outline=OUT if col else DK)
+    line((sx - 5, sy + 1), (sx, sy + 12), 1, GOLDC); line((sx + 5, sy + 1), (sx, sy + 12), 1, GOLDC)
+    d.rectangle((sx - 2, sy + 12, sx + 2, sy + 16), fill=C(GOLDC))
+    d.ellipse((cx - 8, cy - 10, cx + 8, cy + 10), fill=C(SKIN), outline=OUT if col else DK)
+    d.polygon([(cx - 9, cy - 3), (cx - 9, cy - 9), (cx, cy - 14), (cx + 9, cy - 9), (cx + 9, cy - 3)], fill=C(CAP), outline=OUT if col else DK)
+    d.rectangle((cx - 10, cy - 4, cx + 13, cy - 2), fill=C(CAP))
+    if col:
+        d.rectangle((cx - 7, cy - 1, cx + 7, cy + 2), fill=(15, 12, 22, 255)); d.point((cx - 5, cy - 1), fill=(255, 255, 255, 255)); d.point((cx + 2, cy - 1), fill=(255, 255, 255, 255))
+        d.line([(cx - 3, cy + 6), (cx + 3, cy + 6)], fill=(70, 40, 32, 255))
+    if col: return L_
+    a = np.array(L_)[..., 3] > 0; arr = np.zeros((130, 100, 4), np.uint8); arr[a] = (14, 8, 34, 255)
+    left = a & ~np.roll(a, 1, 1); right = a & ~np.roll(a, -1, 1); top = a & ~np.roll(a, 1, 0)
+    arr[left] = (70, 230, 255, 255); arr[right] = (255, 70, 190, 255); arr[top & ~left & ~right] = (255, 215, 90, 255)
+    return Image.fromarray(arr, "RGBA")
+def snoop(im, t, x=135, feet=266, mode="col"):
+    l_ = snoop_layer(t, mode); im.paste(l_, (int(x - 50), int(feet - 124)), l_)
+SPR_HAT_M = SPR_HAT.transpose(Image.FLIP_LEFT_RIGHT)
+def dim_top(im, n=140):
+    a = np.array(im); a[:n] = (a[:n] * np.linspace(.55, 1, n)[:, None, None]).astype(np.uint8); return Image.fromarray(a)
+def dots(d, arr_pts, c): [d.point(p, fill=c) for p in arr_pts]
+
+# ---- clue 1: block party, Queensbridge-style red brick towers ----
+def base_block():
+    a = np.zeros((H, W, 3), np.uint8); a[:266] = dgrad(W, 266, (6, 8, 32), (92, 38, 92), 10); a[266:] = (30, 22, 38)
+    im = Image.fromarray(a); d = ImageDraw.Draw(im); x = 0
+    while x < W:
+        w = rnd.randint(6, 14); h = rnd.randint(14, 50); d.rectangle((x, 246 - h, x + w, 246), fill=(22, 16, 48)); x += w + 1
+    for (x0, w, h) in [(-6, 60, 150), (58, 52, 110), (114, 56, 164), (174, 50, 120), (228, 52, 140)]:
+        d.rectangle((x0, 266 - h, x0 + w, 266), fill=(104, 44, 54))
+        for by in range(266 - h, 266, 6): d.line([(x0, by), (x0 + w, by)], fill=(86, 34, 46))
+        for wy in range(266 - h + 8, 252, 12):
+            for wx in range(x0 + 5, x0 + w - 6, 10): d.rectangle((wx, wy, wx + 4, wy + 6), fill=(255, 200, 110) if rnd.random() < .5 else (36, 22, 44))
+        d.rectangle((x0 - 1, 266 - h - 3, x0 + w + 1, 266 - h), fill=(60, 26, 40))
+    d.rectangle((137, 266 - 164 - 22, 155, 266 - 164 - 4), fill=(70, 40, 50)); d.polygon([(135, 266 - 164 - 22), (157, 266 - 164 - 22), (146, 266 - 164 - 32)], fill=(46, 26, 40))
+    for y in range(268, H, 12):
+        for x2 in range(0, W, 20):
+            o = 10 if (y // 12) % 2 else 0; d.rectangle((x2 + o, y, x2 + o + 18, y + 10), fill=(38, 28, 48))
+    d.rectangle((0, 262, W, 267), fill=(120, 96, 110))
+    return dim_top(im)
+BLOCK = base_block()
+CROWD_B = [(rnd.randint(8, 262), rnd.uniform(0, 6), rnd.choice([(34, 18, 52), (28, 14, 44), (44, 22, 60)])) for _ in range(14)]
+def dyn_block(im, t, ts, tag):
+    d = ImageDraw.Draw(im); arr = np.array(im)
+    beat = (t * 94 / 60) % 1
+    glow(arr, 135, 250, 120, (255, 140, 80), .22)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for k in range(18):                                          # string lights between poles
+        x = k * 15.5; y = 64 + 12 * math.sin(k / 17 * math.pi) + 2 * math.sin(k)
+        c = [(255, 210, 90), (255, 90, 170), (90, 235, 255)][k % 3]
+        if math.sin(t * 5 + k * 1.7) > -.5: d.rectangle((x, y, x + 2, y + 2), fill=c)
+        d.point((x + 1, y - 1), fill=(90, 70, 90))
+    for (x, p, c) in CROWD_B:                                    # crowd silhouettes bobbing
+        b = int(2 * abs(math.sin(t * 4 + p))); d.ellipse((x - 3, 242 - b, x + 3, 248 - b), fill=c); d.rectangle((x - 4, 248 - b, x + 4, 264), fill=c)
+        if int(t * 2 + p) % 2: d.line([(x - 4, 250 - b), (x - 7, 243 - b)], fill=c, width=2)
+    for k in range(4):                                           # grill smoke
+        y = 236 - ((t * 20 + k * 17) % 60); x = 236 + 4 * math.sin(t * 2 + k)
+        d.ellipse((x - 3, y - 3, x + 3, y + 3), fill=(150, 130, 150))
+    d.rectangle((222, 246, 250, 262), fill=(24, 18, 28), outline=(90, 70, 90)); d.rectangle((224, 246, 248, 249), fill=(255, 110, 40))
+    pul = 1 if beat < .2 else 0                                  # boombox
+    d.rectangle((14, 248, 58, 264), fill=(30, 22, 40), outline=(120, 110, 140))
+    for cx_ in (24, 48): d.ellipse((cx_ - 6 - pul, 256 - 6 - pul, cx_ + 6 + pul, 256 + 6 + pul), fill=(60, 50, 80), outline=(160, 150, 190)); d.point((cx_, 256), fill=GOLD)
+    d.rectangle((30, 250, 42, 252), fill=(255, 205, 60))
+    d.rectangle((170, 252, 214, 264), fill=(26, 18, 34), outline=(110, 100, 130))      # DJ table
+    for cx_ in (182, 202):
+        d.ellipse((cx_ - 7, 247, cx_ + 7, 257), fill=(14, 10, 20), outline=(150, 140, 170)); a_ = t * 5; d.line([(cx_, 252), (cx_ + 5 * math.cos(a_), 252 + 3 * math.sin(a_))], fill=GOLD)
+
+# ---- clue 2: jazz club ----
+def base_jazz():
+    a = np.zeros((H, W, 3), np.uint8); a[:266] = (92, 14, 46); a[266:] = (70, 44, 36)
+    for x in range(0, W, 14): a[:266, x:x + 5] = (70, 8, 36); a[:266, x + 5:x + 8] = (112, 22, 58)
+    for y in range(268, H, 10): a[y:y + 9] = (110, 70, 48) if (y // 10) % 2 else (90, 56, 40)
+    im = Image.fromarray(a); d = ImageDraw.Draw(im)
+    d.rectangle((0, 0, W, 22), fill=(60, 6, 30)); [d.polygon([(x, 22), (x + 14, 22), (x + 7, 34)], fill=(60, 6, 30)) for x in range(0, W, 14)]
+    d.rectangle((8, 196, 66, 266), fill=(14, 10, 22), outline=(60, 50, 80)); d.rectangle((4, 190, 70, 198), fill=(22, 16, 32))   # piano
+    d.rectangle((12, 226, 62, 238), fill=(240, 236, 226)); [d.line([(x, 226), (x, 238)], fill=(20, 16, 26)) for x in range(17, 62, 5)]
+    d.rectangle((12, 204, 62, 222), fill=(30, 24, 44))
+    d.ellipse((212, 214, 250, 252), fill=(150, 80, 36), outline=(60, 28, 16)); d.ellipse((218, 192, 244, 220), fill=(150, 80, 36), outline=(60, 28, 16))
+    d.rectangle((229, 150, 233, 196), fill=(60, 36, 24)); d.ellipse((222, 140, 240, 156), fill=(60, 36, 24))
+    d.line([(231, 150), (231, 252)], fill=(220, 210, 180)); d.rectangle((0, 264, W, 269), fill=(190, 140, 50))
+    return dim_top(im)
+JAZZ = base_jazz()
+def dyn_jazz(im, t, ts, tag):
+    arr = np.array(im)
+    for k, bx in enumerate((90, 180)):
+        beam(arr, bx, bx + 22 * math.sin(t * .8 + k * 2), 0, 266, 6, 74, (255, 200, 130), .2)
+    glow(arr, 135, 210, 90, (255, 130, 90), .3)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    if int(t * 7) % 23 != 0:                                      # neon JAZZ
+        d.rectangle((92, 134, 178, 160), fill=(24, 8, 30), outline=(90, 235, 255)); d.fontmode = "1"
+        d.text((136, 148), "JAZZ", font=F(24), fill=(255, 90, 170), anchor="mm"); d.text((135, 147), "JAZZ", font=F(24), fill=(255, 190, 220), anchor="mm")
+    for k in range(7):                                            # smoke haze
+        x = (k * 43 + t * 6) % (W + 40) - 20; y = 110 + 30 * math.sin(t * .4 + k) + k * 12
+        d.ellipse((x - 18, y - 4, x + 18, y + 4), outline=(140, 80, 110))
+
+# ---- clue 3: Queensboro bridge + Manhattan skyline at dusk (Queensbridge) ----
+def base_qb():
+    a = np.zeros((H, W, 3), np.uint8); a[:215] = dgrad(W, 215, (28, 14, 70), (255, 140, 90), 12)
+    a[215:266] = dgrad(W, 51, (120, 60, 90), (20, 16, 48), 5); a[266:] = (22, 16, 34)
+    im = Image.fromarray(a); d = ImageDraw.Draw(im)
+    d.ellipse((60, 160, 130, 230), fill=(255, 210, 120))
+    x = 100
+    while x < W:
+        w = rnd.randint(8, 16); h = rnd.randint(30, 90); d.rectangle((x, 215 - h, x + w, 215), fill=(20, 22, 58))
+        for wy in range(215 - h + 4, 212, 6):
+            if rnd.random() < .7: d.point((x + rnd.randint(1, w - 1), wy), fill=(255, 205, 120))
+        x += w + 1
+    d.rectangle((196, 100, 206, 215), fill=(24, 26, 64)); d.polygon([(196, 100), (206, 100), (201, 72)], fill=(24, 26, 64)); d.line([(201, 72), (201, 50)], fill=(150, 150, 190))
+    d.rectangle((0, 196, W, 204), fill=(30, 32, 60))                                         # bridge deck
+    for x in range(0, W, 12): d.line([(x, 196), (x + 6, 170 - int(18 * math.sin(x / W * math.pi))), (x + 12, 196)], fill=(40, 44, 76))
+    for x in range(0, W, 12): d.line([(x, 204), (x, 214)], fill=(30, 32, 60))
+    d.rectangle((0, 156, 6, 215), fill=(30, 32, 60)); d.rectangle((120, 150, 126, 215), fill=(30, 32, 60))
+    d.polygon([(0, 150), (123, 150), (123, 158), (0, 164)], fill=(36, 38, 68))
+    d.rectangle((0, 262, W, 267), fill=(110, 90, 110))
+    for fx in range(0, W, 5): d.line([(fx, 236), (fx, 262)], fill=(60, 54, 80))
+    d.line([(0, 236), (W, 236)], fill=(80, 74, 100)); d.rectangle((0, 70, 56, 266), fill=(98, 42, 56))                  # foreground tower
+    for by in range(70, 266, 6): d.line([(0, by), (56, by)], fill=(80, 32, 46))
+    for wy in range(80, 240, 14):
+        for wx in range(6, 50, 12): d.rectangle((wx, wy, wx + 5, wy + 7), fill=(255, 200, 110) if rnd.random() < .5 else (36, 22, 44))
+    for y in range(268, H, 12):
+        for x2 in range(0, W, 20):
+            o = 10 if (y // 12) % 2 else 0; d.rectangle((x2 + o, y, x2 + o + 18, y + 10), fill=(34, 26, 46))
+    return dim_top(im, 130)
+QB = base_qb()
+def dyn_qb(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for k in range(9):                                            # river light streaks
+        y = 220 + k * 5; w = 30 - k * 2 + 4 * math.sin(t * 2 + k); d.line([(95 - w, y), (95 + w, y)], fill=(255, 190, 120))
+    for k in range(5):                                            # cars on the bridge
+        x = ((t * 28 + k * 54) % (W + 20)) - 10; d.rectangle((x, 192, x + 3, 194), fill=(255, 230, 150)); d.point((x + 4, 193), fill=(255, 80, 80))
+    d.rectangle((60, 222, 66, 224), fill=(40, 30, 50)); b = int((t * 8) % 150); d.point((20 + b, 236), fill=(255, 230, 150))  # boat
+    for k in range(4):
+        x = (k * 70 + t * 14) % W; y = 120 + 10 * math.sin(t * 2 + k); d.line([(x, y), (x + 3, y - 2), (x + 6, y)], fill=(30, 20, 40))
+    for k in range(25):
+        if math.sin(t * 1.6 + k * 2.3) > .4: d.point((110 + (k * 37) % 150, 130 + (k * 53) % 80), fill=(255, 220, 140))
+
+# ---- clue 4: the battle (Ether) — rival silhouettes, red vs blue strobe ----
+def base_battle():
+    a = np.zeros((H, W, 3), np.uint8); a[:266] = dgrad(W, 266, (8, 4, 20), (40, 12, 56), 8); a[266:] = (12, 8, 22)
+    im = Image.fromarray(a); d = ImageDraw.Draw(im)
+    d.rectangle((0, 8, W, 14), fill=(60, 56, 80)); [d.rectangle((x, 14, x + 6, 20), fill=(90, 86, 110)) for x in range(10, W, 30)]
+    for y in range(268, H, 10): d.line([(0, y), (W, y)], fill=(30, 20, 50))
+    for k in range(-9, 10): d.line([(135, 266), (135 + k * 40, H)], fill=(30, 20, 50))
+    d.rectangle((0, 264, W, 268), fill=(120, 40, 80))
+    return im
+BATTLE = base_battle()
+CROWD_C = [(rnd.randint(4, 266), rnd.uniform(0, 6)) for _ in range(40)]
+def dyn_battle(im, t, ts, tag):
+    arr = np.array(im); ph = int(t * 4) % 2
+    for k, (bx, col) in enumerate(((20, (255, 50, 70)), (250, (60, 120, 255)))):
+        on = (ph == k) or int(t * 12) % 5 == 0
+        beam(arr, bx, 135, 14, 266, 6, 90, col, .34 if on else .12)
+    glow(arr, 135, 170, 70, (200, 120, 255), .35)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for (x, p) in CROWD_C:                                        # crowd silhouettes with raised hands
+        b = int(2 * abs(math.sin(t * 5 + p))); d.ellipse((x - 3, 250 - b, x + 3, 256 - b), fill=(18, 10, 30)); d.rectangle((x - 4, 256 - b, x + 4, 270), fill=(18, 10, 30))
+        if int(t * 3 + p) % 2: d.line([(x + 3, 256 - b), (x + 6, 247 - b)], fill=(18, 10, 30), width=2)
+    if int(t * 14) % 11 == 0: d.line([(135, 90), (126, 130), (140, 134), (130, 180)], fill=(255, 255, 255), width=2)
+    pu = 1 + int(2 * (1 if (t * 3) % 1 < .25 else 0)); d.fontmode = "1"
+    d.text((136 + 2, 172 + 2), "VS", font=F(40 + pu), fill=(255, 50, 70), anchor="mm"); d.text((136 - 2, 172 - 2), "VS", font=F(40 + pu), fill=(60, 120, 255), anchor="mm"); d.text((136, 172), "VS", font=F(40 + pu), fill=WHITE, anchor="mm")
+    for (mx) in (66, 206): d.line([(mx, 266), (mx, 226)], fill=(110, 100, 130), width=2); d.ellipse((mx - 3, 220, mx + 3, 227), fill=(70, 60, 90), outline=(160, 150, 190))
+
+# ---- outro / hook helpers: Nueva York + globo dorado ----
+def draw_globe(im, t, cx=135, cy=205, r=50):
+    d = ImageDraw.Draw(im); d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(10, 28, 78), outline=GOLD)
+    for k in range(4):
+        w = int(abs(math.cos(t * .9 + k * math.pi / 4)) * r); d.ellipse((cx - w, cy - r, cx + w, cy + r), outline=(255, 205, 60))
+    for lat in (-.6, -.3, 0, .3, .6):
+        dy = int(r * lat); hw = int(math.sqrt(max(r * r - dy * dy, 0))); d.line([(cx - hw, cy + dy), (cx + hw, cy + dy)], fill=(255, 205, 60))
+    d.arc((cx - r + 4, cy - r + 4, cx + r - 4, cy + r - 4), 200, 260, fill=(255, 245, 190), width=2)
+def dyn_outro(im, t, ts, tag):
+    dyn_brooklyn(im, t, 2.4, tag); arr = np.array(im); glow(arr, 135, 205, 90, (255, 190, 80), .4); im.paste(Image.fromarray(arr)); draw_globe(im, t)
+def dyn_recap(im, t, ts, tag):
+    dyn_sunset(im, t, ts, tag); arr = np.array(im)
+    if ts < REVEAL:
+        k = min(1, ts / 2.5)
+        for kk, bx in enumerate((50, 220)): beam(arr, bx, 135 + math.sin(t * 3 + kk * 3) * 40, 0, 266, 4, 40, (255, 60, 120), .2 * k)
+        glow(arr, 135, 220, 70 * (.6 + .4 * k), (255, 120, 60), .5 * k)
+    else:
+        beam(arr, 135, 135, 0, 266, 10, 90, (255, 215, 120), .3 * min(1, (ts - REVEAL) / .3)); glow(arr, 135, 210, 100, (255, 190, 80), .45)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    if ts >= REVEAL:
+        e = ts - REVEAL
+        for (vx, vy, c) in CONF2:
+            px = 135 + vx * 1.6 * min(e, 1.6) ** .8; py = 190 + vy * 2.2 * min(e, 1.2) + 40 * e * e
+            if 0 <= px < W and 0 <= py < H: d.rectangle((px, py, px + 1, py + 2), fill=c)
+        for (x, y, v, c, p) in CONF[:40]:
+            yy = (y + v * (t + 1)) % H; d.rectangle((x, yy, x + 1, yy + 2), fill=c)
+def dyn_win(im, t, ts, tag): dyn_recap(im, t, REVEAL + 1.5 + ts, tag)
+SCENES = [(BROOK, dyn_brooklyn), (SUNSET, dyn_recap), (SUNSET, dyn_win), (BLOCK, dyn_block), (JAZZ, dyn_jazz), (QB, dyn_qb), (BATTLE, dyn_battle), (BROOK, dyn_outro)]
+
+
+# ======================= UI / winners / render (v4) =======================
 def pill(d, cx, y0, y1, w, fill, outline=None):
     d.rectangle((cx - w // 2, y0, cx + w // 2, y1), fill=fill, outline=outline)
 
 def ui_low(seg, ts, t):
     ui = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ui)
-    if seg == 0:                                    # ---- hook
+    if seg == S_HOOK:
         if ts < 1.0:
-            on = int(ts * 15) % 3 != 2
-            if on:
+            if int(ts * 15) % 3 != 2:
                 lt(d, (135, 70), "¿QUIÉN", 40, WHITE, shadow=(255, 60, 150)); lt(d, (135, 118), "ES?", 44, GOLD, shadow=(70, 230, 255))
             return ui
         k = ease((ts - 1.0) / .3); dy = int((1 - k) * -30)
         lt(d, (135, 46 + dy), "¡SOLO LOS REALES", 17, WHITE); lt(d, (135, 70 + dy), "LO ADIVINAN!", 24, GOLD, shadow=(120, 50, 0))
         if ts > 1.4: pill(d, 135, 300, 322, 222, (14, 8, 34), GOLD); lt(d, (135, 311), "¿LO ADIVINAS EN LA PISTA 1?", 11, WHITE)
-        if ts > 1.9: lt(d, (135, 342), "ARTISTA MISTERIOSO · PARTE 8", 10, (255, 200, 120))
-        if ts > 2.3: lt(d, (135, 362), "PERO PRIMERO... ¿QUIÉN FUE EL ANTERIOR?", 8, (255, 255, 255))
+        if ts > 1.9: lt(d, (135, 342), "ARTISTA MISTERIOSO · PARTE 9", 10, (255, 200, 120))
+        if ts > 2.3: lt(d, (135, 362), "PERO PRIMERO... ¿QUIÉN FUE EL ANTERIOR?", 8, WHITE)
         return ui
-    if seg == 1:                                    # ---- recap: artista anterior + ganadores
+    if seg == S_RECAP:
         if ts < REVEAL:
             k = ease(ts / .35); dy = int((1 - k) * -30)
             lt(d, (135, 46 + dy), "EL ARTISTA ANTERIOR", 17, WHITE); lt(d, (135, 76 + dy), "FUE...", 34, GOLD, shadow=(120, 50, 0))
             if ts > .5: lt(d, (135, 112), "." * (1 + int(ts * 3) % 3), 28, (255, 120, 170))
-        elif ts < WIN0:
-            e = ts - REVEAL; k = ease(e / .25); dy = int((1 - k) * -20)
-            lt(d, (135, 42 + dy), "THE NOTORIOUS", 17, WHITE); lt(d, (135, 76 + dy), "B.I.G.", 38, GOLD, shadow=(120, 50, 0))
-            if e > .5: lt(d, (135, 108), "(BIGGIE)", 14, (255, 120, 170))
         else:
-            e = ts - WIN0; k = ease(e / .3); dy = int((1 - k) * -26)
-            lt(d, (135, 44 + dy), "¡LO ADIVINARON!", 22, GOLD, shadow=(110, 50, 0))
-            lt(d, (135, 70 + dy), "THE NOTORIOUS B.I.G.", 12, WHITE)
-            if ts > WIN0 + .5: lt(d, (135, 96), "GRACIAS A LOS QUE ACERTARON", 9, (255, 200, 120))
-            if ts > 12.9:
-                bounce = int(2 * math.sin(t * 10)); pill(d, 135, 138 + bounce, 160 + bounce, 200, GOLD); lt(d, (135, 149 + bounce), "¿SERÁS EL SIGUIENTE?", 12, DARK, shadow=(255, 230, 140))
+            e = ts - REVEAL; k = ease(e / .25); dy = int((1 - k) * -20)
+            lt(d, (135, 46 + dy), "SNOOP", 34, WHITE, shadow=(255, 70, 190)); lt(d, (135, 90 + dy), "DOGG", 46, GOLD, shadow=(120, 50, 0))
+            if e > .5: pill(d, 135, 120, 140, 196, (14, 8, 34), GOLD); lt(d, (135, 130), "LONG BEACH, CALIFORNIA", 9, (255, 200, 120))
+            if ts > 6.4:
+                b = int(2 * math.sin(t * 10)); pill(d, 135, 150 + b, 172 + b, 214, GOLD); lt(d, (135, 161 + b), "¡AHORA LOS GANADORES!", 11, DARK, shadow=(255, 230, 140))
         return ui
-    if seg == 6:                                    # ---- outro
+    if seg == S_WIN:
+        k = ease(ts / .35); dy = int((1 - k) * -26)
+        lt(d, (135, 24 + dy), "GANADORES · PARTE 8", 20, GOLD, shadow=(110, 50, 0))
+        lt(d, (135, 46 + dy), "ORDENADOS POR PISTA Y LIKES", 10, WHITE)
+        lt(d, (135, 60 + dy), f"{len(WINNERS)} PERSONAS LO ADIVINARON", 9, (255, 200, 120))
+        return ui
+    if seg == S_OUT:
         sw = ts > 3.2
         a_, b_ = ("¿CUÁNTOS PUNTOS", "SACASTE?") if sw else ("¿YA SABES", "QUIÉN ES?")
         ka = ease(ts / .3) if not sw else ease((ts - 3.2) / .25); dy = int((1 - ka) * -26)
@@ -482,13 +500,12 @@ def ui_low(seg, ts, t):
         if ts > 1.2 and not sw:
             o = 2 if int(t * 3) % 2 else 0
             for ox in (-24, 0, 24): d.polygon([(135 + ox - 6, 148 + o), (135 + ox + 6, 148 + o), (135 + ox, 158 + o)], fill=(255, 200, 120))
-        if ts > 2.0: pill(d, 135, 274, 292, 130, (14, 8, 34), GOLD); lt(d, (135, 283), "LONG BEACH", 12, GOLD)
+        if ts > 2.0: pill(d, 135, 274, 292, 130, (14, 8, 34), GOLD); lt(d, (135, 283), "NUEVA YORK", 12, GOLD)
         if ts > 3.5:
             pill(d, 135, 306, 328, 246, GOLD); lt(d, (135, 317), "REVELO AL ARTISTA EN EL PRÓXIMO VIDEO", 8, DARK, shadow=(255, 230, 140))
-            lt(d, (135, 342), "LOS QUE ACIERTEN SALEN EN LA PARTE 9", 9, WHITE); lt(d, (135, 358), "SÍGUEME PARA NO PERDÉRTELO", 9, (255, 200, 120))
+            lt(d, (135, 342), "LOS QUE ACIERTEN SALEN EN LA PARTE 10", 9, WHITE); lt(d, (135, 358), "SÍGUEME PARA NO PERDÉRTELO", 9, (255, 200, 120))
         return ui
-    c = CLUES[seg - 2]; n = c["n"]                  # ---- clues (seg 2..5)
-    seg_len = T[seg + 1] - T[seg]
+    c = CLUES[seg - S_C1]; n = c["n"]; seg_len = T[seg + 1] - T[seg]
     k = ease(ts / .3); dy = int((1 - k) * -30)
     lt(d, (135, 46 + dy), f"PISTA {n} / 4", 24, GOLD, shadow=(110, 50, 0))
     for i in range(4):
@@ -500,49 +517,51 @@ def ui_low(seg, ts, t):
         f = F(18); w = int(d.textlength(c["chip"], font=f)) + 16; x0 = 135 - w // 2; fl = ts < 1.0
         d.rectangle((x0 - 2, 100, x0 + w + 2, 126), fill=(255, 205, 60)); d.rectangle((x0, 102, x0 + w, 124), fill=WHITE if fl else (14, 8, 34))
         lt(d, (135, 114), c["chip"], 18, DARK if fl else GOLD, shadow=(60, 30, 0))
-    if ts > .6:                                     # countdown bar
-        rem = 1 - max(0, ts - TW0) / (seg_len - TW0 - .2); rem = min(max(rem, 0), 1)
-        urgent = rem < .3 and int(t * 6) % 2
+    if ts > .6:
+        rem = min(max(1 - max(0, ts - TW0) / (seg_len - TW0 - .2), 0), 1); urgent = rem < .3 and int(t * 6) % 2
         d.rectangle((12, 12, 258, 18), fill=(14, 8, 34)); d.rectangle((14, 14, 14 + int(242 * rem), 16), fill=(255, 255, 255) if urgent else DIFFC[n - 1])
     if seg in BANNERS and BANNER_T <= ts < BANNER_T + 1.6:
         e = ts - BANNER_T; kk = ease(e / .2); by = 208 + int((1 - kk) * 40) + int(2 * math.sin(t * 12))
         pill(d, 135, by, by + 22, 232, GOLD); lt(d, (135, by + 11), BANNERS[seg], 11, DARK, shadow=(255, 230, 140))
     return ui
 
+PCOL = {1: (255, 205, 60), 2: (90, 235, 255), 3: (255, 90, 170), 0: (190, 170, 255)}
+PTXT = {1: "PISTA 1", 2: "PISTA 2", 3: "PISTA 3", 0: "SIN PISTA INDICADA"}
+F_ROW = {}
+def fnt(sz):
+    if sz not in F_ROW: F_ROW[sz] = ImageFont.truetype(SANS, sz)
+    return F_ROW[sz]
 def draw_winners(img, ts):
-    if ts < WIN0 - .1:
-        k = ease((ts - .6) / .3)
-        if k <= 0: return
-        dy = int((1 - k) * 50); y0 = 272 * S + dy; d = ImageDraw.Draw(img)
-        d.rectangle((12 * S - 8, y0 - 8, 258 * S + 8, 378 * S + 8 + dy), fill=(14, 10, 36))
-        d.rectangle((12 * S, y0, 258 * S, 378 * S + dy), fill=(24, 42, 150), outline=(140, 175, 255), width=8)
-        a_, b_ = (("En la parte 7,", "la respuesta fue" + "." * (1 + int(ts * 3) % 3)) if ts < REVEAL else ("¡La respuesta", "de la parte 7!"))
-        d.text((540, y0 + 140), a_, font=BODY, fill=WHITE, anchor="mm"); d.text((540, y0 + 220), b_, font=BODY, fill=GOLD, anchor="mm")
-        return
-    k = ease((ts - WIN0 + .1) / .3)
+    k = ease(ts / .35)
     if k <= 0: return
-    dy = int((1 - k) * 50); y0 = 272 * S + dy; d = ImageDraw.Draw(img)
-    d.rectangle((12 * S - 8, y0 - 8, 258 * S + 8, 378 * S + 8 + dy), fill=(14, 10, 36))
-    d.rectangle((12 * S, y0, 258 * S, 378 * S + dy), fill=(24, 42, 150), outline=(255, 205, 60), width=8)
-    d.rectangle((12 * S + 8, y0 + 8, 258 * S - 8, y0 + 38), fill=(120, 70, 10))
-    d.fontmode = "1"; d.text((135 * S, y0 + 24), "GANADORES · PARTE 7", font=F(26), fill=(255, 235, 170), anchor="mm"); d.fontmode = "L"
-    wx0, wy0, wx1, wy1 = 12 * S + 12, y0 + 44, 258 * S - 12, 378 * S + dy - 10
-    ww, wh = wx1 - wx0, wy1 - wy0
+    dy = int((1 - k) * 70); y0, y1 = 800 + dy, 1540 + dy; d = ImageDraw.Draw(img)
+    d.rectangle((44, y0 - 8, 1036, y1 + 8), fill=(14, 10, 36)); d.rectangle((52, y0, 1028, y1), fill=(24, 42, 150), outline=(255, 205, 60), width=8)
+    d.rectangle((60, y0 + 8, 1020, y0 + 38), fill=(120, 70, 10)); d.fontmode = "1"
+    d.text((540, y0 + 24), "ORDEN: PISTA > LIKES > QUIÉN COMENTÓ ANTES", font=F(22), fill=(255, 235, 170), anchor="mm"); d.fontmode = "L"
+    wx0, wy0, ww, wh = 64, y0 + 44, 952, WIN_WH
     win = Image.new("RGB", (ww, wh), (24, 42, 150)); wd = ImageDraw.Draw(win)
-    off = min(max(ts - WIN0, 0) * WIN_SPEED, len(WINNERS) * ROW_H)
-    f1 = ImageFont.truetype(SANS, 44); f2 = ImageFont.truetype(SANS, 34)
-    for i, (h, badge) in enumerate(WINNERS):
-        y = wh + i * ROW_H - off
+    off = min(max(ts - WIN_START, 0) * WIN_SPEED, max(0, len(ROWS) * ROW_H - wh))
+    for i, r in enumerate(ROWS):
+        y = i * ROW_H - off
         if y < -ROW_H or y > wh: continue
-        top = i == 0
-        wd.rounded_rectangle((6, y + 6, ww - 6, y + ROW_H - 10), 14, fill=(255, 205, 60) if top else (40, 66, 190))
-        wd.text((46, y + ROW_H // 2 - 2), "★", font=f1, fill=(120, 60, 0) if top else GOLD, anchor="mm")
-        wd.text((92, y + ROW_H // 2 - 2), h, font=f1, fill=DARK if top else WHITE, anchor="lm")
-        if badge: wd.text((ww - 24, y + ROW_H // 2 - 2), badge, font=f2, fill=(150, 20, 60) if top else (255, 160, 200), anchor="rm")
+        col = PCOL[r["pk"]]
+        if r["kind"] == "hdr":
+            wd.rounded_rectangle((6, y + 8, ww - 6, y + ROW_H - 8), 12, fill=(14, 10, 36), outline=col, width=3)
+            wd.text((ww // 2, y + ROW_H // 2 - 2), f"★  {PTXT[r['pk']]}  ★", font=fnt(38), fill=col, anchor="mm"); continue
+        top = r["rank"] == 1
+        wd.rounded_rectangle((6, y + 6, ww - 6, y + ROW_H - 8), 14, fill=(255, 205, 60) if top else (40, 66, 190))
+        wd.rectangle((6, y + 12, 14, y + ROW_H - 14), fill=col)
+        wd.ellipse((26, y + 14, 94, y + ROW_H - 16), fill=(14, 10, 36)); wd.text((60, y + ROW_H // 2 - 4), str(r["rank"]), font=fnt(32), fill=col, anchor="mm")
+        badge = ("1º EN ADIVINAR · " if r["h"] in SPECIAL else "") + f"♥{r['lk']}" + ("  TT" if r["pl"] == "TT" else "")
+        fb = fnt(26 if r["h"] in SPECIAL else 32); bw = int(wd.textlength(badge, font=fb))
+        sz = 44; avail = ww - 110 - bw - 40
+        while sz > 22 and wd.textlength(r["h"], font=fnt(sz)) > avail: sz -= 2
+        wd.text((110, y + ROW_H // 2 - 4), r["h"], font=fnt(sz), fill=DARK if top else WHITE, anchor="lm")
+        wd.text((ww - 24, y + ROW_H // 2 - 4), badge, font=fb, fill=(150, 20, 60) if top else (255, 170, 205), anchor="rm")
     img.paste(win, (wx0, wy0))
 
 def draw_panel_text(img, seg, ts):
-    c = CLUES[seg - 2]; lines, sp = LAY[seg - 2]
+    c = CLUES[seg - S_C1]; lines, sp = LAY[seg - S_C1]
     k = ease((ts - 1.5) / .3)
     if k <= 0: return
     dy = int((1 - k) * 50); y0 = 272 * S + dy
@@ -567,6 +586,7 @@ def draw_panel_text(img, seg, ts):
             count += 1; x += sp
 
 # wipe
+
 STRIPE = [(255, 205, 60), (255, 70, 160), (60, 240, 225), (150, 110, 255)]
 def wipe(img, p):
     if p <= 0 or p >= 1: return img
@@ -578,17 +598,18 @@ def wipe(img, p):
         d.rectangle((xf, i * bh, xt, (i + 1) * bh), fill=STRIPE[i % 4])
     return img
 
+
 def seg_of(t):
     s_ = 0
-    for i in range(1, 7):
+    for i in range(1, 8):
         if t >= T[i]: s_ = i
     return s_
 
 def shake_amp(seg, ts):
-    if seg == 1:
+    if seg == S_RECAP:
         if .4 < ts < REVEAL: return 2 + 7 * ((ts - .4) / (REVEAL - .4)) ** 2
         if REVEAL <= ts < REVEAL + .6: return 22 * (1 - (ts - REVEAL) / .6)
-    if 2 <= seg <= 5 and 1.0 < ts < 1.3: return 10 * (1 - (ts - 1.0) / .3)
+    if S_C1 <= seg <= S_C1 + 3 and 1.0 < ts < 1.3: return 10 * (1 - (ts - 1.0) / .3)
     return 0
 
 def glitch(img, t, strength):
@@ -598,17 +619,21 @@ def glitch(img, t, strength):
         y = int(rng.integers(0, FH - 120)); h = int(rng.integers(20, 120)); arr[y:y + h] = np.roll(arr[y:y + h], int(rng.integers(-140, 140)), 1)
     return Image.fromarray(arr)
 
+SHIFT = 70
 def render(t):
     seg = seg_of(t); ts = t - T[seg]
     base, dyn = SCENES[seg]
     im = base.copy(); dyn(im, t, ts, None)
-    if seg != 1: notes(im, t)
-    if seg == 1: biggie(im, t, ts)
-    elif seg == 4:
-        sil(im, 100, 266, t, q=False); sil(im, 172, 266, t, hat=True, phase=.35, q=False); qmark(im, 136, 166 + int(3 * math.sin(t * 3)), 2)
+    if seg not in (S_RECAP, S_WIN): notes(im, t)
+    if seg == S_RECAP: snoop(im, t, mode="sil" if ts < REVEAL else "col"); (qmark(im, 140, 138 + int(3 * math.sin(t * 4)), 3) if ts < REVEAL else None)
+    elif seg == S_WIN: snoop(im, t)
+    elif seg == S_C1 + 3:
+        sil(im, 98, 266, t, q=False); im.paste(SPR_HAT_M, (178 - 24, 266 - 96), SPR_HAT_M); qmark(im, 134, 150 + int(3 * math.sin(t * 3)), 2)
     else: sil(im, 135, 266, t)
-    seg_len = (T[seg + 1] if seg < 6 else END) - T[seg]
-    punch = .03 * max(0, 1 - (ts - 1.0) / .25) if 2 <= seg <= 5 and ts > 1.0 else 0
+    if seg == S_WIN:
+        im2 = Image.new("RGB", (W, H), (20, 10, 38)); im2.paste(im, (0, -SHIFT)); im = im2
+    seg_len = (T[seg + 1] if seg < 7 else END) - T[seg]
+    punch = .03 * max(0, 1 - (ts - 1.0) / .25) if S_C1 <= seg <= S_C1 + 3 and ts > 1.0 else 0
     z = 1.04 + .05 * (ts / seg_len) + punch
     big = im.resize((FW, FH), Image.NEAREST)
     cw, ch = FW / z, FH / z; amp = shake_amp(seg, ts); rg = np.random.default_rng(int(t * 30))
@@ -617,13 +642,13 @@ def render(t):
     big = big.crop((int(ox), int(oy), int(ox + cw), int(oy + ch))).resize((FW, FH), Image.NEAREST)
     ui = ui_low(seg, ts, t).resize((FW, FH), Image.NEAREST)
     big = big.convert("RGBA"); big.alpha_composite(ui); big = big.convert("RGB")
-    if 2 <= seg <= 5: draw_panel_text(big, seg, ts)
-    if seg == 1: draw_winners(big, ts)
-    if seg == 0 and t < 1.0: big = glitch(big, t, 1.0)
-    elif seg == 1 and REVEAL <= ts < REVEAL + .25: big = glitch(big, t, .6)
-    if seg == 1 and REVEAL <= ts < REVEAL + .3:       # reveal flash
+    if S_C1 <= seg <= S_C1 + 3: draw_panel_text(big, seg, ts)
+    if seg == S_WIN: draw_winners(big, ts)
+    if seg == S_HOOK and t < 1.0: big = glitch(big, t, 1.0)
+    elif seg == S_RECAP and REVEAL <= ts < REVEAL + .25: big = glitch(big, t, .6)
+    if seg == S_RECAP and REVEAL <= ts < REVEAL + .3:
         big = Image.blend(big, Image.new("RGB", (FW, FH), (255, 255, 255)), .9 * (1 - (ts - REVEAL) / .3))
-    for i in range(1, 7):
+    for i in range(1, 8):
         p = (t - (T[i] - WIPE / 2)) / WIPE
         if 0 < p < 1: wipe(big, p)
     if t < .12: big = Image.blend(Image.new("RGB", (FW, FH)), big, t / .12)
