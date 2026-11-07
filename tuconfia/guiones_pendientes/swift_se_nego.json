@@ -1,0 +1,56 @@
+{
+ "titulo": "swift_se_nego",
+ "meta": {
+  "famoso": "Taylor Swift",
+  "persona_hashtag": "#TaylorSwift",
+  "tipo_gancho": "se_nego",
+  "pregunta": "¿Cuál fue tu mayor rechazo... y qué hiciste con él?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Taylor Swift podía dejar sus canciones... pero *se negó*.",
+   "tts": "Téilor Suift podía dejar sus canciones... pero se negó.",
+   "gen": "[bold] Téilor Suift podía dejar sus canciones... pero se negó.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "En dos mil diecinueve, sus primeros discos pasaron a manos de otros... sin que ella pudiera impedirlo.",
+   "tts": "En dos mil diecinueve, sus primeros discos pasaron a manos de otros... sin que ella pudiera impedirlo.",
+   "gen": "[sad] En dos mil diecinueve, sus primeros discos pasaron a manos de otros... sin que ella pudiera impedirlo.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "giro",
+   "t": "Entonces decidió *grabarlos otra vez*, uno por uno... y varios llegaron al número uno.",
+   "tts": "Entonces decidió grabarlos otra vez, uno por uno... y varios llegaron al número uno.",
+   "gen": "[determined] Entonces decidió grabarlos otra vez, uno por uno... y varios llegaron al número uno.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "frase_final",
+   "t": "Años después, por fin compró las originales. Recuperó lo suyo... sin *pedir permiso*.",
+   "tts": "Años después, por fin compró las originales. Recuperó lo suyo... sin pedir permiso.",
+   "gen": "[proud] Años después, por fin compró las originales. Recuperó lo suyo... sin pedir permiso.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "pregunta",
+   "t": "Y tú... ¿cuál fue tu mayor *rechazo*... y qué hiciste con él?",
+   "tts": "Y tú... ¿cuál fue tu mayor rechazo... y qué hiciste con él?",
+   "gen": "[softly] Y tú... ¿cuál fue tu mayor rechazo... y qué hiciste con él?",
+   "p": 0.5,
+   "tag": ""
+  }
+ ]
+}

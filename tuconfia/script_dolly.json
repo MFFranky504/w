@@ -1,0 +1,92 @@
+{
+ "titulo": "Dolly Parton: el NO que valió millones",
+ "lines": [
+  {
+   "id": "L1",
+   "t": "Dolly Parton le dijo *NO* a Elvis Presley.",
+   "tts": "Dolly Parton le dijo NO a Elvis Présli.",
+   "gen": "[bold] Dolly Parton le dijo NO a Elvis Présli.",
+   "p": 0.5,
+   "tag": "",
+   "rol": "gancho"
+  },
+  {
+   "id": "L2",
+   "t": "Nació pobre, en una cabaña de Tennessee, una de *doce* hermanos. A los dieciocho se fue a Nashville con un sueño.",
+   "tts": "Nació pobre, en una cabaña de Tenesí, una de doce hermanos. A los dieciocho se fue a Násvil con un sueño.",
+   "gen": "[softly] Nació pobre, en una cabaña de Tenesí, una de doce hermanos. A los dieciocho se fue a Násvil con un sueño.",
+   "p": 0.5,
+   "tag": "",
+   "rol": "fracaso"
+  },
+  {
+   "id": "L3",
+   "t": "Años después escribió «Siempre te amaré»... y Elvis quiso *grabarla*.",
+   "tts": "Años después escribió «Siempre te amaré»... y Elvis quiso grabarla.",
+   "gen": "[warmly] Años después escribió «Siempre te amaré»... y Elvis quiso grabarla.",
+   "p": 0.5,
+   "tag": "",
+   "rol": "fracaso"
+  },
+  {
+   "id": "L4",
+   "t": "Pero su manager exigió la *mitad* de los derechos.",
+   "tts": "Pero su manager exigió la mitad de los derechos.",
+   "gen": "[tense] Pero su manager exigió la mitad de los derechos.",
+   "p": 0.5,
+   "tag": "",
+   "rol": "fracaso"
+  },
+  {
+   "id": "L5",
+   "t": "Dolly lloró... y se *negó*.",
+   "tts": "Dolly lloró... y se negó.",
+   "gen": "[sad] Dolly lloró... [firm] y se negó.",
+   "p": 0.5,
+   "tag": "",
+   "rol": "giro"
+  },
+  {
+   "id": "L6",
+   "t": "Dieciocho años después, Whitney Houston la cantó. *Millones* de discos... y todos los derechos eran de Dolly.",
+   "tts": "Dieciocho años después, Uitni Hiuston la cantó. Millones de discos... y todos los derechos eran de Dolly.",
+   "gen": "[excited] Dieciocho años después, Uitni Hiuston la cantó. Millones de discos... y todos los derechos eran de Dolly.",
+   "p": 0.5,
+   "tag": "",
+   "rol": "giro"
+  },
+  {
+   "id": "L7",
+   "t": "Diría que fue la *mejor* decisión de su vida.",
+   "tts": "Diría que fue la mejor decisión de su vida.",
+   "gen": "[proud] Diría que fue la mejor decisión de su vida.",
+   "p": 0.5,
+   "tag": "",
+   "rol": "frase_final"
+  },
+  {
+   "id": "L8",
+   "t": "Porque valer más que una oferta... empieza por decir *NO* cuando todos dicen sí.",
+   "tts": "Porque valer más que una oferta... empieza por decir NO cuando todos dicen sí.",
+   "gen": "[warmly] Porque valer más que una oferta... empieza por decir NO cuando todos dicen sí.",
+   "p": 0.5,
+   "tag": "",
+   "rol": "frase_final"
+  },
+  {
+   "id": "L9",
+   "t": "Y tú... ¿cuál fue tu mayor *rechazo*... y qué hiciste con él?",
+   "tts": "Y tú... ¿cuál fue tu mayor rechazo... y qué hiciste con él?",
+   "gen": "[softly] Y tú... ¿cuál fue tu mayor rechazo... y qué hiciste con él?",
+   "p": 0.5,
+   "tag": "",
+   "rol": "pregunta"
+  }
+ ],
+ "meta": {
+  "famoso": "Dolly Parton",
+  "persona_hashtag": "#DollyParton",
+  "tipo_gancho": "se_nego",
+  "pregunta": "¿Cuál fue tu mayor rechazo... y qué hiciste con él?"
+ }
+}

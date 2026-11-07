@@ -35,6 +35,12 @@ CAST = {
  'dad': dict(style='short', skin=(236, 192, 156), hair=ramp((90, 70, 60)), iris=(80, 60, 44), outfit='polo', beard=True),
  'mom': dict(style='tab', skin=(246, 208, 176), hair=ramp((120, 70, 44)), iris=(90, 64, 44), outfit='cardigan'),
 
+ # --- historia 7: Dolly Parton
+ 'dolly': dict(style='tab', skin=(252, 222, 196), hair=ramp((240, 204, 112)), iris=(70, 110, 170), outfit='tee_red'),
+ 'dolly_y': dict(style='tab', skin=(252, 222, 196), hair=ramp((220, 176, 92)), iris=(70, 110, 170), outfit='plaid'),
+ 'elvis': dict(style='shag', skin=(246, 212, 180), hair=ramp((28, 24, 30)), iris=(70, 56, 46), outfit='coat'),
+ 'whitney': dict(style='tab', skin=(188, 134, 102), hair=ramp((38, 28, 28)), iris=(60, 40, 34), outfit='tee_yellow'),
+
  # --- historia 4: Steve Jobs
  'jobs':   dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='turtle', glasses=True),
  'jobs85': dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='suit85'),

@@ -1,0 +1,56 @@
+{
+ "titulo": "johnson_cortado",
+ "meta": {
+  "famoso": "Dwayne Johnson",
+  "persona_hashtag": "#DwayneJohnson",
+  "tipo_gancho": "rechazado",
+  "pregunta": "¿Cuál fue tu mayor rechazo... y qué hiciste con él?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Hasta *Dwayne Johnson* fue cortado.",
+   "tts": "Hasta Duéin Yónson fue cortado.",
+   "gen": "[bold] Hasta Duéin Yónson fue cortado.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "Soñaba con la NFL... y no lo eligieron. Luego lo cortaron en Canadá, y volvió a casa con *siete dólares*.",
+   "tts": "Soñaba con la NFL... y no lo eligieron. Luego lo cortaron en Canadá, y volvió a casa con siete dólares.",
+   "gen": "[sad] Soñaba con la NFL... y no lo eligieron. Luego lo cortaron en Canadá, y volvió a casa con siete dólares.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "giro",
+   "t": "Probó con la lucha libre... y se volvió una de las mayores *estrellas* de la WWE y del cine.",
+   "tts": "Probó con la lucha libre... y se volvió una de las mayores estrellas de la WWE y del cine.",
+   "gen": "[excited] Probó con la lucha libre... y se volvió una de las mayores estrellas de la WWE y del cine.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "frase_final",
+   "t": "Según ha contado, ser cortado fue lo que lo *obligó* a empezar de cero.",
+   "tts": "Según ha contado, ser cortado fue lo que lo obligó a empezar de cero.",
+   "gen": "[warmly] Según ha contado, ser cortado fue lo que lo obligó a empezar de cero.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "pregunta",
+   "t": "Y tú... ¿cuál fue tu mayor *rechazo*... y qué hiciste con él?",
+   "tts": "Y tú... ¿cuál fue tu mayor rechazo... y qué hiciste con él?",
+   "gen": "[softly] Y tú... ¿cuál fue tu mayor rechazo... y qué hiciste con él?",
+   "p": 0.5,
+   "tag": ""
+  }
+ ]
+}

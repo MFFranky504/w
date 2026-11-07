@@ -1,3 +1,5 @@
+> Nota: este archivo es la versión anterior. La plantilla vigente (ganchos «Hasta X fue rechazado» / «X podía... pero se negó», pregunta «¿Cuál fue tu mayor rechazo...?», guardar + suscribirse) está en `PLAN_PUBLICACION.md`, `IDEAS_15.md`, `src/plantilla.py`, `src/captions.py` y `src/cta.py`.
+
 # TU CONF.IA — estrategia de crecimiento
 
 ## 1. Kanye West vs Michael Jordan (qué cambia)

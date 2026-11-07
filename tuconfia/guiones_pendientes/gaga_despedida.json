@@ -1,0 +1,65 @@
+{
+ "titulo": "gaga_despedida",
+ "meta": {
+  "famoso": "Lady Gaga",
+  "persona_hashtag": "#LadyGaga",
+  "tipo_gancho": "rechazado",
+  "pregunta": "¿Cuál fue tu mayor rechazo... y qué hiciste con él?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Hasta *Lady Gaga* fue despedida.",
+   "tts": "Hasta Lédi Gagá fue despedida.",
+   "gen": "[bold] Hasta Lédi Gagá fue despedida.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "Su primera discográfica la dejó ir a los pocos meses de firmar.",
+   "tts": "Su primera discográfica la dejó ir a los pocos meses de firmar.",
+   "gen": "[sad] Su primera discográfica la dejó ir a los pocos meses de firmar.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "fracaso",
+   "t": "Volvió a trabajar de mesera... y a escribir canciones para otros.",
+   "tts": "Volvió a trabajar de mesera... y a escribir canciones para otros.",
+   "gen": "[softly] Volvió a trabajar de mesera... y a escribir canciones para otros.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "giro",
+   "t": "Hasta que firmó de nuevo... y su primer disco llegó al *número uno* en varios países.",
+   "tts": "Hasta que firmó de nuevo... y su primer disco llegó al número uno en varios países.",
+   "gen": "[excited] Hasta que firmó de nuevo... y su primer disco llegó al número uno en varios países.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "frase_final",
+   "t": "A veces te sacan del camino... para que *construyas el tuyo*.",
+   "tts": "A veces te sacan del camino... para que construyas el tuyo.",
+   "gen": "[warmly] A veces te sacan del camino... para que construyas el tuyo.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "pregunta",
+   "t": "Y tú... ¿cuál fue tu mayor *rechazo*... y qué hiciste con él?",
+   "tts": "Y tú... ¿cuál fue tu mayor rechazo... y qué hiciste con él?",
+   "gen": "[softly] Y tú... ¿cuál fue tu mayor rechazo... y qué hiciste con él?",
+   "p": 0.5,
+   "tag": ""
+  }
+ ]
+}

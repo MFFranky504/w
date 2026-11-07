@@ -1,33 +1,50 @@
-"""Captions de TU CONF.IA: gancho fijo, hashtags fijos + 1 de persona, cierre con pregunta personal.
-Uso: python3 src/captions.py "Kanye West" "un accidente que casi lo mata" "su primer disco" Kanye
-"""
-import sys
+"""Captions/títulos de TU CONF.IA por plataforma, a partir del guion (script_*.json con roles).
+Uso:  python3 src/captions.py script_dolly.json            -> caption_dolly_{youtube,tiktok,instagram}.txt
+      python3 src/captions.py guiones_pendientes/gaga_despedida.json
+Reglas fijas: gancho del guion arriba, pregunta personal para comentarios, petición de guardar, suscribirse/seguir,
+hashtags SIEMPRE iguales y con la misma capitalización: #Motivación #Superación #HistoriasQueInspiran + 1 de la persona."""
+import json, os, re, sys, unicodedata
 
-HASHTAGS_FIJOS = ["#Motivación", "#Superación", "#HistoriasQueInspiran"]
-CIERRE = "¿Qué vas a empezar hoy para demostrarte que sí puedes?"   # pregunta final: mira al futuro y a la capacidad
+HASHTAGS_FIJOS = '#Motivación #Superación #HistoriasQueInspiran'
+GUARDAR = '🔖 Guárdalo para cuando lo necesites.'
+SEGUIR = {'youtube': '▶️ Suscríbete: una historia que inspira cada día.', 'tiktok': '➕ Sígueme para más historias que inspiran.', 'instagram': '➕ Sígueme para más historias que inspiran.'}
+COMENTA = {'youtube': '👇 Cuéntamelo en los comentarios.', 'tiktok': '👇 Respóndeme en los comentarios.', 'instagram': '👇 Cuéntamelo en los comentarios.'}
 
 
-def gancho(famoso, fracaso, logro):
-    return f"¿Sabías que {famoso} transformó {fracaso} en {logro}?"
+def clean(t): return t.replace('*', '')
 
 
 def hashtag_persona(nombre):
-    """un solo hashtag de la persona, sin tildes/espacios (ej. 'Kanye West' -> #KanyeWest)."""
-    import unicodedata
+    """un único hashtag de la persona: '#' + palabras con inicial mayúscula, sin tildes (Dolly Parton -> #DollyParton)."""
     t = unicodedata.normalize('NFD', nombre)
     t = ''.join(c for c in t if unicodedata.category(c) != 'Mn')
-    return '#' + ''.join(w.capitalize() for w in t.replace('.', ' ').split())
+    return '#' + ''.join(w.capitalize() for w in re.sub(r'[^A-Za-z0-9 ]', ' ', t).split())
 
 
-def caption(famoso, fracaso, logro, persona=None, cuerpo=""):
-    partes = [gancho(famoso, fracaso, logro)]
-    if cuerpo: partes.append(cuerpo.strip())
-    partes.append(CIERRE + " 👇 Cuéntamelo en los comentarios.")
-    partes.append(' '.join(HASHTAGS_FIJOS + [hashtag_persona(persona or famoso)]))
+def hashtags(persona): return f'{HASHTAGS_FIJOS} {hashtag_persona(persona)}'
+
+
+def caption(d, plataforma):
+    L = d['lines']; m = d.get('meta', {})
+    gancho = clean(next(l['t'] for l in L if l.get('rol') == 'gancho'))
+    pregunta = clean(L[-1]['t']).replace('Y tú... ', '').strip()
+    pregunta = re.sub(r'¿(\w)', lambda m_: '¿' + m_.group(1).upper(), pregunta, count=1)
+    resumen = ' '.join(clean(l['t']) for l in L if l.get('rol') in ('fracaso', 'giro'))
+    resumen = re.sub(r'\.\.\.', '…', resumen)
+    persona = m.get('famoso', d.get('titulo', 'Historia').split(':')[0])
+    partes = []
+    if plataforma == 'youtube': partes.append(gancho)                               # el título de YouTube = gancho
+    else: partes.append(gancho)
+    partes.append(resumen if plataforma != 'tiktok' else resumen[:160].rsplit(' ', 1)[0].rstrip('.…,') + '…')
+    partes.append(f'{pregunta} {COMENTA[plataforma]}')
+    partes.append(GUARDAR + ' ' + SEGUIR[plataforma])
+    partes.append(hashtags(persona))
     return '\n\n'.join(partes)
 
 
 if __name__ == '__main__':
-    a = sys.argv[1:]
-    if len(a) < 3: sys.exit(__doc__)
-    print(caption(a[0], a[1], a[2], a[3] if len(a) > 3 else None))
+    for p in sys.argv[1:]:
+        d = json.load(open(p)); base = os.path.splitext(os.path.basename(p))[0].replace('script_', '')
+        for pl in ('youtube', 'tiktok', 'instagram'):
+            out = os.path.join(os.path.dirname(os.path.abspath(p)), f'caption_{base}_{pl}.txt')
+            open(out, 'w').write(caption(d, pl) + '\n'); print('->', out)

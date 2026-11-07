@@ -279,3 +279,61 @@ def camera_pro():
         P.rect(3, 1, 8, 4, (90, 92, 110))
         return P.final()
     return cached('cam', mk)
+
+
+def guitar():
+    def mk():
+        P = Paint(26, 52)
+        P.add(lambda d: d.ellipse([2, 26, 24, 50], fill=255), (200, 130, 70), edge_k=.5)
+        P.add(lambda d: d.ellipse([6, 14, 20, 32], fill=255), (214, 146, 84), edge_k=.5)
+        P.add(lambda d: d.ellipse([9, 30, 17, 38], fill=255), (50, 30, 24), edge=False, sh=False, hi=False)
+        P.add(lambda d: d.rectangle([11, 0, 15, 22], fill=255), (110, 70, 44), edge_k=.5)
+        P.rect(10, 0, 16, 4, (70, 44, 30))
+        for y in (6, 11, 16): P.rect(11, y, 15, y, (230, 220, 190))
+        return P.final()
+    return cached('guitar', mk)
+
+
+def mic_stand():
+    def mk():
+        P = Paint(12, 60)
+        P.add(lambda d: d.rectangle([5, 10, 6, 56], fill=255), (60, 62, 80), edge_k=.5)
+        P.add(lambda d: d.ellipse([1, 56, 10, 59], fill=255), (60, 62, 80), edge_k=.5)
+        P.add(lambda d: d.ellipse([2, 0, 9, 10], fill=255), (190, 192, 210), edge_k=.5)
+        return P.final()
+    return cached('mic', mk)
+
+
+def vinyl(r=12):
+    def mk():
+        P = Paint(r * 2 + 1, r * 2 + 1)
+        P.add(lambda d: d.ellipse([0, 0, r * 2, r * 2], fill=255), (30, 30, 40), edge_k=.6, sh=False)
+        P.add(lambda d: d.ellipse([r // 2, r // 2, r + r // 2, r + r // 2], fill=255), (60, 60, 80), edge=False, sh=False, hi=False)
+        P.add(lambda d: d.ellipse([r - 3, r - 3, r + 3, r + 3], fill=255), (210, 70, 90), edge=False, sh=False, hi=False)
+        P.rect(r - 8, 3, r - 4, 3, (120, 120, 150))
+        return P.final()
+    return cached(('vinyl', r), mk)
+
+
+def contract():
+    def mk():
+        P = Paint(34, 44)
+        P.add(lambda d: d.rectangle([0, 0, 33, 43], fill=255), (252, 248, 236), edge_k=.6)
+        for y in range(6, 30, 4): P.line([(4, y), (29, y)], (150, 146, 170))
+        P.rect(4, 34, 16, 34, (60, 60, 120)); P.add(lambda d: d.ellipse([22, 32, 30, 40], fill=255), (190, 50, 60), edge_k=.5)
+        return P.final()
+    return cached('contract', mk)
+
+
+def bus():
+    def mk():
+        P = Paint(92, 44)
+        P.add(lambda d: d.rounded_rectangle([1, 4, 90, 36], radius=5, fill=255), (230, 190, 70), edge_k=.5)
+        P.rect(2, 22, 89, 24, (60, 60, 80))
+        for k in range(7): P.rect(6 + k * 12, 8, 14 + k * 12, 18, (150, 200, 240))
+        P.rect(78, 8, 88, 18, (150, 200, 240))
+        for cx in (18, 70):
+            P.add(lambda d, cx=cx: d.ellipse([cx - 7, 30, cx + 7, 43], fill=255), (36, 36, 50), edge_k=.5, sh=False)
+            P.add(lambda d, cx=cx: d.ellipse([cx - 3, 34, cx + 3, 40], fill=255), (190, 190, 206), edge=False, sh=False, hi=False)
+        return P.final()
+    return cached('bus', mk)
