@@ -161,14 +161,17 @@ def title_card(img, text, cy, size=80, width=860):
 
 
 def hud(img, level, vibe):
+    """HUD en una sola píldora bajo la caja de diálogo: ya no tapa el marcador de la TV ni las caras."""
     d = ImageDraw.Draw(img)
-    f = pf(34)
-    for k, (label, val, col) in enumerate((("NIVEL", f"{level}", (255, 214, 90)), ("ONDA", f"{vibe}%", (255, 140, 180)))):
-        s = f"{label}: {val}"
-        w = d.textlength(s, font=f) + 40
-        y = 270 + k * 68
-        d.rounded_rectangle([64, y, 64 + w, y + 54], radius=12, fill=(20, 22, 56), outline=col, width=4)
-        d.text((84, y + 27), s, font=f, fill=col, anchor="lm")
+    f = pf(30)
+    s1, s2 = f"NIVEL {level}", f"ONDA {vibe}%"
+    w1, w2 = d.textlength(s1, font=f) + 30, d.textlength(s2, font=f) + 30
+    y = 1388
+    d.rounded_rectangle([64, y, 64 + w1, y + 44], radius=12, fill=(20, 22, 56), outline=(255, 214, 90), width=3)
+    d.text((64 + w1 / 2, y + 22), s1, font=f, fill=(255, 214, 90), anchor="mm")
+    x2 = 64 + w1 + 14
+    d.rounded_rectangle([x2, y, x2 + w2, y + 44], radius=12, fill=(20, 22, 56), outline=(255, 140, 180), width=3)
+    d.text((x2 + w2 / 2, y + 22), s2, font=f, fill=(255, 140, 180), anchor="mm")
 
 
 def render_video(ep, cta, out_mp4, workdir):
@@ -231,10 +234,10 @@ def render_video(ep, cta, out_mp4, workdir):
                 img = Image.fromarray(a_)
         bt = ep["banner"](t) if "banner" in ep else ""
         hook_on = any(h0 <= t < h1 for h0, h1, _ in ep["hooks"])
-        if "hud" in ep and not bt and not hook_on:   # el HUD cede su lugar a los carteles de título
+        if "hud" in ep:
             hud(img, *ep["hud"](t))
         if bt:
-            title_card(img, bt, 340, 104 if len(bt) < 9 else 80)
+            title_card(img, bt, 330, 84 if len(bt) < 9 else 64, 900)
         # diálogo estilo RPG (se escribe letra por letra)
         for t0, t1, who, text in lines:
             if t0 <= t < t1:
@@ -247,7 +250,7 @@ def render_video(ep, cta, out_mp4, workdir):
         for h0, h1, htext in ep["hooks"]:
             if h0 <= t < h1:
                 pop = 1 + 0.08 * math.sin(min((t - h0) / 0.25, 1) * math.pi)
-                title_card(img, htext, 340, int(84 * pop))
+                title_card(img, htext, 330, int(62 * pop), 900)
         # flash en cada corte
         for c in ep["cuts"]:
             if 0 <= t - c < 2.5 / FPS:

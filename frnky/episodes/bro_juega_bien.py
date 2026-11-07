@@ -184,7 +184,7 @@ def frame(t):
             sparkles(c, t, 180, 262, 7, 110)
         if dn == 3:
             speed_lines(c, 180, 250, t, 100)
-        keys = [(11.0, 40, 180, 290), (12.2, 30, 180, 260), (14.6, 22, 180, 268), (16.0, 20, 180, 268)]
+        keys = [(11.0, 40, 180, 290), (12.2, 30, 180, 250), (14.6, 24, 180, 232), (16.0, 22, 180, 226)]
         shake = 1 if dn >= 2 else 0
     elif t < 27.8:  # ciber: vuelve "pro" y se pone insoportable
         light_shaft(c, 18)
@@ -283,7 +283,7 @@ def sfx(track):
     A.roll(track, T * K - 1.3, T * K)
 
 
-HOOKS = [(0.0, 1.7, "LO CORRIERON POR SER MALO…"), (1.7, 3.6, "¡Y SE VOLVIÓ DEMASIADO BUENO!")]
+HOOKS = [(0.0, 1.7, "LO CORRIERON POR SER MALO…"), (1.7, 2.9, "¡Y SE VOLVIÓ DEMASIADO BUENO!")]
 PUNCHES = [(c * K, 6) for c in CUTS] + [(a * K, 2.5) for a, _, _, _ in LINES]
 
 EP = dict(

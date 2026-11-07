@@ -128,18 +128,18 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(hx, hy, hx + 5, hy + 5, hand); R(hx, hy + 4, hx + 5, hy + 5, dk(hand, 0.8))
 
     if pose != "cheer":
-        vert_arm(-11, -8, 30, 47)
-        if ch.get("band"):
+        vert_arm(-11, -8, 30, 40 if pose == "ctrl" else 47)   # con control: brazo corto (sin segunda mano colgando)
+        if ch.get("band") and pose != "ctrl":
             R(-11, 41, -8, 42, (32, 150, 84, 255)); R(-11, 42, -8, 43, WHITE); R(-11, 43, -8, 44, (210, 50, 60, 255))
     if pose == "down":
         vert_arm(8, 11, 30, 47)
     elif pose == "fist":
-        stair_arm([(8, 30), (12, 26), (16, 21)], (17, 12))
+        stair_arm([(8, 30), (12, 26), (15, 22)], (15, 17))
     elif pose == "point":
         stair_arm([(8, 30), (12, 32), (16, 34)], (19, 35))
     elif pose == "cheer":
-        stair_arm([(-12, 30), (-16, 26), (-20, 21)], (-22, 12))
-        stair_arm([(8, 30), (12, 26), (16, 21)], (17, 12))
+        stair_arm([(-12, 30), (-16, 26), (-19, 22)], (-20, 17))
+        stair_arm([(8, 30), (12, 26), (15, 22)], (15, 17))
     elif pose == "ctrl":
         vert_arm(8, 11, 30, 40)
         R(-11, 38, 11, 42, coat if kind == "hoodie" else hand)
