@@ -234,46 +234,59 @@ LAY = [layout(c["text"]) for c in CLUES]
 
 
 # ======================= v4: Snoop (crip walk), Nas-inspired NYC scenes =======================
+KEYS = [(0, (6, 12)), (.2, (9, 0)), (.4, (-3, -8)), (.65, (-11, 8)), (1.0, (6, 12))]   # near-hand path (rel. shoulder), from the reference GIF
+def hand_path(u):
+    u %= 1.0
+    for (u0, p0), (u1, p1) in zip(KEYS, KEYS[1:]):
+        if u0 <= u <= u1:
+            k = ease((u - u0) / (u1 - u0)); return (p0[0] + (p1[0] - p0[0]) * k, p0[1] + (p1[1] - p0[1]) * k)
+    return KEYS[0][1]
+def ik(p0, p1, l1, l2, pick):
+    dx, dy = p1[0] - p0[0], p1[1] - p0[1]; dist = max(min(math.hypot(dx, dy), l1 + l2 - .05), abs(l1 - l2) + .05)
+    ux, uy = dx / max(math.hypot(dx, dy), 1e-6), dy / max(math.hypot(dx, dy), 1e-6)
+    a_ = (l1 * l1 - l2 * l2 + dist * dist) / (2 * dist); h_ = math.sqrt(max(l1 * l1 - a_ * a_, 0))
+    mx, my = p0[0] + ux * a_, p0[1] + uy * a_; c1 = (mx - uy * h_, my + ux * h_); c2 = (mx + uy * h_, my - ux * h_)
+    el = max((c1, c2), key=pick); return el, (p0[0] + ux * dist, p0[1] + uy * dist)
 def snoop_layer(t, mode="col"):
+    """Snoop doing the 'hand-circle groove' (recreated in original pixel art from the user's reference GIF; period 0.733 s)."""
     col = mode == "col"; OUT = (14, 8, 34, 255); DK = (14, 8, 34, 255)
     L_ = Image.new("RGBA", (100, 130), (0, 0, 0, 0)); d = ImageDraw.Draw(L_)
-    SKIN = (150, 98, 68, 255); SHIRT = (34, 34, 50, 255); PANT = (62, 88, 160, 255); PANTD = (44, 64, 124, 255)
-    CAP = (24, 24, 34, 255); BRAID = (50, 32, 28, 255); SHOE = (240, 240, 248, 255); GOLDC = (255, 215, 80, 255)
+    SKIN = (150, 98, 68, 255); SHIRT = (28, 28, 40, 255); SLEEVE = (238, 238, 246, 255); PANT = (30, 32, 48, 255); PANTD = (22, 24, 38, 255)
+    CAP = (22, 22, 30, 255); BRAID = (50, 32, 28, 255); SHOE = (240, 240, 248, 255); GOLDC = (255, 215, 80, 255)
     C = (lambda c: c) if col else (lambda c: DK)
     def line(p, q, w, c):
         if col: d.line([p, q], fill=OUT, width=w + 2)
         d.line([p, q], fill=C(c), width=w)
-    ph = t * 13.0; fy = 124; sway = 2 * math.sin(ph * .5)
-    hx, hy = 50 - sway, fy - 52; sx, sy = 50 + sway, fy - 90; cx, cy = sx + sway * .5, sy - 14
-    for s in (-1, 1):                                   # braids (behind)
-        for k in (0, 1):
-            wig = math.sin(ph * .5 + k + s) * 2
-            line((cx + s * 7, cy + 2), (cx + s * (9 + k * 2) + wig, sy + 14), 2, BRAID)
-    for s in (-1, 1):                                   # legs: crip-walk slide / heel-toe flick
-        p = ph + (0 if s < 0 else math.pi)
-        fx = 50 + s * 3 + 15 * math.sin(p); fyy = fy - 6 * max(0, math.sin(p + 1.2))
-        knee = ((hx + fx) / 2 + s * 3 + 3 * math.sin(p), (hy + fyy) / 2 + 3)
-        line((hx + s * 4, hy), knee, 8, PANT); line(knee, (fx, fyy - 3), 7, PANTD)
-        sg = 1 if math.cos(p) > 0 else -1
-        x0, x1 = sorted((fx - 3 * sg, fx + 7 * sg))
-        d.rectangle((x0, fyy - 4, x1, fyy), fill=C(SHOE), outline=OUT if col else DK)
-    d.polygon([(sx - 13, sy), (sx + 13, sy), (hx + 10, hy + 4), (hx - 10, hy + 4)], fill=C(SHIRT), outline=OUT if col else DK)
-    if col: d.line([(hx - 10, hy + 2), (hx + 10, hy + 2)], fill=(80, 80, 112, 255), width=1)
-    for s in (-1, 1):                                   # arms swing + cross
-        shd = (sx + s * 13, sy + 3); a1 = .35 * s + .9 * math.sin(ph + (0 if s < 0 else math.pi) + .5)
-        el = (shd[0] + 16 * math.sin(a1), shd[1] + 16 * math.cos(a1))
-        a2 = a1 - s * .9 + 1.0 * math.sin(2 * ph + s * 1.3)
-        hd = (el[0] + 14 * math.sin(a2), el[1] + 14 * math.cos(a2))
-        line(shd, el, 7, SHIRT); line(el, hd, 5, SKIN)
-        d.ellipse((hd[0] - 3, hd[1] - 3, hd[0] + 3, hd[1] + 3), fill=C(SKIN), outline=OUT if col else DK)
-    line((sx - 5, sy + 1), (sx, sy + 12), 1, GOLDC); line((sx + 5, sy + 1), (sx, sy + 12), 1, GOLDC)
-    d.rectangle((sx - 2, sy + 12, sx + 2, sy + 16), fill=C(GOLDC))
+    u = (t / .733) % 1.0; th = 2 * math.pi * u; fy = 124
+    sway = 2.5 * math.sin(th); bob = 1.5 * abs(math.sin(math.pi * u)) + 1
+    hx, hy = 50 - sway * .5, fy - 52 + bob; sx, sy = 50 + sway, fy - 90 + bob
+    cx, cy = sx + 2.5 * math.sin(th + .7), sy - 14; look = math.sin(th + .7)
+    for s in (-1, 1):
+        line((cx + s * 7, cy + 2), (cx + s * 9 + 1.5 * math.sin(th * 2 + s), sy + 14), 2, BRAID)
+    for s in (-1, 1):                                              # legs planted, knees flex with the groove
+        hip = (hx + s * 5, hy + 6); ank = (50 + s * 7, fy - 2.0 * max(0, math.sin(th * .5 + s * math.pi / 2)))
+        knee, _ = ik(hip, ank, 23.5, 23.5, lambda c, s=s: s * c[0])
+        line(hip, knee, 9, PANT); line(knee, ank, 8, PANTD)
+        d.rectangle((ank[0] - 5 + (3 if s > 0 else 0) * 0, ank[1] - 3, ank[0] + 5, ank[1] + 1), fill=C(SHOE), outline=OUT if col else DK)
+    d.polygon([(sx - 15, sy), (sx + 15, sy), (hx + 13, hy + 12), (hx - 13, hy + 12)], fill=C(SHIRT), outline=OUT if col else DK)
+    if col:
+        d.ellipse((sx - 2, sy + 8, sx + 8, sy + 18), outline=(240, 240, 248, 255))          # chest emblem
+        d.line([(hx - 13, hy + 10), (hx + 13, hy + 10)], fill=(60, 60, 84, 255))
+    for s in (1, -1):                                              # s=+1: low palm-down arm, s=-1: circling hand (drawn last, in front)
+        shd = (sx + s * 14, sy + 3)
+        if s == -1: tx, ty = hand_path(u); tgt = (shd[0] + tx, shd[1] + ty)
+        else: tgt = (shd[0] + 6 + 2 * math.sin(th * 2), shd[1] + 30 + 1.5 * math.cos(th * 2))
+        el, hd = ik(shd, tgt, 15, 15, (lambda c: c[1]) if s == -1 else (lambda c: c[0]))
+        line(shd, el, 9, SHIRT); line(el, hd, 6, SLEEVE)
+        if s == -1: d.ellipse((hd[0] - 3, hd[1] - 3, hd[0] + 3, hd[1] + 3), fill=C(SKIN), outline=OUT if col else DK)
+        else: d.rectangle((hd[0] - 4, hd[1], hd[0] + 4, hd[1] + 3), fill=C(SKIN), outline=OUT if col else DK)
+    line((sx - 5, sy + 1), (sx, sy + 12), 1, GOLDC); line((sx + 5, sy + 1), (sx, sy + 12), 1, GOLDC); d.rectangle((sx - 2, sy + 12, sx + 2, sy + 15), fill=C(GOLDC))
     d.ellipse((cx - 8, cy - 10, cx + 8, cy + 10), fill=C(SKIN), outline=OUT if col else DK)
     d.polygon([(cx - 9, cy - 3), (cx - 9, cy - 9), (cx, cy - 14), (cx + 9, cy - 9), (cx + 9, cy - 3)], fill=C(CAP), outline=OUT if col else DK)
-    d.rectangle((cx - 10, cy - 4, cx + 13, cy - 2), fill=C(CAP))
+    bx = cx + 3 * look; d.rectangle((bx - 10, cy - 4, bx + 10, cy - 2), fill=C(CAP))
     if col:
-        d.rectangle((cx - 7, cy - 1, cx + 7, cy + 2), fill=(15, 12, 22, 255)); d.point((cx - 5, cy - 1), fill=(255, 255, 255, 255)); d.point((cx + 2, cy - 1), fill=(255, 255, 255, 255))
-        d.line([(cx - 3, cy + 6), (cx + 3, cy + 6)], fill=(70, 40, 32, 255))
+        d.rectangle((cx - 6 + look * 2, cy - 1, cx + 6 + look * 2, cy + 2), fill=(15, 12, 22, 255)); d.point((cx - 4 + look * 2, cy - 1), fill=(255, 255, 255, 255))
+        d.rectangle((cx - 2 + look, cy + 6, cx + 2 + look, cy + 9), fill=(40, 26, 24, 255))   # goatee
     if col: return L_
     a = np.array(L_)[..., 3] > 0; arr = np.zeros((130, 100, 4), np.uint8); arr[a] = (14, 8, 34, 255)
     left = a & ~np.roll(a, 1, 1); right = a & ~np.roll(a, -1, 1); top = a & ~np.roll(a, 1, 0)
@@ -552,7 +565,7 @@ def draw_winners(img, ts):
         wd.rounded_rectangle((6, y + 6, ww - 6, y + ROW_H - 8), 14, fill=(255, 205, 60) if top else (40, 66, 190))
         wd.rectangle((6, y + 12, 14, y + ROW_H - 14), fill=col)
         wd.ellipse((26, y + 14, 94, y + ROW_H - 16), fill=(14, 10, 36)); wd.text((60, y + ROW_H // 2 - 4), str(r["rank"]), font=fnt(32), fill=col, anchor="mm")
-        badge = ("1º EN ADIVINAR · " if r["h"] in SPECIAL else "") + f"♥{r['lk']}" + ("  TT" if r["pl"] == "TT" else "")
+        badge = " · ".join(([SPECIAL[r["h"]]] if r["h"] in SPECIAL else []) + ([f"♥{r['lk']}"] if r["lk"] else []) + (["TT"] if r["pl"] == "TT" else []))
         fb = fnt(26 if r["h"] in SPECIAL else 32); bw = int(wd.textlength(badge, font=fb))
         sz = 44; avail = ww - 110 - bw - 40
         while sz > 22 and wd.textlength(r["h"], font=fnt(sz)) > avail: sz -= 2

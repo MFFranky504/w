@@ -27,12 +27,13 @@ RAW = [
  ("yoyo.mendez02","IG",0,1,8),("chikillodelascamelias","IG",2,1,9),("beni_ssj_goku","IG",0,1,6),("amytooor","IG",2,1,9),
  ("eliaadamian2011","IG",1,1,9),("g4po0_xd03","IG",0,1,6),("dylangabrielcruzcastano","IG",2,1,5),("xsantiagox66","IG",1,1,7),
  ("devx_.sk","IG",1,1,5),("gipsyy1414","IG",1,2,7),("juanjor117","IG",1,1,7),("nprss_yk22","IG",1,1,4),
- ("julia.coejo_1","IG",0,1,5),("diego._glzz","IG",0,1,6),("el_ciolita","IG",0,2,4),("va.lencia06","IG",0,2,10),
- ("jaritajeje","IG",0,1,7),("thi_agooxz","IG",0,1,9),("ernswt2","IG",0,2,6),("xolots_official","IG",0,1,10),
+ ("julia.coejo_1","IG",0,1,5),("diego._glzz","IG",0,1,6),("el_ciolita","IG",0,2,4),("va.lencia06","IG",1,2,10),
+ ("jaritajeje","IG",0,1,7),("thi_agooxz","IG",0,1,9),("ernswt2","IG",0,2,6),("xolots_official","IG",1,1,10),
  ("diegosez.010","IG",0,1,5),("dieg.o021022","IG",0,1,7),("carlos._.1004k","IG",0,1,4),("kiike.ac.09","IG",0,1,4),
  ("_.missael98","IG",0,1,4),("je_suis_sam1917","IG",0,1,4),("alegre_changuito","IG",0,1,4),("jeff_the_land_shark124","IG",0,1,6),
  ("elwillmaf08","IG",2,1,4),("songomaro","IG",2,1,9),("grxan_tvr","IG",0,1,7),("demianancapi","IG",1,1,5),
  ("davichoo.pinedo3017","IG",0,1,10),("shoujizz","IG",1,1,10),("21ssanti","IG",3,1,10),("nehemias201602","IG",2,1,10),
+ ("jesus_rch27","",0,0,0),
  ("Emilio","TT",0,1,8),("Osamu Dazai","TT",0,1,8),("Steve Santos","TT",0,1,8),
 ]
 SPECIAL = {"va.lencia06": "1º EN ADIVINAR"}      # la cuenta del canal le respondió "eres el primero en adivinarlo"
