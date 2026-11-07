@@ -98,7 +98,7 @@ if narr and os.path.exists(FA):
         n_ = len(l['tts'].split()); LW[l['id']] = ws[k_:k_ + n_]; k_ += n_
     assert k_ == len(ws), (k_, len(ws))
     st = [LW[l['id']][0]['start'] for l in LINES]; en = [LW[l['id']][-1]['end'] for l in LINES]
-    TOTAL = en[-1] + .45 + LOOP_D
+    TOTAL = round((en[-1] + .45 + LOOP_D) * FPS) / FPS          # nº entero de fotogramas: el bucle encaja al cuadro
     MODE = 'voz real (alineación forzada)'
 elif narr:
     st, en, TOTAL = align_real(narr)
@@ -152,11 +152,11 @@ for s_ in SCENES:
 TKIND = ['dissolve', 'whip', 'dissolve', 'flash', 'whip', 'zoom', 'dissolve', 'dissolve']
 
 
-def render_scene(i, t):
+def render_scene(i, t, neg=False):
     s = SCENES[i]
     d = max(1e-3, s['t1'] - s['t0'])
     u = max(0, min(1, (t - s['t0']) / d))
-    tl = max(0, t - s['t0'])
+    tl = (t - s['t0']) if neg else max(0, t - s['t0'])         # neg: tiempo "virtual" anterior al inicio (para el bucle)
     img = s['fn'](tl, u)
     cx, cy, z = cam_at(s['cam'], u)
     for l in LINES:
@@ -320,10 +320,9 @@ def overlay(base, t):
     return out
 
 
-_FIRST = []
-def first_img():
-    if not _FIRST: _FIRST.append(render_scene(0, 0.0))
-    return _FIRST[0]
+def first_virtual(t):
+    """la primera escena 'continúa' con tiempo negativo: al volver a empezar el movimiento (lluvia, cámara) no se interrumpe."""
+    return render_scene(0, t - TOTAL, neg=True)
 
 
 def frame(fi):
@@ -354,9 +353,9 @@ def frame(fi):
     for tc in CUTS:                                                  # destello en los cortes duros dentro de una escena
         if 0 <= t - tc < .09: img = Image.blend(img, Image.new('RGB', (VW, VH), (255, 250, 235)), .55 * (1 - (t - tc) / .09))
     if t > TOTAL - LOOP_D:
-        k = min(1.0, (t - (TOTAL - LOOP_D)) / (LOOP_D - 1.0 / FPS))
-        m = (BAYF < ease(k))[..., None]
-        img = Image.fromarray(np.where(m, np.array(first_img()), np.array(img)))
+        k = (t - (TOTAL - LOOP_D)) / LOOP_D
+        m = (BAYF < ease(k * 1.08))[..., None]                     # el último cuadro es idéntico al siguiente (el primero)
+        img = Image.fromarray(np.where(m, np.array(first_virtual(t)), np.array(img)))
     return overlay(img, t)
 
 
@@ -441,15 +440,19 @@ def synth_audio():
     hw = int(.01 * SR); e0 = np.abs(song[:int(8 * SR), 0])
     T0 = next(i for i in range(0, len(e0) - hw, hw) if e0[i:i + hw].max() > .02) / SR - .02
     T0 = max(0, T0)
-    seg = song[int((T0 - 0.0) * SR):int(T0 * SR) + N].copy()
-    seg *= .095 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)     # música bien presente, la voz sigue delante
+    S0 = 4.0                                                           # el vídeo arranca dentro de la canción: hay música "anterior" para empalmar el final con el principio
+    XF = 1.8                                                           # segundos de empalme del final con el principio
+    seg = song[int(S0 * SR):int(S0 * SR) + N].copy()
+    pre = song[int((S0 - XF) * SR):int(S0 * SR)].copy()
+    gscale = .165 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)  # música bien presente
+    seg *= gscale; pre *= gscale * .78
     v = np.arange(len(seg)) / SR
     dip = np.where((v > G - SIL - .05) & (v < G - .012), np.clip(1 - (v - (G - SIL - .05)) / .12, 0, 1), 1.0)   # el piano se apaga ...
     dip = np.where(v >= G - .012, 1.0, dip)                                                                   # ... y vuelve con el golpe
-    fo = np.minimum(1, (len(seg) / SR - v) / 1.3)
-    fi = np.minimum(1, v / .3)
     swell = np.clip(.78 + .45 * np.clip((v - (G - 4)) / 4, 0, 1), .78, 1.23)                    # el piano crece desde el giro
-    seg *= (dip * fo * fi * swell)[:, None]
+    seg *= (dip * swell)[:, None]
+    nx = int(XF * SR); w_ = np.linspace(0, np.pi / 2, nx)[:, None]            # empalme de potencia constante: el final entra en la música del principio
+    seg[N - nx:N] = seg[N - nx:N] * np.cos(w_) + pre[:nx] * np.sin(w_)
     m = np.zeros((N, 2), np.float32); n = min(len(seg), N); m[:n] = seg[:n]
     print(f'canción desde {T0:.2f}s, golpe en G={G:.2f}s', file=sys.stderr)
     voice = None
@@ -460,7 +463,7 @@ def synth_audio():
         env = np.sqrt(np.convolve(voice[:, 0] ** 2, np.ones(int(.08 * SR)) / int(.08 * SR), 'same'))
         env = np.convolve(env, np.ones(int(.25 * SR)) / int(.25 * SR), 'same')
         gate = np.clip(env / (env.max() * .12 + 1e-9), 0, 1)
-        m *= (1 - .45 * gate)[:, None]
+        m *= (1 - .4 * gate)[:, None]
         voice *= .14 / (np.sqrt((voice[voice[:, 0] ** 2 > 1e-4] ** 2).mean()) + 1e-9)   # voz al frente (rms hablado ≈ -17 dB)
     mix = m + sfx * .8
     if voice is not None: mix = mix + voice
