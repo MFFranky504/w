@@ -1,9 +1,18 @@
 import numpy as np, wave, json, subprocess
-SR=44100; D=42.0
+SR=44100
+WP=json.load(open('assets/warp.json'))
+WA=WP['warp']
+def warpn(t):
+    if t<=WA[0][0]: return t
+    for i in range(1,len(WA)):
+        if t<=WA[i][0]:
+            o0,n0=WA[i-1];o1,n1=WA[i];return n0+(t-o0)/(o1-o0)*(n1-n0)
+    return WA[-1][1]+(t-WA[-1][0])
+D=WP['end']+1.5
 N=int(SR*D)
 sfx=np.zeros(N)
 def add(t,x,g=1.0):
-    i=int(t*SR); x=x*g
+    i=int(warpn(t)*SR); x=x*g
     j=min(N,i+len(x)); sfx[i:j]+=x[:j-i]
 def tt(d): return np.arange(int(d*SR))/SR
 def env(d,a=0.005,r=None):
@@ -35,8 +44,10 @@ def trombone(f,d,g=0.6):
 
 words=json.load(open('assets/words.json'))['words']
 sw=['chingada...','puto','imbécil.','cabrón...','carajos','culo.','verga.']
+import re
+SWS={'chingada','puto','pinche','pendejo','mamada','imbécil','cabrón','carajos','culo','puta','verga','culero'}
 for w in words:
-    if w[0] in sw: add(w[1]-0.02,boom(0.5),0.55)
+    if re.sub(r'[^a-záéíóúñü]','',w[0].lower()) in SWS: sfx_i=int((w[1]-0.02)*SR); x=boom(0.5)*0.55; sfx[sfx_i:sfx_i+len(x)]+=x[:N-sfx_i]
 # zoom whoosh
 add(2.15,whoosh(0.5),0.5); add(5.7,whoosh(0.45),0.4); add(7.2,whoosh(0.4),0.4); add(11.4,whoosh(0.35),0.35); add(21.7,whoosh(0.5),0.45)
 add(34.0,whoosh(0.5),0.35); add(35.7,whoosh(1.6),0.5)
@@ -95,6 +106,7 @@ for i in range(int(D/beat)):
 # mute music in void-silence beats and at end
 gate=np.ones(N); 
 def mute(a,b,fade=0.2):
+    a=warpn(a);b=warpn(b)
     i,j=int(a*SR),int(b*SR); gate[i:j]=0
     for k in range(int(fade*SR)):
         if i-k>0: gate[i-k]=min(gate[i-k],k/(fade*SR))

@@ -24,6 +24,10 @@ html,body{margin:0;background:#000;overflow:hidden}
 import * as THREE from './node_modules/three/build/three.module.js';
 const W=1080,H=1920;
 const words=(await (await fetch('assets/words.json')).json()).words;
+const WP=await (await fetch('assets/warp.json')).json();const END=WP.end;
+const warp=t=>{const a=WP.warp;if(t<=a[0][1])return t;for(let i=1;i<a.length;i++){if(t<=a[i][1]){const [o0,n0]=a[i-1],[o1,n1]=a[i];return o0+(t-n0)/(n1-n0)*(o1-o0)}}const l=a[a.length-1];return l[0]+(t-l[1])};
+let TN=0;
+const norm=x=>x.toLowerCase().replace(/[^a-záéíóúñü]/g,'');
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true});
 renderer.setPixelRatio(1);renderer.setSize(W,H,false);
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
@@ -152,8 +156,9 @@ const legs=[-1,1].map(s=>{
 const T=0.9, FZ=0.9;
 
 // ---------- timeline data
-const SW=['chingada...','puto','imbécil.','cabrón...','carajos','culo.','verga.'];
-const swT=words.filter(w=>SW.includes(w[0])).map(w=>w[1]);
+const SWS=new Set(['chingada','puto','pinche','pendejo','mamada','imbécil','cabrón','carajos','culo','puta','verga','culero']);
+const isSW=w=>SWS.has(norm(w));
+const swT=words.filter(w=>isSW(w[0])).map(w=>w[1]);
 const blinks=[1.5,4.1,6.3,9.8,12.0,15.1,17.4,21.9,24.9,27.5,30.4,34.6,36.6,39.2];
 function wordAt(t){return words.find(w=>t>=w[1]&&t<w[2]+0.02)}
 function applyChar(t){
@@ -192,7 +197,7 @@ function applyChar(t){
     r.brow.position.y=0.66+(r.s>0?0.16*raise:0)+0.07*seg(t,18.9,19.3)*(1-seg(t,21.3,21.6));
   });
   // mouth sync
-  const w=wordAt(t);let open=0;if(w){open=0.35+0.65*Math.abs(Math.sin((t-w[1])*21))}
+  const w=wordAt(TN);let open=0;if(w){open=0.35+0.65*Math.abs(Math.sin((TN-w[1])*21))}
   mouth.scale.set(0.34,0.03+0.2*open,0.14);
   hero.visible=true;
 }
@@ -280,7 +285,7 @@ function applyCam(t){
   const s=shots.find(s=>t>=s[0]&&t<s[1])||shots[shots.length-1];
   const u=clamp((t-s[0])/(s[1]-s[0]));const r=s[2](u,t);
   let fov=r.f;
-  for(const ts of swT){const d=t-ts;if(d>0&&d<0.6)fov-=8*Math.exp(-d*9)}
+  for(const ts of swT){const d=TN-ts;if(d>0&&d<0.6)fov-=8*Math.exp(-d*9)}
   // impact shake
   let sh=0;[[3.4,.5],[13.0,.4],[19.4,.5],[20.0,.5],[22.8,.4],[27.9,.1],[32.4,.8],[39.85,.7]].forEach(([ts,a])=>{const d=t-ts;if(d>0&&d<0.5)sh+=a*Math.exp(-d*8)});
   cam.position.set(r.p[0]+sh*0.08*Math.sin(t*90),r.p[1]+sh*0.08*Math.cos(t*77),r.p[2]);
@@ -293,15 +298,15 @@ const subEl=document.getElementById('sub'),pill=document.getElementById('pill'),
 let lastPh=-1;
 function applySub(t){
   let idx=-1;for(let i=0;i<phrases.length;i++){const p=phrases[i];const nxt=phrases[i+1];const st=p[0][1]-0.05,en=nxt?nxt[0][1]-0.05:p[p.length-1][2]+0.35;if(t>=st&&t<en){idx=i;break}}
-  if(idx<0||t>40.7){subEl.innerHTML='';lastPh=-1}
+  if(idx<0||t>END+0.2){subEl.innerHTML='';lastPh=-1}
   else{
     const p=phrases[idx];
-    subEl.innerHTML=p.map(w=>{const sw=SW.includes(w[0]);const on=t>=w[1]&&t<w[2]+0.12;return `<span class="${sw?'sw ':''}${on?'on':''}">${w[0].replace(/\.\.\.|[.,]/g,'').replace('?','?')}</span>`}).join('');
+    subEl.innerHTML=p.map(w=>{const sw=isSW(w[0]);const on=t>=w[1]&&t<w[2]+0.12;return `<span class="${sw?'sw ':''}${on?'on':''}">${w[0].replace(/\.\.\.|[.,]/g,'').replace('?','?')}</span>`}).join('');
   }
   pill.style.display=t<4.2?'block':'none';
-  endEl.style.display=t>=40.6?'block':'none';
-  document.getElementById('logo').style.display=t<40.6?'block':'none';
+  endEl.style.display=t>=END+0.1?'block':'none';
+  document.getElementById('logo').style.display=t<END+0.1?'block':'none';
 }
-window.renderFrame=(t)=>{applyRoom(t);applyChair(t);applyChar(t);applyCam(t);renderer.render(scene,cam);applySub(t);return true};
+window.renderFrame=(tn)=>{TN=tn;const t=warp(tn);applyRoom(t);applyChair(t);applyChar(t);applyCam(t);renderer.render(scene,cam);applySub(tn);return true};
 window.ready=true;
 </script></body></html>
