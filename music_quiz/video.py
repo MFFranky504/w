@@ -527,6 +527,7 @@ def prev_draw(im, t, ts):
     kind = PREV["sprite"]
     if kind == "tyler": return tyler_draw(im, t, ts)
     if kind == "mic": return mic_draw(im, t, ts)
+    if kind == "nas2": return nas2_draw(im, t, ts)
     if kind == "snoop": snoop(im, t, mode="sil" if ts < REVEAL else "col"); (qmark(im, 140, 138 + int(3 * math.sin(t * 4)), 3) if ts < REVEAL else None); return
     if ts < REVEAL:
         im.paste(NAS_SIL, (135 - 32, 266 - 110 + (1 if int(t * 2.2) % 2 else 0)), NAS_SIL); qmark(im, 129, 128 + int(3 * math.sin(t * 4)), 3)
@@ -1294,6 +1295,71 @@ def mic_draw(im, t, ts, x=135, feet=266):
         if a < 2: d.point((x - 12 + a * 2, y0 + 8), fill=WHITE)
         crown(im, x - 10, y0 - 16 + int(2 * math.sin(t * 3)))
     else: qmark(im, x - 6, y0 - 22 + int(3 * math.sin(t * 4)), 3)
+
+# ======================= v9: Nas as a character (traced from the user's reference photo) =======================
+def make_nas2():
+    """Grey baseball cap (brim to the side), grey varsity jacket with a navy sleeve, red/white ribbed collar, red script swoosh
+    (no team logo/text), long chain with a diamond cross, thin moustache + chin hair, baggy dark jeans, white sneakers; bat behind him."""
+    w, h = 100, 140; r = random.Random(9)
+    SK = (112, 70, 48); SKS = (86, 52, 36); SKL = (134, 86, 60)
+    CAP = (198, 202, 212); CAPS = (150, 156, 170); CAPD = (116, 122, 138)
+    JK = (184, 190, 202); JKS = (146, 152, 168); JKL = (212, 216, 226); NAVY = (34, 40, 72); NAVYL = (60, 68, 108); RED = (196, 38, 50)
+    SIL = (226, 230, 240); WHITE_ = (248, 248, 250)
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.polygon([(66, 0), (71, 0), (74, 70), (68, 70)], fill=(220, 182, 112)); d.line([(67, 2), (70, 66)], fill=(240, 206, 140)); d.line([(70, 2), (73, 66)], fill=(186, 146, 84))   # bat behind him
+    for x0 in (36, 51):                                                                 # baggy dark jeans + white sneakers
+        d.rectangle((x0, 94, x0 + 13, 132), fill=(50, 64, 108)); d.rectangle((x0 + 9, 94, x0 + 13, 132), fill=(38, 48, 86)); d.line([(x0 + 4, 104), (x0 + 6, 128)], fill=(70, 86, 132))
+        d.rectangle((x0, 124, x0 + 13, 132), fill=(44, 56, 98))
+        d.rounded_rectangle((x0 - 3, 130, x0 + 15, 139), 3, fill=WHITE_); d.rectangle((x0 - 3, 137, x0 + 15, 139), fill=(190, 194, 206)); d.line([(x0 + 1, 134), (x0 + 11, 132)], fill=NAVY)
+    d.rounded_rectangle((33, 46, 67, 98), 5, fill=JK); d.rectangle((59, 50, 67, 94), fill=JKS); d.rectangle((36, 52, 41, 80), fill=JKL)          # varsity jacket
+    for k in range(4): d.rectangle((33, 90 + k * 2, 67, 90 + k * 2), fill=RED if k % 2 == 0 else WHITE_)                                        # ribbed hem
+    d.polygon([(33, 48), (26, 56), (22, 96), (31, 98), (35, 62)], fill=NAVY); d.polygon([(26, 56), (22, 96), (25, 96), (29, 60)], fill=NAVYL)     # navy sleeve (down)
+    for k in range(3): d.rectangle((21, 92 + k * 2, 31, 92 + k * 2), fill=RED if k % 2 == 0 else WHITE_)
+    d.rectangle((21, 98, 31, 106), fill=SK); d.rectangle((21, 103, 31, 106), fill=SKS)
+    d.polygon([(67, 48), (76, 54), (82, 66), (76, 70), (70, 62), (66, 62)], fill=JK); d.polygon([(76, 54), (82, 66), (79, 68), (74, 58)], fill=JKS)   # raised arm: upper arm out
+    d.polygon([(76, 70), (82, 66), (86, 50), (80, 48)], fill=JK); d.polygon([(82, 66), (86, 50), (84, 49), (80, 64)], fill=JKS)                      # forearm up
+    for k in range(3): d.line([(79, 50 + k * 2), (86, 52 + k * 2)], fill=RED if k % 2 == 0 else WHITE_)
+    d.polygon([(78, 48), (88, 48), (90, 42), (86, 40), (82, 44), (78, 42)], fill=SK); d.point((88, 41), fill=SKL); d.line([(80, 44), (82, 46)], fill=SKS)   # open hand, palm up
+    d.polygon([(32, 74), (44, 66), (56, 64), (68, 60), (68, 68), (56, 70), (44, 74), (34, 82)], fill=RED); d.line([(32, 74), (44, 66), (56, 64), (68, 60)], fill=NAVY)   # script swoosh
+    d.line([(34, 82), (44, 74), (56, 70), (68, 68)], fill=NAVY); d.arc((36, 66, 46, 80), 90, 270, fill=NAVY); d.arc((48, 64, 56, 74), 90, 270, fill=WHITE_)
+    d.polygon([(43, 44), (57, 44), (55, 58), (50, 62), (45, 58)], fill=WHITE_)                                                                    # white tee
+    for k, (c1) in enumerate((RED, WHITE_, RED)): d.line([(41 + k, 44 + k), (50, 56 + k)], fill=c1, width=1); d.line([(59 - k, 44 + k), (50, 56 + k)], fill=c1, width=1)   # ribbed collar
+    d.rectangle((44, 40, 56, 48), fill=SKS)
+    pts = [(42, 48), (44, 58), (47, 68), (50, 74), (53, 68), (56, 58), (58, 48)]                                                                  # long silver chain + diamond cross
+    for a_, b_ in zip(pts, pts[1:]): d.line([a_, b_], fill=SIL, width=1)
+    for (px_, py_) in pts[1:-1]: d.point((px_, py_), fill=WHITE_)
+    d.rectangle((48, 74, 52, 92), fill=SIL); d.rectangle((44, 78, 56, 82), fill=SIL)
+    for (px_, py_) in ((49, 76), (51, 80), (49, 84), (51, 88), (46, 79), (54, 81)): d.point((px_, py_), fill=WHITE_)
+    d.rectangle((48, 74, 52, 92), outline=(150, 156, 172)); d.rectangle((44, 78, 56, 82), outline=(150, 156, 172))
+    d.ellipse((39, 14, 61, 50), fill=SK); d.polygon([(55, 20), (61, 30), (59, 44), (55, 48)], fill=SKS); d.ellipse((40, 34, 46, 44), fill=SKL)     # slim face
+    d.ellipse((36, 26, 40, 38), fill=SK); d.ellipse((60, 26, 64, 38), fill=SKS)
+    for (ex, dx_) in ((42, 3), (53, 2)):                                                                                                          # narrowed eyes, heavy lids
+        d.rectangle((ex, 29, ex + 5, 31), fill=(232, 222, 214)); d.rectangle((ex + dx_, 29, ex + dx_ + 1, 31), fill=(30, 18, 14)); d.line([(ex - 1, 28), (ex + 6, 28)], fill=(40, 22, 18))
+    d.line([(41, 26), (47, 25)], fill=(30, 18, 14), width=2); d.line([(53, 25), (59, 26)], fill=(30, 18, 14), width=2)
+    d.rectangle((48, 32, 52, 37), fill=SKL); d.rectangle((47, 37, 53, 38), fill=SKS)
+    d.line([(45, 39), (55, 39)], fill=(36, 20, 16)); d.rectangle((45, 41, 55, 44), fill=(92, 46, 42)); d.line([(45, 42), (55, 42)], fill=(54, 24, 22))   # thin moustache + full lips
+    d.rectangle((48, 46, 52, 49), fill=(44, 26, 20)); d.point((43, 36), fill=(60, 34, 26))                                                        # chin hair + mole
+    d.ellipse((37, 3, 63, 24), fill=CAP); d.rectangle((38, 14, 62, 20), fill=CAP); d.ellipse((54, 4, 63, 20), fill=CAPS)                        # cap
+    for k in range(3): d.line([(50, 4), (40 + k * 10, 18)], fill=CAPS)
+    d.ellipse((48, 2, 52, 5), fill=CAPS)
+    d.polygon([(52, 16), (72, 13), (76, 18), (74, 22), (54, 22)], fill=CAP); d.polygon([(54, 20), (74, 20), (74, 22), (54, 22)], fill=CAPD); d.line([(52, 16), (72, 13)], fill=CAPS)   # brim to the side
+    d.rectangle((42, 8, 43, 15), fill=NAVY); d.rectangle((46, 8, 47, 15), fill=NAVY); d.line([(43, 9), (46, 14)], fill=NAVY)                        # small navy emblem (generic, not a team logo)
+    d.rectangle((38, 19, 62, 21), fill=CAPD)
+    return _outline_sil(im)
+NAS2_COL, NAS2_SIL = make_nas2()
+def nas2_draw(im, t, ts):
+    W_, H_, X_ = 100, 140, 50
+    if ts < REVEAL:
+        im.paste(NAS2_SIL, (135 - X_, 266 - H_ + (1 if int(t * 2.2) % 2 else 0)), NAS2_SIL); qmark(im, 129, 106 + int(3 * math.sin(t * 4)), 3)
+        return
+    e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); bob = 1 if int(t * 2.2) % 2 else 0
+    y0 = 266 - H_ + jump + bob; ox = 135 - X_; im.paste(NAS2_COL, (ox, y0), NAS2_COL); d = ImageDraw.Draw(im)
+    p = (t * .9) % 1.0; up = 30 * 4 * p * (1 - p)                                                                     # baseball tossed up and caught
+    bx, by = ox + 85, y0 + 34 - up; d.ellipse((bx - 5, by - 5, bx + 5, by + 5), fill=(250, 248, 244), outline=(60, 50, 50))
+    d.arc((bx - 9, by - 5, bx - 1, by + 5), 300, 60, fill=(210, 40, 50)); d.arc((bx + 1, by - 5, bx + 9, by + 5), 120, 240, fill=(210, 40, 50))
+    k = int((t * 5) % 6)
+    if k < 2: d.point((ox + 50 + (k * 2 - 1), y0 + 77), fill=WHITE); d.point((ox + 50, y0 + 75 + k), fill=WHITE)            # cross sparkle
+    crown(im, ox + 40, y0 - 14 + int(2 * math.sin(t * 3)))
 
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),

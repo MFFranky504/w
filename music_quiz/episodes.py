@@ -50,7 +50,7 @@ EPISODES = {
         part=10, artist="Tyler, The Creator", genre="hip hop", music="trap", hook="c", next_part=11, mega=True,
         hook_len=2.0, reveal=2.6, hook_scene="danger", outro_scene="sunset", outro_sign=None, diff_nb=9,
         banners={0: "¡NIVEL: MEGA DIFÍCIL!", 1: "SOLO PARA FANS DE VERDAD", 4: "NI LA ÚLTIMA ES FÁCIL"},
-        prev=dict(sprite="mic", scene="brook", part=9, lines=("NAS",), sub="QUEENSBRIDGE · NUEVA YORK", winners=[], winners_part=None, special={}),
+        prev=dict(sprite="nas2", scene="brook", part=9, lines=("NAS",), sub="QUEENSBRIDGE · NUEVA YORK", winners=[], winners_part=None, special={}),
         clues=[
             dict(n=1, diff="IMPOSIBLE", pts=5, chip="SEUDÓNIMO", scene="set",
                  text="Dirige todos sus propios videos musicales, pero firma como director con un seudónimo: *Wolf Haley*."),
