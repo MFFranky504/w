@@ -1,0 +1,8 @@
+node_modules/
+build/frames/
+build/test/
+build/chk/
+build/*.jpg
+build/*.log
+build/mix.wav
+build/voices.json
