@@ -257,23 +257,23 @@ def finale(t, u):
         c.R(x0, 130 - h, 10, h, (50, 28, 62)); c.d.polygon([(x0 - 1, 130 - h), (x0 + 5, 130 - h - 9), (x0 + 11, 130 - h)], fill=(50, 28, 62))
     c.R(0, 160, WW, 50, (50, 28, 62))
     # escritorio con el libro enorme abierto y brillante (alto: queda sobre los subtítulos)
-    c.R(0, 190, WW, 110, (96, 56, 44)); c.R(0, 190, WW, 3, (170, 110, 80))
-    c.R(16, 176, 128, 16, (150, 84, 60))
-    c.d.polygon([(22, 168), (78, 160), (78, 182), (22, 184)], fill=(252, 248, 236)); c.d.polygon([(82, 160), (138, 168), (138, 184), (82, 182)], fill=(246, 242, 226))
-    c.R(78, 160, 4, 22, (200, 150, 110))
+    c.R(0, 180, WW, 120, (96, 56, 44)); c.R(0, 180, WW, 3, (170, 110, 80))
+    c.R(16, 166, 128, 16, (150, 84, 60))
+    c.d.polygon([(22, 158), (78, 150), (78, 172), (22, 174)], fill=(252, 248, 236)); c.d.polygon([(82, 150), (138, 158), (138, 174), (82, 172)], fill=(246, 242, 226))
+    c.R(78, 150, 4, 22, (200, 150, 110))
     nl = int(ease((u - .15) / .6) * 7)
-    for i in range(nl): c.R(88, 167 + i * 2, 40 - (i * 5) % 14, 1, (60, 50, 110))
-    for i in range(5): c.R(28, 169 + i * 2, 38 - (i * 7) % 16, 1, (120, 110, 150))
+    for i in range(nl): c.R(88, 157 + i * 2, 40 - (i * 5) % 14, 1, (60, 50, 110))
+    for i in range(5): c.R(28, 159 + i * 2, 38 - (i * 7) % 16, 1, (120, 110, 150))
     fl = (t * .6) % 1
-    if fl < .5: c.d.polygon([(82, 160), (82 + 50 * math.sin(fl * math.pi), 158 - 8 * math.sin(fl * math.pi)), (82 + 50 * math.sin(fl * math.pi), 180 - 6 * math.sin(fl * math.pi)), (82, 182)], fill=(255, 252, 244))
-    c.light(80, 166, 70, 46, (255, 230, 150), 1.0)
+    if fl < .5: c.d.polygon([(82, 150), (82 + 50 * math.sin(fl * math.pi), 148 - 8 * math.sin(fl * math.pi)), (82 + 50 * math.sin(fl * math.pi), 170 - 6 * math.sin(fl * math.pi)), (82, 172)], fill=(255, 252, 244))
+    c.light(80, 156, 70, 46, (255, 230, 150), 1.0)
     # el espectador, detrás del escritorio (se le ve de la cintura para arriba), mirando el libro
     full = fig(rpg('you', 0), .95)
     top = full.crop((0, 0, full.width, int(full.height * .78)))
-    place(c, top, 46, 176 + 0, sh=False)
-    c.R(16, 176, 128, 16, (150, 84, 60)); c.R(16, 176, 128, 2, (206, 140, 100))
+    place(c, top, 46, 166, sh=False)
+    c.R(16, 166, 128, 16, (150, 84, 60)); c.R(16, 166, 128, 2, (206, 140, 100))
     for i in range(16):
-        ph = (t * .45 + i * .063) % 1; xx = 44 + (i * 37 + math.sin(t * 2 + i) * 5) % 90; yy = 170 - ph * 100
+        ph = (t * .45 + i * .063) % 1; xx = 44 + (i * 37 + math.sin(t * 2 + i) * 5) % 90; yy = 160 - ph * 100
         c.R(xx, yy, 2, 2, (255, 236, 170))
     c.amb = (1.0 + .06 * k, .94 + .08 * k, .95); c.vig = .6
     return c.render()
