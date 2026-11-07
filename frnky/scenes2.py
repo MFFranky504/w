@@ -285,7 +285,7 @@ def walkers(c, t, y_feet, names, speed=60, seed=0):
 
 
 def room2(t, kind):
-    f = {"patio": patio, "oficina": oficina, "staff": staff, "hall": hall, "stage": stage, "salon": salon, "meme": meme}[kind]
+    f = {"patio": patio, "oficina": oficina, "staff": staff, "hall": hall, "stage": stage, "salon": salon, "meme": meme, "cubiculo": cubiculo}[kind]
     img = f(t)
     from .bg import grade as g
     img = g(img, 1.2, 1.04)
@@ -355,4 +355,49 @@ def meme(t):
     d.polygon([(hx - 6, iy + 3), (hx + 18, iy + 3), (hx + 6, iy + 15)], fill=(240, 60, 90))
     txt(d, (hx + 36, iy + 6), f"{9000 + int(t * 211):,} me gusta", 15, (255, 255, 255), outline=(20, 22, 44), anchor="lm")
     txt(d, (x0 + 18, iy + 32), "TODO EL COLE LO COMPARTIO", 13, (200, 210, 240), outline=(20, 22, 44), anchor="lm")
+    return img
+
+
+def cubiculo(t):
+    """Oficina con cubículos: escritorio, monitor con gráficas, planta, reloj, cafetera y ventana a la ciudad."""
+    img, d = _new()
+    d.rectangle([0, 0, W, 340], fill=(206, 220, 236))
+    for x in range(0, W, 30):
+        d.rectangle([x, 0, x + 14, 340], fill=(214, 228, 242))
+    for lx in (50, 160, 270):                       # luces de techo
+        d.rectangle([lx, 6, lx + 60, 16], fill=(255, 252, 226), outline=OL)
+    d.rectangle([20, 50, 150, 190], fill=OL)
+    for y in range(54, 186, 6):
+        d.rectangle([24, y, 146, y + 6], fill=(int(120 + (y - 54) * 0.4), int(190 + (y - 54) * 0.2), 250))
+    for bx, bh, c in ((28, 70, (92, 100, 160)), (54, 100, (110, 90, 150)), (84, 60, (92, 120, 170)), (110, 90, (120, 100, 160))):
+        d.rectangle([bx, 186 - bh, bx + 22, 186], fill=c)
+    d.rectangle([82, 54, 86, 186], fill=(236, 230, 214)); d.rectangle([24, 118, 146, 122], fill=(236, 230, 214))
+    _clock(d, 200, 44, 18, t, 1.6)
+    d.rectangle([232, 64, 340, 160], fill=OL); d.rectangle([235, 67, 337, 157], fill=(248, 248, 244))     # pizarra de metas
+    for k, (w, c) in enumerate(((86, (90, 190, 120)), (60, (250, 200, 70)), (30, (240, 90, 90)))):
+        d.rectangle([244, 80 + k * 22, 244 + w, 92 + k * 22], fill=c)
+    txt(d, (286, 72), "METAS", 12, OL, outline=(248, 248, 244))
+    d.rectangle([0, 230, W, 246], fill=(160, 170, 190)); d.rectangle([0, 246, W, 340], fill=(190, 200, 214))  # mampara
+    for x in range(0, W, 90):
+        d.rectangle([x, 246, x + 2, 340], fill=(150, 160, 180))
+    # escritorio con monitor animado
+    d.rectangle([40, 262, 320, 278], fill=OL); d.rectangle([42, 264, 318, 276], fill=(196, 150, 100))
+    d.rectangle([46, 278, 54, 340], fill=OL); d.rectangle([306, 278, 314, 340], fill=OL)
+    d.rectangle([120, 196, 240, 262], fill=OL); d.rectangle([123, 199, 237, 252], fill=(24, 40, 80))
+    for k in range(7):
+        h = 10 + int(28 * abs(math.sin(t * 1.4 + k)))
+        d.rectangle([132 + k * 15, 248 - h, 142 + k * 15, 248], fill=[(255, 110, 140), (110, 210, 255), (255, 220, 90)][k % 3])
+    d.rectangle([170, 252, 190, 262], fill=OL)
+    d.rectangle([250, 236, 270, 262], fill=(250, 250, 250), outline=OL)                                      # taza con vapor
+    for s_ in range(3):
+        sy = 232 - ((t * 14 + s_ * 9) % 24); d.rectangle([256 + math.sin(t * 3 + s_) * 2, sy, 262, sy + 4], fill=(255, 255, 255))
+    d.rectangle([66, 244, 96, 262], fill=OL); d.rectangle([68, 246, 94, 260], fill=(246, 246, 238))
+    d.rectangle([300, 214, 318, 244], fill=(190, 100, 70), outline=OL)
+    for lx, ly in ((296, 190), (304, 176), (314, 192)):
+        d.polygon([(lx + 4, 216), (lx, ly), (lx + 12, ly + 10)], fill=(70, 190, 110), outline=OL)
+    d.rectangle([0, 340, W, H], fill=(96, 104, 128))
+    for r, y in enumerate(range(346, H, 30)):
+        for c, x in enumerate(range(0, W, 60)):
+            d.rectangle([x, y, x + 58, y + 28], fill=(104, 112, 138) if (r + c) % 2 else (92, 100, 124))
+    img = glow_img(img, (120, 196, 240, 262), (160, 200, 255), 70, 14)
     return img

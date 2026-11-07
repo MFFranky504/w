@@ -1,51 +1,93 @@
 {
  "week": "2026-W45",
- "monday": "2026-11-06",
+ "monday": "2026-11-07",
  "variants": [
   {
-   "id": "dia-libre",
-   "category": "trabajo",
-   "title": "Mi bro recibe un día libre y no sabe qué hacer"
-  },
-  {
-   "id": "te-pago-mañana",
+   "id": "sueldo-gastos-hormiga",
    "category": "dinero",
-   "title": "Mi bro y el «te pago mañana»"
+   "title": "Mi bro descubre a dónde se fue su sueldo"
   },
   {
-   "id": "ya-casi-llego",
+   "id": "entrevista-ingles",
+   "category": "trabajo",
+   "title": "Mi bro en su entrevista: «dominio de inglés avanzado»"
+  },
+  {
+   "id": "hola-3am",
+   "category": "amor",
+   "title": "Mi bro le escribe «hola» a su crush a las 3 a. m."
+  }
+ ],
+ "winners": [
+  {
+   "id": "ultimos-hombres-zombis",
    "category": "amistad",
-   "title": "Mi bro que dice «ya casi llego» desde su cama"
+   "title": "Mi bro y yo, los últimos hombres en la tierra (apocalipsis zombi)"
+  },
+  {
+   "id": "ultimos-hombres-cole",
+   "category": "amistad",
+   "title": "Mi bro y yo, los últimos en el colegio"
+  },
+  {
+   "id": "bro-fiel-grupo",
+   "category": "amor",
+   "title": "Mi bro, el más fiel del mundo (a los videojuegos)"
+  },
+  {
+   "id": "bro-fiel-pizza",
+   "category": "amistad",
+   "title": "Mi bro fiel hasta que llega la pizza"
+  },
+  {
+   "id": "traicion-pizza",
+   "category": "amistad",
+   "title": "Mi bro me traiciona por la última rebanada"
   }
  ],
  "schedule": [
   {
-   "date": "2026-11-06",
-   "slot": "dia-libre"
-  },
-  {
    "date": "2026-11-07",
-   "slot": "te-pago-mañana"
+   "slots": [
+    "sueldo-gastos-hormiga"
+   ]
   },
   {
    "date": "2026-11-08",
-   "slot": "ya-casi-llego"
+   "slots": [
+    "entrevista-ingles"
+   ]
   },
   {
    "date": "2026-11-09",
-   "slot": "ganadora (decide con `report` tras el día 3)"
+   "slots": [
+    "hola-3am"
+   ]
   },
   {
    "date": "2026-11-10",
-   "slot": "ganadora (decide con `report` tras el día 3)"
+   "slots": [
+    "ultimos-hombres-zombis"
+   ]
   },
   {
    "date": "2026-11-11",
-   "slot": "ganadora (decide con `report` tras el día 3)"
+   "slots": [
+    "ultimos-hombres-cole",
+    "traicion-pizza"
+   ]
   },
   {
    "date": "2026-11-12",
-   "slot": "ganadora (decide con `report` tras el día 3)"
+   "slots": [
+    "bro-fiel-grupo"
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "slots": [
+    "bro-fiel-pizza"
+   ]
   }
  ]
 }

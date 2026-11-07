@@ -12,3 +12,8 @@ Reglas forzadas por código (`frnky/config.py`, `frnky/engine.py`): gancho visib
 CTA en pantalla en los últimos 2.2 s (el render falla si un diálogo lo pisa), el mismo CTA en el caption,
 rotación de los 3 CTAs, hashtags siempre `#PixelArt #Comedia #Humor #MiBro`.
 La bio hay que pegarla a mano en Instagram: «Un video nuevo cada día para mandarle a tu bro».
+
+## Redes y calendario
+- Un solo usuario en todas las redes: `@frnky66.ia`. `python3 -m frnky bio` imprime la bio de cada red (misma línea + dónde encontrar las otras).
+- Hashtags: `#MiBro #Humor #Comedia #PixelArt`, siempre igual.
+- `python3 -m frnky plan-week`: 3 situaciones nuevas (dinero, trabajo, amor) + variaciones de las ganadoras (`"kind": "ganadora"` en `data/ideas.json`), 1-2 videos al día.

@@ -31,8 +31,8 @@ def cmd_caption(a):
 
 def cmd_ideas(a):
     for i, x in enumerate(tracker.ideas(), 1):
-        print(f"{i}. **Mi bro… {x['title'].removeprefix('Mi bro ')}** ({x['category']})\n"
-              f"   - Gancho (0-2 s): {x['hook']}\n   - Remate: {x['payoff']}\n   - CTA en pantalla: «{x['cta']}»\n")
+        print(f"{i}. **{x['title']}** ({x['category']}, {x.get('kind', 'nueva')})\n"
+              f"   - Gancho (0-2 s): {x['hook']}\n   - Situación: {x['situation']}\n   - Remate: {x['payoff']}\n   - CTA en pantalla: «{x['cta']}»\n")
 
 
 def cmd_plan(a):
@@ -40,8 +40,10 @@ def cmd_plan(a):
     print(f"Semana {p['week']}")
     for v in p["variants"]:
         print(f"  variante [{v['category']}] {v['id']}: {v['title']}")
+    for w in p["winners"]:
+        print(f"  ganadora [{w['category']}] {w['id']}: {w['title']}")
     for s in p["schedule"]:
-        print(f"  {s['date']}  {s['slot']}")
+        print(f"  {s['date']}  {', '.join(s['slots'])}")
 
 
 def cmd_log(a):
@@ -73,7 +75,7 @@ def main():
     l.set_defaults(f=cmd_log)
     sub.add_parser("report").set_defaults(f=cmd_report)
     sub.add_parser("schedule").set_defaults(f=lambda a: print(tracker.schedule_check()))
-    sub.add_parser("bio").set_defaults(f=lambda a: print(BIO))
+    sub.add_parser("bio").set_defaults(f=lambda a: [print(f"--- {k}\n{v}\n") for k, v in __import__("frnky.config", fromlist=["BIOS"]).BIOS.items()])
     a = ap.parse_args()
     a.f(a)
 

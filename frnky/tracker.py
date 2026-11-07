@@ -3,7 +3,7 @@ import datetime as dt
 import json
 import pathlib
 
-from .config import CATEGORIES, POSTS_PER_DAY, VARIANTS_PER_WEEK, WEIGHTS
+from .config import CATEGORIES, NEW_CATEGORIES, POSTS_PER_DAY, VARIANTS_PER_WEEK, WEIGHTS
 from .captions import cta_for
 
 DATA = pathlib.Path(__file__).resolve().parent.parent / "data"
@@ -77,39 +77,33 @@ def schedule_check(day=None):
 
 
 def plan_week(monday=None):
-    """3 variantes de situación (3 categorías distintas) para probar esta semana.
-
-    Si ya hay métricas: la mejor categoría + las 2 menos probadas.
-    Sin datos: rota las categorías por número de semana.
-    Los días 4-7 quedan para duplicar la ganadora tras ver resultados.
-    """
+    """Semana de 7 días con 1-2 videos al día:
+    - 3 situaciones NUEVAS (una de dinero, una de trabajo, una de amor) para probar;
+    - el resto, variaciones de las situaciones GANADORAS (kind="ganadora"), repetidas con otro giro.
+    Los ya publicados (data/posts.json) no se repiten."""
     today = dt.date.today()
-    monday = monday or today  # el plan arranca hoy (7 días)
+    monday = monday or today
     used = {p["id"] for p in posts()}
     pool = [i for i in ideas() if i["id"] not in used]
-    tested = {c: n for c, _, n in report()}
-    ranked = [c for c, _, _ in report()]
-    wk = monday.isocalendar()[1]
-    rotation = [CATEGORIES[(wk + k) % len(CATEGORIES)] for k in range(len(CATEGORIES))]
-    least = sorted(rotation, key=lambda c: tested.get(c, 0))
-    cats = ([ranked[0]] if ranked else []) + [c for c in least if c not in ranked[:1]]
-    variants = []
-    for c in cats:
-        idea = next((i for i in pool if i["category"] == c), None)
+    new = []
+    for c in NEW_CATEGORIES[:VARIANTS_PER_WEEK]:
+        idea = next((i for i in pool if i["category"] == c and i.get("kind") == "nueva"), None)
         if idea:
-            variants.append(idea)
-            pool.remove(idea)
-        if len(variants) == VARIANTS_PER_WEEK:
-            break
-    plan = {"week": f"{monday.isocalendar()[0]}-W{wk:02d}", "monday": str(monday),
-            "variants": [{k: v[k] for k in ("id", "category", "title")} for v in variants],
+            new.append(idea); pool.remove(idea)
+    winners = [i for i in pool if i.get("kind") == "ganadora"]
+    slots = new + winners
+    wk = monday.isocalendar()
+    plan = {"week": f"{wk[0]}-W{wk[1]:02d}", "monday": str(monday),
+            "variants": [{k: v[k] for k in ("id", "category", "title")} for v in new],
+            "winners": [{k: v[k] for k in ("id", "category", "title")} for v in winners],
             "schedule": []}
+    lo, hi = POSTS_PER_DAY
     for d in range(7):
         day = str(monday + dt.timedelta(days=d))
-        if d < len(variants):
-            plan["schedule"].append({"date": day, "slot": variants[d]["id"]})
-        else:
-            plan["schedule"].append({"date": day, "slot": "ganadora (decide con `report` tras el día 3)"})
+        todays = slots[d * 1: d * 1 + 1]
+        extra = slots[3 + d: 4 + d] if d >= 4 and 3 + d >= 7 else []       # 2.º video solo los últimos días (máx. 2 al día)
+        ids = [x["id"] for x in todays + extra][:hi] or ["(repite la mejor de la semana tras `report`)"]
+        plan["schedule"].append({"date": day, "slots": ids})
     PLANS.mkdir(exist_ok=True)
     (PLANS / f"{plan['week']}.json").write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n")
     return plan

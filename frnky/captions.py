@@ -1,5 +1,5 @@
 import re
-from .config import CTAS, HASHTAGS
+from .config import CTAS, HASHTAGS, HANDLE
 
 _CANON = {h.lower(): h for h in HASHTAGS}
 _TAG = re.compile(r"#\w+")
@@ -18,8 +18,8 @@ def normalize_hashtags(text: str) -> str:
 def build_captions(hook: str, cta: str) -> dict:
     tags = " ".join(HASHTAGS)
     raw = {
-        "instagram": f"{hook}\n\n{cta} 👇\n\n{tags}",
-        "tiktok": f"{hook} {cta}. {tags}",
-        "youtube": f"{hook} | {cta}\n\n{tags}",
+        "instagram": f"{hook}\n\n{cta} 👇\n\nMás en @{HANDLE}\n{tags}",
+        "tiktok": f"{hook} {cta}. @{HANDLE} {tags}",
+        "youtube": f"{hook} | {cta}\n\n@{HANDLE}\n{tags}",
     }
     return {k: normalize_hashtags(v) for k, v in raw.items()}

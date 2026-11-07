@@ -1,50 +1,60 @@
-1. **Mi bro… le da like sin querer a una foto de su ex de 2022** (amor)
-   - Gancho (0-2 s): Notificación en pantalla: «Tú le diste like a una foto de 2022». El bro: «Fue el dedo, no yo».
-   - Remate: Ella responde «jaja hola» y el bro se muda de país.
+1. **Mi bro y yo, los últimos hombres en la tierra (apocalipsis zombi)** (amistad, ganadora)
+   - Gancho (0-2 s): Calle vacía, zombis al fondo. Bro: «Solo quedamos tú y yo… y mi bolsa de papas».
+   - Situación: Los dos últimos sobrevivientes, sin plan ni comida; deciden quién cuida a quién.
+   - Remate: Bro comparte su última papa… y el zombi también pide.
    - CTA en pantalla: «Etiqueta a tu bro que haría esto»
 
-2. **Mi bro… que dice «solo somos amigos»** (amor)
-   - Gancho (0-2 s): Bro cargando la mochila, el almuerzo y el cargador de ella: «Solo somos amigos».
-   - Remate: Ella lo presenta con su novio como «mi amigo» y el bro les ayuda a cargar el pastel.
+2. **Mi bro y yo, los últimos en el colegio** (amistad, ganadora)
+   - Gancho (0-2 s): Pasillo vacío, suena el timbre: «¿Dónde está todo el mundo, bro?».
+   - Situación: Descubren que el colegio se vació sin avisarles (otra vez).
+   - Remate: Era feriado y el único que no lo sabía era Bro.
    - CTA en pantalla: «Mándaselo a tu bro»
 
-3. **Mi bro… analiza el «visto» como si fuera un examen** (amor)
-   - Gancho (0-2 s): Bro con lupa frente al chat: «Visto hace 3 min… y escribiendo… y ya no escribe».
-   - Remate: Le llega un «jaja ok» y lo festeja como gol en el minuto 90.
+3. **Mi bro, el más fiel del mundo (a los videojuegos)** (amor, ganadora)
+   - Gancho (0-2 s): Crush: «Sal conmigo». Bro: «Tengo raid con mis bros… lo siento».
+   - Situación: Bro rechaza una cita por no dejar tirado a su equipo.
+   - Remate: Ella llega a la raid y juega mejor que todos.
    - CTA en pantalla: «¿Quién es tu bro?»
 
-4. **Mi bro… recibe un día libre y no sabe qué hacer** (trabajo)
-   - Gancho (0-2 s): Jefe: «Tómate el día». Bro en shock: «¿Y ahora qué hago?».
-   - Remate: Termina en la oficina 'de visita' y el guardia le pregunta si trabaja ahí.
+4. **Mi bro fiel hasta que llega la pizza** (amistad, ganadora)
+   - Gancho (0-2 s): Bro jura lealtad eterna… mientras el repartidor toca el timbre.
+   - Situación: Prueba de fidelidad con comida de por medio.
+   - Remate: Se queda con la pizza; el bro fiel era la pizza.
    - CTA en pantalla: «Etiqueta a tu bro que haría esto»
 
-5. **Mi bro… se distrae justo cuando dicen su nombre en la junta** (trabajo)
-   - Gancho (0-2 s): Todos lo miran en silencio. Bro: «¿Alguien dijo mi nombre?».
-   - Remate: La pregunta era si quería el aumento y contesta «¿Puede repetir lo del café?».
+5. **Mi bro me traiciona por la última rebanada** (amistad, ganadora)
+   - Gancho (0-2 s): Bro, con la boca llena: «¿Qué rebanada? Yo no vi ninguna».
+   - Situación: Traición épica en una pizzería: evidencia, juicio y cara de inocente.
+   - Remate: Una cámara de seguridad lo delata.
    - CTA en pantalla: «Mándaselo a tu bro»
 
-6. **Mi bro… y el «te pago mañana»** (dinero)
-   - Gancho (0-2 s): Calendario arrancando hojas muy rápido. Bro: «Mañana te pago, palabra».
-   - Remate: Años después le pide prestado a otro bro para pagarte y te lo presenta como 'socio'.
+6. **Mi bro descubre a dónde se fue su sueldo** (dinero, nueva)
+   - Gancho (0-2 s): Bro mira su app del banco: «-$3 café, -$4 snack, -$2 chicle… ¿y mi sueldo?».
+   - Situación: Detective financiero rastreando gastos hormiga.
+   - Remate: Culpable: el gran total de «solo un cafecito» diario.
    - CTA en pantalla: «¿Quién es tu bro?»
 
-7. **Mi bro… celebra que ahorró** (dinero)
-   - Gancho (0-2 s): Saldo: $50. Bro llorando de orgullo: «Tres semanas, bro. Tres».
-   - Remate: Notificación: «-$50 · 6 tacos para celebrar el ahorro».
+7. **Mi bro cobra su quincena y le dura 40 minutos** (dinero, nueva)
+   - Gancho (0-2 s): Notificación «¡Te depositaron!». Bro, a los 40 min: «¿Y el dinero?».
+   - Situación: Compras impulsivas a velocidad de récord.
+   - Remate: Le queda $1.50 y una funda para el celular de rayas.
    - CTA en pantalla: «Etiqueta a tu bro que haría esto»
 
-8. **Mi bro… divide la cuenta hasta el último centavo** (dinero)
-   - Gancho (0-2 s): Llega la cuenta y el bro saca la calculadora mientras todos tienen hambre.
-   - Remate: «Tú pediste agua, yo dos refrescos: me debes 3 con 50». Los tacos ya se enfriaron.
+8. **Mi bro en su entrevista: «dominio de inglés avanzado»** (trabajo, nueva)
+   - Gancho (0-2 s): Reclutadora: «Tell me about yourself». Bro, sudando: «Yes… I am… bro».
+   - Situación: Currículum inflado vs. realidad en plena entrevista.
+   - Remate: Lo contratan por actitud… para un puesto en francés.
    - CTA en pantalla: «Mándaselo a tu bro»
 
-9. **Mi bro… que dice «ya casi llego» desde su cama** (amistad)
-   - Gancho (0-2 s): Chat: «Ya casi llego». Corte: bro en pijama, sin zapatos, con el celular en la cara.
-   - Remate: Llega dos horas después, la pizza fría, y dice «traje hambre».
+9. **Mi bro se queda dormido en su turno** (trabajo, nueva)
+   - Gancho (0-2 s): Jefe aparece con cara seria; Bro, babeando sobre el teclado: «Estaba en un descanso visual».
+   - Situación: Intenta disimular que durmió 2 horas.
+   - Remate: Su captura de pantalla está llena de «zzzzzz».
    - CTA en pantalla: «¿Quién es tu bro?»
 
-10. **Mi bro… te cubre la mentira y la empeora** (amistad)
-   - Gancho (0-2 s): Mamá: «¿Dónde estaba mi hijo anoche?». Bro: «En mi casa estudiando… mandarina».
-   - Remate: Remata con «estudiando para el examen de las 3 a. m.» y tu mamá le sirve de cenar.
+10. **Mi bro le escribe «hola» a su crush a las 3 a. m.** (amor, nueva)
+   - Gancho (0-2 s): Pantalla: «Escribiendo…» durante 20 minutos para enviar un «hola».
+   - Situación: Borra, reescribe y analiza cada letra.
+   - Remate: Ella responde en 1 segundo: «Hola 😊». Bro se desmaya.
    - CTA en pantalla: «Etiqueta a tu bro que haría esto»
 

@@ -46,6 +46,7 @@ CHARS.update({   # elenco 2: Nico (Colombia), Sofi (Perú), Tomi (Uruguay), Dire
     "ramos": dict(skin=(214,164,128), hair=(70,56,50), coat=(84,120,76), kind="blazer", trim=(244,244,236),
                   pants=(122,102,82), shoe=(96,64,44), sole=(40,26,20), eye=(60,44,30), style="bald", glasses=True, mustache=True, tie=True),
 })
+CHARS["bro_w"] = dict(CHARS["bro"], coat=(52, 64, 98), kind="blazer", trim=(244, 244, 248), pants=(70, 74, 96))   # Bro con ropa de oficina
 _SK = [(240,196,160), (214,160,120), (170,118,86), (232,182,146), (150,104,76)]
 _HR = [(40,30,36), (96,60,40), (150,100,50), (30,24,34), (70,50,100), (180,60,60)]
 _CT = [(60,120,220), (230,90,60), (60,170,110), (250,200,60), (170,80,200), (240,120,170), (80,200,210)]
