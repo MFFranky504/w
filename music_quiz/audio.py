@@ -77,6 +77,31 @@ if STYLE == "boombap":                                   # 94 BPM, Am9 | D9 | Gm
             if bar == c: add(horn(nfq(s0, 220.0), nfq(s1, 220.0), dur * BEAT), t0 + bt * BEAT, .5, pan=.15, bus=stems["horn"])
         add(string_pad([nfq(x) for x in CH[c][:4]], BAR + .3), t0, .5, bus=stems["strings"])
     PUMP = None
+elif STYLE == "trap":                                  # 140 BPM half-time dark trap, Cm | Ab | Eb | Bb (original): 808s, rolls, bells, eerie lead
+    BPM = 140; BEAT = 60 / BPM; BAR = 4 * BEAT
+    C3 = 130.81; nfq = lambda s, base=C3: base * 2 ** (s / 12)
+    CH = [[0, 3, 7, 12], [-4, 0, 3, 8], [3, 7, 10, 15], [-2, 2, 5, 10]]; ROOT = [0, -4, 3, -2]
+    def clap():
+        t = tt(.2); return hp(noise(.2), 4) * (np.exp(-t * 26) + .7 * np.exp(-((t - .012) * 85) ** 2)) * .8
+    def bass808(f, d):
+        t = tt(d); fr = f * (1 + 1.6 * np.exp(-t * 28)); ph = 2*np.pi*np.cumsum(fr) / SR
+        return np.tanh(2.2 * np.sin(ph) * np.exp(-t * 1.5)) * np.minimum((d - t) / .05, 1) * .95
+    def bell(f, d):
+        t = tt(d); return (np.sin(2*np.pi*f*t) + .5 * np.sin(2*np.pi*f*2.76*t) * np.exp(-t * 6) + .25 * np.sin(2*np.pi*f*5.4*t) * np.exp(-t * 12)) * np.exp(-t * 3.4) * .5
+    for b in range(int(END / BAR) + 2):
+        t0 = b * BAR; c = b % 4
+        for bt, ln in ((0, 1.6), (1.75, .5), (2.5, .5), (3.25, .6)): add(bass808(nfq(ROOT[c], 65.41), ln * BEAT), t0 + bt * BEAT, .9, bus=stems["bass"])
+        add(kick(), t0, 1.0, bus=stems["kick"]); add(kick(), t0 + 2.5 * BEAT, .8, bus=stems["kick"])
+        add(clap(), t0 + 2 * BEAT, .95, bus=stems["snare"])
+        for i in range(8): add(hat(False), t0 + i * BEAT / 2, .7 if i % 2 == 0 else .45, pan=.2, bus=stems["hat"])
+        if b % 4 == 3:
+            for i in range(8): add(hat(False), t0 + 3 * BEAT + i * BEAT / 8, .5 + .05 * i, pan=-.2, bus=stems["hat"])                      # hat roll
+        for i in range(8):                                                                                                           # bell arpeggio
+            n_ = CH[c][[0, 2, 1, 3, 2, 1, 3, 2][i]] + 24
+            if (i + b) % 3 != 2: add(bell(nfq(n_), BEAT * .9), t0 + i * BEAT / 2, .5, pan=-.3 + .1 * (i % 4), bus=stems["keys"])
+        add(horn(nfq(CH[c][2] + 12), nfq(CH[c][2] + 10), BAR * .9), t0, .45, pan=.1, bus=stems["horn"])
+        add(string_pad([nfq(x - 12) for x in CH[c][:3]], BAR + .3), t0, .55, bus=stems["strings"])
+    PUMP = None
 else:                                                    # "house": 122 BPM French-touch, Dm9 | Bbmaj7 | F | C (original), 4-on-the-floor + sidechain pump
     BPM = 122; BEAT = 60 / BPM; BAR = 4 * BEAT
     A2 = 110.0; nfq = lambda s, base=A2: base * 2 ** (s / 12)
@@ -207,6 +232,10 @@ for ci, c in enumerate(CLUES):
     sc = c.get("scene")
     if sc == "block": S(lp(noise(d), 40) * .12 + crackle_bed(d, 12, .3), t0, 1.0)
     elif sc == "jazz": S(lp(noise(d), 90) * .08, t0, 1.0); S(boom(.6) * .4, t0 + .3, .8)
+    elif sc in ("set", "tv", "store", "bedroom"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
+    elif sc == "awards":
+        S(lp(noise(d), 10) * (.08 + .05 * np.sin(2*np.pi*.4*tt(d))), t0, 1.0)
+        for tp in (1.0, 3.5): S(cymbal(.9), t0 + tp, .5)
     elif sc in ("qb", "paris", "press"): S(lp(noise(d), 25) * .1, t0, 1.0); S(whoosh(.9), t0 + .2, 1.0)
     elif sc == "pyramid":
         S(lp(noise(d), 12) * (.1 + .06 * np.sin(2*np.pi*.5*tt(d))), t0, 1.0)             # festival crowd

@@ -30,6 +30,7 @@ for i in range(NCL): T.append(T[-1] + (LAST_CLUE_LEN if i == NCL - 1 else CLUE_L
 END = T[S_OUT] + 7.0
 BANNERS = {S_C1: "¿YA LO SABES? ¡COMÉNTALO!", S_C1 + 1: "¿TE SALIÓ? ¡ESCRÍBELO YA!"}
 if NCL >= 3: BANNERS[S_C1 + NCL - 2] = "LA ÚLTIMA PISTA ES REGALADA"
+if "banners" in EP: BANNERS = {S_C1 + i: txt for i, txt in EP["banners"].items()}
 BANNER_T = 5.4
 def plain(s): return s.replace("*", "")
 if __name__ == "__main__":

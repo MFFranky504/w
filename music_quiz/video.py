@@ -526,6 +526,7 @@ def prev_draw(im, t, ts):
     """Sprite of the previous episode's artist (reveal = 'la respuesta de ayer')."""
     kind = PREV["sprite"]
     if kind == "tyler": return tyler_draw(im, t, ts)
+    if kind == "mic": return mic_draw(im, t, ts)
     if kind == "snoop": snoop(im, t, mode="sil" if ts < REVEAL else "col"); (qmark(im, 140, 138 + int(3 * math.sin(t * 4)), 3) if ts < REVEAL else None); return
     if ts < REVEAL:
         im.paste(NAS_SIL, (135 - 32, 266 - 110 + (1 if int(t * 2.2) % 2 else 0)), NAS_SIL); qmark(im, 129, 128 + int(3 * math.sin(t * 4)), 3)
@@ -1114,11 +1115,192 @@ def dyn_travel(im, t, ts, tag):
         for k in range(16):
             x = (k * 37 + math.sin(t * 2 + k) * 8) % W; y = ((t - T[1]) * 28 + k * 41) % 270; d.rectangle((x, y, x + 2, y + 2), fill=[(176, 222, 248), (255, 215, 80), (255, 255, 255), (220, 40, 60)][k % 4])
 
+# ======================= v8: MEGA DIFÍCIL scenes (Tyler, The Creator) =======================
+def _gradient_bg(top, bot, steps=10, split=266, floor=(20, 14, 30)):
+    a = np.zeros((H, W, 3), np.uint8); a[:split] = dgrad(W, split, top, bot, steps); a[split:] = floor; return Image.fromarray(a)
+
+# ---- hook: danger zone ----
+def base_danger():
+    im = _gradient_bg((10, 4, 12), (120, 14, 24), 10, 266, (16, 6, 12)); d = ImageDraw.Draw(im)
+    for y in range(268, H, 12): d.line([(0, y), (W, y)], fill=(60, 14, 22))
+    for k in range(-9, 10): d.line([(135, 266), (135 + k * 40, H)], fill=(60, 14, 22))
+    return im
+DANGER = base_danger()
+def _skull(d, cx, cy, s, t, glow=True):
+    d.ellipse((cx - 9 * s, cy - 10 * s, cx + 9 * s, cy + 8 * s), fill=(238, 232, 220), outline=(120, 110, 100)); d.rectangle((cx - 5 * s, cy + 6 * s, cx + 5 * s, cy + 12 * s), fill=(238, 232, 220), outline=(120, 110, 100))
+    for ex in (-4, 4): d.ellipse((cx + ex * s - 3 * s, cy - 4 * s, cx + ex * s + 3 * s, cy + 3 * s), fill=(18, 8, 14)); d.point((cx + ex * s, cy - 1 * s), fill=(255, 60, 60) if glow and int(t * 4) % 2 else (140, 20, 30))
+    d.polygon([(cx, cy + 2 * s), (cx - 2 * s, cy + 5 * s), (cx + 2 * s, cy + 5 * s)], fill=(18, 8, 14))
+    for k in range(-2, 3): d.line([(cx + k * 2 * s, cy + 8 * s), (cx + k * 2 * s, cy + 12 * s)], fill=(120, 110, 100))
+def dyn_danger(im, t, ts, tag):
+    arr = np.array(im); pulse = .5 + .5 * math.sin(t * 6)
+    for k, bx in enumerate((20, 250)): beam(arr, bx, 135 + 70 * math.sin(t * 2.5 + k * 3), 0, 266, 5, 60, (255, 40, 50), .18 + .2 * pulse)
+    glow(arr, 135, 270, 140, (255, 90, 30), .5); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for (y0, sgn) in ((206, 1), (240, -1)):                                  # fluttering caution tape
+        for i in range(0, W + 16, 12):
+            yy = y0 + sgn * ((i - 135) * .09) + 2 * math.sin(t * 3 + i * .1)
+            d.polygon([(i, yy - 7), (i + 8, yy - 7), (i + 12, yy + 7), (i + 4, yy + 7)], fill=(255, 214, 40) if (i // 12) % 2 == 0 else (16, 10, 14))
+    d.fontmode = "1"; d.text((135 + int(math.sin(t * 2) * 2), 206), "¡PELIGRO!", font=F(9), fill=(16, 10, 14), anchor="mm")
+    _skull(d, 40, 112, 1, t); _skull(d, 230, 112, 1, t)                      # skulls (one wears shades)
+    shades(d, 230, 109, 7, (10, 6, 12))
+    for x in range(0, W, 7):                                                 # flames along the floor
+        hh = 18 + 12 * math.sin(t * 9 + x * .7) ** 2; d.polygon([(x - 4, 266), (x, 266 - hh), (x + 4, 266)], fill=(240, 60, 30)); d.polygon([(x - 2, 266), (x, 266 - hh * .6), (x + 2, 266)], fill=(255, 190, 50))
+    for k in range(18): d.point(((k * 41 + t * 6) % W, 262 - ((t * 36 + k * 29) % 190)), fill=(255, 210, 80))
+
+# ---- clue 1: film set (the director who signs as Wolf Haley) ----
+def base_set():
+    im = _gradient_bg((12, 14, 28), (44, 34, 66), 9); d = ImageDraw.Draw(im)
+    d.rectangle((30, 40, 240, 236), fill=(26, 150, 84)); d.rectangle((30, 40, 240, 46), fill=(18, 110, 60))                  # green-screen cloth
+    for k in range(10): d.line([(40 + k * 22, 46), (36 + k * 22 + (k % 3) * 3, 236)], fill=(20, 126, 70))
+    for x0 in (8, 252):                                                                                                   # light stands
+        d.line([(x0, 120), (x0 - 10, 266)], fill=(70, 70, 90), width=2); d.line([(x0, 120), (x0 + 10, 266)], fill=(70, 70, 90), width=2); d.line([(x0, 120), (x0, 266)], fill=(90, 90, 110), width=2)
+        d.rectangle((x0 - 10, 96, x0 + 10, 124), fill=(30, 30, 40), outline=(120, 120, 140))
+    d.rectangle((0, 266, W, 270), fill=(70, 60, 90))
+    for y in range(272, H, 14): d.line([(0, y), (W, y)], fill=(34, 26, 52))
+    for (x, y) in ((60, 286), (210, 300), (135, 330)): d.line([(x - 5, y - 5), (x + 5, y + 5)], fill=(255, 224, 80), width=2); d.line([(x - 5, y + 5), (x + 5, y - 5)], fill=(255, 224, 80), width=2)      # floor marks
+    d.rectangle((10, 238, 46, 266), fill=(40, 40, 52), outline=(110, 110, 130))                                          # camera on tripod
+    d.rectangle((14, 226, 42, 240), fill=(24, 24, 34), outline=(150, 150, 170)); d.ellipse((38, 229, 46, 237), fill=(60, 60, 80))
+    d.rectangle((180, 236, 232, 266), fill=(150, 108, 60), outline=(90, 60, 30))                                          # director's chair
+    d.rectangle((184, 218, 228, 236), fill=(250, 240, 220)); d.fontmode = "1"; d.text((206, 227), "DIRECTOR", font=F(7), fill=(40, 30, 30), anchor="mm")
+    return dim_top(im, 150)
+SET = base_set()
+def dyn_set(im, t, ts, tag):
+    arr = np.array(im)
+    for x0 in (8, 252): glow(arr, x0, 108, 70, (255, 230, 170), .5 * (.85 + .15 * math.sin(t * 17 + x0))); beam(arr, x0, 135, 108, 250, 6, 70, (255, 235, 190), .14)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    if int(t * 2.5) % 2: d.ellipse((38, 229, 42, 233), fill=(255, 30, 40))                                                  # REC light
+    for k in range(2): a = t * 6 + k * 3; d.ellipse((16 + k * 12 - 4, 220 - 4, 16 + k * 12 + 4, 220 + 4), outline=(200, 200, 220)); d.line([(16 + k * 12, 220), (16 + k * 12 + 3 * math.cos(a), 220 + 3 * math.sin(a))], fill=(200, 200, 220))
+    p = (t % 3.0); open_ = 18 if p < 2.4 else int(18 * (1 - (p - 2.4) / .2)) if p < 2.6 else 0                              # clapperboard
+    d.rectangle((110, 246, 150, 266), fill=(24, 24, 30), outline=WHITE); d.polygon([(110, 246), (150, 246 - open_ // 3), (150, 241 - open_ // 3), (110, 241)], fill=(240, 240, 240))
+    for k in range(6): d.polygon([(112 + k * 7, 246), (117 + k * 7, 246 - open_ // 3 * (k + 1) // 6), (120 + k * 7, 241 - open_ // 3 * (k + 1) // 6), (115 + k * 7, 241)], fill=(24, 24, 30)) if open_ else None
+    d.fontmode = "1"; d.text((130, 257), "TOMA 1", font=F(7), fill=WHITE, anchor="mm")
+    if 2.6 <= p < 2.9: d.text((130, 236), "¡CLAC!", font=F(8), fill=GOLD, anchor="mm")
+    bx = 80 + 90 * math.sin(t * .7); d.line([(bx, 30), (bx + 40, 70)], fill=(120, 120, 140), width=2); d.ellipse((bx + 36, 66, bx + 48, 78), fill=(70, 66, 80))        # swinging boom mic
+    _cat(d, 206, 214, t, col=(40, 36, 52))                                                                                 # cat napping on the director's chair
+def _tree(d, x, y, t, s=1):
+    d.rectangle((x - 2 * s, y, x + 2 * s, y + 8 * s), fill=(90, 56, 30))
+    for k, (w, yy) in enumerate(((22, 0), (17, -14), (12, -26))): d.polygon([(x - w * s, y + yy), (x + w * s, y + yy), (x, y + yy - 18 * s)], fill=(24, 120, 60)); d.polygon([(x + 2, y + yy), (x + w * s, y + yy), (x, y + yy - 18 * s)], fill=(16, 92, 46))
+    for k in range(18):
+        a = k * 2.4; lx = x + math.sin(a) * (4 + (k % 6) * 3) * s; ly = y - 8 * s - (k * 2) * s * 1.1
+        if math.sin(t * 4 + k) > -.3: d.point((lx, ly), fill=[(255, 90, 90), (255, 224, 80), (90, 235, 255), (255, 130, 220)][k % 4])
+    d.polygon([(x, y - 50 * s), (x + 3 * s, y - 44 * s), (x - 3 * s, y - 44 * s)], fill=(255, 224, 80))
+# ---- clue 2: Christmas 2009 bedroom studio ----
+def base_bedroom():
+    im = _gradient_bg((44, 28, 62), (92, 56, 84), 8); d = ImageDraw.Draw(im)
+    d.rectangle((20, 132, 96, 200), fill=(18, 24, 56), outline=(220, 220, 240), width=2); d.line([(58, 132), (58, 200)], fill=(220, 220, 240)); d.line([(20, 166), (96, 166)], fill=(220, 220, 240))     # window
+    d.ellipse((70, 142, 84, 156), fill=(255, 248, 220)); d.rectangle((16, 200, 100, 204), fill=(200, 200, 215))
+    d.rectangle((0, 266, W, 272), fill=(110, 70, 50)); d.rectangle((20, 220, 118, 266), fill=(90, 58, 40)); d.rectangle((24, 224, 114, 232), fill=(120, 80, 54))        # desk
+    d.rectangle((30, 196, 74, 222), fill=(40, 40, 52), outline=(130, 130, 150)); d.rectangle((86, 168, 88, 222), fill=(110, 110, 130)); d.ellipse((82, 160, 92, 172), fill=(60, 60, 76), outline=(160, 160, 180))   # laptop + mic stand
+    d.rectangle((150, 266 - 18, 200, 266), fill=(200, 40, 50), outline=(120, 20, 30)); d.line([(175, 248), (175, 266)], fill=(255, 224, 80)); d.line([(150, 257), (200, 257)], fill=(255, 224, 80))     # presents
+    d.rectangle((206, 250, 236, 266), fill=(60, 130, 220), outline=(30, 70, 140)); d.line([(221, 250), (221, 266)], fill=(255, 255, 255))
+    for k in range(4): x = 130 + k * 10; d.polygon([(x, 150), (x + 8, 150), (x + 4, 166)], fill=[(220, 40, 50), (240, 240, 240)][k % 2])                                     # stockings garland
+    d.line([(124, 148), (176, 148)], fill=(180, 160, 120))
+    for y in range(274, H, 12): d.line([(0, y), (W, y)], fill=(130, 40, 50))
+    return dim_top(im, 120)
+BEDROOM = base_bedroom()
+def dyn_bedroom(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for k in range(26): x = 24 + (k * 37 + t * 8) % 70; y = 136 + (t * 20 + k * 23) % 62; d.rectangle((x, y, x + 1, y + 1), fill=WHITE)         # snow outside
+    _tree(d, 218, 236, t, 1.0)
+    d.rectangle((36, 200, 68, 216), fill=(20, 24, 40))
+    for k in range(14): d.line([(38 + k * 2, 214), (38 + k * 2, 214 - int(3 + 8 * abs(math.sin(t * 6 + k * .8))))], fill=(90, 235, 255))   # laptop waveform
+    d.polygon([(80, 158), (94, 158), (87, 150)], fill=(220, 40, 50)); d.ellipse((85, 146, 89, 150), fill=WHITE)                                  # Santa hat on the mic
+    _cat(d, 132, 258, t, col=(30, 22, 36)); d.polygon([(128, 246), (138, 246), (133, 238)], fill=(220, 40, 50)); d.point((133, 237), fill=WHITE)    # cat in a Santa hat
+    for k in range(8): x = 134 + k * 12 + 2 * math.sin(t * 3 + k); d.ellipse((x - 1, 150 + (k % 2) * 3, x + 2, 153 + (k % 2) * 3), fill=[(255, 90, 90), (90, 235, 255), (255, 224, 80)][k % 3])
+# ---- clue 3: the 2012 sketch-comedy TV show ----
+def base_tv():
+    im = _gradient_bg((60, 20, 92), (130, 40, 110), 9, 266, (60, 30, 70)); d = ImageDraw.Draw(im)
+    for x in range(0, W, 16): d.rectangle((x, 0, x + 7, 266), fill=(78, 28, 108))
+    d.rectangle((10, 168, 96, 232), fill=(110, 70, 40), outline=(60, 36, 20)); d.rectangle((16, 174, 90, 226), fill=(30, 30, 36)); d.rectangle((0, 232, 100, 266), fill=(90, 58, 34))      # CRT cabinet
+    d.rectangle((150, 240, 262, 266), fill=(220, 90, 70), outline=(120, 40, 30)); d.rectangle((150, 226, 262, 244), fill=(240, 120, 90))                                                # couch
+    d.rectangle((226, 160, 232, 226), fill=(170, 150, 110)); d.polygon([(214, 160), (244, 160), (238, 138), (220, 138)], fill=(255, 224, 120))                                              # lamp
+    for y in range(268, H, 14): d.line([(0, y), (W, y)], fill=(80, 40, 90))
+    return dim_top(im, 130)
+TVROOM = base_tv()
+def dyn_tv(im, t, ts, tag):
+    d = ImageDraw.Draw(im); arr = np.array(im); glow(arr, 232, 140, 80, (255, 220, 140), .4); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    f = int(t * 12) % 7
+    for k in range(7): d.rectangle((16 + k * 10.5, 174, 16 + (k + 1) * 10.5, 226), fill=[(250, 250, 250), (250, 224, 40), (60, 230, 230), (60, 230, 70), (240, 60, 230), (240, 50, 50), (50, 70, 240)][(k + f) % 7])     # test pattern
+    for k in range(18): d.line([(16, 176 + k * 3), (90, 176 + k * 3)], fill=(0, 0, 0)) if (k + int(t * 20)) % 5 == 0 else None
+    d.line([(36, 168), (22 + int(3 * math.sin(t * 4)), 140)], fill=(200, 200, 210)); d.line([(70, 168), (86 + int(3 * math.sin(t * 4 + 2)), 138)], fill=(200, 200, 210))     # antenna
+    if int(t * 2) % 2: d.ellipse((84, 228, 88, 232), fill=(255, 30, 40))
+    hx = 190; by = int(4 * abs(math.sin(t * 6)))                                                                                 # dancing hot dog
+    d.ellipse((hx - 22, 206 - by, hx + 22, 222 - by), fill=(236, 170, 80), outline=(150, 90, 30)); d.ellipse((hx - 18, 208 - by, hx + 18, 220 - by), fill=(200, 60, 40))
+    for k in range(-3, 4): d.point((hx + k * 5, 214 - by + (k % 2)), fill=(255, 224, 60))
+    d.ellipse((hx - 8, 209 - by, hx - 4, 213 - by), fill=WHITE); d.ellipse((hx + 4, 209 - by, hx + 8, 213 - by), fill=WHITE); d.point((hx - 6, 211 - by), fill=(20, 10, 10)); d.point((hx + 6, 211 - by), fill=(20, 10, 10))
+    d.line([(hx - 22, 214 - by), (hx - 30, 204 - by - int(5 * math.sin(t * 8)))], fill=(236, 170, 80), width=2); d.line([(hx + 22, 214 - by), (hx + 30, 204 - by + int(5 * math.sin(t * 8)))], fill=(236, 170, 80), width=2)
+    for k in range(8): x = 100 + (k * 23 + t * 10) % 60; y = 120 + 30 * math.sin(t * 2 + k) - k * 3; d.ellipse((x, y, x + 3, y + 3), fill=(255, 246, 210))        # popcorn
+    d.rectangle((196, 140, 244, 154), fill=(255, 30, 40), outline=WHITE); d.fontmode = "1"; d.text((220, 147), "EN VIVO", font=F(8), fill=WHITE if int(t * 2) % 2 else (255, 200, 200), anchor="mm")
+# ---- clue 4: the clothing brand (2011) ----
+def base_store():
+    im = _gradient_bg((255, 214, 232), (255, 244, 200), 8, 266, (240, 210, 170)); d = ImageDraw.Draw(im)
+    for y in range(268, H, 22):
+        for x in range(0, W, 44): o = 22 if (y // 22) % 2 else 0; d.rectangle((x + o, y, x + o + 21, y + 10), fill=(250, 236, 200)); d.rectangle((x + o + 22, y + 11, x + o + 43, y + 21), fill=(236, 214, 176))
+    for k in range(3):                                                                                                       # sneaker wall
+        for j in range(8): x = 6 + j * 33; y = 118 + k * 22; c = [(255, 90, 150), (90, 200, 255), (255, 214, 60), (130, 220, 130), (200, 140, 255), (255, 150, 60)][(j + k * 2) % 6]; d.rectangle((x, y, x + 24, y + 12), fill=c, outline=(80, 50, 70)); d.rectangle((x, y + 9, x + 24, y + 12), fill=WHITE)
+    d.rectangle((0, 116, W, 118), fill=(120, 80, 60))
+    for (y0, cols) in ((196, [(255, 90, 150), (90, 200, 255), (255, 214, 60), (130, 220, 130)]), (232, [(200, 140, 255), (255, 150, 60), (90, 235, 200), (255, 120, 120)])):      # clothing racks
+        d.line([(4, y0), (266, y0)], fill=(120, 120, 140), width=2)
+        for k in range(14): x = 10 + k * 18; c = cols[k % 4]; d.polygon([(x, y0), (x + 14, y0), (x + 14, y0 + 8), (x + 10, y0 + 6), (x + 4, y0 + 6), (x, y0 + 8)], fill=c); d.rectangle((x + 1, y0 + 6, x + 13, y0 + 22), fill=c); d.line([(x + 7, y0), (x + 7, y0 - 3)], fill=(120, 120, 140))
+    return dim_top(im, 110)
+STORE = base_store()
+def dyn_store(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    if int(t * 3) % 11: d.rectangle((92, 138, 178, 160), fill=(20, 10, 30), outline=(255, 90, 170), width=2); d.fontmode = "1"; d.text((135, 149), "LOOKBOOK", font=F(10), fill=(255, 120, 190), anchor="mm")
+    sx = (t * 40) % (W + 80) - 40; d.rectangle((sx - 12, 262, sx + 12, 265), fill=(240, 80, 120)); d.ellipse((sx - 10, 265, sx - 6, 269), fill=(40, 40, 50)); d.ellipse((sx + 6, 265, sx + 10, 269), fill=(40, 40, 50))   # runaway skateboard
+    for k in range(3): d.point((sx - 14 - k * 3, 267 + k % 2), fill=(255, 224, 80))
+    px = 232 + int(2 * math.sin(t * 2)); d.polygon([(px - 7, 240), (px + 7, 240), (px + 5, 252), (px - 5, 252)], fill=(255, 224, 80), outline=(160, 120, 20)); d.fontmode = "1"; d.text((px, 246), "$$", font=F(7), fill=(160, 40, 40), anchor="mm")   # price tag
+    d.rectangle((12, 238, 38, 266), fill=(190, 120, 220), outline=(110, 60, 140)); cu = int(2 * math.sin(t * 2))                  # fitting room with a peeking pair of feet
+    d.rectangle((10 + cu, 236, 20 + cu, 266), fill=(255, 150, 200)); d.rectangle((28, 260, 32, 266), fill=(250, 200, 160)); d.rectangle((33, 260, 37, 266), fill=(250, 200, 160))
+    bx, by = 252, 214; d.ellipse((bx - 9, by - 16, bx + 9, by + 2), fill=(240, 230, 200)); d.rectangle((bx - 11, by - 8, bx + 11, by - 5), fill=(255, 90, 150)); d.rectangle((bx - 6, by + 2, bx + 6, by + 26), fill=(240, 230, 200)); d.line([(bx, by + 26), (bx, 266)], fill=(120, 120, 140), width=2)   # mannequin with a bucket hat
+# ---- clue 5: awards stage, giant moon + astronaut trophy (2011) ----
+def base_awards():
+    im = _gradient_bg((6, 6, 30), (60, 26, 96), 10); d = ImageDraw.Draw(im)
+    d.ellipse((70, 70, 200, 200), fill=(220, 224, 240)); d.ellipse((74, 74, 204, 204), fill=(236, 238, 248))
+    for (cx_, cy_, r_) in ((110, 110, 10), (160, 140, 14), (130, 170, 8), (176, 98, 6), (96, 150, 6)): d.ellipse((cx_ - r_, cy_ - r_, cx_ + r_, cy_ + r_), fill=(200, 204, 222), outline=(176, 180, 204))
+    d.rectangle((0, 266, W, 270), fill=(200, 150, 255))
+    for y in range(272, H, 14): d.line([(0, y), (W, y)], fill=(70, 36, 110))
+    for x in (30, 240):                                                                                                      # astronaut trophies on pedestals
+        d.rectangle((x - 14, 228, x + 14, 266), fill=(40, 34, 60), outline=(150, 130, 190)); d.ellipse((x - 8, 196, x + 8, 212), fill=(255, 215, 80), outline=(170, 120, 20)); d.rectangle((x - 7, 210, x + 7, 228), fill=(255, 215, 80), outline=(170, 120, 20))
+        d.line([(x + 7, 214), (x + 20, 196)], fill=(255, 215, 80), width=2); d.polygon([(x + 20, 188), (x + 34, 192), (x + 20, 198)], fill=(220, 50, 70)); d.line([(x + 20, 186), (x + 20, 214)], fill=(200, 200, 210))
+        d.rectangle((x - 5, 200, x + 5, 206), fill=(80, 130, 200))
+    return dim_top(im, 120)
+AWARDS = base_awards()
+def dyn_awards(im, t, ts, tag):
+    arr = np.array(im)
+    for k, bx in enumerate((50, 135, 220)): beam(arr, bx, 135 + 60 * math.sin(t * 1.3 + k * 2), 0, 266, 6, 80, (200, 150, 255), .2)
+    glow(arr, 135, 135, 90, (210, 200, 255), .3); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for (cx_, cy_) in ((120, 130),):                                                                                          # the moon winks
+        d.rectangle((cx_ - 12, cy_ - 2, cx_ - 4, cy_ + 1), fill=(60, 50, 90)); d.arc((cx_ + 8, cy_ - 4, cx_ + 18, cy_ + 4), 200, 340, fill=(60, 50, 90), width=2) if int(t * 1.4) % 3 == 0 else d.rectangle((cx_ + 8, cy_ - 2, cx_ + 16, cy_ + 1), fill=(60, 50, 90))
+        d.arc((cx_ - 10, cy_ + 10, cx_ + 16, cy_ + 24), 20, 160, fill=(60, 50, 90), width=2)
+    rx = (t * 22) % (W + 60) - 30; ry = 40 + 10 * math.sin(t * 1.5); d.polygon([(rx, ry - 6), (rx + 14, ry), (rx, ry + 6)], fill=(236, 236, 246), outline=(120, 120, 150)); d.polygon([(rx - 6, ry - 3), (rx, ry - 3), (rx, ry + 3), (rx - 6, ry + 3)], fill=(255, 130, 40)); d.point((rx - 8, ry), fill=(255, 220, 80))    # tiny rocket
+    for k in range(34):
+        x = (k * 37 + math.sin(t + k) * 5) % W; y = (t * 30 + k * 47) % 270; d.rectangle((x, y, x + 1, y + 2), fill=[(255, 215, 80), (255, 90, 170), (90, 235, 255), (200, 150, 255)][k % 4])
+    for k in range(6):
+        if int(t * 6 + k * 3.1) % 12 == 0: x = 14 + k * 44; y = 236 + (k * 13) % 20; d.rectangle((x - 1, y - 1, x + 2, y + 2), fill=WHITE); d.line([(x - 4, y), (x + 5, y)], fill=WHITE); d.line([(x, y - 4), (x, y + 5)], fill=WHITE)
+    for k in range(10): x = 6 + k * 27; b = int(2 * abs(math.sin(t * 5 + k))); d.ellipse((x - 3, 254 - b, x + 3, 260 - b), fill=(8, 4, 20)); d.rectangle((x - 4, 260 - b, x + 4, 272), fill=(8, 4, 20))
+
+# ---- recap prop: golden microphone reveal (no character) ----
+def mic_draw(im, t, ts, x=135, feet=266):
+    pre = ts < REVEAL; e = max(ts - REVEAL, 0); jump = -int(abs(14 * math.exp(-e * 3.2) * math.cos(e * 15))) if not pre else 0
+    col = (14, 8, 34) if pre else (255, 214, 70); hi = (14, 8, 34) if pre else (255, 246, 190); sh = (14, 8, 34) if pre else (170, 120, 20)
+    d = ImageDraw.Draw(im); y0 = feet - 118 + jump
+    d.rectangle((x - 18, feet - 6, x + 18, feet), fill=sh); d.rectangle((x - 3, y0 + 62, x + 3, feet - 6), fill=col); d.rectangle((x - 3, y0 + 62, x - 1, feet - 6), fill=hi)           # stand
+    d.rectangle((x - 9, y0 + 40, x + 9, y0 + 62), fill=sh); d.rectangle((x - 7, y0 + 42, x + 7, y0 + 60), fill=col)
+    d.ellipse((x - 20, y0, x + 20, y0 + 44), fill=col, outline=sh)
+    if not pre:
+        for k in range(-3, 4): d.line([(x + k * 5, y0 + 4), (x + k * 5, y0 + 40)], fill=sh); d.line([(x - 18, y0 + 22 + k * 5), (x + 18, y0 + 22 + k * 5)], fill=sh)
+        d.ellipse((x - 14, y0 + 4, x - 4, y0 + 14), fill=hi)
+        a = int(t * 6) % 6
+        if a < 2: d.point((x - 12 + a * 2, y0 + 8), fill=WHITE)
+        crown(im, x - 10, y0 - 16 + int(2 * math.sin(t * 3)))
+    else: qmark(im, x - 6, y0 - 22 + int(3 * math.sin(t * 4)), 3)
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
        "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
-       "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook))}
+       "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook)),
+       "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
 _hook = REG[EP.get("hook_scene", "brook")]
 SCENES = [_hook, REG[PREV["scene"]], (SUNSET, dyn_win)] + [REG[c["scene"]] for c in CLUES] + [_outro]
@@ -1133,6 +1315,14 @@ def pill(d, cx, y0, y1, w, fill, outline=None):
 def ui_low(seg, ts, t):
     ui = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ui)
     if seg == S_HOOK:
+        if EP["hook"] == "c":                           # MEGA DIFÍCIL hook
+            on = ts > .45 or int(ts * 15) % 3 != 2
+            if on:
+                k = ease(ts / .25); dy = int((1 - k) * -24)
+                lt(d, (135, 46 + dy), "MODO", 24, WHITE, shadow=(255, 40, 60)); lt(d, (135, 96 + dy), "MEGA", 64, GOLD, shadow=(220, 20, 40)); lt(d, (135, 150 + dy), "DIFÍCIL", 40, WHITE, shadow=(220, 20, 40))
+            if ts > 1.0: pill(d, 135, 300, 322, 222, (14, 8, 34), (255, 40, 60)); lt(d, (135, 311), f"{NCL} PISTAS · 0 FÁCILES", 11, WHITE)
+            if ts > 1.4: lt(d, (135, 342), f"ARTISTA MISTERIOSO · PARTE {EP['part']}", 10, (255, 200, 120))
+            return ui
         if EP["hook"] == "b":                           # NEW HOOK (first 2 s): "Solo el 1% adivina este artista"
             on = ts > .45 or int(ts * 15) % 3 != 2
             if on:
@@ -1191,12 +1381,12 @@ def ui_low(seg, ts, t):
             pill(d, 135, 330, 354, 222, (14, 8, 34), GOLD); lt(d, (135, 342), "SÍGUEME PARA VER LA RESPUESTA", 9, WHITE)
             lt(d, (135, 372), f"LOS QUE ACIERTEN SALEN EN LA PARTE {EP['next_part']}", 8, (255, 200, 120))
         return ui
-    c = CLUES[seg - S_C1]; n = c["n"]; seg_len = T[seg + 1] - T[seg]; last = seg == S_C1 + NCL - 1; col_ = diffc(n, NCL)
+    c = CLUES[seg - S_C1]; n = c["n"]; seg_len = T[seg + 1] - T[seg]; last = seg == S_C1 + NCL - 1; NB = EP.get("diff_nb", NCL); col_ = diffc(n, NB)
     k = ease(ts / .3); dy = int((1 - k) * -30)
     lt(d, (135, 46 + dy), f"PISTA {n} / {NCL}", 24, GOLD, shadow=(110, 50, 0))
     bw = 26 if NCL >= 5 else 32; step = bw + 4; x0b = 135 - (NCL * step - 4) // 2
     for i in range(NCL):
-        fill = diffc(i + 1, NCL) if i < n and ts > .45 + i * .11 else (50, 36, 80)
+        fill = diffc(i + 1, NB) if i < n and ts > .45 + i * .11 else (50, 36, 80)
         d.rectangle((x0b + i * step, 66 + dy, x0b + i * step + bw, 70 + dy), fill=fill)
     lt(d, (135, 80 + dy), f"DIFICULTAD: {c['diff']}", 11, col_)
     lt(d, (135, 92 + dy), f"VALE {c['pts']} PUNTO{'S' if c['pts'] > 1 else ''}", 10, (255, 230, 170))

@@ -45,6 +45,26 @@ EPISODES = {
             dict(n=5, diff="FÁCIL", pts=1, chip="GRAMMY", scene="grammy",
                  text="En *2014* ganaron el Grammy a *Álbum del Año*, con un disco que incluía «*Get Lucky*» junto a *Pharrell*."),
         ]),
+    # ------------------------------------------------------------------ Parte 10: MEGA DIFÍCIL (Tyler, The Creator)
+    "p10": dict(
+        part=10, artist="Tyler, The Creator", genre="hip hop", music="trap", hook="c", next_part=11, mega=True,
+        hook_len=2.0, reveal=2.6, hook_scene="danger", outro_scene="sunset", outro_sign=None, diff_nb=9,
+        banners={0: "¡NIVEL: MEGA DIFÍCIL!", 1: "SOLO PARA FANS DE VERDAD", 4: "NI LA ÚLTIMA ES FÁCIL"},
+        prev=dict(sprite="mic", scene="brook", part=9, lines=("NAS",), sub="QUEENSBRIDGE · NUEVA YORK", winners=[], winners_part=None, special={}),
+        clues=[
+            dict(n=1, diff="IMPOSIBLE", pts=5, chip="SEUDÓNIMO", scene="set",
+                 text="Dirige todos sus propios videos musicales, pero firma como director con un seudónimo: *Wolf Haley*."),
+            dict(n=2, diff="IMPOSIBLE", pts=5, chip="25/12/2009", scene="bedroom",
+                 text="Su primer álbum lo lanzó por su cuenta y gratis el *25 de diciembre de 2009*."),
+            dict(n=3, diff="ULTRA DIFÍCIL", pts=4, chip="2012", scene="tv",
+                 text="En *2012* su colectivo estrenó en *Adult Swim* un programa de sketches que duró *tres temporadas*."),
+            dict(n=4, diff="ULTRA DIFÍCIL", pts=4, chip="2011", scene="store",
+                 text="En *2011* fundó una marca de ropa llamada «*Golf Wang*»."),
+            dict(n=5, diff="MUY DIFÍCIL", pts=3, chip="VMA 2011", scene="awards",
+                 text="En *2011* ganó el MTV VMA a *Mejor Artista Nuevo*, con un video que él mismo dirigió."),
+            dict(n=6, diff="MUY DIFÍCIL", pts=2, chip="GRAMMY ×2", scene="grammy",
+                 text="Ganó el Grammy a *Mejor Álbum de Rap* dos veces: en *2020* y en *2022*."),
+        ]),
     # ------------------------------------------------------------------ Parte 9: Nas (ya publicado)
     "p9": dict(
         part=9, artist="Nas", genre="hip hop", music="boombap", hook="a", next_part=10,
