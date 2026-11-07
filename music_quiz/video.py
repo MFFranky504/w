@@ -976,82 +976,76 @@ def _wrap(dyn, extra): return lambda im, t, ts, tag: (dyn(im, t, ts, tag), extra
 
 # ======================= v7: Tyler, The Creator — "Call Me If You Get Lost" look (traced from the user's references) =======================
 def make_tyler2():
-    """Baby-blue faux-fur trapper hat with a gold pin, leopard-print collar, turquoise button cardigan, gem chain, gold studs,
-    brown shorts, tall white socks, two suitcases (brown leather + cream)."""
-    w, h = 104, 126; X = 52; r = random.Random(4)
+    """Tall + slim 'Call Me If You Get Lost' look: baby-blue faux-fur trapper hat with gold pin, leopard collar, turquoise cardigan,
+    gem chain, gold studs, brown shorts, long legs, tall white socks, two suitcases (brown leather + cream)."""
+    w, h = 100, 140; r = random.Random(4)
     SK = (128, 80, 54); SKS = (98, 60, 42); SKL = (150, 94, 62)
     HAT = (176, 222, 248); HATS = (136, 192, 228); HATL = (224, 244, 255)
     CARD = (122, 206, 228); CARDS = (88, 170, 202); CARDL = (172, 230, 244); CUFF = (150, 218, 234)
     LEO = (238, 216, 178); SPOT = (152, 98, 58); WHITE_ = (248, 248, 250)
     im = Image.new("RGBA", (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    # legs, tall white socks, shoes
-    for x0 in (35, 55):
-        d.rectangle((x0, 104, x0 + 14, 116), fill=SK); d.rectangle((x0 + 10, 104, x0 + 14, 116), fill=SKS)
-        d.rectangle((x0 - 1, 112, x0 + 15, 122), fill=WHITE_); d.rectangle((x0 + 11, 112, x0 + 15, 122), fill=(214, 216, 224))
-        for k in range(3): d.line([(x0 - 1, 114 + k * 3), (x0 + 15, 114 + k * 3)], fill=(222, 224, 232))
-        d.rounded_rectangle((x0 - 3, 121, x0 + 17, 126), 2, fill=(98, 60, 40)); d.rectangle((x0 - 3, 125, x0 + 17, 126), fill=(60, 36, 26))
-    # dark-brown shorts
-    d.rectangle((31, 94, 73, 110), fill=(74, 46, 34)); d.rectangle((62, 94, 73, 110), fill=(56, 34, 26)); d.line([(52, 98), (52, 110)], fill=(52, 32, 24)); d.line([(36, 100), (36, 108)], fill=(96, 62, 46)); d.line([(68, 100), (68, 108)], fill=(96, 62, 46))
-    # suitcases (brown leather left, cream right), behind sleeves
-    d.rectangle((4, 100, 30, 122), fill=(150, 96, 58)); d.rectangle((4, 100, 30, 103), fill=(184, 128, 84)); d.rectangle((4, 118, 30, 122), fill=(108, 64, 40)); d.rectangle((24, 100, 30, 122), fill=(124, 76, 46))
-    for (cx_, cy_) in ((4, 100), (27, 100), (4, 119), (27, 119)): d.rectangle((cx_, cy_, cx_ + 3, cy_ + 3), fill=(192, 188, 182))
-    d.rectangle((15, 108, 19, 112), fill=(255, 215, 80)); d.line([(10, 100), (13, 95), (22, 95), (25, 100)], fill=(100, 60, 38), width=2)
-    d.rectangle((76, 104, 100, 124), fill=(238, 212, 180)); d.rectangle((76, 104, 100, 107), fill=(255, 232, 206)); d.rectangle((76, 118, 100, 124), fill=(214, 172, 130)); d.rectangle((94, 104, 100, 124), fill=(214, 184, 150))
-    d.rectangle((84, 108, 90, 112), fill=(196, 192, 186)); d.point((87, 110), fill=(255, 215, 80)); d.line([(80, 104), (83, 99), (93, 99), (96, 104)], fill=(190, 150, 110), width=2)
-    # cardigan body + sleeves
-    d.rounded_rectangle((28, 46, 76, 100), 6, fill=CARD); d.rectangle((66, 52, 76, 98), fill=CARDS); d.rectangle((32, 52, 40, 80), fill=CARDL)
-    d.rectangle((28, 94, 76, 100), fill=CARDS); d.rectangle((28, 96, 76, 97), fill=(70, 150, 184))                                  # ribbed hem
-    d.polygon([(28, 50), (18, 58), (14, 94), (26, 96), (30, 62)], fill=CARD); d.polygon([(76, 50), (86, 58), (90, 94), (78, 96), (74, 62)], fill=CARD)
-    d.polygon([(86, 58), (90, 94), (84, 95), (82, 62)], fill=CARDS); d.polygon([(14, 94), (26, 96), (26, 90), (14, 88)], fill=CUFF); d.polygon([(90, 94), (78, 96), (78, 90), (90, 88)], fill=CUFF)
-    d.rectangle((13, 94, 25, 102), fill=SK); d.rectangle((79, 94, 91, 102), fill=SK); d.rectangle((13, 99, 25, 102), fill=SKS)
-    for by in (66, 76, 86): d.ellipse((50, by, 54, by + 4), fill=(132, 140, 148)); d.point((51, by + 1), fill=(200, 208, 216))      # grey buttons
-    d.line([(52, 60), (52, 96)], fill=CARDS); d.rectangle((36, 80, 46, 90), outline=CARDS)                                       # placket + pocket
-    # neck, white tee, chain
-    d.rectangle((45, 42, 59, 54), fill=SKS); d.polygon([(46, 48), (58, 48), (56, 64), (52, 70), (48, 64)], fill=WHITE_)
-    # leopard-print collar flaps over the cardigan
-    mask = Image.new("L", (w, h), 0); md = ImageDraw.Draw(mask)
-    md.polygon([(46, 46), (32, 50), (26, 66), (42, 72), (50, 56)], fill=255); md.polygon([(58, 46), (72, 50), (78, 66), (62, 72), (54, 56)], fill=255)
+    for x0 in (40, 54):                                                           # long legs, tall white socks, shoes
+        d.rectangle((x0, 106, x0 + 7, 124), fill=SK); d.rectangle((x0 + 5, 106, x0 + 7, 124), fill=SKS)
+        d.rectangle((x0 - 1, 118, x0 + 8, 133), fill=WHITE_); d.rectangle((x0 + 6, 118, x0 + 8, 133), fill=(214, 216, 224))
+        for k in range(4): d.line([(x0 - 1, 120 + k * 3), (x0 + 8, 120 + k * 3)], fill=(224, 226, 234))
+        d.rounded_rectangle((x0 - 3, 131, x0 + 11, 138), 2, fill=(98, 60, 40)); d.rectangle((x0 - 3, 137, x0 + 11, 139), fill=(58, 34, 24))
+    d.rectangle((37, 92, 63, 108), fill=(74, 46, 34)); d.polygon([(37, 104), (63, 104), (65, 111), (35, 111)], fill=(74, 46, 34)); d.rectangle((54, 92, 63, 108), fill=(56, 34, 26)); d.line([(50, 96), (50, 110)], fill=(52, 32, 24))
+    # suitcases: brown leather (left), cream (right)
+    d.rectangle((6, 104, 26, 124), fill=(150, 96, 58)); d.rectangle((6, 104, 26, 107), fill=(184, 128, 84)); d.rectangle((6, 120, 26, 124), fill=(108, 64, 40)); d.rectangle((21, 104, 26, 124), fill=(124, 76, 46))
+    for (cx_, cy_) in ((6, 104), (23, 104), (6, 121), (23, 121)): d.rectangle((cx_, cy_, cx_ + 3, cy_ + 3), fill=(192, 188, 182))
+    d.rectangle((14, 112, 18, 116), fill=(255, 215, 80)); d.line([(10, 104), (13, 99), (20, 99), (23, 104)], fill=(100, 60, 38), width=2)
+    d.rectangle((74, 108, 94, 126), fill=(238, 212, 180)); d.rectangle((74, 108, 94, 111), fill=(255, 232, 206)); d.rectangle((74, 122, 94, 126), fill=(214, 172, 130)); d.rectangle((89, 108, 94, 126), fill=(214, 184, 150))
+    d.rectangle((82, 112, 87, 116), fill=(196, 192, 186)); d.point((84, 114), fill=(255, 215, 80)); d.line([(78, 108), (81, 103), (88, 103), (91, 108)], fill=(190, 150, 110), width=2)
+    # cardigan: slim torso, narrow sleeves
+    d.rounded_rectangle((36, 48, 64, 98), 5, fill=CARD); d.rectangle((57, 52, 64, 96), fill=CARDS); d.rectangle((39, 54, 44, 82), fill=CARDL)
+    d.rectangle((36, 93, 64, 99), fill=CARDS); d.rectangle((36, 95, 64, 96), fill=(70, 150, 184))
+    d.polygon([(36, 50), (27, 57), (22, 97), (31, 99), (36, 64)], fill=CARD); d.polygon([(64, 50), (73, 57), (78, 97), (69, 99), (64, 64)], fill=CARD)
+    d.polygon([(73, 57), (78, 97), (73, 98), (70, 62)], fill=CARDS); d.polygon([(22, 96), (31, 98), (31, 92), (22, 90)], fill=CUFF); d.polygon([(78, 96), (69, 98), (69, 92), (78, 90)], fill=CUFF)
+    d.rectangle((21, 97, 31, 105), fill=SK); d.rectangle((69, 97, 79, 105), fill=SK); d.rectangle((21, 102, 31, 105), fill=SKS)
+    for by in (64, 74, 84): d.ellipse((48, by, 52, by + 4), fill=(132, 140, 148)); d.point((49, by + 1), fill=(200, 208, 216))
+    d.line([(50, 58), (50, 98)], fill=CARDS); d.rectangle((39, 80, 46, 88), outline=CARDS)
+    d.rectangle((45, 42, 55, 52), fill=SKS); d.polygon([(45, 47), (55, 47), (53, 61), (50, 66), (47, 61)], fill=WHITE_)
+    mask = Image.new("L", (w, h), 0); md = ImageDraw.Draw(mask)                    # leopard collar flaps
+    md.polygon([(45, 45), (35, 49), (31, 61), (44, 67), (48, 54)], fill=255); md.polygon([(55, 45), (65, 49), (69, 61), (56, 67), (52, 54)], fill=255)
     lay = Image.new("RGBA", (w, h), LEO + (255,)); ld = ImageDraw.Draw(lay)
-    for _ in range(46):
-        sx_, sy_ = r.randint(22, 82), r.randint(44, 76); ld.ellipse((sx_, sy_, sx_ + r.randint(3, 5), sy_ + r.randint(2, 4)), outline=SPOT); ld.point((sx_ + 1, sy_ + 1), fill=SPOT)
+    for _ in range(38):
+        sx_, sy_ = r.randint(28, 72), r.randint(44, 70); ld.ellipse((sx_, sy_, sx_ + r.randint(3, 5), sy_ + r.randint(2, 4)), outline=SPOT); ld.point((sx_ + 1, sy_ + 1), fill=SPOT)
         if r.random() < .5: ld.rectangle((sx_ + 3, sy_ + 3, sx_ + 4, sy_ + 4), fill=(110, 66, 36))
     im.paste(lay, (0, 0), mask)
-    d.line([(46, 46), (50, 56)], fill=(196, 160, 118)); d.line([(58, 46), (54, 56)], fill=(196, 160, 118))
-    pts = [(38, 50), (42, 58), (47, 64), (52, 66), (57, 64), (62, 58), (66, 50)]
+    d.line([(45, 45), (49, 55)], fill=(196, 160, 118)); d.line([(55, 45), (51, 55)], fill=(196, 160, 118))
+    pts = [(38, 50), (41, 57), (45, 62), (50, 64), (55, 62), (59, 57), (62, 50)]
     for a_, b_ in zip(pts, pts[1:]): d.line([a_, b_], fill=(220, 224, 232), width=1)
-    for (gx_, gy_, gc) in ((44, 62, (220, 40, 60)), (48, 66, (40, 170, 90)), (53, 68, (50, 90, 220)), (58, 65, (255, 120, 190)), (62, 59, (255, 215, 80))):          # gem pendants
+    for (gx_, gy_, gc) in ((43, 60, (220, 40, 60)), (47, 63, (40, 170, 90)), (51, 65, (50, 90, 220)), (55, 62, (255, 120, 190)), (59, 57, (255, 215, 80))):
         d.ellipse((gx_ - 2, gy_ - 2, gx_ + 2, gy_ + 2), fill=gc, outline=(210, 214, 222)); d.point((gx_ - 1, gy_ - 1), fill=(255, 255, 255))
-    # head: face, ears + gold studs, features
-    d.ellipse((36, 14, 68, 52), fill=SK); d.polygon([(60, 20), (68, 30), (66, 44), (58, 50)], fill=SKS); d.ellipse((38, 34, 46, 44), fill=SKL); d.ellipse((58, 34, 66, 44), fill=SKL)
-    d.ellipse((33, 28, 38, 42), fill=SK); d.ellipse((66, 28, 71, 42), fill=SKS); d.rectangle((34, 40, 36, 42), fill=(255, 215, 80)); d.rectangle((68, 40, 70, 42), fill=(255, 215, 80))
-    for (ex, dx_) in ((41, 3), (57, 2)):
-        d.rectangle((ex, 28, ex + 6, 31), fill=(238, 230, 222)); d.rectangle((ex + dx_, 28, ex + dx_ + 2, 31), fill=(36, 22, 18)); d.point((ex + dx_, 28), fill=(255, 255, 255))
-    d.line([(40, 26), (47, 24)], fill=(36, 22, 18), width=2); d.line([(57, 24), (64, 26)], fill=(36, 22, 18), width=2)               # thick brows
-    d.rectangle((50, 32, 54, 38), fill=SKL); d.rectangle((48, 38, 56, 40), fill=SKS); d.point((49, 39), fill=(60, 30, 24)); d.point((55, 39), fill=(60, 30, 24))
-    d.rectangle((46, 43, 58, 45), fill=(112, 52, 52)); d.rectangle((47, 46, 57, 48), fill=(156, 88, 84)); d.line([(47, 45), (57, 45)], fill=(54, 22, 26))      # lips, slightly parted
-    d.rectangle((44, 49, 60, 51), fill=SKS)
-    # baby-blue fluffy trapper hat: dome, ear flaps, scalloped brim, fur speckle, gold pin
-    d.ellipse((28, -3, 76, 22), fill=HAT); d.rectangle((32, 10, 72, 17), fill=HAT)                                       # dome + brim band
-    for k in range(12): d.ellipse((32 + k * 3.6 - 2, 13, 32 + k * 3.6 + 3, 20), fill=HAT)                                # scalloped fur edge
-    for (x0, x1) in ((28, 37), (67, 76)): d.rectangle((x0, 12, x1, 32), fill=HAT); d.ellipse((x0 - 1, 28, x1 + 1, 38), fill=HAT)    # ear flaps
-    d.rectangle((72, 12, 76, 32), fill=HATS); d.ellipse((71, 28, 77, 38), fill=HATS); d.ellipse((60, 0, 76, 16), fill=HATS)
-    d.ellipse((32, 0, 50, 10), fill=HATL); d.rectangle((29, 14, 33, 30), fill=HATL)
-    for _ in range(130):
-        px_, py_ = r.randint(28, 76), r.randint(-2, 38)
-        if 0 <= py_ < h and im.getpixel((px_, py_))[:3] in (HAT, HATS): d.point((px_, py_), fill=r.choice([HATL, (150, 204, 236), (200, 234, 252)]))
-    d.rectangle((62, 4, 64, 6), fill=(255, 215, 80)); d.point((63, 5), fill=(255, 245, 190))
+    d.ellipse((38, 12, 62, 50), fill=SK); d.polygon([(56, 18), (62, 28), (60, 42), (56, 48)], fill=SKS); d.ellipse((39, 34, 46, 44), fill=SKL); d.ellipse((54, 34, 61, 44), fill=SKL)   # slim face
+    d.ellipse((35, 26, 39, 40), fill=SK); d.ellipse((61, 26, 65, 40), fill=SKS); d.rectangle((35, 38, 37, 40), fill=(255, 215, 80)); d.rectangle((63, 38, 65, 40), fill=(255, 215, 80))
+    for (ex, dx_) in ((41, 3), (54, 2)):
+        d.rectangle((ex, 27, ex + 5, 30), fill=(238, 230, 222)); d.rectangle((ex + dx_, 27, ex + dx_ + 1, 30), fill=(36, 22, 18)); d.point((ex + dx_, 27), fill=(255, 255, 255))
+    d.line([(40, 25), (46, 23)], fill=(36, 22, 18), width=2); d.line([(54, 23), (60, 25)], fill=(36, 22, 18), width=2)
+    d.rectangle((48, 31, 52, 37), fill=SKL); d.rectangle((47, 37, 53, 39), fill=SKS); d.point((47, 38), fill=(60, 30, 24)); d.point((53, 38), fill=(60, 30, 24))
+    d.rectangle((45, 41, 55, 43), fill=(112, 52, 52)); d.rectangle((46, 44, 54, 46), fill=(156, 88, 84)); d.line([(46, 43), (54, 43)], fill=(54, 22, 26)); d.rectangle((44, 48, 56, 50), fill=SKS)
+    d.ellipse((31, -3, 69, 20), fill=HAT); d.rectangle((34, 9, 66, 15), fill=HAT)                                         # trapper hat
+    for k in range(10): d.ellipse((34 + k * 3.4 - 2, 12, 34 + k * 3.4 + 3, 18), fill=HAT)
+    for (x0, x1) in ((31, 38), (62, 69)): d.rectangle((x0, 10, x1, 28), fill=HAT); d.ellipse((x0 - 1, 24, x1 + 1, 34), fill=HAT)
+    d.rectangle((65, 10, 69, 28), fill=HATS); d.ellipse((64, 24, 70, 34), fill=HATS); d.ellipse((56, -1, 69, 14), fill=HATS)
+    d.ellipse((34, -1, 50, 8), fill=HATL); d.rectangle((32, 12, 35, 26), fill=HATL)
+    for _ in range(120):
+        px_, py_ = r.randint(30, 70), r.randint(-2, 34)
+        if 0 <= py_ < h and 0 <= px_ < w and im.getpixel((px_, py_))[:3] in (HAT, HATS): d.point((px_, py_), fill=r.choice([HATL, (150, 204, 236), (200, 234, 252)]))
+    d.rectangle((58, 3, 60, 5), fill=(255, 215, 80)); d.point((59, 4), fill=(255, 245, 190))
     return _outline_sil(im)
 TYLER_COL, TYLER_SIL = make_tyler2()
-TYLER_W, TYLER_H, TYLER_X = 104, 126, 52
+TYLER_W, TYLER_H, TYLER_X = 100, 140, 50
+GEMS = ((43, 60), (47, 63), (51, 65), (55, 62), (59, 57))
 def tyler_draw(im, t, ts):
     if ts < REVEAL:
-        im.paste(TYLER_SIL, (135 - TYLER_X, 266 - TYLER_H + (1 if int(t * 2.2) % 2 else 0)), TYLER_SIL); qmark(im, 129, 120 + int(3 * math.sin(t * 4)), 3)
+        im.paste(TYLER_SIL, (135 - TYLER_X, 266 - TYLER_H + (1 if int(t * 2.2) % 2 else 0)), TYLER_SIL); qmark(im, 129, 106 + int(3 * math.sin(t * 4)), 3)
     else:
         e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); bob = 1 if int(t * 2.4) % 2 else 0
         y0 = 266 - TYLER_H + jump + bob; im.paste(TYLER_COL, (135 - TYLER_X, y0), TYLER_COL)
         d = ImageDraw.Draw(im); g = int((t * 5) % 10); ox = 135 - TYLER_X
-        if g < 3: d.point((ox + 63, y0 + 5), fill=WHITE); d.point((ox + 62 + g, y0 + 3), fill=(255, 255, 255)); d.point((ox + 64, y0 + 7), fill=(255, 255, 255))        # hat-pin glint
-        k = int((t * 4) % 5); gx_, gy_ = ((44, 62), (48, 66), (53, 68), (58, 65), (62, 59))[k]; d.point((ox + gx_ + 2, y0 + gy_ - 2), fill=WHITE); d.point((ox + gx_ + 3, y0 + gy_ - 3), fill=WHITE)   # gem sparkle
+        if g < 3: d.point((ox + 59, y0 + 4), fill=WHITE); d.point((ox + 58 + g, y0 + 2), fill=(255, 255, 255)); d.point((ox + 60, y0 + 6), fill=(255, 255, 255))
+        gx_, gy_ = GEMS[int((t * 4) % 5)]; d.point((ox + gx_ + 2, y0 + gy_ - 2), fill=WHITE); d.point((ox + gx_ + 3, y0 + gy_ - 3), fill=WHITE)
 
 # ---- "lost" scene from the album-cover mood: peach sky, red mountains, lake with a sailboat, ringing payphone ----
 def base_travel():
@@ -1170,7 +1164,8 @@ def ui_low(seg, ts, t):
                 lt(d, (135, 46 + dy), lines[0], s0, LIGHTBG_TXT if LIGHT_RECAP else WHITE, shadow=(255, 255, 255) if LIGHT_RECAP else (255, 70, 190)); lt(d, (135, 90 + dy), lines[1], s1, GOLD, shadow=(120, 50, 0)); py = 120
             else:
                 lt(d, (135, 40 + dy), "LA RESPUESTA DE AYER", 11, (255, 200, 120)); lt(d, (135, 82 + dy), lines[0], 56, GOLD, shadow=(120, 50, 0), anchor="mm"); py = 120
-            if e > .5: pill(d, 135, py, py + 20, 196, (14, 8, 34), GOLD); lt(d, (135, py + 10), PREV["sub"], 9, (255, 200, 120))
+            if PREV["sprite"] == "tyler": py = 109
+            if e > .5: pill(d, 135, py, py + 16, 196, (14, 8, 34), GOLD); lt(d, (135, py + 8), PREV["sub"], 9, (255, 200, 120))
             if ts > RECAP_LEN - 2.6:
                 b = int(2 * math.sin(t * 10)); msg = "¡AHORA LOS GANADORES!" if WINNERS else "¡HOY: UN NUEVO ARTISTA!"
                 pill(d, 135, 284 + b, 306 + b, 214, GOLD); lt(d, (135, 295 + b), msg, 11, DARK, shadow=(255, 230, 140))
