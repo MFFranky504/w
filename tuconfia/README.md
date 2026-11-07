@@ -54,3 +54,8 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 - `src/build_jobs.py` + `src/scenes5.py`, guion `guion_jobs.md`, caption `caption_jobs.txt` (formato de `src/captions.py`).
 - Voz Liam (joven, energética) eleven_v3 con `language_code=es`; el campo `tts` de `script_jobs.json` escribe años en palabras y marcas en fonética española (los subtítulos usan el texto normal). Música a -27 dB bajo la voz (-17 dB), con ducking.
 - Zona segura para IG/TikTok: logo en y=230, subtítulos centrados en x=500 (máx. 840 px) a y≈1170–1390; contenido clave entre y≈320 y 1400 (arriba ~250 px y abajo ~450 px quedan libres para la interfaz).
+
+## Video 6 — J. K. Rowling (del fondo a la saga)
+- `src/build_rowling.py` + `src/scenes6.py`, guion `guion_rowling.md`, caption `caption_rowling.txt`.
+- Voz Liam (eleven_v3, español, campo `tts` con fonética) + alineación forzada (`audio/alineacion_rowling.json`), música "Congratulations" (piano) que crece desde el giro.
+- Fuente de subtítulos: Silkscreen (la "C" de Pixelify se confundía con "O"). Cierre: «Quizás hoy no estás en el final de tu historia... ¿cómo quieres que termine?».
