@@ -102,7 +102,7 @@ if narr and os.path.exists(FA):
         n_ = len(l['tts'].split()); LW[l['id']] = ws[k_:k_ + n_]; k_ += n_
     assert k_ == len(ws), (k_, len(ws))
     st = [LW[l['id']][0]['start'] for l in LINES]; en = [LW[l['id']][-1]['end'] for l in LINES]
-    TOTAL = round((en[-1] + .45 + LOOP_D) * FPS) / FPS          # nº entero de fotogramas: el bucle encaja al cuadro
+    TOTAL = round((en[-1] + 6.5 + LOOP_D) * FPS) / FPS          # nº entero de fotogramas: el bucle encaja al cuadro
     MODE = 'voz real (alineación forzada)'
 elif narr:
     st, en, TOTAL = align_real(narr)
@@ -115,25 +115,26 @@ ids = [l['id'] for l in LINES]
 print('modo:', MODE, 'duración total', round(TOTAL, 2), file=sys.stderr)
 
 # ---------------------------------------------------------------- escenas
+lid = lambda p: next(l['id'] for l in LINES if clean(l['t']).startswith(p))
 PS = S2.portrait_scene
 SCENES = [
-    dict(n='sky', a='L1', b='L1', fn=lambda t, u: S10.sky(t, u), cam=[(0, 160, 100, 1.25), (0.5, 160, 100, 1.25), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
-    dict(n='oxford', a='L2', b='L2', fn=lambda t, u: S10.oxford(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='cam', a='L4', b='L4', fn=lambda t, u: S10.cam(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
-    dict(n='fall', a='L5', b='L5', fn=lambda t, u: S10.fall(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='doctor', a='L6', b='L6', fn=lambda t, u: S10.doctor(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='portS', a='L8', b='L8', fn=lambda t, u: S10.portrait_land(t, 'hawking_y', 'sad', (0, 1), 'cold'), cam=[(0, 160, 90, 1.0), (1, 160, 84, 1.12)]),
-    dict(n='love', a='L10', b='L10', fn=lambda t, u: S10.love(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
-    dict(n='lab', a='L11', b='L11', fn=lambda t, u: S10.lab(t, u), cam=[(0, 160, 90, 1.0), (0.36, 160, 90, 1.0), (0.3601, 160, 90, 1.0), (0.56, 160, 90, 1.0), (0.5601, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='hole', a='L15', b='L15', fn=lambda t, u: S10.hole(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='royal', a='L17', b='L17', fn=lambda t, u: S10.royal(t, u), cam=[(0, 160, 90, 1.0), (0.42, 160, 90, 1.0), (0.4201, 160, 90, 1.0), (0.72, 160, 90, 1.0), (0.7201, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='hosp', a='L19', b='L19', fn=lambda t, u: S10.hosp(t, u), cam=[(0, 160, 90, 1.0), (0.3, 160, 90, 1.0), (0.3001, 160, 90, 1.0), (0.56, 160, 90, 1.0), (0.5601, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='voice', a='L21', b='L21', fn=lambda t, u: S10.voice(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='books', a='L23', b='L23', fn=lambda t, u: S10.books(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
-    dict(n='years', a='L25', b='L25', fn=lambda t, u: S10.years(t, u), cam=[(0, 160, 90, 1.0), (0.55, 160, 90, 1.0), (0.5501, 160, 90, 1.0), (1, 160, 90, 1.0)]),
-    dict(n='portW', a='L27', b='L27', fn=lambda t, u: S10.portrait_land(t, 'hawking', 'warm', (0, 0), 'warm'), cam=[(0, 160, 90, 1.0), (1, 160, 84, 1.12)]),
-    dict(n='starry', a='L28', b='L28', fn=lambda t, u: S10.starry(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='final', a='L30', b='L30', fn=lambda t, u: S10.final(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
+    dict(n='sky', a=lid('Stephen Hawking podía'), b=lid('Stephen Hawking podía'), fn=lambda t, u: S10.sky(t, u), cam=[(0, 160, 100, 1.25), (0.28, 160, 100, 1.25), (0.2801, 160, 90, 1.0), (0.62, 160, 90, 1.0), (0.6201, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='oxford', a=lid('Nació en mil'), b=lid('Nació en mil'), fn=lambda t, u: S10.oxford(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='cam', a=lid('Estudió en Oxford'), b=lid('Estudió en Oxford'), fn=lambda t, u: S10.cam(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
+    dict(n='fall', a=lid('Tenía veintiún'), b=lid('Tenía veintiún'), fn=lambda t, u: S10.fall(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='doctor', a=lid('Los médicos lo diagnosticaron'), b=lid('Los médicos lo diagnosticaron'), fn=lambda t, u: S10.doctor(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='portS', a=lid('Según contó'), b=lid('Según contó'), fn=lambda t, u: S10.portrait_land(t, 'hawking_y', 'sad', (0, 1), 'cold'), cam=[(0, 160, 90, 1.0), (1, 160, 84, 1.12)]),
+    dict(n='love', a=lid('Se enamoró'), b=lid('Se enamoró'), fn=lambda t, u: S10.love(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
+    dict(n='lab', a=lid('Terminó su doctorado'), b=lid('Terminó su doctorado'), fn=lambda t, u: S10.lab(t, u), cam=[(0, 160, 90, 1.0), (0.36, 160, 90, 1.0), (0.3601, 160, 90, 1.0), (0.56, 160, 90, 1.0), (0.5601, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='hole', a=lid('Y entonces'), b=lid('Y entonces'), fn=lambda t, u: S10.hole(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='royal', a=lid('A los treinta y dos'), b=lid('A los treinta y dos'), fn=lambda t, u: S10.royal(t, u), cam=[(0, 160, 90, 1.0), (0.42, 160, 90, 1.0), (0.4201, 160, 90, 1.0), (0.72, 160, 90, 1.0), (0.7201, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='hosp', a=lid('Pero la vida volvió'), b=lid('Pero la vida volvió'), fn=lambda t, u: S10.hosp(t, u), cam=[(0, 160, 90, 1.0), (0.3, 160, 90, 1.0), (0.3001, 160, 90, 1.0), (0.56, 160, 90, 1.0), (0.5601, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='voice', a=lid('Con una computadora'), b=lid('Con una computadora'), fn=lambda t, u: S10.voice(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='books', a=lid('En mil novecientos ochenta y ocho'), b=lid('En mil novecientos ochenta y ocho'), fn=lambda t, u: S10.books(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
+    dict(n='years', a=lid('Decía que'), b=lid('Decía que'), fn=lambda t, u: S10.years(t, u), cam=[(0, 160, 90, 1.0), (0.55, 160, 90, 1.0), (0.5501, 160, 90, 1.0), (1, 160, 90, 1.0)]),
+    dict(n='portW', a=lid('Murió'), b=lid('Murió'), fn=lambda t, u: S10.portrait_land(t, 'hawking', 'warm', (0, 0), 'warm'), cam=[(0, 160, 90, 1.0), (1, 160, 84, 1.12)]),
+    dict(n='starry', a=lid('En dos mil doce'), b=lid('En dos mil doce'), fn=lambda t, u: S10.starry(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.67, 160, 90, 1.0), (0.6701, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='final', a=lid('Y tú'), b=lid('Y tú'), fn=lambda t, u: S10.final(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
 ]
 for i, s in enumerate(SCENES):
     s['t0'] = 0.0 if i == 0 else (LEND[SCENES[i - 1]['b']] + LSTART[s['a']]) / 2 if False else (LSTART[s['a']] if i else 0.0)
@@ -290,13 +291,33 @@ def draw_caps(img, t):
             d.text((60, 398), l2, font=F('Medium', 36), fill=(255, 216, 74, a), stroke_width=4, stroke_fill=(14, 10, 26, a))
 
 
-HOOKS = [('sky', .15, 2.6, '¡LE DIERON', '2 AÑOS DE VIDA!', 330), ('hosp', 1.4, 4.2, '¡SE QUEDÓ', 'SIN VOZ!', 330), ('books', .3, 3.0, '¡10 MILLONES', 'DE LIBROS!', 330), ('years', 6.7, 9.6, '¡VIVIÓ 55', 'AÑOS MÁS!', 250)]
+HOOKS = [('sky', .15, 2.7, '¡LE DIERON', '2 AÑOS DE VIDA!', 330), ('doctor', 8.7, 11.6, '¿QUÉ HARÍAS', 'TÚ?', 330), ('hole', .1, 2.8, '¡NADIE LO', 'ESPERABA!', 330),
+         ('hosp', 3.4, 6.2, '¡SE QUEDÓ', 'SIN VOZ!', 330), ('hosp', 9.8, 12.4, '¿TÚ HABRÍAS', 'SEGUIDO?', 330), ('books', 3.3, 6.3, '¡10 MILLONES', 'DE LIBROS!', 330),
+         ('years', 5.9, 9.2, '¡VIVIÓ 55', 'AÑOS MÁS!', 250), ('starry', 3.4, 6.4, '¡MIRA HACIA', 'ARRIBA!', 330)]
 SC_ = {s['n']: s for s in SCENES}
 HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
 PLAT = (sys.argv[sys.argv.index('--cta') + 1] if '--cta' in sys.argv else 'yt')          # yt = SUSCRÍBETE, tt/ig = SÍGUEME
-CTA_T0 = en[-1] - 2.6
+CTA_T0 = en[-1] - .2
 SC_ = {s['n']: s for s in SCENES}
 HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
+
+
+CHAPS = [('oxford', 'CAPÍTULO 1 · LA CURIOSIDAD'), ('doctor', 'CAPÍTULO 2 · EL DIAGNÓSTICO'), ('love', 'CAPÍTULO 3 · SEGUIR ADELANTE'), ('hole', 'CAPÍTULO 4 · EL DESCUBRIMIENTO'),
+         ('hosp', 'CAPÍTULO 5 · LA CAÍDA'), ('voice', 'CAPÍTULO 6 · UNA NUEVA VOZ'), ('years', 'CAPÍTULO 7 · 55 AÑOS MÁS'), ('starry', 'CAPÍTULO 8 · MIRA ARRIBA')]
+CHAP_T = [(SC_[n]['t0'] + .25, label) for n, label in CHAPS]
+
+
+def draw_chapter(img, t):
+    for a, label in CHAP_T:
+        if not (a <= t < a + 3.4): continue
+        k = min(1, (t - a) / .35); out = min(1, (a + 3.4 - t) / .3)
+        ft = FL(26); d = ImageDraw.Draw(img)
+        w = int(d.textlength(label, font=ft)) + 56
+        lay = Image.new('RGBA', (w + 20, 60), (0, 0, 0, 0)); ld = ImageDraw.Draw(lay)
+        ld.rounded_rectangle([0, 0, w, 50], radius=8, fill=(14, 10, 26, 205)); ld.rounded_rectangle([0, 0, 10, 50], radius=5, fill=PURPLE)
+        ld.text((28, 25), label, font=ft, fill=WHITE, anchor='lm')
+        lay.putalpha(lay.getchannel('A').point(lambda v: int(v * min(1, k * 2) * out)))
+        img.alpha_composite(lay, (72 - int((1 - k) * 220), 140))
 
 
 def draw_hooks(img, t):
@@ -330,8 +351,9 @@ def draw_outro(img, t):
 def overlay(base, t):
     img = base.convert('RGBA')
     img.alpha_composite(BRAND)
+    draw_chapter(img, t)
     draw_hooks(img, t)
-    draw_cta(img, t, CTA_T0, TOTAL, PLAT, LOOP_D, ytop=36, cx=1500, scale=1.35)
+    draw_cta(img, t, CTA_T0, TOTAL, PLAT, LOOP_D, ytop=36, cx=1500, scale=1.35, show=6.4)
     draw_sub(img, t)
     # fundido final
     out = img.convert('RGB')
@@ -460,26 +482,36 @@ def synth_audio():
         if kd == 'flash': add(noise(.2, 5000) * np.exp(-tt(.2) * 16) * .55, T_ - .02, .6)
         if kd == 'whip': add(noise(.3, 1500) * np.sin(np.pi * np.clip(tt(.3) / .3, 0, 1)) * .6, T_ - .15, .6)
     sfx = L.copy()
-    # ---- música: "Mrs Magic" (Strawberry Guy): soñadora, crece hacia el final
-    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', f'{ROOT}/audio/mrs_magic.m4a', '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
-    song = np.frombuffer(raw, np.float32).reshape(-1, 2)
-    hw = int(.01 * SR); e0 = np.abs(song[:int(8 * SR), 0])
-    T0 = next(i for i in range(0, len(e0) - hw, hw) if e0[i:i + hw].max() > .02) / SR - .02
-    T0 = max(0, T0)
-    S0 = 4.0                                                           # el vídeo arranca dentro de la canción: hay música "anterior" para empalmar el final con el principio
-    XF = 1.8                                                           # segundos de empalme del final con el principio
-    seg = song[int(S0 * SR):int(S0 * SR) + N].copy()
-    pre = song[int((S0 - XF) * SR):int(S0 * SR)].copy()
-    gscale = .12 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)  # música bien presente
-    seg *= gscale; pre *= gscale * .78
-    v = np.arange(len(seg)) / SR
-    dip = np.where((v > G - SIL - .05) & (v < G - .012), np.clip(1 - (v - (G - SIL - .05)) / .12, 0, 1), 1.0)   # el piano se apaga ...
-    dip = np.where(v >= G - .012, 1.0, dip)                                                                   # ... y vuelve con el golpe
-    swell = np.clip(.78 + .45 * np.clip((v - (G - 4)) / 4, 0, 1), .78, 1.23)                    # el piano crece desde el giro
-    seg *= (dip * swell)[:, None]
+    # ---- música (video largo: solo piano, variada por secciones con "silencio suspensivo" entre ellas)
+    def dec_(path):
+        raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
+        return np.frombuffer(raw, np.float32).reshape(-1, 2)
+    TR_ = {k: dec_(f'{ROOT}/audio/{k}.m4a') for k in ('every_moment', 'heard_em_say', 'congratulations')}
+    lvl = lambda x_, g_: x_ * (g_ / (np.sqrt((x_[:int(20 * SR)] ** 2).mean()) + 1e-9))
+    S0, XF = 4.0, 1.8                                                  # el video arranca dentro de la canción (4 s): hay música "anterior" para empalmar el final con el principio
+    SECT = [('every_moment', S0, 0.0, sc_('love'), .12),               # 1. curiosidad, diagnóstico y tristeza: piano íntimo
+            ('heard_em_say', 2.0, sc_('love'), sc_('hosp'), .10),      # 2. seguir adelante: más pulso y energía
+            ('every_moment', 66.0, sc_('hosp'), sc_('years'), .12),    # 3. la caída y la nueva voz: piano emotivo
+            ('congratulations', 0.0, sc_('years'), TOTAL, .12)]        # 4. el giro de los 55 años y el cierre
+    m = np.zeros((N, 2), np.float32); FD = .9
+    for k_, (name_, off_, a_, b_, g_) in enumerate(SECT):
+        i0, i1 = int(a_ * SR), min(N, int(b_ * SR)); n_ = i1 - i0
+        seg_ = lvl(TR_[name_], g_)[int(off_ * SR):int(off_ * SR) + n_].copy()
+        if len(seg_) < n_: seg_ = np.pad(seg_, ((0, n_ - len(seg_)), (0, 0)))
+        v_ = np.arange(n_) / SR
+        env_ = np.ones(n_, np.float32)
+        if k_ > 0: env_ *= np.clip(v_ / FD, 0, 1)                      # entra con fundido
+        if k_ < len(SECT) - 1: env_ *= np.clip(((n_ / SR) - v_) / FD, 0, 1)   # sale con fundido (silencio breve entre secciones)
+        if k_ == len(SECT) - 1:
+            vt_ = v_ + a_
+            env_ *= np.where((vt_ > G - SIL - .05) & (vt_ < G - .012), np.clip(1 - (vt_ - (G - SIL - .05)) / .12, 0, 1), 1.0)   # el piano se apaga ...
+            env_ = np.where(vt_ >= G - .012, np.maximum(env_, 1.0) * np.clip((vt_ - (G - .012)) / .012, 0, 1), env_)            # ... y vuelve con el golpe
+            env_ *= np.clip(.85 + .4 * np.clip((vt_ - (G - 3)) / 4, 0, 1), .85, 1.25)                                          # crece hacia el final
+        m[i0:i1] += seg_ * env_[:, None]
+    pre = lvl(TR_['every_moment'], .12)[int((S0 - XF) * SR):int(S0 * SR)].copy() * .78
     nx = int(XF * SR); w_ = np.linspace(0, np.pi / 2, nx)[:, None]            # empalme de potencia constante: el final entra en la música del principio
-    seg[N - nx:N] = seg[N - nx:N] * np.cos(w_) + pre[:nx] * np.sin(w_)
-    m = np.zeros((N, 2), np.float32); n = min(len(seg), N); m[:n] = seg[:n]
+    m[N - nx:N] = m[N - nx:N] * np.cos(w_) + pre[:nx] * np.sin(w_)
+    T0 = 0.0
     print(f'canción desde {T0:.2f}s, golpe en G={G:.2f}s', file=sys.stderr)
     voice = None
     if narr:

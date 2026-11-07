@@ -42,7 +42,7 @@ def sky_b(t, u):
     return c.render()
 
 
-sky = phased(sky_a, sky_b, cuts=(.5,))
+sky = phased(sky_a, sky_b, sky_b, cuts=(.28, .62))
 
 
 # ============================================================ 2. Oxford, 1942
@@ -447,7 +447,7 @@ def books_a(t, u):
 
 def books_b(t, u):
     c = cv((0, '#000000'), (1, '#000000')); _env_books(c, t)
-    c.R(210, 36, 84, 60, (30, 26, 30)); c.R(213, 39, 78, 54, (255, 214, 60)); bg.wtext(c, 252, 46, 'SIMPSON', (60, 30, 90), 8, outline=None, center=True)
+    c.R(210, 36, 84, 60, (30, 26, 30)); c.R(213, 39, 78, 54, (255, 214, 60)); bg.wtext(c, 252, 46, 'EN VIVO', (60, 30, 90), 8, outline=None, center=True)
     c.d.ellipse([234, 56, 270, 90], fill=(255, 224, 80), outline=(160, 110, 30))
     PR.keep(c, PR.book_stack(4), 96, 116)
     seated(c, 'hawking', 150, 172, 'bat', t=t)
