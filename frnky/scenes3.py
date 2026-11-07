@@ -300,6 +300,17 @@ def calle_vacia(t):
         px = (bx + t * 9) % (LW + 20) - 10; py = 30 + math.sin(t * 2 + bx) * 4
         w2 = 2 if int(t * 7 + bx) % 2 else -1
         d.line([px - 3, py + w2, px, py], fill=OL); d.line([px, py, px + 3, py + w2], fill=OL)
+    # primer plano: el suelo también cuenta la historia (grietas, alcantarilla, conos, cinta, bolsas, charcos)
+    d.ellipse([20, 250, 56, 262], fill=(60, 62, 78), outline=OL); d.ellipse([26, 252, 50, 260], outline=(100, 104, 124))
+    for gx in range(26, 52, 5):
+        d.line([gx, 252, gx + 2, 260], fill=(100, 104, 124))
+    box(d, 100, 262, 112, 280, (240, 130, 50)); d.rectangle([100, 268, 112, 272], fill=(250, 250, 250)); d.rectangle([97, 280, 115, 283], fill=(200, 100, 40))
+    d.line([60, 292, 84, 300, 108, 292], fill=(250, 214, 60), width=2); d.line([60, 296, 84, 304, 108, 296], fill=(30, 18, 44), width=1)
+    d.line([8, 270, 30, 290, 24, 312], fill=(44, 44, 58)); d.line([130, 252, 150, 276, 140, 306], fill=(44, 44, 58))
+    d.ellipse([130, 286, 170, 298], fill=(70, 78, 112)); d.ellipse([136, 288, 158, 294], fill=(100, 110, 150))
+    d.polygon([(70, 306), (84, 300), (92, 310), (80, 314)], fill=(220, 220, 230), outline=OL)         # papeles tirados
+    d.rectangle([150, 306, 166, 318], fill=(250, 200, 70), outline=OL); d.rectangle([152, 308, 156, 316], fill=(255, 228, 130))   # bolsa de papas vacía
+    d.rectangle([0, 318, LW, LH], fill=(66, 68, 84))
     # niebla que avanza
     fog = Image.new("RGBA", (LW, LH), (0, 0, 0, 0)); fd = ImageDraw.Draw(fog)
     for k in range(5):

@@ -15,10 +15,15 @@ def normalize_hashtags(text: str) -> str:
     return _TAG.sub(lambda m: m.group(0).lower() if m.group(0).lower() in _CANON else m.group(0), text)
 
 
-def build_captions(hook: str, cta: str, topic: str = "") -> dict:
+def build_captions(hook: str, cta: str, topic: str = "", tags_override=None, caption=None) -> dict:
     """Mismo gancho en las 3 redes, adaptado. Fijos + 1 variable por tema, siempre en el mismo orden."""
     extra = TOPIC_TAG.get(topic, "")
-    tags = " ".join(HASHTAGS + ([extra] if extra else []))
+    taglist = tags_override or (HASHTAGS + ([extra] if extra else []))
+    assert len(taglist) <= 5, "máximo 5 hashtags"
+    tags = " ".join(taglist)
+    if caption:                                     # caption fijo (<=100 caracteres) para todas las redes
+        assert len(caption) <= 100, f"caption de {len(caption)} caracteres"
+        return {k: f"{caption}\n\n{tags}" for k in ("instagram", "tiktok", "youtube")}
     q = hook if hook.endswith("?") else hook
     raw = {
         "instagram": f"{q}\n\n{cta} 👇\n\nMás en @{HANDLE}\n{tags}",

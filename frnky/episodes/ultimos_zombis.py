@@ -1,179 +1,233 @@
-"""«¿Qué pasaría si mi bro y yo fuéramos los últimos hombres en la tierra?» — situación ganadora, versión zombi.
-Guion corto (29 s) para probar la duración de 20-35 s. Funciona en estilo pixel o kawaii (mismo guion, mismo CTA)."""
+"""«Últimos en la tierra… y una sola bolsa de papas» — versión 2 (22 s, estándar de zona segura y mezcla -14 LUFS).
+Piero y Memo, registro MÉXICO (wey / neta / qué onda). Un solo remate: Piero le da UNA papa al zombi y el zombi comparte su cerebro.
+Variante A: el zombi irrumpe en 0 s (shake + flash). Variante B: pregunta estática (mismo guion, misma hora)."""
 import math
 
-from .. import audio, scenes3 as S3
-from ..bg import light_shaft, sparkles, confetti, emote, speed_lines
+from PIL import ImageDraw
+
+from .. import audio
+from ..bg import sparkles, emote, speed_lines
 from ..cast import make_cast
 from ..engine import cam_at
-from ..sprite import draw_char
+from ..sprite import draw_char, CHARS
+from .. import scenes3 as S3
 from . import bro_juega_bien as B
 from .bro_juega_bien import sm
 
-K = 1.1
-T = 29.0 / K                  # 29.0 s = 696 fotogramas exactos
-CUTS = [7.0, 12.0, 16.0, 21.0, 23.9]
+STATE = {"variant": "A"}
+K = 1.0
+T = 22.0                              # 22.0 s = 528 fotogramas exactos
+CUTS = []                             # sin cortes: el gancho es un flash, el resto es plano continuo
 META = dict(id="ultimos-zombis", category="ultimo-hombre", topic="ultimo-hombre",
-            title="¿Qué pasaría si mi bro y yo fuéramos los últimos hombres en la tierra?",
-            caption_hook="¿Qué pasaría si mi bro y yo fuéramos los últimos hombres en la tierra?")
-CAST = make_cast(META["id"])
-SPRITE = {"bro": CAST["bro"]["sprite"], "a": CAST["a"]["sprite"], "zombi": "zombi"}
-TAG = {"bro": CAST["bro"]["tag"], "a": CAST["a"]["tag"]}
+            title="Últimos en la tierra y una sola bolsa de papas",
+            caption_hook="Si fueras el último en la tierra, ¿compartes la última papa? A o B",
+            caption="Si fueras el último en la tierra, ¿compartes la última papa? A o B",
+            tags=["#zombis", "#pixelart", "#humor", "#amigos", "#shorts"])
+
+_n = 0
+while True:                           # Piero sin peinado de coleta/chongo
+    CAST = make_cast(META["id"] + ("" if _n == 0 else f"-{_n}"), register="MX", names={"bro": "Piero", "a": "Memo"})
+    if CHARS[CAST["bro"]["sprite"]]["style"] in ("spiky", "cap", "curly") and CHARS[CAST["a"]["sprite"]]["style"] != CHARS[CAST["bro"]["sprite"]]["style"]:
+        break
+    _n += 1
+SPRITE = {"piero": CAST["bro"]["sprite"], "memo": CAST["a"]["sprite"], "zombi": "zombi"}
 VOICES = {
-    "bro": dict(label=CAST["bro"]["label"], color=CAST["bro"]["color"], pitch=230, flag=CAST["bro"]["flag"]),
-    "a": dict(label=CAST["a"]["label"], color=CAST["a"]["color"], pitch=300, flag=CAST["a"]["flag"]),
+    "piero": dict(label="PIERO", color=(226, 200, 120), pitch=230),
+    "memo": dict(label="MEMO", color=(130, 190, 210), pitch=300),
     "zombi": dict(label="ZOMBI", color=(150, 220, 140), pitch=110),
-    "todos": dict(label="TODOS", color=(255, 255, 255), pitch=250),
 }
+# Cajas: máx. 8 palabras, 1 línea. Sin flags. Jerga: México.
 LINES = [
-    (0.1, 2.1, "bro", "Solo quedamos tú y yo… y mi bolsa de papas."),
-    (2.2, 3.7, "a", f"¿Papas? ¡Yo traigo el plan, {TAG['a']}!"),
-    (3.8, 5.2, "bro", "¿Cuál es el plan?"),
-    (5.3, 6.9, "a", "Primero, repartimos la bolsa."),
-    (7.3, 8.7, "bro", f"¿Escuchaste eso, {TAG['bro']}?"),
-    (8.8, 10.2, "a", "¡Un zombi! ¡Corre!"),
-    (10.3, 11.9, "bro", "¡Pero mis papas!"),
-    (12.3, 13.7, "a", "¡Déjalas, bro!"),
-    (13.8, 15.9, "bro", "¡Jamás! ¡Soy fiel a mis papas!"),
-    (16.3, 17.7, "zombi", "Papaaas…"),
-    (17.8, 19.3, "bro", "…¿Quieres una?"),
-    (19.4, 20.9, "a", "¡¿Le diste la última papa?!"),
-    (21.2, 22.6, "bro", "Es que ya éramos tres."),
-    (22.7, 23.8, "todos", "¡LOS ÚLTIMOS TRES!"),
+    (1.1, 2.4, "memo", "Bro, hay que huir."),
+    (2.5, 3.9, "piero", "Primero las papas."),
+    (4.1, 5.5, "memo", "Dale, tírale algo."),
+    (5.6, 6.9, "piero", "¡Neta, wey, no!"),
+    (9.2, 10.7, "piero", "¿Qué onda? ¡Son mías!"),
+    (11.0, 12.4, "memo", "Wey, el zombi tiene hambre."),
+    (12.6, 14.2, "piero", "Neta, me da cosa, wey."),
+    (15.3, 16.6, "zombi", "…gracias, bro."),
+    (16.8, 18.3, "memo", "¡Me traicionaste por un zombi!"),
 ]
-HOOKS = [(0.0, 1.7, "¿QUÉ PASARÍA SI MI BRO Y YO…"), (1.7, 3.0, "…FUÉRAMOS LOS ÚLTIMOS EN LA TIERRA?")]
+HOOK = {"A": "ÚLTIMOS EN LA TIERRA... Y UNA SOLA BOLSA DE PAPAS",
+        "B": "¿QUÉ HARÍAS SI FUERAS EL ÚLTIMO EN LA TIERRA CON UNA BOLSA DE PAPAS?"}
+CTA_MID = "¿Tú huyes o compartes?\nA: huyo / B: comparto"
+CTA_FINAL = {"ab": "¿Quién da la última papa?\nResponde A o B", "etiqueta": "Etiqueta a tu bro que haría esto"}
 B.LINES_ACTIVE[0] = LINES
-M, FEET = 3, 372
+SC, ZC = 3.2, 3.4
+FEET = 467
+XP, XM, XZ = 72, 175, 288
+SEAM = 20.0                          # desde aquí el video regresa al estado del segundo 0 (bucle)
 
 
-def hud(t):
-    return [("SOBREVIVIENTES", "2" if t < 21 or t >= 23.9 else "3"), ("PAPAS", "1" if t < 17.8 or t >= 23.9 else "0")]
+def zombie_x(t):
+    """Posición del zombi. A: irrumpe en 0 s (shake + flash) y se aleja. B: entra caminando a los 4 s. Ambas vuelven al estado del segundo 0."""
+    v = STATE["variant"]
+    if t < 4.0:
+        if v == "B" or t >= 1.5: return 440
+        if t < 0.5: return XZ
+        if t < 0.9: return XZ - 38 * sm((t - 0.5) / 0.15)
+        return XZ - 38 + (440 - XZ + 38) * sm((t - 0.9) / 0.6)
+    if t < 7.0: return 440 - (440 - XZ) * sm((t - 4.0) / 3.0)
+    if t < 19.5: return XZ
+    return XZ if v == "A" else XZ + (440 - XZ) * sm((t - 19.5) / 1.2)
 
 
-def banner(t):
-    if 7.0 <= t < 8.0:
-        return "EN EL SÚPER…"
-    if 12.0 <= t < 13.0:
-        return "¡CORRE!"
-    if 16.0 <= t < 17.0:
-        return "FRENTE A FRENTE…"
-    return ""
+zombie_x_final = zombie_x
+
+
+def blink_or_talk(t, key, kw):
+    sp = B.speaking(t)
+    expr = kw.get("expr", "neutral")
+    if key in sp and int(t * 7) % 2 == 0:
+        kw["mouth"] = "big" if expr == "happy" else ("o" if expr == "shock" else "open")
+    elif expr in ("neutral", "sad", "shy") and ((t * 24 + kw["x"] * 0.37) % 76) < 3:
+        kw["expr"] = "blink"
+    return kw
 
 
 def ch(c, t, key, **kw):
-    sp = B.speaking(t)
-    expr = kw.get("expr", "neutral")
-    if (key in sp or "todos" in sp) and int(t * 7) % 2 == 0:
-        kw["mouth"] = "big" if expr == "happy" else ("o" if expr == "shock" else "open")
-    elif expr in ("neutral", "sad", "shy") and ((t * 24 * 1.1 + kw.get("x", 100) * 0.37) % 76) < 3:
-        kw["expr"] = "blink"                                   # parpadeo
-    x = kw.pop("x"); feet = kw.pop("feet", FEET); sc = kw.pop("scale", M)
-    shake = kw.pop("shake", 0); hop = kw.pop("hop", 0); bag = kw.pop("bag", False)
+    kw = blink_or_talk(t, key, kw)
+    x = kw.pop("x"); sc = kw.pop("scale", SC); shake = kw.pop("shake", 0); hop = kw.pop("hop", 0)
     ox = round(math.sin(t * 61) * shake) if shake else 0
-    breathe = round(math.sin(t * 2.6 + x) * 1.5 + math.sin(t * 5 + x) * .6)           # respiración
-    oy = breathe - (round(abs(math.sin(t * 9 + x)) * hop) if hop else 0) + kw.pop("oy", 0)
-    draw_char(c, SPRITE[key], x, feet, ox=ox, oy=oy, scale=sc, **kw)
-    if bag:                                                                           # bolsa de papas
-        from PIL import ImageDraw
-        d = ImageDraw.Draw(c)
-        bx, by = x + (24 if not kw.get("flip") else -36) + ox, feet - 62 * sc // 2 + oy
-        d.rectangle([bx - 1, by - 1, bx + 15, by + 21], fill=(30, 18, 44)); d.rectangle([bx, by, bx + 14, by + 20], fill=(250, 200, 70))
-        d.rectangle([bx, by, bx + 3, by + 20], fill=(255, 226, 120)); d.rectangle([bx + 4, by + 8, bx + 10, by + 14], fill=(220, 60, 60))
+    oy = round(math.sin(t * 2.6 + x) * 1.5 + math.sin(t * 5 + x) * .6) - (round(abs(math.sin(t * 9 + x)) * hop) if hop else 0)
+    draw_char(c, SPRITE[key], x, kw.pop("feet", FEET), ox=ox, oy=oy, scale=sc, **kw)
 
 
-def s1(c, t, lt):
-    light_shaft(c, 10)
-    ch(c, t, "bro", x=105, expr="sad", pose="down", fx=("sweat",), look=1, bag=True)
-    ch(c, t, "a", x=255, expr="shy", pose="down", flip=True, look=-1)
-    if 0.3 < lt < 1.6:
-        emote(c, 105, 190, "!", lt - 0.3)
+def bag(c, x, y, t, hug=True, squeeze=0.0):
+    d = ImageDraw.Draw(c)
+    w, h = 44 + int(6 * squeeze), 56 - int(5 * squeeze)
+    x0, y0 = x - w // 2, y - h // 2
+    d.rectangle([x0 - 2, y0 - 2, x0 + w + 2, y0 + h + 2], fill=(30, 18, 44))
+    d.rectangle([x0, y0, x0 + w, y0 + h], fill=(250, 200, 70)); d.rectangle([x0, y0, x0 + 6, y0 + h], fill=(255, 228, 130))
+    d.rectangle([x0 + w - 6, y0, x0 + w, y0 + h], fill=(220, 160, 40)); d.rectangle([x0 + 6, y0 + 12, x0 + w - 6, y0 + 28], fill=(220, 60, 60))
+    for k in range(5):                                                      # sello superior zigzag
+        d.rectangle([x0 + k * (w // 5), y0 - 6, x0 + k * (w // 5) + w // 10, y0 - 1], fill=(250, 200, 70))
 
 
 def frame(t):
+    v = STATE["variant"]
+    st = t if t < SEAM else t - T                       # fase de animación negativa al final = estado del segundo 0
+    start_state = t < 0.5 or t >= SEAM
+    c = S3.calle_vacia(st)
+    zx = zombie_x_final(t)
+    z_in = zx < 400
     shake = 0
-    te = t if t < 23.9 else t - T
-    if t < 7.0 or t >= 23.9:
-        c = S3.calle_vacia(te)
-        s1(c, te, t if t < 7 else 0.0)
-        keys = [(0, 40, 105, 290), (2.1, 34, 105, 270), (2.2, 30, 255, 270), (3.7, 30, 255, 270), (3.8, 30, 105, 270),
-                (5.2, 30, 105, 270), (5.3, 30, 255, 270), (7.0, 40, 180, 290)]
-        if t >= 23.9:
-            keys = [(23.9, 40, 180, 290), (T, 40, 180, 290)]
-            keys = [(23.9, 40, 105, 290), (T, 40, 105, 290)]
-        keys = [(0, 40, 105, 290)] + keys[1:] if t < 7 else keys
-    elif t < 12.0:
-        c = S3.super_vacio(t)
-        zx = 420 - 190 * sm((t - 7.3) / 2.0) if t < 10.3 else 230
-        ch(c, t, "bro", x=105, expr="shock" if t > 8.8 else "neutral", pose="down", bag=True, hop=0)
-        ch(c, t, "a", x=210, expr="shock" if t > 8.8 else "shy", pose="down", flip=True)
-        if t > 7.5:
-            ch(c, t, "zombi", x=min(420, zx + 30), feet=FEET, expr="sad", pose="point", flip=True, scale=2, walk=1 + int(t * 5) % 2)
-        if 8.8 < t < 10.2:
-            emote(c, 210, 190, "!", t - 8.8)
-        keys = [(7.0, 40, 150, 290), (7.3, 32, 105, 268), (8.7, 32, 105, 268), (8.8, 30, 210, 268), (10.2, 30, 210, 268),
-                (10.3, 30, 105, 268), (12.0, 36, 150, 290)]
-    elif t < 16.0:
-        c = S3.calle_vacia(t)
-        u = (t - 12.0) / 4.0
-        bx = 40 + 300 * u
-        sh = 1
-        ch(c, t, "a", x=bx - 70, feet=FEET, expr="shock", pose="cheer", walk=1 + int(t * 8) % 2, flip=False, hop=5)
-        ch(c, t, "bro", x=bx, feet=FEET, expr="angry", pose="down", walk=1 + int(t * 8 + 1) % 2, bag=True, hop=5, shake=sh)
-        ch(c, t, "zombi", x=bx - 150, feet=FEET, expr="sad", pose="point", scale=2, walk=1 + int(t * 6) % 2)
-        speed_lines(c, bx, 260, t, 70)
-        keys = [(12.0, 40, 70, 290), (16.0, 34, 340, 290)]
-    elif t < 21.0:
-        c = S3.calle_vacia(t)
-        light_shaft(c, 10)
-        give = t >= 17.8
-        ch(c, t, "bro", x=105, expr="shy" if t < 17.8 else "happy", pose="down", bag=not give or t < 18.6, look=1, fx=("sweat",))
-        ch(c, t, "zombi", x=250, expr="sad" if t < 17.8 else "happy", pose="point" if t < 18.6 else "cheer", flip=True)
-        ch(c, t, "a", x=330, expr="shock", pose="down", flip=True, scale=2, feet=FEET - 4)
-        if 17.8 < t < 19.3:
-            sparkles(c, t, 250, 262, 6, 90)
-        keys = [(16.0, 40, 180, 290), (16.3, 32, 250, 270), (17.7, 32, 250, 270), (17.8, 32, 105, 270), (19.3, 32, 105, 270),
-                (19.4, 30, 330, 275), (20.9, 30, 330, 275), (21.0, 40, 180, 290)]
+    pz = "point"
+    # --- Piero y Memo ---
+    hug = True
+    p_exp, m_exp, look = "shock", "shock", -1
+    if v == "A" and start_state:
+        p_exp, m_exp = "shock", "shock"
+    elif 1.5 <= t < 4.0 or (v == "B" and t < 4.0):
+        p_exp, m_exp = "shy", "neutral"
+    elif t < 7.0:
+        p_exp, m_exp = "shock", "angry"
+    elif t < 15.0:
+        p_exp, m_exp = ("sad" if 12.5 <= t < 15.0 else "shock"), ("shock" if t < 11 else "sad")
+    elif t < 18.0:
+        p_exp, m_exp = "happy" if t >= 15.0 else "shy", "shock" if t < 17.5 else "sad"
     else:
-        c = S3.super_vacio(t)
-        for k, (nm, x, fl) in enumerate((("bro", 90, False), ("zombi", 195, True), ("a", 300, True))):
-            ch(c, t, nm, x=x, expr="happy", pose="cheer", flip=fl, hop=5)
-        confetti(c, t)
-        sparkles(c, t, 195, 262, 7, 120)
-        keys = [(21.0, 40, 180, 290), (23.9, 40, 180, 290)]
-    return c, cam_at(keys, t), shake
+        p_exp, m_exp = "happy", "shy"
+    if t >= SEAM:
+        p_exp, m_exp = ("shock", "shock") if v == "A" else ("shy", "neutral")
+    look = -1 if (t < 4.0 or t >= SEAM) else (1 if int(t * 1.6) % 2 == 0 else -1) if 9 <= t < 15 else 1
+    hide = 9.4 <= t < 12.0                              # gag 1: esconde la bolsa
+    give = 15.0 <= t < 15.6
+    squeeze = 1.0 if (1.95 < t < 2.35 or 9.4 < t < 9.7) else 0.0
+    ch(c, t, "memo", x=XM, expr=m_exp, pose="cheer" if (t >= 18.0 and t < 19.5 and False) else "down", fx=("sweat",) if m_exp in ("shock", "angry") else ())
+    ch(c, t, "piero", x=XP, expr=p_exp, pose="down", look=look, fx=("sweat",) if p_exp in ("shock", "sad") else (), shake=1 if (12.5 <= t < 15.0) else 0)
+    if not hide:                                         # bolsa abrazada (o escondida a la espalda en el gag 1)
+        if not (give and False):
+            bag(c, XP + 4, FEET - 84, t, squeeze=squeeze)
+    else:
+        d = ImageDraw.Draw(c); d.rectangle([XP - 50, FEET - 120, XP - 40, FEET - 88], fill=(250, 200, 70))
+    # --- zombi ---
+    if z_in:
+        zshake = 3 if (v == "A" and t < 1.4) else 0
+        zexp = "sad" if t < 15.0 else "happy"
+        zpose = "point" if (t < 16.6 or t >= 18.5) else "cheer"
+        if t >= 7.0 and t < 9.0 or 12.5 <= t < 14.2:
+            zexp = "shock"
+        ch(c, t, "zombi", x=zx, scale=ZC, expr=zexp, pose=zpose, flip=True, walk=(1 + int(t * 5) % 2) if (4.0 <= t < 7.0 or 19.5 <= t) else 0, shake=zshake)
+    # --- props del remate ---
+    d = ImageDraw.Draw(c)
+    if give:                                              # UNA papa vuela de Piero al zombi
+        u = (t - 15.0) / 0.6
+        px, py = XP + 30 + (zx - XP - 60) * u, FEET - 140 - 50 * math.sin(math.pi * u)
+        d.polygon([(px, py), (px + 14, py + 4), (px + 8, py + 14)], fill=(255, 214, 90), outline=(30, 18, 44))
+    if 16.7 <= t < 18.4:                                  # el zombi comparte su cerebro
+        u = min(1.0, (t - 16.7) / 0.5)
+        bx, by = zx - 60 - (zx - XM - 70) * 0.55 * u, FEET - 150
+        d.ellipse([bx - 18, by - 14, bx + 18, by + 14], fill=(240, 140, 170), outline=(30, 18, 44), width=2)
+        d.line([bx - 6, by - 8, bx - 10, by + 6], fill=(200, 90, 130), width=2); d.line([bx + 6, by - 8, bx + 10, by + 6], fill=(200, 90, 130), width=2)
+        d.line([bx, by - 12, bx, by + 12], fill=(200, 90, 130), width=2)
+    if 0.3 < t < 1.2 and v == "A":
+        speed_lines(c, zx, 340, st, int(120 * (1 - (t - 0.3) / 0.9)))
+    if 18.0 <= t < 19.2:
+        sparkles(c, t, zx - 30, 330, 6, 80)
+    # --- cámara (más cerrada; los pies caen ~73% de la altura y el techo de las cabezas queda bajo la caja de diálogo) ---
+    F = {40: 320, 36: 335, 34: 342}
+    def K_(tt, k, fx): return (tt, k, fx, F[k])
+    if v == "A":
+        keys = [K_(0, 40, 180), K_(1.0, 40, 180), K_(1.1, 36, 135), K_(4.0, 36, 135), K_(4.3, 34, 205), K_(7.0, 34, 205),
+                K_(9.0, 36, 190), K_(12.4, 36, 150), K_(14.9, 36, 150), K_(15.3, 34, 205), K_(18.3, 34, 205),
+                K_(19.5, 40, 180), K_(T, 40, 180)]
+    else:
+        keys = [K_(0, 40, 180), K_(4.0, 36, 150), K_(4.3, 34, 205), K_(7.0, 34, 205), K_(9.0, 36, 190), K_(12.4, 36, 150),
+                K_(14.9, 36, 150), K_(15.3, 34, 205), K_(18.3, 34, 205), K_(19.5, 40, 180), K_(T, 40, 180)]
+    cam = cam_at(keys, t)
+    sh = 3 if (v == "A" and (t < 1.2 or t >= SEAM + 0.0 and False)) else 0
+    if v == "A" and (0.5 <= t < 1.0):
+        sh = 5
+    return c, cam, sh
+
+
+def flash_frames():
+    return [0.04, 0.08, 0.12] if STATE["variant"] == "A" else []
+
+
+def hud(t):
+    return [("SOBREVIVIENTES", "2"), ("PAPAS", "1" if t < 15.0 or t >= SEAM else "0")]
 
 
 def music(track):
-    g = lambda a, b, *x, **k: audio.groove(track, a * K, b * K, *x, **k)
-    g(0, 7.0, 96, "min", layers=("bass", "pad", "arp", "lead"), mel="b")
-    g(7.0, 12.0, 120, "min", layers=("bass", "pad", "arp", "drums"))
-    g(12.0, 16.0, 156, "min", mel="b")
-    g(16.0, 21.0, 84, "maj", layers=("bass", "pad", "lead"), vol=0.9)
-    g(21.0, 23.9, 140, "maj", mel="b")
-    g(23.9, T, 96, "min", layers=("bass", "pad", "arp", "lead"), mel="b", bar0=2)
-    for a, b, kind in ((0, 7.0, "street"), (7.0, 12.0, "room"), (12.0, 21.0, "street"), (21.0, 23.9, "room"), (23.9, T, "street")):
-        audio.ambient(track, a * K, b * K, kind, 1.0)
+    audio.groove(track, 0, 22.0, 100, "min", layers=("bass", "pad", "arp"), mel="b")
+    audio.groove(track, 15.0, 19.5, 100, "maj", layers=("pad", "lead"), mel="b", vol=0.8)
+    audio.ambient(track, 0, 22.0, "street", 1.0)
+
+
+def blip_box(track, t0, pitch):
+    audio.put(track, t0, audio.blip(pitch * 1.6, 0.3)); audio.put(track, t0 + 0.07, audio.blip(pitch * 2.0, 0.3))
+
+
+SFX_TIMELINE = [  # (t en s, efecto)
+    (0.0, "whoosh"), (0.5, "zombie_hit"), (1.1, "blip(memo)"), (2.0, "crinkle"), (2.5, "blip(piero)"), (4.0, "zombie_steps 4-7"),
+    (4.1, "blip(memo)"), (5.6, "blip(piero)"), (7.0, "sting CTA"), (9.2, "blip(piero)"), (9.4, "crinkle (gag 1)"), (10.0, "gulp (gag 1)"),
+    (10.6, "boing (gag 1)"), (11.0, "blip(memo)"), (12.6, "blip(piero)"), (12.6, "growl (gag 2)"), (13.5, "boing (gag 2)"), (14.2, "gulp (gag 2)"),
+    (15.0, "ding (remate)"), (15.3, "blip(zombi)"), (16.8, "blip(memo)"), (16.9, "squish (cerebro)"), (18.0, "risa/pop"), (20.8, "riser antes del loop"),
+]
 
 
 def sfx(track):
     A = audio
-    A.airhorn(track, 0.0, 0.1); A.hit(track, 0.0)
-    A.scratch(track, 5.3 * K); A.step(track, 7.05 * K)
-    for k in range(5):
-        A.step(track, (7.6 + 0.45 * k) * K, 0.1)
-    A.dun_dun(track, 8.8 * K) if hasattr(A, "dun_dun") else None
-    A.powerup(track, 12.0 * K)
-    for k in range(14):
-        A.step(track, (12.1 + 0.28 * k) * K, 0.12)
-    A.hit(track, 16.0 * K); A.sparkle(track, 17.8 * K); A.levelup(track, 18.0 * K)
-    A.crowd(track, 21.0 * K, 1.3, 0.14); A.jingle(track, 22.7 * K); A.airhorn(track, 22.7 * K, 0.1)
-    A.rimshot(track, 24.0 * K)
-    A.roll(track, T * K - 1.3, T * K)
+    if STATE["variant"] == "A":
+        A.whoosh(track, 0.0, 0.3, 0.2); A.zombie_hit(track, 0.5)
+    else:
+        A.whoosh(track, 0.0, 0.25, 0.1)
+    for t0, t1, who, _ in LINES:
+        blip_box(track, t0, VOICES[who]["pitch"])
+    A.crinkle(track, 2.0)
+    A.zombie_steps(track, 4.0, 7.0)
+    A.sting(track, 7.0)
+    A.crinkle(track, 9.4); A.gulp(track, 10.0); A.boing(track, 10.6)
+    A.growl(track, 12.6, 0.8); A.boing(track, 13.5); A.gulp(track, 14.2)
+    A.ding(track, 15.0)
+    A.squish(track, 16.9)
+    A.laugh(track, 18.0)
+    A.riser_short(track, 20.8, 1.2)
 
 
-PUNCHES = [(c * K, 6) for c in CUTS] + [(a * K, 2.5) for a, _, _, _ in LINES]
 EP = dict(
-    T=T * K, hooks=HOOKS, cuts=[c * K for c in CUTS], voices=VOICES, punches=PUNCHES,
-    lines=[(a * K, b * K, w, x) for a, b, w, x in LINES],
-    frame=lambda t: frame(t / K), hud=lambda t: hud(t / K), banner=lambda t: banner(t / K),
-    music=music, sfx=sfx, meta=META)
+    T=T, hooks=[(0.0, 2.5, "")], hook_text=lambda: HOOK[STATE["variant"]], cuts=[], voices=VOICES, punches=[(a, 2.5) for a, _, _, _ in LINES],
+    lines=LINES, frame=frame, hud=hud, banner=lambda t: "", music=music, sfx=sfx, meta=META,
+    safe=True, mix="pro", cta_mid=(7.0, 9.0, CTA_MID), final_cta=CTA_FINAL["ab"], cta_options=CTA_FINAL, flash=flash_frames)

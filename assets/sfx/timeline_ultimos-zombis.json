@@ -1,0 +1,98 @@
+[
+ {
+  "t": 0.0,
+  "efecto": "whoosh"
+ },
+ {
+  "t": 0.5,
+  "efecto": "zombie_hit"
+ },
+ {
+  "t": 1.1,
+  "efecto": "blip(memo)"
+ },
+ {
+  "t": 2.0,
+  "efecto": "crinkle"
+ },
+ {
+  "t": 2.5,
+  "efecto": "blip(piero)"
+ },
+ {
+  "t": 4.0,
+  "efecto": "zombie_steps 4-7"
+ },
+ {
+  "t": 4.1,
+  "efecto": "blip(memo)"
+ },
+ {
+  "t": 5.6,
+  "efecto": "blip(piero)"
+ },
+ {
+  "t": 7.0,
+  "efecto": "sting CTA"
+ },
+ {
+  "t": 9.2,
+  "efecto": "blip(piero)"
+ },
+ {
+  "t": 9.4,
+  "efecto": "crinkle (gag 1)"
+ },
+ {
+  "t": 10.0,
+  "efecto": "gulp (gag 1)"
+ },
+ {
+  "t": 10.6,
+  "efecto": "boing (gag 1)"
+ },
+ {
+  "t": 11.0,
+  "efecto": "blip(memo)"
+ },
+ {
+  "t": 12.6,
+  "efecto": "blip(piero)"
+ },
+ {
+  "t": 12.6,
+  "efecto": "growl (gag 2)"
+ },
+ {
+  "t": 13.5,
+  "efecto": "boing (gag 2)"
+ },
+ {
+  "t": 14.2,
+  "efecto": "gulp (gag 2)"
+ },
+ {
+  "t": 15.0,
+  "efecto": "ding (remate)"
+ },
+ {
+  "t": 15.3,
+  "efecto": "blip(zombi)"
+ },
+ {
+  "t": 16.8,
+  "efecto": "blip(memo)"
+ },
+ {
+  "t": 16.9,
+  "efecto": "squish (cerebro)"
+ },
+ {
+  "t": 18.0,
+  "efecto": "risa/pop"
+ },
+ {
+  "t": 20.8,
+  "efecto": "riser antes del loop"
+ }
+]

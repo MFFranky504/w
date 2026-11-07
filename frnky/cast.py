@@ -30,7 +30,13 @@ SHOES = [(240, 240, 240), (230, 80, 70), (60, 60, 80), (250, 210, 80)]
 COLORS = {"bro": (226, 200, 120), "a": (222, 140, 130), "b": (214, 150, 190), "c": (130, 190, 210)}
 
 
-def make_cast(episode_id, force=None):
+REGISTERS = {   # UN registro por video (no mezclar): México o Argentina
+    "MX": dict(tags=["wey", "neta", "qué onda"], names=["Chuy", "Lupita", "Beto", "Dani"]),
+    "AR": dict(tags=["che", "dale", "mirá"], names=["Facu", "Cami", "Lucho", "Nati"]),
+}
+
+
+def make_cast(episode_id, force=None, register="MX", names=None, flags=False):
     """Devuelve {rol: dict(sprite, label, color, pitch, flag, tag, nation)} para los roles bro/a/b/c.
     force = {"c": "VE"} obliga la nacionalidad de un rol (p. ej. «josear» es venezolano)."""
     rnd = random.Random(zlib.crc32(episode_id.encode()))
@@ -64,6 +70,6 @@ def make_cast(episode_id, force=None):
             eye=rnd.choice(EYES), style=style, cap=rnd.choice([(222, 52, 62), (60, 100, 210), (250, 200, 60), (60, 170, 110)]),
             glasses=rnd.random() < .25, band=style == "cap" and rnd.random() < .5)
         CHARS[sid + "_w"] = dict(CHARS[sid], coat=rnd.choice([(52, 64, 98), (70, 70, 80), (40, 90, 80)]), kind="blazer", pants=(70, 74, 96))
-        cast[role] = dict(sprite=sid, work=sid + "_w", label=nat["names"][rnd.randrange(4)].upper(), color=COLORS[role],
-                          pitch=[230, 170, 340, 270][i], flag=nat["flag"], tag=nat["tag"], nation=nat["name"], code=chosen[role])
+        cast[role] = dict(sprite=sid, work=sid + "_w", label=((names or {}).get(role) or REGISTERS[register]["names"][i % 4]).upper(), color=COLORS[role],
+                          pitch=[230, 170, 340, 270][i], flag=nat["flag"] if flags else None, tag=REGISTERS[register]["tags"][i % 3], nation=nat["name"], code=chosen[role])
     return cast

@@ -44,7 +44,8 @@ BASELINE = {
     "tiktok": {"seguidores": 3, "vistas_media": 259, "likes": 12, "comentarios": 0, "compartidos": 0.3, "duracion_s": 54},
     "instagram": {"seguidores": 9, "likes": 34, "comentarios": 0.7},
 }
-GOALS_30D = {"mediana_vistas_x": 3, "top_vistas_x": 10, "comentarios_tiktok_por_video": 5, "seguidores_por_red": 100}
+# Meta realista: sobre una media de 259 vistas (TikTok), apuntar a 400-600 (1.5x-2x) en 5 videos; retención a 3 s >= 65 %; >= 1 comentario por video.
+GOALS = {"vistas_objetivo": (400, 600), "base_media": 259, "videos": 5, "retencion_3s_min": 0.65, "comentarios_min": 1}
 WIN_X, RETIRE_X, RETIRE_STREAK, WIN_VARIATIONS = 2.0, 0.5, 3, 3
 SCHEDULE = {"main": "16:00", "secondary": "07:30", "instagram_test": "19:00"}   # hora México
 DUR_RANGE_S = (20, 35)

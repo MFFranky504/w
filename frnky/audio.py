@@ -304,3 +304,96 @@ def notify(track, t0, vol=0.18):
 def sparkle(track, t0, vol=0.1):
     for k in range(8):
         put(track, t0 + k * 0.045, note(midi(88 + (k * 5) % 12 + 12 * (k // 5)), 0.12, vol, "tri", rel=0.3))
+
+
+# ---------- SFX nuevos para el estándar de mezcla ----------
+def crinkle(track, t0, dur=0.55, vol=0.22):
+    """Crujido de bolsa: ráfagas cortas de ruido con picos irregulares."""
+    r = np.random.default_rng(int(t0 * 1000) % 9999)
+    t = 0.0
+    while t < dur:
+        d = float(r.uniform(0.012, 0.04))
+        put(track, t0 + t, noise(d, vol * float(r.uniform(0.4, 1.0)), 0.02))
+        t += float(r.uniform(0.01, 0.045))
+
+
+def growl(track, t0, dur=0.7, vol=0.25, f0=70):
+    t = _t(dur)
+    f = f0 - 14 * (t / dur)
+    saw = 2 * ((np.cumsum(f) / SR) % 1) - 1
+    s = np.tanh(2.2 * saw) * (0.6 + 0.4 * np.sin(2 * np.pi * 13 * t)) * np.sin(np.pi * np.minimum(1, t / dur)) ** 0.6
+    put(track, t0, s * vol)
+
+
+def zombie_hit(track, t0, vol=0.5):
+    """Golpe del zombi al irrumpir: thud grave + gruñido corto."""
+    put(track, t0, kick(vol)); put(track, t0, noise(0.1, 0.22, 0.07)); growl(track, t0 + 0.02, 0.45, 0.22, 90)
+
+
+def zombie_steps(track, t0, t1, vol=0.16):
+    t = t0; k = 0
+    while t < t1:
+        put(track, t, kick(vol * 0.9)); put(track, t, noise(0.06, vol * 0.5, 0.04))
+        put(track, t + 0.1, noise(0.05, vol * 0.3, 0.04))          # arrastre
+        t += 0.62 - 0.012 * k; k += 1
+
+
+def sting(track, t0, vol=0.22):
+    """Sting de CTA: acorde corto ascendente con golpe."""
+    for k, n in enumerate((64, 68, 71, 76)):
+        put(track, t0 + k * 0.045, note(midi(n), 0.32, vol * 0.6, "sq", 0.25, 0.4))
+    put(track, t0, kick(0.35))
+
+
+def pop(track, t0, vol=0.25):
+    t = _t(0.12)
+    put(track, t0, np.sin(2 * np.pi * np.cumsum(520 * np.exp(-t * 28) + 160) / SR) * np.exp(-t * 26) * vol)
+
+
+def laugh(track, t0, vol=0.16):
+    for k in range(4):
+        put(track, t0 + k * 0.13, blip(300 - k * 22, vol))
+    pop(track, t0 - 0.02, vol)
+
+
+def squish(track, t0, vol=0.22):
+    t = _t(0.3)
+    put(track, t0, np.sin(2 * np.pi * np.cumsum(200 * np.exp(-t * 6) + 60 + 40 * np.sin(2 * np.pi * 18 * t)) / SR) * np.exp(-t * 9) * vol)
+    put(track, t0, noise(0.12, vol * 0.5, 0.08))
+
+
+def riser_short(track, t0, dur=1.2, vol=0.2):
+    n = int(dur * SR)
+    x = rng.uniform(-1, 1, n)
+    k = np.linspace(0.02, 0.6, n)
+    y = np.zeros(n); a = 0.0
+    for i in range(n):
+        a += k[i] * (x[i] - a); y[i] = a
+    t = _t(dur)
+    tone = np.sin(2 * np.pi * np.cumsum(180 + 1400 * (t / dur) ** 2) / SR)
+    put(track, t0, (y * 3.2 + tone * 0.5) * (t / dur) ** 1.4 * vol)
+
+
+def boing(track, t0, vol=0.2):
+    t = _t(0.35)
+    put(track, t0, np.sin(2 * np.pi * np.cumsum(300 + 160 * np.sin(2 * np.pi * 9 * t) * np.exp(-t * 6)) / SR) * np.exp(-t * 9) * vol)
+
+
+def gulp(track, t0, vol=0.2):
+    t = _t(0.22)
+    put(track, t0, np.sin(2 * np.pi * np.cumsum(420 - 280 * (t / 0.22)) / SR) * np.exp(-t * 14) * vol)
+
+
+def mix_pro(music, sfx, speech_spans, music_under_db=-22, duck_db=-12):
+    """music/sfx = pistas separadas. La música queda `music_under_db` dB bajo el pico de los SFX y se atenúa `duck_db`
+    mientras hay diálogo (ducking suave)."""
+    sp = np.abs(sfx).max() or 1.0
+    mp = np.abs(music).max() or 1.0
+    music = music * (sp * 10 ** (music_under_db / 20) / mp)
+    env = np.ones(len(music))
+    for a, b in speech_spans:
+        i0, i1 = int(max(0, a) * SR), int(min(len(music) / SR, b) * SR)
+        env[i0:i1] = 10 ** (duck_db / 20)
+    k = int(0.12 * SR)
+    env = np.convolve(env, np.ones(k) / k, mode="same")                     # entrada y salida suaves
+    return sfx + music * env

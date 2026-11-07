@@ -14,15 +14,22 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 def cmd_render(a):
     from .engine import render_video
     from . import sprite
-    ep = dict(importlib.import_module(f"frnky.episodes.{a.episode.replace('-', '_')}").EP)
+    mod = importlib.import_module(f"frnky.episodes.{a.episode.replace('-', '_')}")
+    ep = dict(mod.EP)
+    if hasattr(mod, "STATE"):
+        mod.STATE["variant"] = a.variant or "A"
     m = ep["meta"]
     post = tracker.register(m["id"], m["category"], m["caption_hook"])      # idempotente: el CTA no cambia al re-renderizar
     out = ROOT / "videos"; out.mkdir(exist_ok=True)
     suffix = ""
+    if a.variant:
+        ep["variant"] = a.variant; suffix += f"-{a.variant}"
+    if a.cta and ep.get("cta_options"):
+        ep["final_cta"] = ep["cta_options"][a.cta]; suffix += f"-cta-{a.cta}"
     if a.style == "kawaii":                                                # mismo guion y mismo CTA, otro estilo (prueba A/B)
         sprite.STYLE["name"] = "kawaii"; ep["style"] = "kawaii"; suffix = "-kawaii"
     mp4 = render_video(ep, post["cta"], out / f"{m['id']}{suffix}.mp4", ROOT / "build" / (m["id"] + suffix))
-    caps = build_captions(m["caption_hook"], post["cta"], m.get("topic", ""))
+    caps = build_captions(m["caption_hook"], post["cta"], m.get("topic", ""), m.get("tags"), m.get("caption"))
     (out / f"{m['id']}.captions.json").write_text(json.dumps(caps, ensure_ascii=False, indent=1) + "\n")
     print(mp4, "| CTA:", post["cta"], "| estilo:", a.style)
 
@@ -67,13 +74,15 @@ def cmd_report(a):
 
 
 def cmd_result(a):
-    results.add(fecha=a.fecha, hora=a.hora, red=a.red, tema=a.tema, gancho=a.gancho, duracion_s=a.duracion, cta=a.cta, estilo=a.estilo,
+    results.add(fecha=a.fecha, hora=a.hora, red=a.red, tema=a.tema, gancho=a.gancho, duracion_s=a.duracion, cta=a.cta, estilo=a.estilo, variante=a.variante, experimento=a.experimento, retencion_3s=a.retencion_3s, pct_visto_final=a.pct_visto_final,
                 vistas=a.vistas, likes=a.likes, comentarios=a.comentarios, compartidos=a.compartidos, guardados=a.guardados)
     print("fila agregada a resultados.csv")
 
 
 def cmd_analisis(a):
     print("\n".join(results.vs_baseline()))
+    for ex in ("gancho", "cta"):
+        print("\n".join(results.ab_report(ex)))
     for net in (None, "tiktok", "youtube", "instagram"):
         print("\n".join(results.decisions(net)))
     for k, (c, s_, n) in results.by_cta().items():
@@ -83,7 +92,7 @@ def cmd_analisis(a):
 def main():
     ap = argparse.ArgumentParser(prog="frnky")
     sub = ap.add_subparsers(required=True)
-    r = sub.add_parser("render"); r.add_argument("episode"); r.add_argument("--style", default="pixel", choices=["pixel", "kawaii"]); r.set_defaults(f=cmd_render)
+    r = sub.add_parser("render"); r.add_argument("episode"); r.add_argument("--style", default="pixel", choices=["pixel", "kawaii"]); r.add_argument("--variant", default=""); r.add_argument("--cta", default=""); r.set_defaults(f=cmd_render)
     c = sub.add_parser("caption"); c.add_argument("id"); c.set_defaults(f=cmd_caption)
     sub.add_parser("ideas").set_defaults(f=cmd_ideas)
     sub.add_parser("plan-week").set_defaults(f=cmd_plan)
@@ -92,7 +101,7 @@ def main():
         l.add_argument(f"--{k}", type=int)
     l.set_defaults(f=cmd_log)
     r2 = sub.add_parser("result")
-    for k in ("fecha", "hora", "red", "tema", "gancho", "cta", "estilo"):
+    for k in ("fecha", "hora", "red", "tema", "gancho", "cta", "estilo", "variante", "experimento", "retencion_3s", "pct_visto_final"):
         r2.add_argument(f"--{k}", default="")
     r2.add_argument("--duracion", default="")
     for k in ("vistas", "likes", "comentarios", "compartidos", "guardados"):
@@ -100,6 +109,7 @@ def main():
     r2.set_defaults(f=cmd_result)
     sub.add_parser("analisis").set_defaults(f=cmd_analisis)
     sub.add_parser("calendario").set_defaults(f=lambda a: [print(r["fecha"], r["dia"], r["hora_mx"], r["idea"], "|", r["cta"], "|", r["redes"]) for r in tracker.calendario()])
+    sub.add_parser("sfx-assets").set_defaults(f=lambda a: print(__import__("frnky.sfx_assets", fromlist=["export"]).export(importlib.import_module("frnky.episodes.ultimos_zombis").SFX_TIMELINE)))
     sub.add_parser("report").set_defaults(f=cmd_report)
     sub.add_parser("schedule").set_defaults(f=lambda a: print(tracker.schedule_check()))
     sub.add_parser("bio").set_defaults(f=lambda a: [print(f"--- {k}\n{v}\n") for k, v in __import__("frnky.config", fromlist=["BIOS"]).BIOS.items()])
