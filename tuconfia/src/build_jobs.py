@@ -88,7 +88,18 @@ def estimate():
     return starts, ends, t + 1.0 + LOOP_D
 
 
-if narr:
+FA = f'{ROOT}/audio/alineacion_jobs.json'
+LW = {}                                      # palabras con tiempos exactos (alineación forzada de ElevenLabs)
+if narr and os.path.exists(FA):
+    ws = [w for w in json.load(open(FA))['words'] if w['text'].strip()]
+    k_ = 0
+    for l in LINES:
+        n_ = len(l['tts'].split()); LW[l['id']] = ws[k_:k_ + n_]; k_ += n_
+    assert k_ == len(ws), (k_, len(ws))
+    st = [LW[l['id']][0]['start'] for l in LINES]; en = [LW[l['id']][-1]['end'] for l in LINES]
+    TOTAL = en[-1] + .45 + LOOP_D
+    MODE = 'voz real (alineación forzada)'
+elif narr:
     st, en, TOTAL = align_real(narr)
     MODE = 'voz real'
 else:
@@ -155,10 +166,12 @@ def render_scene(i, t):
     for tc in CUTS:                                          # sacudida breve en cada corte duro
         if 0 <= t - tc < .25: sh_ += math.sin((t - tc) * 110) * 6 * (1 - (t - tc) / .25)
     cx += math.sin(t * 1.3) * .35; cy += math.cos(t * 1.7) * .3   # balanceo de cámara
-    big = img.resize((WW * 8, WH * 8), Image.NEAREST); cx += sh_ / 8; cy += sh_ / 11
-    cw, ch = VW / z, VH / z
-    x0 = min(max(cx * 8 - cw / 2, 0), WW * 8 - cw); y0 = min(max(cy * 8 - ch / 2, 0), WH * 8 - ch)
-    out = big.resize((VW, VH), Image.BILINEAR, box=(x0, y0, x0 + cw, y0 + ch))
+    big = img.resize((WW * 16, WH * 16), Image.NEAREST); cx += sh_ / 8; cy += sh_ / 11     # x16: los píxeles del mundo siguen siendo cuadrados nítidos
+    cw, ch = VW * 2 / z, VH * 2 / z                                                       # tamaño del recorte en el lienzo x16
+    x0 = min(max(cx * 16 - cw / 2, 0), WW * 16 - cw); y0 = min(max(cy * 16 - ch / 2, 0), WH * 16 - ch)
+    x0, y0 = round(x0 / 16) * 16, round(y0 / 16) * 16                                     # recorte alineado a píxeles del mundo (sin brillos de sub-píxel)
+    x0 = min(max(x0, 0), WW * 16 - cw); y0 = min(max(y0, 0), WH * 16 - ch)
+    out = big.resize((VW, VH), Image.BOX, box=(x0, y0, x0 + cw, y0 + ch))
     out = ImageEnhance.Color(out).enhance(1.28)
     return ImageEnhance.Contrast(out).enhance(1.06)
 
@@ -194,6 +207,7 @@ for l in LINES:
             if m.group(2): toks[-1] = (toks[-1][0] + m.group(2), True)
         else: toks.append((m.group(3), False))
     groups, cur, n = [], [], 0
+    tokw = [5 if re.fullmatch(r'\d{4}\W*', w) else 1 for w, _ in toks]          # un año se dice con 5 palabras
     for w, e in toks:
         if cur and (n + len(w) > 17 or len(cur) >= 3 or (cur[-1][0][-1] in '.?!…' )):
             groups.append(cur); cur, n = [], 0
@@ -201,6 +215,15 @@ for l in LINES:
     if cur: groups.append(cur)
     tot = sum(len(' '.join(w for w, _ in g)) + 2 for g in groups)
     t0, t1 = LSTART[l['id']], LEND[l['id']]
+    if l['id'] in LW and sum(tokw) == len(LW[l['id']]):
+        wi, tp, firsts = 0, 0, []                                       # índice de la primera palabra hablada de cada grupo
+        for g in groups:
+            firsts.append(wi); wi += sum(tokw[tp:tp + len(g)]); tp += len(g)
+        starts_ = [LW[l['id']][i]['start'] for i in firsts]
+        for gi, g in enumerate(groups):
+            a_ = starts_[gi]; b_ = starts_[gi + 1] if gi + 1 < len(groups) else t1 + .12
+            CHUNKS.append((a_ if gi else t0 - .05, b_, g, l['id']))
+        continue
     a = t0
     for g in groups:
         d = (t1 - t0) * (len(' '.join(w for w, _ in g)) + 2) / tot
@@ -417,7 +440,7 @@ def synth_audio():
     T0 = next(i for i in range(0, len(e0) - hw, hw) if e0[i:i + hw].max() > .02) / SR - .02
     T0 = max(0, T0)
     seg = song[int((T0 - 0.0) * SR):int(T0 * SR) + N].copy()
-    seg *= .045 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)     # música baja: la voz manda
+    seg *= .095 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)     # música bien presente, la voz sigue delante
     v = np.arange(len(seg)) / SR
     dip = np.where((v > G - SIL - .05) & (v < G - .012), np.clip(1 - (v - (G - SIL - .05)) / .12, 0, 1), 1.0)   # el piano se apaga ...
     dip = np.where(v >= G - .012, 1.0, dip)                                                                   # ... y vuelve con el golpe
@@ -434,7 +457,7 @@ def synth_audio():
         env = np.sqrt(np.convolve(voice[:, 0] ** 2, np.ones(int(.08 * SR)) / int(.08 * SR), 'same'))
         env = np.convolve(env, np.ones(int(.25 * SR)) / int(.25 * SR), 'same')
         gate = np.clip(env / (env.max() * .12 + 1e-9), 0, 1)
-        m *= (1 - .7 * gate)[:, None]
+        m *= (1 - .45 * gate)[:, None]
         voice *= .14 / (np.sqrt((voice[voice[:, 0] ** 2 > 1e-4] ** 2).mean()) + 1e-9)   # voz al frente (rms hablado ≈ -17 dB)
     mix = m + sfx * .8
     if voice is not None: mix = mix + voice
@@ -459,7 +482,7 @@ if __name__ == '__main__':
     print('drop de la canción en', round(drop, 2), 's -> colocado en vídeo', round(G, 2), 's', file=sys.stderr)
     nf = int(TOTAL * FPS)
     enc = subprocess.Popen(['ffmpeg', '-y', '-v', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{VW}x{VH}', '-r', str(FPS), '-i', '-',
-                            '-i', f'{ROOT}/audio/mezcla.wav', '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-pix_fmt', 'yuv420p',
+                            '-i', f'{ROOT}/audio/mezcla.wav', '-c:v', 'libx264', '-preset', 'slow', '-crf', '14', '-tune', 'animation', '-pix_fmt', 'yuv420p',
                             '-c:a', 'aac', '-b:a', '256k', '-shortest', '-movflags', '+faststart', f'{ROOT}/out/{out_name}'], stdin=subprocess.PIPE)
     for fi in range(nf):
         enc.stdin.write(frame(fi).tobytes())
