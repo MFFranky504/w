@@ -488,6 +488,7 @@ def synth_audio():
         return np.frombuffer(raw, np.float32).reshape(-1, 2)
     TR_ = {k: dec_(f'{ROOT}/audio/{k}.m4a') for k in ('every_moment', 'heard_em_say', 'congratulations')}
     lvl = lambda x_, g_: x_ * (g_ / (np.sqrt((x_[:int(20 * SR)] ** 2).mean()) + 1e-9))
+    MUS_RMS = .105                                                     # volumen único de la música (rms), igual en todas las secciones
     S0, XF = 4.0, 1.8                                                  # el video arranca dentro de la canción (4 s): hay música "anterior" para empalmar el final con el principio
     SECT = [('every_moment', S0, 0.0, sc_('love'), .12),               # 1. curiosidad, diagnóstico y tristeza: piano íntimo
             ('heard_em_say', 2.0, sc_('love'), sc_('hosp'), .10),      # 2. seguir adelante: más pulso y energía
@@ -496,8 +497,11 @@ def synth_audio():
     m = np.zeros((N, 2), np.float32); FD = .9
     for k_, (name_, off_, a_, b_, g_) in enumerate(SECT):
         i0, i1 = int(a_ * SR), min(N, int(b_ * SR)); n_ = i1 - i0
-        seg_ = lvl(TR_[name_], g_)[int(off_ * SR):int(off_ * SR) + n_].copy()
+        seg_ = TR_[name_][int(off_ * SR):int(off_ * SR) + n_].copy()
         if len(seg_) < n_: seg_ = np.pad(seg_, ((0, n_ - len(seg_)), (0, 0)))
+        sf_ = MUS_RMS / (np.sqrt((seg_ ** 2).mean()) + 1e-9); seg_ *= sf_          # mismo volumen en TODAS las secciones: se mide el tramo que realmente suena
+        if k_ == 0: sf0_ = sf_
+        print(f'música sección {k_ + 1} ({name_}): factor {sf_:.2f}', file=sys.stderr)
         v_ = np.arange(n_) / SR
         env_ = np.ones(n_, np.float32)
         if k_ > 0: env_ *= np.clip(v_ / FD, 0, 1)                      # entra con fundido
@@ -506,9 +510,9 @@ def synth_audio():
             vt_ = v_ + a_
             env_ *= np.where((vt_ > G - SIL - .05) & (vt_ < G - .012), np.clip(1 - (vt_ - (G - SIL - .05)) / .12, 0, 1), 1.0)   # el piano se apaga ...
             env_ = np.where(vt_ >= G - .012, np.maximum(env_, 1.0) * np.clip((vt_ - (G - .012)) / .012, 0, 1), env_)            # ... y vuelve con el golpe
-            env_ *= np.clip(.85 + .4 * np.clip((vt_ - (G - 3)) / 4, 0, 1), .85, 1.25)                                          # crece hacia el final
+            env_ *= np.clip(.95 + .15 * np.clip((vt_ - (G - 3)) / 4, 0, 1), .95, 1.1)                                          # crece hacia el final
         m[i0:i1] += seg_ * env_[:, None]
-    pre = lvl(TR_['every_moment'], .12)[int((S0 - XF) * SR):int(S0 * SR)].copy() * .78
+    pre = TR_['every_moment'][int((S0 - XF) * SR):int(S0 * SR)].copy() * sf0_
     nx = int(XF * SR); w_ = np.linspace(0, np.pi / 2, nx)[:, None]            # empalme de potencia constante: el final entra en la música del principio
     m[N - nx:N] = m[N - nx:N] * np.cos(w_) + pre[:nx] * np.sin(w_)
     T0 = 0.0
