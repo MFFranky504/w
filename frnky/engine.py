@@ -161,18 +161,18 @@ def title_card(img, text, cy, size=80, width=860):
     text_block(img, text, cy, size, (252, 224, 110), stroke=0, width=width, line_gap=1.15)
 
 
-def hud(img, level, vibe):
-    """HUD en una sola píldora bajo la caja de diálogo: ya no tapa el marcador de la TV ni las caras."""
+def hud(img, items):
+    """HUD de píldoras bajo la caja de diálogo (no tapa marcadores ni caras). items = [(etiqueta, valor), ...]"""
     d = ImageDraw.Draw(img)
     f = pf(30)
-    s1, s2 = f"NIVEL {level}", f"ONDA {vibe}%"
-    w1, w2 = d.textlength(s1, font=f) + 30, d.textlength(s2, font=f) + 30
-    y = 1388
-    d.rounded_rectangle([64, y, 64 + w1, y + 44], radius=12, fill=(20, 22, 56), outline=(255, 214, 90), width=3)
-    d.text((64 + w1 / 2, y + 22), s1, font=f, fill=(255, 214, 90), anchor="mm")
-    x2 = 64 + w1 + 14
-    d.rounded_rectangle([x2, y, x2 + w2, y + 44], radius=12, fill=(20, 22, 56), outline=(255, 140, 180), width=3)
-    d.text((x2 + w2 / 2, y + 22), s2, font=f, fill=(255, 140, 180), anchor="mm")
+    cols = [(255, 214, 90), (255, 140, 180)]
+    x, y = 64, 1388
+    for k, (label, val) in enumerate(items[:2]):
+        s_ = f"{label} {val}"
+        w = d.textlength(s_, font=f) + 30
+        d.rounded_rectangle([x, y, x + w, y + 44], radius=12, fill=(20, 22, 56), outline=cols[k], width=3)
+        d.text((x + w / 2, y + 22), s_, font=f, fill=cols[k], anchor="mm")
+        x += w + 14
 
 
 def render_video(ep, cta, out_mp4, workdir):
@@ -238,7 +238,7 @@ def render_video(ep, cta, out_mp4, workdir):
                 a_[..., 0] = np.roll(a_[..., 0], dx, axis=1); a_[..., 2] = np.roll(a_[..., 2], -dx, axis=1)
                 img = Image.fromarray(a_)
         if "hud" in ep:
-            hud(img, *ep["hud"](t))
+            hud(img, ep["hud"](t))
 
         def overlays(im, tt, cta_on):
             bt = ep["banner"](tt) if "banner" in ep else ""

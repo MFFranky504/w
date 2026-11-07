@@ -128,8 +128,8 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(hx, hy, hx + 5, hy + 5, hand); R(hx, hy + 4, hx + 5, hy + 5, dk(hand, 0.8))
 
     if pose != "cheer":
-        vert_arm(-11, -8, 30, 40 if pose == "ctrl" else 47)   # con control: brazo corto (sin segunda mano colgando)
-        if ch.get("band") and pose != "ctrl":
+        vert_arm(-11, -8, 30, 40 if pose in ("ctrl", "phone") else 47)   # con control: brazo corto (sin segunda mano colgando)
+        if ch.get("band") and pose not in ("ctrl", "phone"):
             R(-11, 41, -8, 42, (32, 150, 84, 255)); R(-11, 42, -8, 43, WHITE); R(-11, 43, -8, 44, (210, 50, 60, 255))
     if pose == "down":
         vert_arm(8, 11, 30, 47)
@@ -140,12 +140,16 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
     elif pose == "cheer":
         stair_arm([(-12, 30), (-16, 26), (-19, 22)], (-20, 17))
         stair_arm([(8, 30), (12, 26), (15, 22)], (15, 17))
-    elif pose == "ctrl":
+    elif pose in ("ctrl", "phone"):
         vert_arm(8, 11, 30, 40)
         R(-11, 38, 11, 42, coat if kind == "hoodie" else hand)
         R(-7, 39, -4, 43, hand); R(4, 39, 7, 43, hand)
-        body(-5, 38, 5, 44, (70, 74, 100, 255))
-        R(-4, 39, -3, 40, (190, 70, 70, 255)); R(3, 39, 4, 40, (80, 160, 200, 255)); R(-1, 41, 1, 42, (220, 190, 100, 255))
+        if pose == "phone":      # celular con pantalla encendida
+            R(-3, 33, 4, 44, (34, 34, 48, 255)); R(-2, 34, 3, 43, (130, 215, 255, 255)); R(-2, 34, 3, 36, (230, 250, 255, 255)); R(-1, 38, 2, 39, (60, 140, 220, 255))
+            R(-7, 39, -4, 43, hand); R(4, 39, 7, 43, hand)
+        else:
+            body(-5, 38, 5, 44, (70, 74, 100, 255))
+            R(-4, 39, -3, 40, (190, 70, 70, 255)); R(3, 39, 4, 40, (80, 160, 200, 255)); R(-1, 41, 1, 42, (220, 190, 100, 255))
     # ---- cuello y cabeza (grande) ----
     R(-3, 27, 3, 30, dk(skin, 0.82))
     d.rounded_rectangle([CX - 14, 4, CX + 13, 29], radius=7, fill=skin)

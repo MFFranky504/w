@@ -6,5 +6,13 @@
   "cta": "Etiqueta a tu bro que haría esto",
   "date": "2026-11-06",
   "metrics": {}
+ },
+ {
+  "id": "curis-del-cole",
+  "category": "amistad",
+  "hook": "Cuando descubren que tu bro es el dueño de la cuenta de curis del cole 👀",
+  "cta": "Mándaselo a tu bro",
+  "date": "2026-11-07",
+  "metrics": {}
  }
 ]

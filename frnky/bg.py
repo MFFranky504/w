@@ -98,7 +98,7 @@ def _room_base(t, night=False):
     return img
 
 
-def tv(img, t, score, verdict, label="K / D", night=False):
+def tv(img, t, score, verdict, label="K / D", night=False, big=None):
     d = ImageDraw.Draw(img)
     d.rectangle([104, 96, 258, 244], fill=OL); d.rectangle([108, 100, 254, 240], fill=(70, 74, 100))
     d.rectangle([108, 100, 254, 104], fill=(120, 126, 160))
@@ -115,7 +115,7 @@ def tv(img, t, score, verdict, label="K / D", night=False):
         col = (255, 235, 120)
     txt(d, (181, 124), verdict, 18, col)
     txt(d, (181, 152), label, 14, (230, 236, 255))
-    txt(d, (181, 188), f"{score[0]} - {score[1]}", 38, (255, 255, 255))
+    txt(d, (181, 188), big if big is not None else f"{score[0]} - {score[1]}", 38 if big is None or len(big) < 7 else 30, (255, 255, 255))
     for i in range(6):   # barrita de vida estilo juego
         d.rectangle([124 + i * 8, 214, 129 + i * 8, 220], fill=col if (i < 4 or not good) else sh(col, .4))
     if int(t * 3) % 2 == 0:
@@ -315,17 +315,18 @@ def _extras(img, kind):
     return img
 
 
-def room(t, night=False, score=(0, 14), verdict="DERROTA", label="K / D", cans_n=0, kind="living"):
+def room(t, night=False, score=(0, 14), verdict="DERROTA", label="K / D", cans_n=0, kind="living", big=None, likes=0):
     if kind == "living":
         img = grade(_room_base(t, night))
     else:
-        img = _extras(grade({"street": _street_base, "bedroom": _bedroom_base, "arcade": _arcade_base}[kind](t), 1.2, 1.04), kind)
+        img = _extras(grade({"street": _street_base, "bedroom": _bedroom_base, "arcade": _arcade_base, "patio": _patio_base,
+                             "class": _class_base, "phone": lambda tt: _phone_base(tt, likes)}[kind](t), 1.2 if kind != "phone" else 1.0, 1.04 if kind != "phone" else 1.0), kind)
     if night and kind == "living":
         night_grade(img, 0.42)
     if cans_n:
         cans(img, cans_n)
-    if kind != "street":
-        tv(img, t, score, verdict, label, night or kind == "bedroom")
+    if kind in ("living", "bedroom", "arcade"):
+        tv(img, t, score, verdict, label, night or kind == "bedroom", big)
         if night or kind == "bedroom":
             img = glow_img(img, (104, 96, 258, 244), (70, 110, 220), 130, 26)
     out = Image.new("RGBA", (W, H))
@@ -389,3 +390,96 @@ def sticker(img, x, y, text, age, fill=(236, 54, 84)):
     d.rounded_rectangle([x0 - 2, y0 - 2, x0 + w + 2, y0 + 30], radius=6, fill=(255, 255, 255))
     d.rounded_rectangle([x0, y0, x0 + w, y0 + 28], radius=5, fill=fill)
     txt(d, (x, y0 + 14), text, 20, (255, 255, 255), outline=(60, 10, 30))
+
+
+def _patio_base(t):
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 255)); d = ImageDraw.Draw(img)
+    for y in range(0, 330, 3):
+        u = y / 330
+        d.rectangle([0, y, W, y + 3], fill=(int(90 + 120 * u), int(170 + 50 * u), int(250 - 10 * u)))
+    cx = int(t * 6) % 420 - 60
+    for ox, oy, w in ((0, 60, 60), (40, 48, 36), (-20, 70, 48)):
+        d.rounded_rectangle([cx + ox, oy, cx + ox + w, oy + 16], radius=8, fill=(255, 255, 255))
+    d.ellipse([290, 40, 330, 80], fill=(255, 236, 120))
+    # edificio de la escuela
+    d.rectangle([0, 120, W, 340], fill=OL); d.rectangle([3, 123, W - 3, 340], fill=(236, 168, 96))
+    d.rectangle([3, 123, W - 3, 134], fill=(190, 72, 80))
+    for r, wy in enumerate((146, 226)):
+        for wx in range(14, 340, 56):
+            if r == 1 and 150 < wx < 220:
+                continue
+            d.rectangle([wx, wy, wx + 38, wy + 54], fill=OL); d.rectangle([wx + 3, wy + 3, wx + 35, wy + 51], fill=(140, 210, 250))
+            d.rectangle([wx + 18, wy + 3, wx + 20, wy + 51], fill=OL); d.rectangle([wx + 3, wy + 26, wx + 35, wy + 28], fill=OL)
+    d.rectangle([150, 214, 222, 340], fill=OL); d.rectangle([154, 218, 218, 340], fill=(110, 78, 150)); d.rectangle([185, 218, 187, 340], fill=OL)
+    d.rectangle([128, 176, 244, 206], fill=OL); txt(d, (186, 191), "COLE 66", 22, (255, 230, 90))
+    d.rectangle([0, 340, W, H], fill=(178, 182, 204))
+    for y in range(352, H, 40):
+        d.rectangle([0, y, W, y + 1], fill=(150, 154, 180))
+    d.arc([60, 380, 300, 560], 180, 360, fill=(250, 250, 250), width=3)         # cancha
+    d.rectangle([40, 470, 320, 473], fill=(250, 250, 250)); d.ellipse([150, 440, 210, 500], outline=(250, 230, 90), width=3)
+    d.rectangle([300, 190, 306, 340], fill=OL); d.rectangle([276, 170, 330, 200], fill=OL)    # aro de básquet
+    d.rectangle([280, 174, 326, 196], fill=(250, 250, 250)); d.rectangle([298, 184, 310, 194], outline=(230, 80, 60), width=2)
+    d.rectangle([6, 328, 70, 348], fill=OL); d.rectangle([9, 331, 67, 340], fill=(160, 100, 64))        # banca
+    return img
+
+
+def _class_base(t):
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 255)); d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, W, 340], fill=(238, 200, 128))
+    for x in range(0, W, 30):
+        d.rectangle([x, 0, x + 14, 340], fill=(244, 210, 140))
+    d.rectangle([0, 300, W, 340], fill=(190, 140, 90))
+    d.rectangle([40, 58, 320, 226], fill=(150, 98, 64)); d.rectangle([46, 64, 314, 220], fill=OL)       # pizarrón
+    d.rectangle([49, 67, 311, 217], fill=(36, 118, 98))
+    txt(d, (180, 100), "MATE", 40, (245, 245, 235), outline=(24, 80, 66))
+    txt(d, (130, 160), "x2+2x=?", 22, (245, 245, 235), outline=(24, 80, 66))
+    d.line([210, 150, 290, 190], fill=(245, 245, 235), width=2); d.ellipse([240, 160, 270, 196], outline=(250, 230, 90), width=2)
+    d.rectangle([52, 214, 308, 220], fill=(150, 98, 64))
+    d.rectangle([324, 90, 352, 118], fill=OL); d.ellipse([326, 92, 350, 116], fill=(246, 246, 238), outline=OL)  # reloj
+    a = t * 0.6; d.line([338, 104, 338 + 8 * math.sin(a), 104 - 8 * math.cos(a)], fill=OL, width=2)
+    d.rectangle([0, 340, W, H], fill=(176, 124, 84))
+    for y in range(352, H, 28):
+        d.rectangle([0, y, W, y + 1], fill=(146, 98, 68))
+    for dx in (24, 150, 276):         # pupitres al fondo
+        d.rectangle([dx, 478, dx + 64, 490], fill=OL); d.rectangle([dx + 2, 480, dx + 62, 488], fill=(120, 168, 220))
+        d.rectangle([dx + 6, 490, dx + 10, 530], fill=OL); d.rectangle([dx + 54, 490, dx + 58, 530], fill=OL)
+    d.rectangle([20, 250, 120, 262], fill=OL); d.rectangle([22, 252, 118, 260], fill=(110, 78, 56))      # escritorio del profe
+    d.rectangle([60, 236, 90, 250], fill=(250, 90, 80), outline=OL)                                       # manzana/libro
+    return img
+
+
+def _phone_base(t, likes=0):
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 255)); d = ImageDraw.Draw(img)
+    for y in range(0, H, 4):
+        u = y / H
+        d.rectangle([0, y, W, y + 4], fill=(int(44 + 30 * u), int(30 + 10 * u), int(96 + 40 * u)))
+    for k in range(12):
+        x = (k * 61) % W; y = (k * 97 + int(t * 20)) % H
+        d.rectangle([x, y, x + 2, y + 2], fill=(150, 130, 220))
+    x0, y0, x1, y1 = 76, 136, 284, 416
+    d.rounded_rectangle([x0 - 7, y0 - 7, x1 + 7, y1 + 7], radius=22, fill=OL)
+    d.rounded_rectangle([x0, y0, x1, y1], radius=16, fill=(20, 22, 44))
+    d.rectangle([156, y0 + 3, 204, y0 + 8], fill=OL)
+    d.ellipse([x0 + 10, y0 + 18, x0 + 40, y0 + 48], fill=(255, 90, 170), outline=(255, 255, 255), width=2)     # avatar
+    txt(d, (x0 + 25, y0 + 33), "C", 18, (255, 255, 255), outline=(150, 20, 90))
+    txt(d, (x0 + 48, y0 + 26), "curis_del_cole", 15, (255, 255, 255), outline=(20, 22, 44), anchor="lm")
+    txt(d, (x0 + 48, y0 + 42), "cuenta anonima", 11, (150, 160, 200), outline=(20, 22, 44), anchor="lm")
+    txt(d, (x1 - 40, y0 + 44), "3:07 AM", 12, (255, 214, 90), outline=(20, 22, 44))
+    py = y0 + 58
+    d.rectangle([x0 + 6, py, x1 - 6, py + 128], fill=(120, 190, 240))                                       # foto del post
+    d.rectangle([x0 + 6, py + 78, x1 - 6, py + 128], fill=(196, 150, 100))
+    d.rectangle([x0 + 30, py + 70, x1 - 30, py + 86], fill=(150, 100, 64)); d.rectangle([x0 + 30, py + 70, x1 - 30, py + 73], fill=(190, 140, 90))
+    d.ellipse([x0 + 82, py + 40, x0 + 126, py + 80], fill=(166, 114, 84)); d.rectangle([x0 + 82, py + 36, x0 + 128, py + 54], fill=(52, 36, 30))
+    d.rectangle([x0 + 96, py + 62, x0 + 104, py + 64], fill=OL); d.rectangle([x0 + 108, py + 62, x0 + 116, py + 64], fill=OL)
+    z = int(t * 3) % 3
+    for k in range(3):
+        txt(d, (x0 + 132 + k * 14, py + 40 - k * 12 - (4 if k == z else 0)), "z", 14 + 4 * k, (255, 255, 255), outline=(60, 90, 160))
+    d.rectangle([x0 + 6, py + 106, x1 - 6, py + 128], fill=(14, 14, 28)); txt(d, ((x0 + x1) // 2, py + 117), "MEMO EN MATE", 15, (255, 255, 255), outline=(14, 14, 28))
+    iy = py + 138
+    hx = x0 + 18
+    d.rectangle([hx - 6, iy - 2, hx + 6, iy + 4], fill=(240, 60, 90)); d.rectangle([hx + 6, iy - 2, hx + 18, iy + 4], fill=(240, 60, 90))
+    d.polygon([(hx - 6, iy + 3), (hx + 18, iy + 3), (hx + 6, iy + 15)], fill=(240, 60, 90))
+    txt(d, (hx + 34, iy + 5), f"{4000 + int(t * 53):,}", 15, (255, 255, 255), outline=(20, 22, 44), anchor="lm")
+    txt(d, (x0 + 14, iy + 28), "¿Quien sera el dueno?", 13, (200, 210, 240), outline=(20, 22, 44), anchor="lm")
+    txt(d, (x0 + 14, iy + 44), "jajaja ya dime quien es", 12, (150, 160, 200), outline=(20, 22, 44), anchor="lm")
+    return img

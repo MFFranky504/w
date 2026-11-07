@@ -55,8 +55,11 @@ FEET = 352
 PRO = dict(expr="smug", shades=True, headset=True, shirt=(34, 34, 46))
 
 
+LINES_ACTIVE = [LINES]   # el episodio activo registra aquí sus líneas
+
+
 def speaking(t):
-    for t0, t1, who, _ in LINES:
+    for t0, t1, who, _ in LINES_ACTIVE[0]:
         if t0 <= t < t1:
             return who.split("+")
     return []
@@ -100,7 +103,7 @@ def hud(t):
         vibe = max(0, round(100 - 100 * (t - 20.4) / 6.0))
     elif t < 29.5:
         vibe = 0
-    return lvl, vibe
+    return [("NIVEL", lvl), ("ONDA", f"{vibe}%")]
 
 
 def banner(t):
