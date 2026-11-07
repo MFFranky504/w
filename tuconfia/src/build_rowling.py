@@ -113,15 +113,15 @@ print('modo:', MODE, 'duración total', round(TOTAL, 2), file=sys.stderr)
 # ---------------------------------------------------------------- escenas
 PS = S2.portrait_scene
 SCENES = [
-    dict(n='street', a='L1', b='L1', fn=lambda t, u: S6.street(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.04), (.5001, 66, 168, 1.55), (1, 92, 170, 1.55)]),
-    dict(n='flat', a='L2', b='L2', fn=lambda t, u: S6.flat(t, u), cam=[(0, 80, 146, 1.0), (.5, 84, 150, 1.05), (.5001, 84, 172, 1.45), (1, 88, 174, 1.55)]),
-    dict(n='portS', a='L3', b='L3', fn=lambda t, u: PS(t, 'rowling', 'sad', (0, 1), 'cold'), cam=[(0, 80, 160, 1.3), (1, 80, 150, 1.6)]),
-    dict(n='cafe', a='L4', b='L4', fn=lambda t, u: S6.cafe(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 150, 1.04), (.5001, 50, 172, 1.7), (1, 52, 174, 1.9)]),
-    dict(n='rejections', a='L5', b='L5', fn=lambda t, u: S6.rejections(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.05)]),
-    dict(n='alice', a='L6', b='L6', fn=lambda t, u: S6.alice(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 150, 1.03), (.5001, 82, 168, 1.5), (1, 82, 170, 1.6)]),
-    dict(n='books', a='L7', b='L7', fn=lambda t, u: S6.bookstore(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.08)]),
-    dict(n='portW', a='L8', b='L8', fn=lambda t, u: PS(t, 'rowling', 'warm', (0, 0), 'warm'), cam=[(0, 80, 160, 1.3), (1, 80, 150, 1.6)]),
-    dict(n='finale', a='L9', b='L9', fn=lambda t, u: S6.finale(t, u), cam=[(0, 80, 140, 1.0), (.6, 80, 142, 1.03), (1, 80, 146, 1.1)]),
+    dict(n='street', a='L1', b='L1', fn=lambda t, u: S6.street(t, u), cam=[(0, 80, 146, 1.0), (.5, 82, 146, 1.0), (.5001, 78, 172, 1.5), (1, 114, 172, 1.5)]),
+    dict(n='flat', a='L2', b='L2', fn=lambda t, u: S6.flat(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 86, 170, 1.5), (1, 90, 172, 1.5)]),
+    dict(n='portS', a='L3', b='L3', fn=lambda t, u: PS(t, 'rowling', 'sad', (0, 1), 'cold'), cam=[(0, 80, 160, 1.25), (1, 80, 152, 1.25)]),
+    dict(n='cafe', a='L4', b='L4', fn=lambda t, u: S6.cafe(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 52, 172, 1.5), (1, 56, 174, 1.5)]),
+    dict(n='rejections', a='L5', b='L5', fn=lambda t, u: S6.rejections(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.0)]),
+    dict(n='alice', a='L6', b='L6', fn=lambda t, u: S6.alice(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 82, 172, 1.5), (1, 82, 174, 1.5)]),
+    dict(n='books', a='L7', b='L7', fn=lambda t, u: S6.bookstore(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.0)]),
+    dict(n='portW', a='L8', b='L8', fn=lambda t, u: PS(t, 'rowling', 'warm', (0, 0), 'warm'), cam=[(0, 80, 160, 1.25), (1, 80, 152, 1.25)]),
+    dict(n='finale', a='L9', b='L9', fn=lambda t, u: S6.finale(t, u), cam=[(0, 80, 140, 1.0), (.6, 80, 140, 1.0), (1, 80, 146, 1.25)]),
 ]
 for i, s in enumerate(SCENES):
     s['t0'] = 0.0 if i == 0 else (LEND[SCENES[i - 1]['b']] + LSTART[s['a']]) / 2 if False else (LSTART[s['a']] if i else 0.0)
@@ -167,12 +167,13 @@ def render_scene(i, t, neg=False):
     for tc in CUTS:                                          # sacudida breve en cada corte duro
         if 0 <= t - tc < .25: sh_ += math.sin((t - tc) * 110) * 6 * (1 - (t - tc) / .25)
     cx += math.sin(t * 1.3) * .35; cy += math.cos(t * 1.7) * .3   # balanceo de cámara
-    big = img.resize((WW * 16, WH * 16), Image.NEAREST); cx += sh_ / 8; cy += sh_ / 11     # x16: los píxeles del mundo siguen siendo cuadrados nítidos
-    cw, ch = VW * 2 / z, VH * 2 / z                                                       # tamaño del recorte en el lienzo x16
-    x0 = min(max(cx * 16 - cw / 2, 0), WW * 16 - cw); y0 = min(max(cy * 16 - ch / 2, 0), WH * 16 - ch)
-    x0, y0 = round(x0 / 16) * 16, round(y0 / 16) * 16                                     # recorte alineado a píxeles del mundo (sin brillos de sub-píxel)
-    x0 = min(max(x0, 0), WW * 16 - cw); y0 = min(max(y0, 0), WH * 16 - ch)
-    out = big.resize((VW, VH), Image.BOX, box=(x0, y0, x0 + cw, y0 + ch))
+    # cámara pixel-perfect: escala ENTERA (8, 9, 10, 12... px por píxel del mundo) y recorte alineado a píxeles del mundo (sin interpolar)
+    sc = max(8, int(round(8 * z))); cx += sh_ / 8; cy += sh_ / 11
+    big = img.resize((WW * sc, WH * sc), Image.NEAREST)
+    vw, vh = VW / sc, VH / sc
+    x0 = int(round(min(max(cx - vw / 2, 0), WW - vw))) ; y0 = int(round(min(max(cy - vh / 2, 0), WH - vh)))
+    x0 = min(x0, int(WW - vw)); y0 = min(y0, int(WH - vh))
+    out = big.crop((x0 * sc, y0 * sc, x0 * sc + VW, y0 * sc + VH))
     out = ImageEnhance.Color(out).enhance(1.28)
     return ImageEnhance.Contrast(out).enhance(1.06)
 
