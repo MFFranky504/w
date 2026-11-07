@@ -411,7 +411,7 @@ def _patio_base(t):
             d.rectangle([wx, wy, wx + 38, wy + 54], fill=OL); d.rectangle([wx + 3, wy + 3, wx + 35, wy + 51], fill=(140, 210, 250))
             d.rectangle([wx + 18, wy + 3, wx + 20, wy + 51], fill=OL); d.rectangle([wx + 3, wy + 26, wx + 35, wy + 28], fill=OL)
     d.rectangle([150, 214, 222, 340], fill=OL); d.rectangle([154, 218, 218, 340], fill=(110, 78, 150)); d.rectangle([185, 218, 187, 340], fill=OL)
-    d.rectangle([128, 176, 244, 206], fill=OL); txt(d, (186, 191), "COLE 66", 22, (255, 230, 90))
+    d.rectangle([96, 174, 276, 208], fill=OL); txt(d, (186, 191), "COLEGIO BOLÍVAR", 19, (255, 230, 90))
     d.rectangle([0, 340, W, H], fill=(178, 182, 204))
     for y in range(352, H, 40):
         d.rectangle([0, y, W, y + 1], fill=(150, 154, 180))
