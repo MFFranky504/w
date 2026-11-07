@@ -235,6 +235,7 @@ LAY = [layout(c["text"]) for c in CLUES]
 
 # ======================= v4: Snoop (crip walk), Nas-inspired NYC scenes =======================
 from dance_data import DANCE, DANCE_FRAME
+NEAR_MEAN = (sum(r[4] for r in DANCE) / len(DANCE) + 5, sum(r[5] for r in DANCE) / len(DANCE))
 def dance_at(t):
     n = len(DANCE); x = (t / DANCE_FRAME) % n; i = int(x); f = x - i; p, q = DANCE[i], DANCE[(i + 1) % n]
     return [p[k] + (q[k] - p[k]) * f for k in range(8)]
@@ -268,8 +269,12 @@ def snoop_layer(t, mode="col"):
         d.polygon([(sx - 5, sy - 1), (sx + 5, sy - 1), (sx, sy + 5)], fill=(238, 238, 246, 255))         # white tee collar
     for s in (1, -1):                                                   # s=-1 circling hand (viewer's left), s=+1 low palm-down hand
         shd = (sx + s * 14, sy + 3)
-        tgt = (nxx + 5, nyy) if s == -1 else (fxx + 5, fyy)
-        el, hd = ik(shd, tgt, 15, 15, (lambda c: c[1]) if s == -1 else (lambda c: c[0]))
+        if s == -1:                                                     # elbow stays near the body; the forearm sweeps the circle
+            tgt = (nxx + 5, nyy); el = (shd[0] - 1 + .25 * (tgt[0] - NEAR_MEAN[0]), shd[1] + 13 + .25 * (tgt[1] - NEAR_MEAN[1]))
+            vx, vy = tgt[0] - el[0], tgt[1] - el[1]; r = max(9.0, min(16.0, math.hypot(vx, vy))); k = math.hypot(vx, vy) or 1
+            hd = (el[0] + vx / k * r, el[1] + vy / k * r)
+        else:
+            tgt = (fxx + 5, fyy); el, hd = ik(shd, tgt, 15, 15, lambda c: c[0])
         line(shd, el, 9, SHIRT); line(el, hd, 6, SLEEVE)
         if s == -1: d.ellipse((hd[0] - 3, hd[1] - 3, hd[0] + 3, hd[1] + 3), fill=C(SKIN), outline=OUT if col else DK)
         else: d.rectangle((hd[0] - 4, hd[1], hd[0] + 4, hd[1] + 3), fill=C(SKIN), outline=OUT if col else DK)
@@ -278,7 +283,10 @@ def snoop_layer(t, mode="col"):
     d.polygon([(cx - 9, cy - 3), (cx - 9, cy - 9), (cx, cy - 14), (cx + 9, cy - 9), (cx + 9, cy - 3)], fill=C(CAP), outline=OUT if col else DK)
     bx = cx + 3 * look; d.rectangle((bx - 10, cy - 4, bx + 10, cy - 2), fill=C(CAP))
     if col:
-        d.rectangle((cx - 6 + look * 2, cy - 1, cx + 6 + look * 2, cy + 2), fill=(15, 12, 22, 255)); d.point((cx - 4 + look * 2, cy - 1), fill=(255, 255, 255, 255))
+        for ex in (-5, 2):                                              # eyes (no sunglasses): heavy lids, white, pupil
+            d.rectangle((cx + ex + look * 1.5, cy - 1, cx + ex + 3 + look * 1.5, cy - 1), fill=(30, 18, 16, 255))
+            d.rectangle((cx + ex + look * 1.5, cy, cx + ex + 3 + look * 1.5, cy + 1), fill=(245, 240, 235, 255))
+            d.point((cx + ex + 1 + look * 2 + (1 if look > 0 else 0), cy), fill=(20, 12, 12, 255)); d.point((cx + ex + 1 + look * 2 + (1 if look > 0 else 0), cy + 1), fill=(20, 12, 12, 255))
         d.rectangle((cx - 2 + look, cy + 6, cx + 2 + look, cy + 9), fill=(40, 26, 24, 255))
     if col: return L_
     a = np.array(L_)[..., 3] > 0; arr = np.zeros((130, 110, 4), np.uint8); arr[a] = (14, 8, 34, 255)
