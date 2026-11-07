@@ -234,13 +234,10 @@ LAY = [layout(c["text"]) for c in CLUES]
 
 
 # ======================= v4: Snoop (crip walk), Nas-inspired NYC scenes =======================
-KEYS = [(0, (6, 12)), (.2, (9, 0)), (.4, (-3, -8)), (.65, (-11, 8)), (1.0, (6, 12))]   # near-hand path (rel. shoulder), from the reference GIF
-def hand_path(u):
-    u %= 1.0
-    for (u0, p0), (u1, p1) in zip(KEYS, KEYS[1:]):
-        if u0 <= u <= u1:
-            k = ease((u - u0) / (u1 - u0)); return (p0[0] + (p1[0] - p0[0]) * k, p0[1] + (p1[1] - p0[1]) * k)
-    return KEYS[0][1]
+from dance_data import DANCE, DANCE_FRAME
+def dance_at(t):
+    n = len(DANCE); x = (t / DANCE_FRAME) % n; i = int(x); f = x - i; p, q = DANCE[i], DANCE[(i + 1) % n]
+    return [p[k] + (q[k] - p[k]) * f for k in range(8)]
 def ik(p0, p1, l1, l2, pick):
     dx, dy = p1[0] - p0[0], p1[1] - p0[1]; dist = max(min(math.hypot(dx, dy), l1 + l2 - .05), abs(l1 - l2) + .05)
     ux, uy = dx / max(math.hypot(dx, dy), 1e-6), dy / max(math.hypot(dx, dy), 1e-6)
@@ -248,52 +245,48 @@ def ik(p0, p1, l1, l2, pick):
     mx, my = p0[0] + ux * a_, p0[1] + uy * a_; c1 = (mx - uy * h_, my + ux * h_); c2 = (mx + uy * h_, my - ux * h_)
     el = max((c1, c2), key=pick); return el, (p0[0] + ux * dist, p0[1] + uy * dist)
 def snoop_layer(t, mode="col"):
-    """Snoop doing the 'hand-circle groove' (recreated in original pixel art from the user's reference GIF; period 0.733 s)."""
+    """Snoop doing the side-to-side groove: motion measured from the reference GIF (2.2 s loop, hand circles every 0.73 s)."""
     col = mode == "col"; OUT = (14, 8, 34, 255); DK = (14, 8, 34, 255)
-    L_ = Image.new("RGBA", (100, 130), (0, 0, 0, 0)); d = ImageDraw.Draw(L_)
+    L_ = Image.new("RGBA", (110, 130), (0, 0, 0, 0)); d = ImageDraw.Draw(L_)
     SKIN = (150, 98, 68, 255); SHIRT = (28, 28, 40, 255); SLEEVE = (238, 238, 246, 255); PANT = (30, 32, 48, 255); PANTD = (22, 24, 38, 255)
-    CAP = (22, 22, 30, 255); BRAID = (50, 32, 28, 255); SHOE = (240, 240, 248, 255); GOLDC = (255, 215, 80, 255)
+    CAP = (22, 22, 30, 255); SHOE = (240, 240, 248, 255); GOLDC = (255, 215, 80, 255)
     C = (lambda c: c) if col else (lambda c: DK)
     def line(p, q, w, c):
         if col: d.line([p, q], fill=OUT, width=w + 2)
         d.line([p, q], fill=C(c), width=w)
-    u = (t / .733) % 1.0; th = 2 * math.pi * u; fy = 124
-    sway = 2.5 * math.sin(th); bob = 1.5 * abs(math.sin(math.pi * u)) + 1
-    hx, hy = 50 - sway * .5, fy - 52 + bob; sx, sy = 50 + sway, fy - 90 + bob
-    cx, cy = sx + 2.5 * math.sin(th + .7), sy - 14; look = math.sin(th + .7)
-    for s in (-1, 1):
-        line((cx + s * 7, cy + 2), (cx + s * 9 + 1.5 * math.sin(th * 2 + s), sy + 14), 2, BRAID)
-    for s in (-1, 1):                                              # legs planted, knees flex with the groove
-        hip = (hx + s * 5, hy + 6); ank = (50 + s * 7, fy - 2.0 * max(0, math.sin(th * .5 + s * math.pi / 2)))
+    hdx, hdy, tdx, ldx, nxx, nyy, fxx, fyy = dance_at(t); fy = 124; X0 = 55            # layer is 110 wide (x offset 5)
+    sx, sy = X0 + tdx + .3 * hdx, fy - 90 + .4 * hdy; hx, hy = X0 + .3 * tdx + .7 * ldx, fy - 52
+    cx, cy = X0 + hdx, sy - 10 + hdy * .6; look = max(-1, min(1, hdx / 8))
+    for s in (-1, 1):                                                   # legs: planted, counter-shifting like the reference
+        hip = (hx + s * 5, hy + 6); ank = (X0 + s * 7 + ldx, fy - 1)
         knee, _ = ik(hip, ank, 23.5, 23.5, lambda c, s=s: s * c[0])
         line(hip, knee, 9, PANT); line(knee, ank, 8, PANTD)
-        d.rectangle((ank[0] - 5 + (3 if s > 0 else 0) * 0, ank[1] - 3, ank[0] + 5, ank[1] + 1), fill=C(SHOE), outline=OUT if col else DK)
+        d.rectangle((ank[0] - 5, ank[1] - 3, ank[0] + 5, ank[1] + 1), fill=C(SHOE), outline=OUT if col else DK)
     d.polygon([(sx - 15, sy), (sx + 15, sy), (hx + 13, hy + 12), (hx - 13, hy + 12)], fill=C(SHIRT), outline=OUT if col else DK)
     if col:
-        d.ellipse((sx - 2, sy + 8, sx + 8, sy + 18), outline=(240, 240, 248, 255))          # chest emblem
-        d.line([(hx - 13, hy + 10), (hx + 13, hy + 10)], fill=(60, 60, 84, 255))
-    for s in (1, -1):                                              # s=+1: low palm-down arm, s=-1: circling hand (drawn last, in front)
+        d.ellipse((sx - 2, sy + 8, sx + 8, sy + 18), outline=(240, 240, 248, 255)); d.line([(hx - 13, hy + 10), (hx + 13, hy + 10)], fill=(60, 60, 84, 255))
+        d.polygon([(sx - 5, sy - 1), (sx + 5, sy - 1), (sx, sy + 5)], fill=(238, 238, 246, 255))         # white tee collar
+    for s in (1, -1):                                                   # s=-1 circling hand (viewer's left), s=+1 low palm-down hand
         shd = (sx + s * 14, sy + 3)
-        if s == -1: tx, ty = hand_path(u); tgt = (shd[0] + tx, shd[1] + ty)
-        else: tgt = (shd[0] + 6 + 2 * math.sin(th * 2), shd[1] + 30 + 1.5 * math.cos(th * 2))
+        tgt = (nxx + 5, nyy) if s == -1 else (fxx + 5, fyy)
         el, hd = ik(shd, tgt, 15, 15, (lambda c: c[1]) if s == -1 else (lambda c: c[0]))
         line(shd, el, 9, SHIRT); line(el, hd, 6, SLEEVE)
         if s == -1: d.ellipse((hd[0] - 3, hd[1] - 3, hd[0] + 3, hd[1] + 3), fill=C(SKIN), outline=OUT if col else DK)
         else: d.rectangle((hd[0] - 4, hd[1], hd[0] + 4, hd[1] + 3), fill=C(SKIN), outline=OUT if col else DK)
-    line((sx - 5, sy + 1), (sx, sy + 12), 1, GOLDC); line((sx + 5, sy + 1), (sx, sy + 12), 1, GOLDC); d.rectangle((sx - 2, sy + 12, sx + 2, sy + 15), fill=C(GOLDC))
-    d.ellipse((cx - 8, cy - 10, cx + 8, cy + 10), fill=C(SKIN), outline=OUT if col else DK)
+    line((sx - 5, sy + 4), (sx, sy + 14), 1, GOLDC); line((sx + 5, sy + 4), (sx, sy + 14), 1, GOLDC); d.rectangle((sx - 2, sy + 14, sx + 2, sy + 17), fill=C(GOLDC))
+    d.ellipse((cx - 8, cy - 10, cx + 8, cy + 10), fill=C(SKIN), outline=OUT if col else DK)                     # head sits right on the shoulders (no neck)
     d.polygon([(cx - 9, cy - 3), (cx - 9, cy - 9), (cx, cy - 14), (cx + 9, cy - 9), (cx + 9, cy - 3)], fill=C(CAP), outline=OUT if col else DK)
     bx = cx + 3 * look; d.rectangle((bx - 10, cy - 4, bx + 10, cy - 2), fill=C(CAP))
     if col:
         d.rectangle((cx - 6 + look * 2, cy - 1, cx + 6 + look * 2, cy + 2), fill=(15, 12, 22, 255)); d.point((cx - 4 + look * 2, cy - 1), fill=(255, 255, 255, 255))
-        d.rectangle((cx - 2 + look, cy + 6, cx + 2 + look, cy + 9), fill=(40, 26, 24, 255))   # goatee
+        d.rectangle((cx - 2 + look, cy + 6, cx + 2 + look, cy + 9), fill=(40, 26, 24, 255))
     if col: return L_
-    a = np.array(L_)[..., 3] > 0; arr = np.zeros((130, 100, 4), np.uint8); arr[a] = (14, 8, 34, 255)
+    a = np.array(L_)[..., 3] > 0; arr = np.zeros((130, 110, 4), np.uint8); arr[a] = (14, 8, 34, 255)
     left = a & ~np.roll(a, 1, 1); right = a & ~np.roll(a, -1, 1); top = a & ~np.roll(a, 1, 0)
     arr[left] = (70, 230, 255, 255); arr[right] = (255, 70, 190, 255); arr[top & ~left & ~right] = (255, 215, 90, 255)
     return Image.fromarray(arr, "RGBA")
 def snoop(im, t, x=135, feet=266, mode="col"):
-    l_ = snoop_layer(t, mode); im.paste(l_, (int(x - 50), int(feet - 124)), l_)
+    l_ = snoop_layer(t, mode); im.paste(l_, (int(x - 55), int(feet - 124)), l_)
 SPR_HAT_M = SPR_HAT.transpose(Image.FLIP_LEFT_RIGHT)
 def dim_top(im, n=140):
     a = np.array(im); a[:n] = (a[:n] * np.linspace(.55, 1, n)[:, None, None]).astype(np.uint8); return Image.fromarray(a)
