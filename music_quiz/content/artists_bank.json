@@ -1,0 +1,469 @@
+[
+ {
+  "name": "Eminem",
+  "genre": "hip hop",
+  "hashtag": "#HipHop",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "Su primer álbum, de 1996, se llama «Infinite» y lo sacó de forma independiente.",
+    "status": "verificado"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "En 1997 participó en el Rap Olympics de Los Ángeles, un torneo de batallas de rap.",
+    "status": "verificado"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "En 2002 fichó para su sello Shady Records a un rapero que luego tuvo el éxito «In Da Club».",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "«Lose Yourself» fue la primera canción de rap en ganar el Óscar a Mejor Canción Original (2003).",
+    "status": "verificado"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "Nació en Detroit, su alter ego se llama Slim Shady y protagonizó la película «8 Mile».",
+    "status": "revisar"
+   }
+  ],
+  "sources": [
+   "https://www.grammy.com/news/feature-why-eminems-lose-yourself-stands-tall-record/",
+   "https://americansongwriter.com/on-this-day-in-2003-eminem-made-music-history-with-an-award-he-didnt-show-up-to-receive",
+   "https://www.wikiwand.com/simple/articles/50_Cent"
+  ]
+ },
+ {
+  "name": "Tupac Shakur",
+  "genre": "hip hop",
+  "hashtag": "#HipHop",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "Estudió actuación, poesía, jazz y ballet en la Baltimore School for the Arts.",
+    "status": "verificado"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "A inicios de los 90 trabajó con el grupo Digital Underground, primero como bailarín y roadie.",
+    "status": "verificado"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "Su álbum «Me Against the World» (1995) debutó en el #1 de Billboard mientras él estaba en la cárcel.",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "En 1996 sacó un álbum doble que incluye «California Love».",
+    "status": "revisar"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "Murió en 1996, a los 25 años, y también se le conoce como Makaveli.",
+    "status": "revisar"
+   }
+  ],
+  "sources": [
+   "https://www.britannica.com/print/article/538068",
+   "https://hip-hop-music.fandom.com/wiki/Me_Against_the_World",
+   "https://www.revolt.tv/article/2016-03-14/12841/poetry-power-pistols-an-oral-history-of-2pacs-me-against-the-world/"
+  ]
+ },
+ {
+  "name": "Kendrick Lamar",
+  "genre": "hip hop",
+  "hashtag": "#HipHop",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "De adolescente rapeaba bajo el nombre «K.Dot».",
+    "status": "revisar"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "Es de Compton, California, y firmó con el sello Top Dawg Entertainment.",
+    "status": "revisar"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "En 2018 ganó el Pulitzer de Música por «DAMN.»: el primer artista fuera del clásico y el jazz en lograrlo.",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "En 2025 encabezó el show de medio tiempo del Super Bowl LIX, con SZA como invitada.",
+    "status": "verificado"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "Su canción «Not Like Us» (2024) fue un ataque directo a Drake.",
+    "status": "revisar"
+   }
+  ],
+  "sources": [
+   "https://nbcnewyork.com/entertainment/entertainment-news/who-sang-with-kendrick-lamar-at-the-super-bowl-halftime-show/6143427",
+   "https://www.bloomberg.com/en/news/thp/2025-02-10/review-kendrick-lamar-brings-america-and-not-like-us-into-history-making-super-bowl-halftime-show",
+   "https://bravo-www.soapcentral.com/entertainment/news-why-kendrick-lamar-win-pulitzer-prize-artist-became-first-rapper-ever-win-historic-award-2018"
+  ]
+ },
+ {
+  "name": "50 Cent",
+  "genre": "hip hop",
+  "hashtag": "#HipHop",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "Su nombre artístico viene de Kelvin Martin, un ladrón de Brooklyn de los años 80.",
+    "status": "verificado"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "En el año 2000 sobrevivió a nueve disparos.",
+    "status": "verificado"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "En 2002 Eminem lo fichó para Shady Records, bajo el sello de Dr. Dre.",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "Su álbum debut, «Get Rich or Die Tryin'», salió en febrero de 2003.",
+    "status": "verificado"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "Su gran éxito se llama «In Da Club».",
+    "status": "verificado"
+   }
+  ],
+  "sources": [
+   "https://en.wikipedia.org/wiki/Kelvin_Martin",
+   "https://simple.wikipedia.com/wiki/50_Cent",
+   "https://www.songfacts.com/facts/50-cent"
+  ]
+ },
+ {
+  "name": "Daddy Yankee",
+  "genre": "reggaetón",
+  "hashtag": "#Reggaeton",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "De joven quería ser beisbolista: probó suerte con los Seattle Mariners.",
+    "status": "verificado"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "Una bala lo hirió y cambió el béisbol por la música.",
+    "status": "verificado"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "Su álbum «Barrio Fino» (2004) llevó el reggaetón al público de Estados Unidos.",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "«Gasolina» fue su gran éxito de 2004.",
+    "status": "revisar"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "En 2017, gracias a «Despacito», fue el artista más escuchado del mundo en Spotify.",
+    "status": "verificado"
+   }
+  ],
+  "sources": [
+   "https://www.mtv.com/news/zuv5jg/daddy-yankee-explains-why-getting-shot-made-him-the-man-he-is",
+   "https://www.mlb.com/es/amp/cut4/daddy-yankee-el-destino-me-cambio-el-bate-por-un-microfono.html",
+   "https://www.ticketmaster.com/daddyyankee"
+  ]
+ },
+ {
+  "name": "Bad Bunny",
+  "genre": "reggaetón",
+  "hashtag": "#Reggaeton",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "Antes de ser famoso trabajó empacando bolsas en un supermercado de Puerto Rico.",
+    "status": "revisar"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "Su primer álbum de estudio se llama «X 100pre» (2018).",
+    "status": "revisar"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "Su álbum «Un Verano Sin Ti» (2022) llegó al #1 de la Billboard 200 siendo todo en español.",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "En 2026 fue el primer artista latino solista en encabezar el medio tiempo del Super Bowl.",
+    "status": "verificado"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "Su álbum «DeBÍ TiRAR MáS FOToS» ganó un Grammy.",
+    "status": "verificado"
+   }
+  ],
+  "sources": [
+   "https://americansongwriter.com/bad-bunny-brings-the-party-to-super-bowl-lx-with-an-epic-halftime-show",
+   "https://www.udiscovermusic.com/news/karol-g-makes-history-first-billboard-200-no-1-album"
+  ]
+ },
+ {
+  "name": "Karol G",
+  "genre": "reggaetón",
+  "hashtag": "#Reggaeton",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "A los 16 años participó en el concurso «Factor X Colombia».",
+    "status": "revisar"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "Su éxito «Ahora Me Llama» (2017) fue una colaboración con Bad Bunny.",
+    "status": "revisar"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "En 2019 lanzó «Tusa» junto a Nicki Minaj.",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "En 2023 fue la primera mujer en llegar al #1 de la Billboard 200 con un álbum 100 % en español.",
+    "status": "verificado"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "La llaman «La Bichota».",
+    "status": "revisar"
+   }
+  ],
+  "sources": [
+   "https://www.guinnessworldrecords.com/world-records/740535-first-female-vocalist-to-reach-no-1-on-the-billboard-200-with-an-all-spanish-lang",
+   "https://www.udiscovermusic.com/news/karol-g-makes-history-first-billboard-200-no-1-album",
+   "https://www.complex.com/music/a/starrsavoy/karol-g-album-billboard-top-200-history"
+  ]
+ },
+ {
+  "name": "Michael Jackson",
+  "genre": "pop",
+  "hashtag": "#Pop",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "Su primer sencillo en solitario, «Got to Be There», salió en 1971 cuando era un niño.",
+    "status": "verificado"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "En 1979 sacó «Off the Wall» junto al productor Quincy Jones.",
+    "status": "verificado"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "En 1983 estrenó el moonwalk en televisión mientras cantaba «Billie Jean».",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "En 1984 ganó 8 premios Grammy, 7 de ellos por «Thriller».",
+    "status": "verificado"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "Lo llaman «el Rey del Pop».",
+    "status": "revisar"
+   }
+  ],
+  "sources": [
+   "https://classic.motown.com/artist/michael-jackson/",
+   "https://americansongwriter.com/10-iconic-michael-jackson-moments/"
+  ]
+ },
+ {
+  "name": "Shakira",
+  "genre": "pop",
+  "hashtag": "#Pop",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "Su primer álbum, «Magia», salió en 1991 cuando era una adolescente.",
+    "status": "verificado"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "Con «Laundry Service» (2001) se lanzó al mercado en inglés.",
+    "status": "verificado"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "«Waka Waka» fue la canción oficial del Mundial de 2010.",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "En 2020 tocó en el show de medio tiempo del Super Bowl junto a Jennifer Lopez.",
+    "status": "verificado"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "En 2023 lanzó la «Bzrp Music Sessions, Vol. 53» con Bizarrap.",
+    "status": "verificado"
+   }
+  ],
+  "sources": [
+   "https://wikiwand.com/en/articles/Shakira",
+   "https://www.cronica.com.ar/elcanaldelamusica/noticias/shakira-celebra-49-anos-los-hitos-que-la-llevaron-de-promesa-latina-a-icono-global-del-pop/",
+   "https://www.shazam.com/es-es/artist/shakira-and-bizarrap/889327"
+  ]
+ },
+ {
+  "name": "Taylor Swift",
+  "genre": "pop",
+  "hashtag": "#Pop",
+  "clues": [
+   {
+    "n": 1,
+    "diff": "ULTRA DIFÍCIL",
+    "pts": 5,
+    "text": "A los 14 años se mudó a Nashville para ser cantante.",
+    "status": "verificado"
+   },
+   {
+    "n": 2,
+    "diff": "MUY DIFÍCIL",
+    "pts": 4,
+    "text": "Su primer sencillo, de 2006, se llama «Tim McGraw».",
+    "status": "verificado"
+   },
+   {
+    "n": 3,
+    "diff": "DIFÍCIL",
+    "pts": 3,
+    "text": "En 2010, con 20 años, fue la persona más joven (hasta entonces) en ganar el Grammy a Álbum del Año, con «Fearless».",
+    "status": "verificado"
+   },
+   {
+    "n": 4,
+    "diff": "MEDIA",
+    "pts": 2,
+    "text": "Su gira «The Eras Tour» superó los 2 mil millones de dólares en boletos vendidos.",
+    "status": "verificado"
+   },
+   {
+    "n": 5,
+    "diff": "FÁCIL",
+    "pts": 1,
+    "text": "Sus fans se llaman «Swifties».",
+    "status": "revisar"
+   }
+  ],
+  "sources": [
+   "https://www.biography.com/musicians/taylor-swift",
+   "https://gitnux.org/taylor-swift-vital-statistics/"
+  ]
+ }
+]

@@ -52,52 +52,85 @@ def vinyl(d, level):
         k = int(rng.integers(15, 160)); x[i:i + k] += rng.standard_normal(k) * np.exp(-np.arange(k) / (k / 4)) * rng.uniform(.15, 1)
     return (x + lp(noise(d), 4) * .08 + hp(noise(d), 40) * .02) * level
 
-# ---------- music: 94 BPM, Am9 | D9 | Gmaj9 | Cmaj7 (original, "World Is Yours" mood) ----------
-BPM = 94; BEAT = 60 / BPM; BAR = 4 * BEAT; SW = BEAT * .09
-A2 = 110.0; nfq = lambda s, base=A2: base * 2 ** (s / 12)
-CH = [[12, 15, 19, 22, 26], [17, 21, 24, 27, 31], [22, 26, 29, 33, 36], [15, 19, 22, 26, 30]]
-ROOT = [0, 5, -2, 3]
-HORN = [(0, 0, 1.5, 7, 12), (0, 2, 1, 10, 7), (1, .5, 2, 9, 12), (1, 3, .9, 10, 12), (2, 0, 2, 14, 10), (2, 2.5, 1.2, 12, 10), (3, 0, 1, 7, 10), (3, 1.5, 2.2, 12, 7)]
-ARP = [0, 1, 2, 3, 2, 1, 4, 3]
-KICKS = [[0, 1.75, 2.5], [0, .75, 2.25, 3.5]]
+# ---------- music ----------
 stems = {k: (np.zeros(N), np.zeros(N)) for k in ["keys", "bass", "hat", "kick", "snare", "horn", "strings", "riser"]}
-nb = int(END / BAR) + 2
-for b in range(nb):
-    t0 = b * BAR; c = b % 4
-    for i in range(8):                         # arpeggio (swung 8ths) + sustained shell
-        ts = t0 + i * BEAT / 2 + (SW if i % 2 else 0); idx = ARP[i] % len(CH[c])
-        add(ep(nfq(CH[c][idx]), BEAT * .9, .9 + .2 * (i % 3 == 0)), ts, .55 + .2 * (i % 4 == 0), pan=-.2 + .1 * idx, bus=stems["keys"])
-    add(ep(nfq(CH[c][0] - 12), BAR * .8, .6), t0, .5, bus=stems["keys"])
-    for bt, sm in ((0, 0), (1.5, 7), (2.5, 0), (3.5, 12)):                 # bass line
-        add(bass(nfq(ROOT[c] + sm, 55.0), BEAT * (1.4 if bt in (0,) else .8)), t0 + bt * BEAT + (SW if bt % 1 else 0), .9, bus=stems["bass"])
-    for i in range(8):
-        add(hat(i % 8 == 7), t0 + i * BEAT / 2 + (SW if i % 2 else 0), (1 if i % 2 == 0 else .6) * (.85 + .15 * ((i * 7) % 3 == 0)), pan=.2, bus=stems["hat"])
-    for kb in KICKS[b % 2]: add(kick(), t0 + kb * BEAT + (SW if kb % 1 else 0), 1.0, bus=stems["kick"])
-    for sb in (1, 3): add(snare(), t0 + sb * BEAT, .95, bus=stems["snare"])
-    if b % 4 == 0 or True:
+STYLE = EP["music"]
+if STYLE == "boombap":                                   # 94 BPM, Am9 | D9 | Gmaj9 | Cmaj7 (original, "World Is Yours" mood)
+    BPM = 94; BEAT = 60 / BPM; BAR = 4 * BEAT; SW = BEAT * .09
+    A2 = 110.0; nfq = lambda s, base=A2: base * 2 ** (s / 12)
+    CH = [[12, 15, 19, 22, 26], [17, 21, 24, 27, 31], [22, 26, 29, 33, 36], [15, 19, 22, 26, 30]]
+    ROOT = [0, 5, -2, 3]
+    HORN = [(0, 0, 1.5, 7, 12), (0, 2, 1, 10, 7), (1, .5, 2, 9, 12), (1, 3, .9, 10, 12), (2, 0, 2, 14, 10), (2, 2.5, 1.2, 12, 10), (3, 0, 1, 7, 10), (3, 1.5, 2.2, 12, 7)]
+    ARP = [0, 1, 2, 3, 2, 1, 4, 3]; KICKS = [[0, 1.75, 2.5], [0, .75, 2.25, 3.5]]
+    for b in range(int(END / BAR) + 2):
+        t0 = b * BAR; c = b % 4
+        for i in range(8):
+            ts = t0 + i * BEAT / 2 + (SW if i % 2 else 0); idx = ARP[i] % len(CH[c])
+            add(ep(nfq(CH[c][idx]), BEAT * .9, .9 + .2 * (i % 3 == 0)), ts, .55 + .2 * (i % 4 == 0), pan=-.2 + .1 * idx, bus=stems["keys"])
+        add(ep(nfq(CH[c][0] - 12), BAR * .8, .6), t0, .5, bus=stems["keys"])
+        for bt, sm in ((0, 0), (1.5, 7), (2.5, 0), (3.5, 12)):
+            add(bass(nfq(ROOT[c] + sm, 55.0), BEAT * (1.4 if bt in (0,) else .8)), t0 + bt * BEAT + (SW if bt % 1 else 0), .9, bus=stems["bass"])
+        for i in range(8): add(hat(i % 8 == 7), t0 + i * BEAT / 2 + (SW if i % 2 else 0), (1 if i % 2 == 0 else .6) * (.85 + .15 * ((i * 7) % 3 == 0)), pan=.2, bus=stems["hat"])
+        for kb in KICKS[b % 2]: add(kick(), t0 + kb * BEAT + (SW if kb % 1 else 0), 1.0, bus=stems["kick"])
+        for sb in (1, 3): add(snare(), t0 + sb * BEAT, .95, bus=stems["snare"])
         for (bar, bt, dur, s0, s1) in HORN:
             if bar == c: add(horn(nfq(s0, 220.0), nfq(s1, 220.0), dur * BEAT), t0 + bt * BEAT, .5, pan=.15, bus=stems["horn"])
-    add(string_pad([nfq(x) for x in CH[c][:4]], BAR + .3), t0, .5, bus=stems["strings"])
+        add(string_pad([nfq(x) for x in CH[c][:4]], BAR + .3), t0, .5, bus=stems["strings"])
+    PUMP = None
+else:                                                    # "house": 122 BPM French-touch, Dm9 | Bbmaj7 | F | C (original), 4-on-the-floor + sidechain pump
+    BPM = 122; BEAT = 60 / BPM; BAR = 4 * BEAT
+    A2 = 110.0; nfq = lambda s, base=A2: base * 2 ** (s / 12)
+    CH = [[17, 20, 24, 27, 31], [13, 17, 20, 24], [20, 24, 27, 32], [15, 19, 22, 27]]
+    ROOT = [-7, -11, -4, -9]
+    def clap():
+        t = tt(.2); return hp(noise(.2), 4) * (np.exp(-t * 28) + .6 * np.exp(-((t - .012) * 90) ** 2)) * .7
+    def saw_pluck(f, d, cut=6):
+        t = tt(d); s = sum(np.sin(2*np.pi*f*k*t) / k for k in range(1, 9)) * .45
+        return lp(s, cut) * np.minimum(t / .004, 1) * np.exp(-t * 7) * .8
+    def robot(f, d):                                      # bright square-ish synth line (vocoder-ish flavour, no voice)
+        t = tt(d); s = np.sign(np.sin(2*np.pi*f*t)) * .5 + np.sin(2*np.pi*f*2*t) * .3
+        return lp(s, 3) * np.minimum(t / .003, 1) * np.exp(-t * 11) * .7
+    for b in range(int(END / BAR) + 2):
+        t0 = b * BAR; c = b % 4
+        for i in range(4):                                # 4-on-the-floor + offbeat open hat + 16th ticks
+            add(kick(), t0 + i * BEAT, 1.0, bus=stems["kick"])
+            add(hat(True), t0 + i * BEAT + BEAT / 2, .9, pan=.25, bus=stems["hat"])
+        for i in range(16): add(hat(False), t0 + i * BEAT / 4, .35 + .25 * (i % 4 == 2), pan=-.2, bus=stems["hat"])
+        for sb in (1, 3): add(clap(), t0 + sb * BEAT, .9, bus=stems["snare"])
+        for i in range(8):                                # pulsing 8th-note bass
+            add(bass(nfq(ROOT[c], 55.0 * 2), BEAT * .45), t0 + i * BEAT / 2, .85, bus=stems["bass"])
+        for i in range(8):                                # off-beat chord stabs
+            if i % 2 == 1 or i in (0, 6):
+                for n_ in CH[c][:4]: add(saw_pluck(nfq(n_), BEAT * .4), t0 + i * BEAT / 2, .22, pan=(n_ % 5 - 2) * .1, bus=stems["keys"])
+        for i in range(16):                               # robotic 16th arpeggio
+            n_ = CH[c][[0, 2, 1, 3, 2, 4 % len(CH[c]), 1, 3][i % 8] % len(CH[c])] + 12
+            if (i + b) % 4 != 3: add(robot(nfq(n_), BEAT / 4 * .9), t0 + i * BEAT / 4, .45, pan=.1 if i % 2 else -.1, bus=stems["horn"])
+        add(string_pad([nfq(x) for x in CH[c][:4]], BAR + .3), t0, .5, bus=stems["strings"])
+    PUMP = 1 - .78 * np.exp(-((np.arange(N) / SR) % BEAT) / .11)       # sidechain-style pump on keys/bass/strings/arp
+    for k in ("keys", "bass", "strings", "horn"):
+        stems[k][0][:] *= PUMP; stems[k][1][:] *= PUMP
 add(lp(noise(T[1]), 5) * np.linspace(0, 1, int(T[1] * SR)) ** 2 * .9, 0, .35, bus=stems["riser"])
 
 def curve(pts):
     ts, gs = zip(*pts); return np.interp(np.arange(N) / SR, ts, gs)
-R0 = T[1] + REVEAL
-e = lambda t: t - .01
+R0 = T[1] + REVEAL; e = lambda t: t - .01
+C = [T[S_C1 + i] for i in range(NCL)] + [T[S_OUT]]       # clue starts + outro start
+mid = max(1, NCL // 2)
 g = {
- "keys":  curve([(0, 0), (e(T[1]), 0), (T[1], .8), (e(T[7]), .9), (T[7], .7), (END - 1.5, .6), (END, 0)]),
+ "keys":  curve([(0, 0), (e(T[1]), 0), (T[1], .8), (e(T[S_OUT]), .9), (T[S_OUT], .7), (END - 1.5, .6), (END, 0)]),
  "bass":  curve([(0, 0), (.4, 0), (.5, .75), (END - 1.5, .7), (END, 0)]),
- "hat":   curve([(0, 0), (e(T[1]), 0), (T[1], .55), (e(R0), .55), (R0, .8), (e(T[3]), .8), (T[3], .55), (e(T[7]), .75), (T[7], .3), (END - 1.5, .25), (END, 0)]),
- "kick":  curve([(0, 0), (e(R0), 0), (R0, .95), (e(T[3]), .95), (T[3], .6), (e(T[7]), .85), (T[7], .0), (END, 0)]),
- "snare": curve([(0, 0), (e(R0), 0), (R0, .9), (e(T[3]), .9), (T[3], 0), (e(T[4]), 0), (T[4], .85), (e(T[7]), .85), (T[7], 0), (END, 0)]),
- "horn":  curve([(0, 0), (e(R0), 0), (R0, .8), (e(T[3]), .55), (T[3], 0), (e(T[5]), 0), (T[5], .75), (T[7] + .3, .75), (END - 1.5, .5), (END, 0)]),
- "strings": curve([(0, 0), (e(T[6]), 0), (T[6], .6), (e(T[7]), .6), (T[7], .3), (END - 1.5, .3), (END, 0)]),
+ "hat":   curve([(0, 0), (e(T[1]), 0), (T[1], .55), (e(R0), .55), (R0, .8), (e(C[0]), .8), (C[0], .55), (e(T[S_OUT]), .75), (T[S_OUT], .3), (END - 1.5, .25), (END, 0)]),
+ "kick":  curve([(0, 0), (e(R0), 0), (R0, .95), (e(C[0]), .95), (C[0], .6 if STYLE == "boombap" else .0), (e(C[1]), .6 if STYLE == "boombap" else .0), (C[1], .85), (e(T[S_OUT]), .85), (T[S_OUT], 0), (END, 0)]),
+ "snare": curve([(0, 0), (e(R0), 0), (R0, .9), (e(C[0]), .9), (C[0], 0), (e(C[1]), 0), (C[1], .85), (e(T[S_OUT]), .85), (T[S_OUT], 0), (END, 0)]),
+ "horn":  curve([(0, 0), (e(R0), 0), (R0, .8), (e(C[0]), .55), (C[0], 0), (e(C[mid]), 0), (C[mid], .75), (T[S_OUT] + .3, .75), (END - 1.5, .5), (END, 0)]),
+ "strings": curve([(0, 0), (e(C[NCL - 1]), 0), (C[NCL - 1], .6), (e(T[S_OUT]), .6), (T[S_OUT], .3), (END - 1.5, .3), (END, 0)]),
  "riser": curve([(0, 1), (e(T[1]), 1), (T[1], 0), (END, 0)]),
 }
+if STYLE == "house":                                     # clue 1 stays eerie: only pad/bass/ticks, kick returns at clue 2
+    g["kick"] = curve([(0, 0), (e(R0), 0), (R0, .95), (e(C[0]), .95), (C[0], 0), (e(C[1]), 0), (C[1], .9), (e(T[S_OUT]), .9), (T[S_OUT], 0), (END, 0)])
 ML = sum(stems[k][0] * g[k] for k in stems); MR = sum(stems[k][1] * g[k] for k in stems)
-# dusty: gentle lowpass on music bus + continuous vinyl crackle
-ML = lp(ML, 2) * .5 + ML * .5; MR = lp(MR, 2) * .5 + MR * .5
-vb = vinyl(END, .06) * curve([(0, 0), (.2, 1), (END - 1, 1), (END, 0)])
+if STYLE == "boombap": ML = lp(ML, 2) * .5 + ML * .5; MR = lp(MR, 2) * .5 + MR * .5
+vb = vinyl(END, .06 if STYLE == "boombap" else .015) * curve([(0, 0), (.2, 1), (END - 1, 1), (END, 0)])
 L += ML * .42 + vb; R += MR * .42 + vb * .9
 
 # ---------- SFX ----------
@@ -132,27 +165,29 @@ def crackle_bed(d, density, level):
 S(boom(.5) * .6, .02, .8); S(scratch(), .05, .8); S(scratch(.2), .3, .7, pan=.3); S(scratch(.16), .55, .7, pan=-.3)
 for tg in (.30, .52, .78): S(hp(noise(.06), 2) * np.exp(-tt(.06) * 30) * .9, tg, .7)
 S(impact(.5, 80), T[1] - .02, 1.0)
-for i in range(1, 8):
+for i in range(1, S_OUT + 1):
+    if i > 1 and T[i] == T[i - 1]: continue
     S(whoosh(.8), T[i] - .4, 1.0, pan=.2 if i % 2 else -.2)
     if i > 1: S(impact(.4, 65), T[i], .7)
-# recap: slam, drumroll, reveal
+# recap: slam, drumroll, reveal ("la respuesta de ayer")
 t1 = T[1]
 S(impact(.3, 90), t1 + .1, .8); S(blip(440, .08), t1 + .12, .7)
 tr, k = .45, 0
 while tr < REVEAL - .12:
-    S(snare(), t1 + tr, .35 + .5 * (tr / REVEAL), pan=(-1) ** k * .15); tr += max(.05, .26 - .075 * k); k += 1
-S(lp(noise(REVEAL - .3), 4) * np.linspace(0, 1, int((REVEAL - .3) * SR)) ** 2 * .6, t1 + .3, .5)
+    S(snare(), t1 + tr, .35 + .5 * (tr / REVEAL), pan=(-1) ** k * .15); tr += max(.05, .26 - .075 * k * (3.4 / REVEAL)); k += 1
+S(lp(noise(max(REVEAL - .3, .5)), 4) * np.linspace(0, 1, int(max(REVEAL - .3, .5) * SR)) ** 2 * .6, t1 + .3, .5)
 S(impact(.9, 55), t1 + REVEAL, 1.2); S(cymbal(), t1 + REVEAL, .9); S(cheer(), t1 + REVEAL + .1, .8)
 for j, f in enumerate((523, 659, 784, 1047)): S(blip(f, .16), t1 + REVEAL + .05 + .09 * j, .8)
 S(coin(), t1 + REVEAL + .5, .8)
 S(blip(988, .08), T[2] - 3.2, .7); S(blip(1319, .16), T[2] - 3.13, .7)
-# winners: header pop + row ticks
+# winners (only when the previous episode has a list)
 t2 = T[2]
-S(whoosh(.7), t2 + .0, .8); S(blip(988, .08), t2 + .3, .7); S(blip(1319, .16), t2 + .37, .7)
-for i, r in enumerate(ROWS):
-    if r["kind"] == "hdr": S(coin(), t2 + WIN_START + max(0, i * ROW_H - WIN_WH * .85) / WIN_SPEED, .6)
-    elif i * ROW_H > WIN_WH: S(blip(700 + 35 * (i % 7), .05, False), t2 + WIN_START + (i * ROW_H - WIN_WH) / WIN_SPEED, .45)
-S(coin(), T[3] - 1.6, .7)
+if WINNERS:
+    S(whoosh(.7), t2 + .0, .8); S(blip(988, .08), t2 + .3, .7); S(blip(1319, .16), t2 + .37, .7)
+    for i, r in enumerate(ROWS):
+        if r["kind"] == "hdr": S(coin(), t2 + WIN_START + max(0, i * ROW_H - WIN_WH * .85) / WIN_SPEED, .6)
+        elif i * ROW_H > WIN_WH: S(blip(700 + 35 * (i % 7), .05, False), t2 + WIN_START + (i * ROW_H - WIN_WH) / WIN_SPEED, .45)
+    S(coin(), T[3] - 1.6, .7)
 # clues
 for ci, c in enumerate(CLUES):
     sidx = S_C1 + ci; t0 = T[sidx]; seg = T[sidx + 1] - t0; n = c["n"]
@@ -163,18 +198,29 @@ for ci, c in enumerate(CLUES):
     for i, ch in enumerate(plain(c["text"])):
         if i % 2 == 0 and ch != " ": S(tick(), t0 + TW0 + i * TWS, .6 + .1 * (i % 3), pan=(i % 5 - 2) * .05)
     if sidx in BANNERS: S(blip(988, .07), t0 + BANNER_T, .7); S(blip(1480, .14), t0 + BANNER_T + .07, .7)
-    for kk in (3, 2, 1): S(tick() * 1.3, t0 + seg - kk, .5)
+    if ci == NCL - 1:                                     # 3-2-1 countdown on the easiest clue
+        for kk in (3, 2, 1): S(impact(.3, 60 + 15 * (3 - kk)), t0 + seg - kk, .9); S(blip(660 + 110 * (3 - kk), .12), t0 + seg - kk, .8)
+        S(whoosh(.6), t0 + seg - .45, .9)
+    else:
+        for kk in (3, 2, 1): S(tick() * 1.3, t0 + seg - kk, .5)
     d = seg + .5
-    if n == 1: S(lp(noise(d), 40) * .12 + crackle_bed(d, 12, .3), t0, 1.0)            # block-party murmur
-    if n == 2: S(lp(noise(d), 90) * .08, t0, 1.0); S(boom(.6) * .4, t0 + .3, .8)      # club room tone
-    if n == 3: S(lp(noise(d), 25) * .12, t0, 1.0); S(whoosh(.9), t0 + .2, 1.0)        # city / river air
-    if n == 4:
-        for tp in (1.1, 3.3, 5.0): S(boom(.8), t0 + tp, .8); S(hp(noise(.12), 2) * np.exp(-tt(.12) * 20), t0 + tp, .7)  # strobe hits
+    sc = c.get("scene")
+    if sc == "block": S(lp(noise(d), 40) * .12 + crackle_bed(d, 12, .3), t0, 1.0)
+    elif sc == "jazz": S(lp(noise(d), 90) * .08, t0, 1.0); S(boom(.6) * .4, t0 + .3, .8)
+    elif sc in ("qb", "paris", "press"): S(lp(noise(d), 25) * .1, t0, 1.0); S(whoosh(.9), t0 + .2, 1.0)
+    elif sc == "pyramid":
+        S(lp(noise(d), 12) * (.1 + .06 * np.sin(2*np.pi*.5*tt(d))), t0, 1.0)             # festival crowd
+        for tp in (1.4, 3.6): S(whoosh(1.0), t0 + tp, .7)                                  # laser sweeps
+    elif sc == "grammy":
+        S(lp(noise(d), 10) * (.08 + .05 * np.sin(2*np.pi*.4*tt(d))), t0, 1.0)             # applause bed
+        for tp in (1.0, 3.5): S(cymbal(.9), t0 + tp, .5)
+    elif sc in ("battle", "robots"):
+        for tp in (1.1, 3.3, 5.0): S(boom(.8), t0 + tp, .8); S(hp(noise(.12), 2) * np.exp(-tt(.12) * 20), t0 + tp, .7)
 # outro
-S(whoosh(1.0), T[7] + 2.6, 1.0)
-S(blip(784, .08), T[7] + .5, .8); S(blip(1175, .12), T[7] + .58, .8)
-S(coin(), T[7] + 3.2, .9); S(impact(.5, 70), T[7] + 3.2, .8)
-S(blip(988, .1), T[7] + 5.9, .7); S(blip(1319, .3), T[7] + 6.0, .7)
+S(whoosh(1.0), T[S_OUT] + 2.6, 1.0)
+S(blip(784, .08), T[S_OUT] + .5, .8); S(blip(1175, .12), T[S_OUT] + .58, .8)
+S(coin(), T[S_OUT] + 3.2, .9); S(impact(.5, 70), T[S_OUT] + 3.2, .8)
+S(blip(988, .1), T[S_OUT] + 5.9, .7); S(blip(1319, .3), T[S_OUT] + 6.0, .7)
 L += sfx[0] * .75; R += sfx[1] * .75
 f = np.minimum(np.arange(N) / (.02 * SR), 1) * np.minimum((N - np.arange(N)) / (.9 * SR), 1)
 L *= f; R *= f
@@ -182,4 +228,4 @@ pk = max(np.abs(L).max(), np.abs(R).max()); L /= pk; R /= pk
 out = (np.stack([L, R], 1) * .89 * 32767).astype(np.int16)
 with wave.open("raw_audio.wav", "wb") as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes(out.tobytes())
-print("ok", N / SR)
+print("ok", N / SR, STYLE)
