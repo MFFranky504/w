@@ -1359,7 +1359,6 @@ def nas2_draw(im, t, ts):
     d.arc((bx - 9, by - 5, bx - 1, by + 5), 300, 60, fill=(210, 40, 50)); d.arc((bx + 1, by - 5, bx + 9, by + 5), 120, 240, fill=(210, 40, 50))
     k = int((t * 5) % 6)
     if k < 2: d.point((ox + 50 + (k * 2 - 1), y0 + 77), fill=WHITE); d.point((ox + 50, y0 + 75 + k), fill=WHITE)            # cross sparkle
-    crown(im, ox + 40, y0 - 14 + int(2 * math.sin(t * 3)))
 
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
@@ -1420,7 +1419,7 @@ def ui_low(seg, ts, t):
                 lt(d, (135, 46 + dy), lines[0], s0, LIGHTBG_TXT if LIGHT_RECAP else WHITE, shadow=(255, 255, 255) if LIGHT_RECAP else (255, 70, 190)); lt(d, (135, 90 + dy), lines[1], s1, GOLD, shadow=(120, 50, 0)); py = 120
             else:
                 lt(d, (135, 40 + dy), "LA RESPUESTA DE AYER", 11, (255, 200, 120)); lt(d, (135, 82 + dy), lines[0], 56, GOLD, shadow=(120, 50, 0), anchor="mm"); py = 120
-            if PREV["sprite"] == "tyler": py = 109
+            if PREV["sprite"] in ("tyler", "nas2"): py = 109
             if e > .5: pill(d, 135, py, py + 16, 196, (14, 8, 34), GOLD); lt(d, (135, py + 8), PREV["sub"], 9, (255, 200, 120))
             if ts > RECAP_LEN - 2.6:
                 b = int(2 * math.sin(t * 10)); msg = "¡AHORA LOS GANADORES!" if WINNERS else "¡HOY: UN NUEVO ARTISTA!"
