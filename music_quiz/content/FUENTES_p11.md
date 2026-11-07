@@ -1,0 +1,9 @@
+# Fuentes · Parte 11 (Daft Punk)  — verificadas con búsqueda el 7-nov-2026
+
+1. **Padre compositor de disco (1978/1979):** Daniel Vangarde (nacido Daniel Bangalter) escribió «Cuba» (Gibson Brothers, 1978) y «D.I.S.C.O.» (Ottawan, 1979); es el padre de Thomas Bangalter. → [Wikipedia: Daniel Vangarde](https://en.wikipedia.org/wiki/Daniel_Vangarde)
+2. **Banda de 1992 con un amigo que luego se unió a Phoenix:** Darlin' (1992) con Laurent Brancowitz, Thomas Bangalter y Guy-Manuel de Homem-Christo; Brancowitz se unió después a Phoenix. → [Wikipedia: Daft Punk](https://en.wikipedia.org/wiki/Daft_Punk), [Darlin' (French band)](https://en.wikipedia.org/wiki/Darlin%27_(French_band)). *(Las fuentes no coinciden en qué instrumento tocaba; la pista no lo menciona.)*
+3. **Primer sencillo (1994) en Soma, sello escocés:** «The New Wave», Soma Quality Recordings, abril de 1994; la maqueta se entregó en un rave de 1993 (dato de una sola fuente: revisar si quieres citarlo en el caption). → [Wikipedia: Daft Punk discography / The New Wave](https://daftpunk.fandom.com/wiki/The_New_Wave)
+4. **Coachella 2006, pirámide LED:** 29-abr-2006, Sahara Tent; pirámide de unos 7 m con pantallas LED. → [Dancing Astronaut](https://dancingastronaut.com/2016/05/weekend-rewind-daft-punks-groundbreaking-coachella-performance-a-decade-ago/), [Water & Music](https://www.waterandmusic.com/15-years-ago-daft-punks-coachella-set-helped-spark-an-arms-race-for-live-music-technology)
+5. **Grammy 2014 (Álbum del Año con «Random Access Memories»; «Get Lucky» con Pharrell):** → [GRAMMY.com](https://grammy.com/news/daft-punk-random-access-memories-record), [NPR/WAMC](https://www.wamc.org/2014-01-27/daft-punk-lorde-and-macklemore-win-major-grammy-awards)
+
+Descartado por no estar confirmado: la reseña de 1993 con el nombre de la banda (revelaba el nombre), fecha exacta de los cascos, "grabado en un dormitorio".

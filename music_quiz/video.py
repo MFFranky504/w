@@ -679,9 +679,60 @@ def dyn_robots(im, t, ts, tag):
         x = (k * 61) % W; y = (k * 37) % 120
         if math.sin(t * 2 + k) > .3: d.point((x, y), fill=WHITE)
 
+# ---- Daft Punk clue 1: 1978 disco floor with mirror ball ----
+def base_disco():
+    a = np.zeros((H, W, 3), np.uint8); a[:236] = dgrad(W, 236, (30, 8, 58), (160, 34, 120), 11); a[236:] = (20, 10, 30)
+    im = Image.fromarray(a); d = ImageDraw.Draw(im)
+    for (x0, x1) in ((6, 40), (230, 264)):
+        d.rectangle((x0, 170, x1, 236), fill=(16, 10, 24), outline=(90, 70, 110))
+        for cy_ in (186, 218): d.ellipse((x0 + 4, cy_ - 11, x1 - 4, cy_ + 11), fill=(34, 26, 48), outline=(130, 110, 150)); d.ellipse((x0 + 12, cy_ - 3, x1 - 12, cy_ + 3), fill=(80, 60, 110))
+    d.line([(135, 0), (135, 126)], fill=(120, 110, 140))
+    return dim_top(im, 130)
+DISCO = base_disco()
+def dyn_disco(im, t, ts, tag):
+    d = ImageDraw.Draw(im); cx, cy, r = 135, 148, 21
+    d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(150, 150, 170), outline=(230, 230, 250))
+    for k in range(-3, 4):
+        a_ = t * 1.5 + k * .45; w = int(abs(math.cos(a_)) * r)
+        d.ellipse((cx - w, cy - r, cx + w, cy + r), outline=(90, 90, 120))
+    for j in (-14, -7, 0, 7, 14): hw = int(math.sqrt(max(r * r - j * j, 0))); d.line([(cx - hw, cy + j), (cx + hw, cy + j)], fill=(100, 100, 130))
+    for k in range(40):                                              # light spots flying around the room
+        ang = t * .8 + k * .63; rr = 60 + (k * 37) % 120; x = cx + math.cos(ang) * rr * 1.1; y = 120 + math.sin(ang * 1.3 + k) * 70 + rr * .25
+        if 0 <= x < W and 0 <= y < 232 and math.sin(t * 4 + k) > -.2: d.rectangle((x, y, x + 2, y + 2), fill=[(255, 240, 200), (255, 120, 200), (120, 230, 255)][k % 3])
+    for i in range(10):                                              # lit dance-floor tiles
+        for j in range(3):
+            c = [(255, 80, 170), (80, 235, 255), (255, 205, 60), (170, 120, 255)][int(i + j + t * 4) % 4] if math.sin(t * 5 + i * 1.7 + j) > -.4 else (30, 14, 44)
+            d.rectangle((i * 27 + 1, 238 + j * 9, i * 27 + 25, 238 + j * 9 + 7), fill=c)
+    arr = np.array(im); glow(arr, cx, cy, 90, (255, 150, 220), .25); im.paste(Image.fromarray(arr))
+
+# ---- Daft Punk clue 3: 1994 rave tent (lasers, strobes, DJ booth) ----
+def base_rave():
+    a = np.zeros((H, W, 3), np.uint8); a[:266] = dgrad(W, 266, (4, 6, 20), (34, 12, 64), 10); a[266:] = (10, 8, 20)
+    im = Image.fromarray(a); d = ImageDraw.Draw(im)
+    for k in range(-4, 5): d.line([(135, 0), (135 + k * 40, 90)], fill=(60, 56, 90))                 # tent truss
+    d.line([(0, 90), (W, 90)], fill=(60, 56, 90)); d.line([(0, 20), (135, 0), (W, 20)], fill=(60, 56, 90))
+    d.rectangle((184, 226, 262, 266), fill=(24, 18, 36), outline=(110, 100, 140)); d.rectangle((188, 220, 258, 228), fill=(40, 32, 60))
+    for cx_ in (204, 242): d.ellipse((cx_ - 9, 222, cx_ + 9, 230), fill=(14, 10, 20), outline=(160, 150, 190))
+    for y in range(268, H, 12): d.line([(0, y), (W, y)], fill=(26, 18, 40))
+    return dim_top(im, 120)
+RAVE = base_rave()
+def dyn_rave(im, t, ts, tag):
+    arr = np.array(im)
+    for k in range(6):
+        ang = (k - 2.5) * 22 + 26 * math.sin(t * 1.9 + k); col = [(255, 60, 160), (60, 235, 255), (120, 255, 120), (255, 210, 60), (170, 110, 255), (255, 255, 255)][k]
+        beam(arr, 135 + (k - 2.5) * 40, 135 + (k - 2.5) * 40 + math.tan(math.radians(ang)) * 180, 8, 260, 2, 30, col, .33)
+    if int(t * 6) % 9 == 0: arr = np.clip(arr + 70, 0, 255).astype(np.uint8)                        # strobe
+    glow(arr, 135, 230, 120, (150, 80, 255), .3); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for cx_ in (204, 242): a_ = t * 5; d.line([(cx_, 226), (cx_ + 6 * math.cos(a_), 226 + 3 * math.sin(a_))], fill=GOLD)
+    for k in range(30):
+        x = 4 + k * 9; b = int(2 * abs(math.sin(t * 5 + k))); d.ellipse((x - 3, 248 - b, x + 3, 254 - b), fill=(8, 6, 18)); d.rectangle((x - 4, 254 - b, x + 4, 270), fill=(8, 6, 18))
+        if int(t * 3 + k) % 2: d.line([(x + 3, 254 - b), (x + 6, 245 - b)], fill=(8, 6, 18), width=2)
+    for k in range(6):
+        x = (k * 51 + t * 7) % W; y = 200 + 30 * math.sin(t * .6 + k); d.ellipse((x - 14, y - 3, x + 14, y + 3), outline=(100, 90, 130))
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, dyn_press), "paris": (PARIS, dyn_paris), "pyramid": (PYRAMID, dyn_pyramid),
-       "grammy": (GRAMMY, dyn_grammy), "robots": (ROBOTS, dyn_robots)}
+       "grammy": (GRAMMY, dyn_grammy), "robots": (ROBOTS, dyn_robots), "disco": (DISCO, dyn_disco), "rave": (RAVE, dyn_rave)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
 _hook = REG[EP.get("hook_scene", "brook")]
 SCENES = [_hook, REG[PREV["scene"]], (SUNSET, dyn_win)] + [REG[c["scene"]] for c in CLUES] + [_outro]

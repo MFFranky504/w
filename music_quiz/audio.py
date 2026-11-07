@@ -214,7 +214,7 @@ for ci, c in enumerate(CLUES):
     elif sc == "grammy":
         S(lp(noise(d), 10) * (.08 + .05 * np.sin(2*np.pi*.4*tt(d))), t0, 1.0)             # applause bed
         for tp in (1.0, 3.5): S(cymbal(.9), t0 + tp, .5)
-    elif sc in ("battle", "robots"):
+    elif sc in ("battle", "robots", "rave", "disco"):
         for tp in (1.1, 3.3, 5.0): S(boom(.8), t0 + tp, .8); S(hp(noise(.12), 2) * np.exp(-tt(.12) * 20), t0 + tp, .7)
 # outro
 S(whoosh(1.0), T[S_OUT] + 2.6, 1.0)
