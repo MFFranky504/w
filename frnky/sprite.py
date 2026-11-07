@@ -34,6 +34,28 @@ CHARS = {   # Bro (Chile), Chuy (México), Nati (Argentina), Memo (Venezuela)
 }
 
 
+CHARS.update({   # elenco 2: Nico (Colombia), Sofi (Perú), Tomi (Uruguay), Directora Vega, Profe Ramos
+    "nico": dict(skin=(216,162,124), hair=(36,26,24), coat=(250,190,40), kind="hoodie", trim=(246,246,240),
+                 pants=(60,76,130), shoe=(246,246,246), sole=(40,60,170), eye=(90,56,34), style="spiky"),
+    "sofi": dict(skin=(226,174,134), hair=(34,24,34), coat=(214,40,56), kind="jersey", trim=(250,250,250),
+                 stripes=(250,250,250), pants=(40,40,62), shoe=(250,250,250), sole=(214,40,56), eye=(70,44,34), style="pony"),
+    "tomi": dict(skin=(242,198,162), hair=(150,100,52), coat=(120,180,236), kind="jersey", trim=(30,30,40),
+                 pants=(34,44,90), shoe=(244,244,244), sole=(60,60,70), eye=(70,130,90), style="cap", cap=(60,100,210)),
+    "vega": dict(skin=(232,184,152), hair=(160,160,172), coat=(132,62,164), kind="blazer", trim=(252,252,252),
+                 pants=(50,40,72), shoe=(44,32,56), sole=(20,14,30), eye=(70,60,44), style="bun", glasses=True),
+    "ramos": dict(skin=(214,164,128), hair=(70,56,50), coat=(84,120,76), kind="blazer", trim=(244,244,236),
+                  pants=(122,102,82), shoe=(96,64,44), sole=(40,26,20), eye=(60,44,30), style="bald", glasses=True, mustache=True, tie=True),
+})
+_SK = [(240,196,160), (214,160,120), (170,118,86), (232,182,146), (150,104,76)]
+_HR = [(40,30,36), (96,60,40), (150,100,50), (30,24,34), (70,50,100), (180,60,60)]
+_CT = [(60,120,220), (230,90,60), (60,170,110), (250,200,60), (170,80,200), (240,120,170), (80,200,210)]
+for _i in range(10):    # alumnos de relleno (multitud)
+    CHARS[f"s{_i}"] = dict(skin=_SK[_i % 5], hair=_HR[(_i * 2) % 6], coat=_CT[_i % 7], kind="hoodie" if _i % 3 == 0 else "jersey",
+                           trim=(244,244,240), pants=[(52,60,110), (40,40,60), (90,90,110)][_i % 3], shoe=(244,244,244),
+                           sole=_CT[(_i + 3) % 7], eye=(70,50,40), style=["spiky", "cap", "pony", "curly"][_i % 4],
+                           cap=_CT[(_i + 2) % 7])
+
+
 def _vivid(img, k=1.25):
     a = np.array(img).astype("float32")
     g = a[..., :3].mean(axis=2, keepdims=True)
@@ -104,11 +126,19 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(-6, 28, 6, 32, dk(coat, 0.62)); R(-5, 28, 5, 30, dk(coat, 0.85))
         R(-3, 32, -2, 38, acc); R(2, 32, 3, 37, acc)
         R(-5, 40, 5, 44, dk(coat, 0.82)); R(-5, 40, 5, 41, lt(coat, 1.12))
+    elif kind == "blazer":
+        R(-3, 29, 3, 40, acc); R(-5, 29, -3, 41, dk(coat, 0.72)); R(3, 29, 5, 41, dk(coat, 0.72)); R(-1, 40, 1, 46, dk(coat, 0.7))
+        if ch.get("tie"):
+            R(-1, 30, 1, 41, (210, 50, 62, 255)); R(-1, 30, 1, 32, dk((210, 50, 62), 0.7))
+        else:
+            for px_ in (-3, -1, 1, 3):
+                P(px_, 31, (250, 240, 220, 255))      # collar de perlas
+        R(-6, 36, -4, 38, dk(coat, 0.85)); R(5, 41, 7, 44, dk(coat, 0.85))
     else:
         R(-4, 29, 4, 31, acc); R(-3, 31, 3, 32, acc); R(-1, 32, 1, 33, acc)
         R(-8, 29, -6, 31, acc); R(6, 29, 8, 31, acc)
         R(3, 35, 6, 38, WHITE if name != "nati" else (34, 48, 120, 255)); P(4, 36, (210, 50, 60, 255))
-    sl = 40 if kind == "hoodie" else 34
+    sl = 40 if kind in ("hoodie", "blazer") else 34
     hand = skin
     L = sl - 30
 
@@ -142,7 +172,7 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         stair_arm([(8, 30), (12, 26), (15, 22)], (15, 17))
     elif pose in ("ctrl", "phone"):
         vert_arm(8, 11, 30, 40)
-        R(-11, 38, 11, 42, coat if kind == "hoodie" else hand)
+        R(-11, 38, 11, 42, coat if kind in ("hoodie", "blazer") else hand)
         R(-7, 39, -4, 43, hand); R(4, 39, 7, 43, hand)
         if pose == "phone":      # celular con pantalla encendida
             R(-3, 33, 4, 44, (34, 34, 48, 255)); R(-2, 34, 3, 43, (130, 215, 255, 255)); R(-2, 34, 3, 36, (230, 250, 255, 255)); R(-1, 38, 2, 39, (60, 140, 220, 255))
@@ -181,6 +211,13 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
             d.ellipse([CX + x0, 0, CX + x0 + 7, 9], fill=hair)
         R(-15, 12, -11, 20, hair); R(11, 12, 15, 20, dk(hair, 0.8))
         R(-11, 2, -7, 4, hl); R(-1, 1, 3, 3, hl); R(6, 2, 10, 4, hl)
+    if style == "bun":
+        d.rounded_rectangle([CX - 15, 2, CX + 14, 16], radius=7, fill=hair)
+        d.ellipse([CX - 6, 0, CX + 6, 8], fill=hair); R(-3, 1, 2, 3, lt(hair, 1.25))
+        R(-15, 12, -11, 26, hair); R(11, 12, 15, 26, dk(hair, 0.85)); R(-12, 12, 12, 17, hair); R(-3, 15, 2, 18, hair)
+        R(-11, 4, -4, 6, lt(hair, 1.25))
+    elif style == "bald":
+        R(-14, 12, -11, 20, hair); R(11, 12, 14, 20, dk(hair, 0.85)); R(-9, 5, -3, 8, lt(skin, 1.15)); R(5, 9, 10, 11, dk(skin, 0.9))
     # ---- ojos grandes con iris y brillo ----
     ec = ch["eye"] + (255,)
 
@@ -229,6 +266,8 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         else:
             y = 13 if expr == "smug" else 12
             R(sx, y, sx + EW, y + 1, bc)
+    if ch.get("mustache"):
+        R(-5, 23, 6, 25, dk(hair, 0.95)); R(-3, 22, 4, 23, dk(hair, 0.95))
     if "tear" in fx:
         R(-9, 24, -7, 30, (140, 210, 255, 255)); P(-9, 24, WHITE)
     if expr in ("happy", "angry", "shy", "shock", "sad", "neutral") or "blush" in fx:
