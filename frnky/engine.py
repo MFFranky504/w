@@ -13,6 +13,7 @@ from PIL import ImageChops, ImageFilter
 from .bg import W, H
 
 FPS, SCALE = 24, 3
+LOOP_FADE = 0.45     # segundos finales en los que el CTA se funde con el gancho inicial
 OUT = (W * SCALE, H * SCALE)
 FONT_PATH = str(pathlib.Path(__file__).resolve().parent.parent / "assets" / "fonts" / "Jersey10-Regular.ttf")  # OFL
 
@@ -187,7 +188,8 @@ def render_video(ep, cta, out_mp4, workdir):
     assert all(l[1] <= cta_t0 + 0.01 for l in lines), "ningún diálogo puede pisar el CTA final"
 
     # --- audio ---
-    track = np.zeros(int(T * audio.SR))
+    nA = int(round(n / FPS * audio.SR))           # audio = exactamente los fotogramas del video
+    track = np.zeros(nA + int(4 * audio.SR))
     ep["music"](track)
     for c in ep["cuts"]:
         audio.hit(track, c)
@@ -197,6 +199,9 @@ def render_video(ep, cta, out_mp4, workdir):
             audio.voice(track, (t0, t1, text), voices[v]["pitch"])
     ep["sfx"](track)
     audio.ding(track, cta_t0 + 0.05)
+    tail = track[nA:]                                  # bucle de audio: la cola (pads, eco) cae sobre el inicio
+    track = track[:nA]
+    track[:len(tail)] += tail
     wav = work / "audio.wav"
     audio.save(track, wav)
 
@@ -204,7 +209,7 @@ def render_video(ep, cta, out_mp4, workdir):
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
            "-s", f"{OUT[0]}x{OUT[1]}", "-r", str(FPS), "-i", "-", "-i", str(wav),
            "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-preset", "medium",
-           "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", "-shortest", str(out_mp4)]
+           "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", str(out_mp4)]
     pipe = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     saved = {}
     cs, cv = None, [0.0, 0.0, 0.0]          # cámara con resorte críticamente amortiguado
@@ -232,37 +237,44 @@ def render_video(ep, cta, out_mp4, workdir):
                 a_ = np.asarray(img).copy()
                 a_[..., 0] = np.roll(a_[..., 0], dx, axis=1); a_[..., 2] = np.roll(a_[..., 2], -dx, axis=1)
                 img = Image.fromarray(a_)
-        bt = ep["banner"](t) if "banner" in ep else ""
-        hook_on = any(h0 <= t < h1 for h0, h1, _ in ep["hooks"])
         if "hud" in ep:
             hud(img, *ep["hud"](t))
-        if bt:
-            title_card(img, bt, 330, 84 if len(bt) < 9 else 64, 900)
-        # diálogo estilo RPG (se escribe letra por letra)
-        for t0, t1, who, text in lines:
-            if t0 <= t < t1:
-                col = voices[who.split("+")[0]]["color"] if "+" not in who else (255, 255, 255)
-                tag = " + ".join(voices[v]["label"] for v in who.split("+"))
-                frac = min(1.0, (t - t0) / (0.45 * (t1 - t0)))
-                shown = int(len(text) * (max(frac, 0.5) if t0 < 0.5 else frac)) + 1
-                rpg_box(img, tag, col, text, shown, flag=None if '+' in who else voices[who].get('flag'))
-        # gancho (primeros segundos): arranca ya en el fotograma 0
-        for h0, h1, htext in ep["hooks"]:
-            if h0 <= t < h1:
-                pop = 1 + 0.08 * math.sin(min((t - h0) / 0.25, 1) * math.pi)
-                title_card(img, htext, 330, int(62 * pop), 900)
-        # flash en cada corte
-        for c in ep["cuts"]:
+
+        def overlays(im, tt, cta_on):
+            bt = ep["banner"](tt) if "banner" in ep else ""
+            if bt:
+                title_card(im, bt, 330, 84 if len(bt) < 9 else 64, 900)
+            for t0, t1, who, text in lines:        # diálogo estilo RPG (se escribe letra por letra)
+                if t0 <= tt < t1:
+                    col = voices[who.split("+")[0]]["color"] if "+" not in who else (255, 255, 255)
+                    tag = " + ".join(voices[v]["label"] for v in who.split("+"))
+                    frac = min(1.0, (tt - t0) / (0.45 * (t1 - t0)))
+                    shown = int(len(text) * (max(frac, 0.5) if t0 < 0.5 else frac)) + 1
+                    rpg_box(im, tag, col, text, shown, flag=None if '+' in who else voices[who].get('flag'))
+            for h0, h1, htext in ep["hooks"]:      # gancho: ya está en el fotograma 0
+                if h0 <= tt < h1:
+                    pop = 1 + 0.08 * math.sin(min((tt - h0) / 0.25, 1) * math.pi)
+                    title_card(im, htext, 330, int(62 * pop), 900)
+            if cta_on:                             # CTA en los últimos segundos (caja RPG dorada)
+                u = tt - cta_t0
+                pop = 1 + 0.06 * math.sin(min(u, 0.3) / 0.3 * math.pi)
+                hh = int(116 * pop)
+                rpg_box(im, "MISIÓN", (255, 214, 70), cta, len(cta), y0=1260 - hh, y1=1260 + hh, gold=True)
+            return im
+
+        if t >= T - LOOP_FADE:
+            # BUCLE SIN COSTURA: la escena ya es idéntica al fotograma 0; solo los carteles hacen crossfade
+            # (CTA -> gancho inicial), así el último fotograma == el primero.
+            a_img = overlays(img.copy(), t, True)
+            b_img = overlays(img.copy(), 0.0, False)
+            u = smooth((t - (T - LOOP_FADE)) / (LOOP_FADE - 1 / FPS))
+            img = Image.blend(a_img, b_img, u)
+        else:
+            img = overlays(img, t, t >= cta_t0)
+        for c in ep["cuts"]:                       # flash en cada corte
             if 0 <= t - c < 2.5 / FPS:
                 white = Image.new("RGB", OUT, (255, 255, 255))
                 img = Image.blend(img, white, 0.65 if t - c < 1 / FPS else 0.3)
-        # CTA en los últimos segundos (misma caja RPG, en dorado)
-        if t >= cta_t0:
-            u = t - cta_t0
-            pop = 1 + 0.06 * math.sin(min(u, 0.3) / 0.3 * math.pi)
-            cy = 1260
-            hh = int(116 * pop)
-            rpg_box(img, "MISIÓN", (255, 214, 70), cta, len(cta), y0=cy - hh, y1=cy + hh, gold=True)
         if i in (0, int(n * 0.25), int(n * 0.55), int(n * 0.9), n - 1):
             saved[i] = img.copy()
         pipe.stdin.write(img.tobytes())

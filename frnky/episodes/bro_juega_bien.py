@@ -12,7 +12,7 @@ META = dict(id="bro-juega-bien", category="amistad",
             title="¿Qué pasaría si mi bro finalmente jugara bien?",
             caption_hook="Cuando tu bro por fin juega bien… y deja de ser tu bro 💀")
 K = 1.2                      # estiramiento del tiempo base -> real
-T = 32.6                     # duración base
+T = 33.4375                  # duración base (x1.2 = 40.125 s = 963 fotogramas exactos)
 # Escenas (tiempo base): sala 0-8 · calle 8-11 · cuarto 11-16 · ciber 16-27.8 · sala 27.8-30.4 · repetición 30.4-T
 CUTS = [8.0, 11.0, 16.0, 22.0, 27.8, 29.5, 30.4]
 
@@ -132,6 +132,7 @@ def s1(c, t, lt):
 
 def frame(t):
     shake = 0
+    te = t if t < 30.4 else t - T       # en el cierre la fase de animación es negativa y llega a 0 justo donde empieza el video
     if t < 8.0:
         sc = dict(score=(0, 14), verdict="DERROTA")
     elif t < 11.0:
@@ -145,12 +146,12 @@ def frame(t):
         sc = dict(score=(0, 14), verdict="DERROTA") if t > 28.4 else dict(score=(25, 0), verdict="VICTORIA")
     else:
         sc = dict(score=(0, 14), verdict="DERROTA")
-    c = room(t, **sc)
+    c = room(te, **sc)
 
     if t < 3.6:  # S1: el conflicto, desde el primer fotograma
         s1(c, t, t)
         keys = [(0, 40, 180, 290), (2.0, 36, 160, 290), (2.3, 26, 308, 268), (3.6, 24, 308, 268)]
-        shake = 1 if t < 0.4 else 0
+        shake = 0
     elif t < 8.0:  # S2: lo corren
         light_shaft(c)
         pt = t > 6.4
@@ -235,8 +236,8 @@ def frame(t):
         confetti(c, t)
         keys = [(29.5, 40, 180, 290), (30.4, 36, 180, 290)]
         shake = 1 if t < 29.9 else 0
-    else:  # BUCLE: todo vuelve a la escena inicial (misma cámara, mismos gestos)
-        s1(c, t, t - 30.4) if t < 31.6 else s1(c, t, 0.0)
+    else:  # BUCLE: escena idéntica al fotograma 0 (misma cámara, poses, marcador y fase de animación)
+        s1(c, te, 0.0)
         keys = [(30.4, 40, 180, 290), (T, 40, 180, 290)]
     return c, cam_at(keys, t), shake
 
@@ -253,7 +254,7 @@ def music(track):
     g(22.0, 27.8, 140, "min", layers=("bass", "pad"), vol=0.75)                 # incómodo
     g(27.8, 29.5, 140, "min", layers=("pad",), vol=0.6)
     g(29.5, 30.4, 140, "maj")
-    g(30.4, T, 132, "min")                                                      # vuelve el groove del inicio
+    g(30.4, T, 132, "min", bar0=2)                                             # compases 3-4 (C-G) y vuelve al compás 1 (Am): bucle musical
     for a, b, kind in ((0, 8, "room"), (8, 11, "street"), (11, 16, "bedroom"), (16, 27.8, "arcade"), (27.8, T, "room")):
         audio.ambient(track, a * K, b * K, kind, 1.0)
 

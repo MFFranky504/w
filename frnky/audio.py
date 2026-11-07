@@ -82,7 +82,7 @@ MEL_MAJ2 = [(0, 84, 1), (1, 88, 1), (2, 91, 2), (4, 88, 2), (6, 84, 2),
             (24, 86, 2), (26, 88, 1), (27, 86, 1), (28, 84, 3), (31, 79, 1)]
 
 
-def groove(track, t0, t1, bpm, mode="min", layers=("bass", "pad", "arp", "lead", "drums"), vol=1.0, mel="a"):
+def groove(track, t0, t1, bpm, mode="min", layers=("bass", "pad", "arp", "lead", "drums"), vol=1.0, mel="a", bar0=0):
     """Loop de 4 compases con bajo sincopado y glissando, pad grueso, arpegio, plucks, melodía con eco, batería con
     aplauso, hi-hat abierto y redoble de relleno cada 4 compases."""
     step = 60 / bpm / 2
@@ -90,9 +90,10 @@ def groove(track, t0, t1, bpm, mode="min", layers=("bass", "pad", "arp", "lead",
     melody = {("min", "a"): MEL_MIN, ("min", "b"): MEL_MIN2, ("maj", "a"): MEL_MAJ, ("maj", "b"): MEL_MAJ2}[(mode, mel)]
     lead = np.zeros(len(track))
     n = int((t1 - t0) / step)
+    off = bar0 * 8                      # compás inicial (para terminar el loop en los compases 3-4 y volver al 1)
     for i in range(n):
         t = t0 + i * step
-        bar, st = (i // 8) % 4, i % 8
+        bar, st = ((i + off) // 8) % 4, (i + off) % 8
         root, q = prog[bar]
         third = 3 if q == "m" else 4
         if "bass" in layers and st in (0, 3, 6):
@@ -122,10 +123,11 @@ def groove(track, t0, t1, bpm, mode="min", layers=("bass", "pad", "arp", "lead",
             if bar == 3 and st >= 6:
                 put(track, t, noise(0.05, 0.12, 0.03), vol); put(track, t + step / 2, noise(0.05, 0.14, 0.03), vol)
     if "lead" in layers:
-        for k in range(int((t1 - t0) / (step * 32)) + 1):
+        for k in range((off + n) // 32 + 1):
             for s0, m, ln in melody:
-                tt = t0 + (k * 32 + s0) * step
-                if tt < t1 - 0.05:
+                gstep = k * 32 + s0
+                tt = t0 + (gstep - off) * step
+                if gstep >= off and tt < t1 - 0.05:
                     f = midi(m)
                     dur = ln * step * 0.95
                     sig = square(f * (1 + 0.004 * np.sin(2 * np.pi * 5.5 * _t(dur))), dur, 0.25)
