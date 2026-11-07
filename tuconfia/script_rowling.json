@@ -1,0 +1,68 @@
+{
+ "titulo": "J. K. Rowling: del fondo a la saga",
+ "lines": [
+  {
+   "id": "L1",
+   "t": "¿Sabías que *J. K. Rowling* transformó tocar fondo... en una de las sagas más vendidas de la historia?",
+   "tts": "¿Sabías que Yéi Kéi Róuling transformó tocar fondo... en una de las sagas más vendidas de la historia?",
+   "p": 0.5,
+   "tag": "[curious]"
+  },
+  {
+   "id": "L2",
+   "t": "Estaba *divorciada*, sin trabajo, con una bebé... y viviendo de la ayuda del gobierno.",
+   "tts": "Estaba divorciada, sin trabajo, con una bebé... y viviendo de la ayuda del gobierno.",
+   "p": 0.5,
+   "tag": "[serious]"
+  },
+  {
+   "id": "L3",
+   "t": "Ella misma diría que era la mayor *fracasada* que conocía.",
+   "tts": "Ella misma diría que era la mayor fracasada que conocía.",
+   "p": 0.45,
+   "tag": "[sad]"
+  },
+  {
+   "id": "L4",
+   "t": "Pero seguía *escribiendo*, en cafeterías, mientras su hija dormía.",
+   "tts": "Pero seguía escribiendo, en cafeterías, mientras su hija dormía.",
+   "p": 0.5,
+   "tag": "[determined]"
+  },
+  {
+   "id": "L5",
+   "t": "Terminó el libro... y *doce* editoriales lo rechazaron.",
+   "tts": "Terminó el libro... y doce editoriales lo rechazaron.",
+   "p": 0.5,
+   "tag": "[tense]"
+  },
+  {
+   "id": "L6",
+   "t": "Hasta que una niña de ocho años leyó el primer capítulo... y pidió el *siguiente*.",
+   "tts": "Hasta que una niña de ocho años leyó el primer capítulo... y pidió el siguiente.",
+   "p": 0.5,
+   "tag": "[intense]"
+  },
+  {
+   "id": "L7",
+   "t": "1997. Sale *Harry Potter*. Hoy suma cientos de millones de lectores.",
+   "tts": "Mil novecientos noventa y siete. Sale Jarri Póter. Hoy suma cientos de millones de lectores.",
+   "p": 0.5,
+   "tag": "[excited]"
+  },
+  {
+   "id": "L8",
+   "t": "Años después diría que tocar fondo fue el *cimiento* sobre el que reconstruyó su vida.",
+   "tts": "Años después diría que tocar fondo fue el cimiento sobre el que reconstruyó su vida.",
+   "p": 0.5,
+   "tag": "[warmly]"
+  },
+  {
+   "id": "L9",
+   "t": "Quizás hoy no estás en el final de tu historia... sino en el *capítulo más difícil*. Y si tú lo escribes... ¿cómo quieres que *termine*?",
+   "tts": "Quizás hoy no estás en el final de tu historia... sino en el capítulo más difícil. Y si tú lo escribes... ¿cómo quieres que termine?",
+   "p": 0.5,
+   "tag": "[softly]"
+  }
+ ]
+}
