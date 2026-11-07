@@ -180,61 +180,62 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
     # ---- ojos grandes con iris y brillo ----
     ec = ch["eye"] + (255,)
 
-    EW = 4     # ojos proporcionados: óvalos oscuros pequeños con brillo, como en la referencia
-    EY = 17
+    EW = 5     # ojos kawaii: óvalos con iris de color, dos brillos y sin párpados oscuros
+    EY = 16
 
     def eye(sx, side):
         y0 = EY
         if expr in ("happy", "blink"):
-            for dx, dy in ((0, 4), (1, 3), (2, 3), (3, 4)):
+            for dx, dy in ((0, 4), (1, 3), (2, 2), (3, 3), (4, 4)):
                 R(sx + dx, y0 + dy, sx + dx + 1, y0 + dy + 1, INK)
             return
-        h = 6
-        if expr == "shock":
-            y0, h = EY - 1, 8
-            R(sx - 1, y0, sx + EW + 1, y0 + h, (244, 244, 248, 255)); R(sx, y0 + 2, sx + EW, y0 + h - 1, dk(ec, 0.6))
-            R(sx + 1, y0 + 3, sx + 3, y0 + 6, DARK); P(sx, y0 + 2, WHITE)
+        h = 7
+        if expr == "shock":      # sorpresa tierna: ojos redondos y brillantes (sin blanco "alienígena")
+            R(sx + 1, y0 - 1, sx + EW - 1, y0, DARK); R(sx, y0, sx + EW, y0 + 9, dk(ec, 0.75)); R(sx, y0 + 3, sx + EW, y0 + 9, ec)
+            R(sx + 1, y0 + 7, sx + EW - 1, y0 + 9, lt(ec, 1.35)); R(sx + 1, y0 + 1, sx + 3, y0 + 4, WHITE); P(sx + 3, y0 + 6, WHITE)
+            R(sx + 2, y0 + 4, sx + 4, y0 + 7, dk(ec, 0.45))
             return
-        R(sx, y0, sx + EW, y0 + h, dk(ec, 0.55))                      # iris oscuro
-        R(sx, y0 + 3, sx + EW, y0 + h, dk(ec, 0.8)); R(sx, y0 + h - 1, sx + EW, y0 + h, ec)   # degradado
-        R(sx, y0, sx + EW, y0 + 1, DARK)                              # párpado
-        px = max(sx, min(sx + 2, sx + 1 + look))
-        R(px, y0 + 2, px + 2, y0 + h - 1, DARK)                       # pupila
-        P(sx, y0 + 1, WHITE); P(sx, y0 + 2, WHITE)                    # brillo
-        P(sx + 3, y0 + h - 2, lt(ec, 1.5))
-        inner = side < 0
-        if expr == "angry":
-            R(sx, y0, sx + EW, y0 + 2, dk(skin, 0.72))
-            R(sx + (2 if inner else 0), y0 + 2, sx + (EW if inner else 2), y0 + 3, dk(skin, 0.72))
-        elif expr == "sad":
-            R(sx + (0 if inner else 2), y0, sx + (2 if inner else EW), y0 + 2, dk(skin, 0.78))
-        elif expr in ("smug", "shy"):
-            R(sx, y0, sx + EW, y0 + 3, dk(skin, 0.74)); R(sx, y0 + 3, sx + EW, y0 + 4, DARK)
+        R(sx + 1, y0, sx + EW - 1, y0 + 1, DARK)                       # pestaña superior
+        R(sx, y0 + 1, sx + EW, y0 + h, dk(ec, 0.75))                  # iris
+        R(sx, y0 + 3, sx + EW, y0 + h, ec); R(sx + 1, y0 + h - 2, sx + EW - 1, y0 + h, lt(ec, 1.35))
+        R(sx + 1, y0 + 3, sx + 3, y0 + 5, DARK) if False else None
+        px = max(sx + 1, min(sx + 2, sx + 1 + look))
+        R(px, y0 + 3, px + 2, y0 + 6, dk(ec, 0.45))                   # pupila suave
+        R(sx + 1, y0 + 1, sx + 3, y0 + 3, WHITE)                      # brillo grande
+        P(sx + 3, y0 + h - 2, WHITE)                                  # brillo pequeño
         if bags:
             R(sx, y0 + h, sx + EW, y0 + h + 1, (150, 100, 190, 255))
 
-    eye(-9, -1); eye(5, 1)
+    eye(-9, -1); eye(4, 1)
     bc = dk(hair, 0.85) if style != "cap" else dk(hair, 1.0)
-    for sx, side in ((-9, -1), (5, 1)):
+    for sx, side in ((-9, -1), (4, 1)):
         inner = side < 0
-        if expr == "angry":
-            R(sx, 14 if inner else 15, sx + 2, 15 if inner else 16, bc); R(sx + 2, 15 if inner else 14, sx + EW, 16 if inner else 15, bc)
+        if expr == "angry":      # cejas inclinadas, tiernas (sin tapar los ojos)
+            if inner:
+                R(sx, 12, sx + 2, 13, bc); R(sx + 2, 13, sx + EW, 14, bc)
+            else:
+                R(sx, 13, sx + 3, 14, bc); R(sx + 3, 12, sx + EW, 13, bc)
         elif expr == "sad":
-            R(sx, 15 if inner else 14, sx + 2, 16 if inner else 15, bc); R(sx + 2, 14 if inner else 15, sx + EW, 15 if inner else 16, bc)
+            if inner:
+                R(sx, 13, sx + 2, 14, bc); R(sx + 2, 12, sx + EW, 13, bc)
+            else:
+                R(sx, 12, sx + 3, 13, bc); R(sx + 3, 13, sx + EW, 14, bc)
         elif expr == "shock":
-            R(sx, 13, sx + EW, 14, bc)
+            R(sx, 11, sx + EW, 12, bc)
         else:
-            y = 14 if expr not in ("smug",) else 15
+            y = 13 if expr == "smug" else 12
             R(sx, y, sx + EW, y + 1, bc)
     if "tear" in fx:
         R(-9, 24, -7, 30, (140, 210, 255, 255)); P(-9, 24, WHITE)
-    if expr in ("happy", "angry", "shy", "shock") or "blush" in fx:
+    if expr in ("happy", "angry", "shy", "shock", "sad", "neutral") or "blush" in fx:
         R(-12, 24, -8, 26, (255, 120, 140, 255)); R(8, 24, 12, 26, (255, 120, 140, 255))
-    m = mouth or {"happy": "smile", "sad": "frown", "angry": "open", "shock": "o", "smug": "smirk", "shy": "shy"}.get(expr, "closed")
+    m = mouth or {"happy": "smile", "sad": "frown", "angry": "pout", "shock": "o", "smug": "smirk", "shy": "shy"}.get(expr, "closed")
     if m == "closed":
         R(-2, 26, 3, 27, INK)
     elif m == "open":
-        R(-3, 25, 4, 29, INK); R(-2, 28, 3, 29, (220, 90, 100, 255)); R(-3, 25, 4, 26, WHITE)
+        R(-2, 25, 3, 28, INK); R(-1, 27, 2, 28, (230, 110, 120, 255))
+    elif m == "pout":
+        R(-2, 26, 3, 27, INK); P(-3, 27, INK); P(3, 27, INK)
     elif m == "big":
         R(-4, 25, 5, 30, INK); R(-3, 28, 4, 30, (220, 90, 100, 255)); R(-4, 25, 5, 27, WHITE)
     elif m == "smile":
@@ -249,12 +250,11 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(-3, 26, 0, 27, INK); R(0, 25, 4, 26, INK)
     # ---- accesorios ----
     if ch.get("glasses"):
-        for sx in (-11, 3):
-            R(sx, 15, sx + 8, 16, DARK); R(sx, 25, sx + 8, 26, DARK); R(sx, 15, sx + 1, 26, DARK); R(sx + 7, 15, sx + 8, 26, DARK)
-            R(sx + 1, 16, sx + 3, 18, (255, 255, 255, 110))
-        R(-3, 19, 3, 20, DARK)
+        for sx in (-11, 2):
+            R(sx, 14, sx + 9, 15, DARK); R(sx, 25, sx + 9, 26, DARK); R(sx, 14, sx + 1, 26, DARK); R(sx + 8, 14, sx + 9, 26, DARK)
+        R(-2, 18, 2, 19, DARK)
     if shades:
-        R(-12, 16, 12, 25, (26, 28, 44, 255)); R(-12, 16, 12, 19, (56, 62, 86, 255))
+        R(-12, 15, 12, 24, (26, 28, 44, 255)); R(-12, 15, 12, 18, (56, 62, 86, 255))
         R(-9, 20, -4, 21, (130, 190, 230, 255)); R(5, 20, 10, 21, (130, 190, 230, 255)); R(-9, 22, -7, 23, (130, 190, 230, 255))
     if headset:
         steel = (90, 98, 124, 255)
@@ -264,8 +264,8 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(-19, 24, -17, 28, steel); R(-19, 27, -8, 28, steel); R(-9, 26, -5, 29, (210, 56, 90, 255))
     if "sweat" in fx:
         R(13, 4, 16, 10, (160, 215, 245, 255)); P(14, 4, WHITE)
-    if "vein" in fx:
-        R(-14, 0, -10, 1, (230, 50, 50, 255)); R(-12, -1, -11, 4, (230, 50, 50, 255)) if False else R(-12, 0, -11, 4, (230, 50, 50, 255))
+    if "vein" in fx:   # venita de enojo al costado de la cabeza (estilo cómic, tierna)
+        R(15, 8, 19, 9, (235, 60, 70, 255)); R(16, 7, 17, 11, (235, 60, 70, 255)); R(18, 10, 20, 11, (235, 60, 70, 255))
     pad = Image.new("RGBA", (SW + 16, SH + 6), (0, 0, 0, 0))
     pad.paste(img, (8, 5))
     return _vivid(_outline(pad))

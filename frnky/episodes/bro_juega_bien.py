@@ -72,7 +72,7 @@ def char(c, t, name, x=None, shake=0, scale=2, feet=FEET, hop=0, **kw):
     talking = (name in sp or "todos" in sp) and int(t * 7) % 2 == 0
     expr = kw.get("expr", "neutral")
     if talking:
-        kw["mouth"] = "big" if expr in ("angry", "happy", "shock") else "open"
+        kw["mouth"] = "big" if expr == "happy" else ("o" if expr == "shock" else "open")
     x = SEAT[name] if x is None else x
     ox = round(math.sin(t * 61) * shake) if shake else 0
     oy = round(math.sin(t * 5 + x) * 1.5) + kw.pop("oy", 0)
