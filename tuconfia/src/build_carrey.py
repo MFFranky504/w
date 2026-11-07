@@ -445,7 +445,7 @@ def synth_audio():
     XF = 1.8                                                           # segundos de empalme del final con el principio
     seg = song[int(S0 * SR):int(S0 * SR) + N].copy()
     pre = song[int((S0 - XF) * SR):int(S0 * SR)].copy()
-    gscale = .165 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)  # música bien presente
+    gscale = .125 / (np.sqrt((seg[:int(20 * SR)] ** 2).mean()) + 1e-9)  # música bien presente
     seg *= gscale; pre *= gscale * .78
     v = np.arange(len(seg)) / SR
     dip = np.where((v > G - SIL - .05) & (v < G - .012), np.clip(1 - (v - (G - SIL - .05)) / .12, 0, 1), 1.0)   # el piano se apaga ...
