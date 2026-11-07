@@ -21,7 +21,7 @@ NATIONS = {   # nombre, bandera, palabra típica, color de camiseta, nombres
     "BO": dict(name="Bolivia", flag=H([R_, Y_, G_]), tag="mano", shirt=(40, 140, 80), names=["Rodri", "Mili", "Chino", "Pame"]),
     "EC": dict(name="Ecuador", flag=[(0, 0, 1, .5, Y_), (0, .5, 1, .75, B_), (0, .75, 1, 1, R_)], tag="ñaño", shirt=(250, 210, 50), names=["Joel", "Domi", "Kevin", "Anita"]),
 }
-SKINS = [(246, 206, 164), (236, 184, 140), (214, 160, 120), (186, 130, 94), (150, 104, 76), (120, 82, 60)]
+SKINS = [(248, 212, 176), (238, 192, 150), (222, 170, 128), (196, 142, 104), (160, 112, 80), (126, 86, 62)]
 HAIRS = [(30, 24, 30), (70, 44, 30), (118, 76, 40), (170, 110, 50), (200, 70, 60), (96, 60, 190), (40, 50, 70)]
 EYES = [(90, 56, 34), (60, 130, 200), (50, 140, 90), (120, 80, 150), (70, 70, 70)]
 STYLES = ["spiky", "cap", "pony", "curly", "spiky", "pony", "bun"]
@@ -40,6 +40,12 @@ def make_cast(episode_id, force=None):
     chosen = {}
     for role in ("bro", "a", "b", "c"):
         chosen[role] = force.get(role) or next(c for c in codes if c not in chosen.values())
+    # Tonos de piel variados dentro del mismo elenco (sin repetir y como máximo uno oscuro), sin ligarlos a la nacionalidad.
+    light, mid, dark = SKINS[:2], SKINS[2:4], SKINS[4:]
+    tones = [rnd.choice(light), rnd.choice(light + mid), rnd.choice(mid), rnd.choice(light + mid + dark)]
+    while len(set(tones)) < 4 or sum(t in dark or t == SKINS[3] for t in tones) > 1:
+        tones = [rnd.choice(light), rnd.choice(light + mid), rnd.choice(mid), rnd.choice(light + mid + dark)]
+    rnd.shuffle(tones)
     cast = {}
     for i, role in enumerate(("bro", "a", "b", "c")):
         nat = NATIONS[chosen[role]]
@@ -47,7 +53,7 @@ def make_cast(episode_id, force=None):
         shirt = nat["shirt"] if rnd.random() < .7 else rnd.choice([(58, 96, 214), (230, 90, 60), (60, 170, 110), (240, 120, 170)])
         sid = f"c_{episode_id}_{role}"
         CHARS[sid] = dict(
-            skin=rnd.choice(SKINS), hair=rnd.choice(HAIRS), coat=shirt, kind=rnd.choice(["hoodie", "jersey", "jersey"]),
+            skin=tones[i], hair=rnd.choice(HAIRS), coat=shirt, kind=rnd.choice(["hoodie", "jersey", "jersey"]),
             trim=(244, 244, 240), pants=rnd.choice(PANTS), shoe=rnd.choice(SHOES), sole=rnd.choice([(40, 60, 170), (210, 60, 70), (120, 120, 140)]),
             eye=rnd.choice(EYES), style=style, cap=rnd.choice([(222, 52, 62), (60, 100, 210), (250, 200, 60), (60, 170, 110)]),
             glasses=rnd.random() < .25, band=style == "cap" and rnd.random() < .5)
