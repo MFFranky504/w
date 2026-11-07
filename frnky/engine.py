@@ -39,14 +39,14 @@ def cam_at(keys, t):
     return keys[-1][1:]
 
 
-def apply_cam(img, k, fx, fy, shake=0, t=0):
+def apply_cam(img, k, fx, fy, shake=0, t=0, smooth_=False):
     k = max(20, min(40, round(k)))
     w, h = 9 * k, 16 * k
     ox = round(math.sin(t * 70) * shake) if shake else 0
     oy = round(math.cos(t * 53) * shake) if shake else 0
     x0 = int(max(0, min(W - w, fx - w / 2 + ox)))
     y0 = int(max(0, min(H - h, fy - h / 2 + oy)))
-    return img.crop((x0, y0, x0 + w, y0 + h)).resize(OUT, Image.NEAREST)
+    return img.crop((x0, y0, x0 + w, y0 + h)).resize(OUT, Image.LANCZOS if smooth_ else Image.NEAREST)
 
 
 def draw_line(img, xy, s, font, fill, anchor="lm", stroke=0, stroke_fill=None):
@@ -112,6 +112,30 @@ def post_fx(img):
     img = ImageEnhance.Color(img).enhance(1.25)
     a = np.asarray(img, dtype="float32") * _VIG
     return Image.fromarray(np.clip(a, 0, 255).astype("uint8"))
+
+
+def kawaii_fx(img, t):
+    """Look kawaii: pasteles suaves, resplandor cálido, viñeta rosada y corazones/estrellas flotando."""
+    a = np.asarray(img, dtype="float32")
+    a = a * 0.86 + 34                                   # sombras levantadas (más pastel)
+    a[..., 0] *= 1.03; a[..., 2] *= 1.02
+    img = Image.fromarray(np.clip(a, 0, 255).astype("uint8")).filter(ImageFilter.GaussianBlur(0.8))
+    glow = img.filter(ImageFilter.GaussianBlur(14))
+    img = Image.blend(img, ImageChops.screen(img, glow), 0.35)
+    d = ImageDraw.Draw(img, "RGBA")
+    rnd = np.random.default_rng(7)
+    for k in range(9):                                 # corazones y estrellas que suben despacio
+        x = (rnd.random() * OUT[0] + math.sin(t * 0.9 + k) * 26) % OUT[0]
+        y = OUT[1] - ((t * 90 + rnd.random() * OUT[1]) % (OUT[1] + 80)) + 20
+        if 330 < y < 1050 or y > 1500:
+            continue
+        r = 14 + 6 * math.sin(t * 3 + k)
+        if k % 2:
+            d.ellipse([x - r, y - r, x, y], fill=(255, 150, 190, 150)); d.ellipse([x, y - r, x + r, y], fill=(255, 150, 190, 150))
+            d.polygon([(x - r, y - r / 2), (x + r, y - r / 2), (x, y + r)], fill=(255, 150, 190, 150))
+        else:
+            d.polygon([(x, y - r), (x + r / 3, y - r / 3), (x + r, y), (x + r / 3, y + r / 3), (x, y + r), (x - r / 3, y + r / 3), (x - r, y), (x - r / 3, y - r / 3)], fill=(255, 240, 150, 170))
+    return img
 
 
 def rpg_box(img, who_label, color, text, shown, flag=None, y0=1150, y1=1370, gold=False):
@@ -230,7 +254,10 @@ def render_video(ep, cta, out_mp4, workdir):
                     cv[q] += (170 * (tgt[q] - cs[q]) - 26 * cv[q]) * h
                     cs[q] += cv[q] * h
         cam = tuple(cs)
-        img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t))
+        kaw = ep.get("style") == "kawaii"
+        img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t, smooth_=kaw))
+        if kaw:
+            img = kawaii_fx(img, t)
         for c in ep["cuts"]:                       # glitch cromático (RGB split) breve en cada corte
             if 0 <= t - c < 0.17:
                 dx = int(8 * (1 - (t - c) / 0.17))

@@ -107,3 +107,48 @@ def plan_week(monday=None):
     PLANS.mkdir(exist_ok=True)
     (PLANS / f"{plan['week']}.json").write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n")
     return plan
+
+
+def calendario(start=dt.date(2026, 11, 9), days=14):
+    """Calendario de 14 días (hora México): 1-2 videos al día, 60% ganadoras / 30% nuevas / 10% videojuegos.
+    Lun-Mié 16:00 (principal) y 07:30 (secundario); Jue-Dom alterna; Instagram prueba 19:00 en 3 días."""
+    from .config import CTAS, SCHEDULE
+    pool = ideas()
+    win = [i for i in pool if i["kind"] == "ganadora"]
+    new = [i for i in pool if i["kind"] == "nueva"]
+    vj = [i for i in pool if i["kind"] == "videojuegos"]
+    wcats = ["ultimo-hombre", "fiel", "traicion", "crush", "proyectarse"]
+    byc = {c: [i for i in win if i["category"] == c] for c in wcats}
+    w, k = [], 0
+    while len(w) < 12:
+        c = wcats[k % 5]; k += 1
+        if byc[c]:
+            w.append(byc[c].pop(0))
+    n6 = new[:6] if len(new) >= 6 else new
+    order = []
+    wi, ni, vi = iter(w), iter(n6), iter(vj[:2])
+    pattern = "WWNWWNWWNWWNWWNWVWNV"          # 12 W, 6 N, 2 V = 20 videos
+    for ch in pattern:
+        order.append(next({"W": wi, "N": ni, "V": vi}[ch], None))
+    order = [o for o in order if o]
+    two_a_day = [0, 1, 2, 4, 5, 6]       # 6 días con 2 videos + 8 con 1 = 20 videos en 14 días
+    rows, idx = [], 0
+    for d in range(days):
+        day = start + dt.timedelta(days=d)
+        wd = day.weekday()
+        times = [SCHEDULE["main"], SCHEDULE["secondary"]] if d in two_a_day else [SCHEDULE["main"] if wd < 3 else (SCHEDULE["secondary"] if d % 2 else SCHEDULE["main"])]
+        for tm in times:
+            if idx >= len(order):
+                break
+            it = order[idx]
+            rows.append(dict(fecha=str(day), dia=["lun", "mar", "mié", "jue", "vie", "sáb", "dom"][wd], hora_mx=tm,
+                             idea=it["id"], tipo=it["kind"], tema=it["category"], cta=CTAS[idx % len(CTAS)],
+                             redes="TikTok+YouTube" + ("+Instagram 19:00" if wd in (2, 4, 6) and tm == SCHEDULE["main"] else "+Instagram " + tm),
+                             duracion="20-35 s"))
+            idx += 1
+    import csv
+    out = DATA / "calendario.csv"
+    with out.open("w", newline="", encoding="utf-8") as f:
+        wr = csv.DictWriter(f, fieldnames=list(rows[0]))
+        wr.writeheader(); wr.writerows(rows)
+    return rows

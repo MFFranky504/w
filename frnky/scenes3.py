@@ -248,3 +248,98 @@ def taqueria(t):
             d.rectangle([x, y, x + 14, y + 8], fill=(104, 98, 130) if (x + y) % 3 else (96, 90, 122)); d.rectangle([x, y, x + 14, y], fill=(126, 120, 152))
     d.ellipse([20, 252, 90, 270], fill=(70, 76, 130)); d.rectangle([34, 254, 76, 262], fill=(255, 90, 190) if on else (110, 50, 100))
     return _fin(img, lambda b: glow_img(b, (62 * 2, 40 * 2, 118 * 2, 62 * 2), (255, 90, 190), 110 if on else 30, 16))
+
+
+def calle_vacia(t):
+    """Calle post-apocalíptica: coches abandonados, tiendas tapiadas, niebla, cuervos y zombis lejanos."""
+    img, d = _new()
+    top, bot = (70, 80, 96), (176, 150, 146)
+    for y in range(0, 150, 2):
+        u = y / 150
+        d.rectangle([0, y, LW, y + 2], fill=tuple(int(top[i] + (bot[i] - top[i]) * u) for i in range(3)))
+    d.ellipse([28, 44, 62, 78], fill=(236, 226, 206)); d.ellipse([34, 50, 56, 72], fill=(250, 244, 226))
+    cols = [(110, 96, 104), (96, 86, 110), (124, 104, 96), (92, 100, 118)]
+    x = -8
+    for k in range(5):
+        w = 40; hh = [120, 96, 130, 104, 112][k]
+        box(d, x, 168 - hh, x + w, 168, cols[k % 4])
+        for wy in range(168 - hh + 8, 150, 14):
+            for wx in range(x + 5, x + w - 9, 13):
+                broken = (wx * 5 + wy * 3 + k) % 4 == 0
+                d.rectangle([wx, wy, wx + 7, wy + 9], fill=(30, 28, 44) if not broken else (70, 76, 96))
+                if broken:
+                    d.line([wx, wy, wx + 7, wy + 9], fill=(150, 156, 176))
+                if (wx + wy + k) % 11 == 0 and int(t * 2) % 2:
+                    d.rectangle([wx + 1, wy + 1, wx + 6, wy + 8], fill=(255, 220, 130))
+        x += w
+    # tienda tapiada con tablones y letrero que parpadea
+    box(d, 60, 124, 120, 168, (84, 74, 92)); d.rectangle([62, 134, 118, 164], fill=(30, 28, 44))
+    for k in range(4):
+        d.rectangle([64, 138 + k * 7, 116, 142 + k * 7], fill=(150, 112, 76)); d.rectangle([64, 138 + k * 7, 116, 138 + k * 7], fill=(190, 150, 100))
+    on = int(t * 3) % 6 != 0
+    box(d, 66, 112, 114, 124, (40, 36, 60)); txt(d, (90, 118), "SUPER", 8, (255, 90, 90) if on else (110, 50, 60), outline=(40, 20, 30))
+    # poste caído, grafiti y basura que rueda
+    d.line([150, 100, 168, 168], fill=OL, width=3); d.line([150, 100, 168, 168], fill=(120, 124, 140), width=1)
+    txt(d, (24, 140), "AYUDA", 8, (240, 80, 90), outline=OL)
+    # asfalto agrietado, línea y coches
+    d.rectangle([0, 168, LW, LH], fill=(78, 80, 96))
+    for k in range(0, LW, 24):
+        d.rectangle([k + 4, 232, k + 18, 235], fill=(210, 190, 90))
+    d.line([20, 180, 40, 200, 34, 224], fill=(44, 44, 58)); d.line([120, 190, 140, 214, 132, 240], fill=(44, 44, 58))
+    d.rectangle([0, 168, LW, 174], fill=(120, 120, 140))
+    box(d, 118, 150, 172, 176, (170, 70, 70)); box(d, 128, 138, 160, 152, (150, 60, 60)); d.rectangle([132, 141, 156, 150], fill=(110, 150, 190))
+    d.line([132, 141, 156, 150], fill=(210, 224, 240))
+    d.ellipse([124, 170, 138, 182], fill=OL); d.ellipse([152, 170, 166, 182], fill=OL)
+    box(d, 2, 156, 38, 180, (80, 110, 170)); d.rectangle([6, 160, 20, 170], fill=(110, 150, 190)); d.ellipse([6, 174, 18, 186], fill=OL)
+    # zombis lejanos que se tambalean y cuervos
+    for zx, ph in ((140, 0.0), (160, 1.7)):
+        sx = zx + math.sin(t * 1.2 + ph) * 3
+        d.rectangle([sx, 138, sx + 5, 156], fill=(40, 60, 48)); d.rectangle([sx + 1, 132, sx + 4, 138], fill=(80, 110, 80))
+        d.rectangle([sx - 4, 140 + int(math.sin(t * 2 + ph) * 2), sx, 143], fill=(40, 60, 48))
+    for bx in (20, 70, 120):
+        px = (bx + t * 9) % (LW + 20) - 10; py = 30 + math.sin(t * 2 + bx) * 4
+        w2 = 2 if int(t * 7 + bx) % 2 else -1
+        d.line([px - 3, py + w2, px, py], fill=OL); d.line([px, py, px + 3, py + w2], fill=OL)
+    # niebla que avanza
+    fog = Image.new("RGBA", (LW, LH), (0, 0, 0, 0)); fd = ImageDraw.Draw(fog)
+    for k in range(5):
+        fx = (k * 50 + t * 6) % (LW + 60) - 30
+        fd.ellipse([fx - 30, 150 + (k % 2) * 14, fx + 30, 176 + (k % 2) * 14], fill=(210, 214, 226, 64))
+    img.alpha_composite(fog)
+    return _fin(img)
+
+
+def super_vacio(t):
+    """Supermercado vacío: pasillos con estantes, carritos tirados, luces que parpadean y piso de losetas."""
+    img, d = _new()
+    d.rectangle([0, 0, LW, 168], fill=(214, 220, 214))
+    fl = 0.55 if int(t * 7) % 9 == 0 else 1.0
+    for lx in (10, 70, 130):
+        d.rectangle([lx, 2, lx + 40, 8], fill=OL); d.rectangle([lx + 1, 3, lx + 39, 7], fill=(int(255 * fl), int(252 * fl), int(226 * fl)))
+    d.rectangle([0, 150, LW, 168], fill=(176, 184, 176))
+    box(d, 0, 20, LW, 36, (210, 70, 70)); txt(d, (90, 28), "SUPER MERCADO · OFERTAS", 8, (255, 255, 255), outline=(150, 40, 40))
+    rnd = random.Random(4)
+    for sx in (4, 62, 120):
+        box(d, sx, 54, sx + 54, 168, (150, 140, 160))
+        for r in range(4):
+            by = 58 + r * 26
+            d.rectangle([sx + 2, by + 22, sx + 52, by + 25], fill=(110, 100, 120))
+            x = sx + 4
+            while x < sx + 48:
+                w = rnd.randint(5, 8); h = rnd.randint(12, 20)
+                if rnd.random() < .45:
+                    d.rectangle([x, by + 22 - h, x + w, by + 22], fill=rnd.choice([(230, 90, 70), (250, 200, 70), (90, 190, 120), (90, 150, 230), (240, 140, 180)]), outline=OL)
+                x += w + 2
+    box(d, 150, 140, 174, 168, (200, 200, 214)); d.rectangle([152, 144, 172, 148], fill=(90, 90, 110))
+    d.rectangle([154, 150, 170, 152], fill=(30, 40, 60)); d.rectangle([156, 144, 160, 146], fill=(90, 255, 110) if int(t * 2) % 2 else (30, 110, 40))
+    d.rectangle([0, 168, LW, LH], fill=(200, 206, 214))
+    for r, y in enumerate(range(168, LH, 16)):
+        for c, x in enumerate(range(0, LW, 32)):
+            d.rectangle([x, y, x + 30, y + 14], fill=(210, 216, 224) if (r + c) % 2 else (186, 192, 204))
+    for cx_, cy_ in ((100, 200), (30, 240)):          # carritos tirados
+        d.rectangle([cx_, cy_, cx_ + 22, cy_ + 14], outline=OL, width=1); d.line([cx_ - 3, cy_ - 6, cx_ + 2, cy_], fill=OL)
+        d.ellipse([cx_ + 2, cy_ + 14, cx_ + 8, cy_ + 20], fill=OL); d.ellipse([cx_ + 16, cy_ + 14, cx_ + 22, cy_ + 20], fill=OL)
+        for gx in range(cx_ + 2, cx_ + 22, 4):
+            d.line([gx, cy_, gx, cy_ + 14], fill=(150, 150, 170))
+    d.ellipse([60, 250, 120, 262], fill=(240, 230, 210)); d.rectangle([72, 252, 108, 258], fill=(255, 200, 70))   # papas regadas
+    return _fin(img)

@@ -30,5 +30,13 @@
   "cta": "Etiqueta a tu bro que haría esto",
   "date": "2026-11-07",
   "metrics": {}
+ },
+ {
+  "id": "ultimos-zombis",
+  "category": "ultimo-hombre",
+  "hook": "¿Qué pasaría si mi bro y yo fuéramos los últimos hombres en la tierra?",
+  "cta": "Etiqueta a tu bro que haría esto",
+  "date": "2026-11-07",
+  "metrics": {}
  }
 ]

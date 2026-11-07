@@ -46,14 +46,20 @@ def make_cast(episode_id, force=None):
     while len(set(tones)) < 4 or sum(t in dark or t == SKINS[3] for t in tones) > 1:
         tones = [rnd.choice(light), rnd.choice(light + mid), rnd.choice(mid), rnd.choice(light + mid + dark)]
     rnd.shuffle(tones)
+    used = {"hair": [], "shirt": [], "style": []}
     cast = {}
     for i, role in enumerate(("bro", "a", "b", "c")):
         nat = NATIONS[chosen[role]]
-        style = rnd.choice(STYLES)
+        style = rnd.choice([x for x in STYLES if x not in used["style"]] or STYLES)
         shirt = nat["shirt"] if rnd.random() < .7 else rnd.choice([(58, 96, 214), (230, 90, 60), (60, 170, 110), (240, 120, 170)])
+        if any(sum(abs(a - b) for a, b in zip(shirt, u)) < 150 for u in used["shirt"]):      # camisetas bien distintas entre sí
+            shirt = rnd.choice([c for c in [(58, 96, 214), (230, 90, 60), (60, 170, 110), (240, 120, 170), (250, 200, 60), (150, 90, 200), (60, 60, 70)]
+                                if all(sum(abs(a - b) for a, b in zip(c, u)) >= 150 for u in used["shirt"])])
+        hair = rnd.choice([h for h in HAIRS if h not in used["hair"]])
+        used["style"].append(style); used["shirt"].append(shirt); used["hair"].append(hair)
         sid = f"c_{episode_id}_{role}"
         CHARS[sid] = dict(
-            skin=tones[i], hair=rnd.choice(HAIRS), coat=shirt, kind=rnd.choice(["hoodie", "jersey", "jersey"]),
+            skin=tones[i], hair=hair, coat=shirt, kind=rnd.choice(["hoodie", "jersey", "jersey"]),
             trim=(244, 244, 240), pants=rnd.choice(PANTS), shoe=rnd.choice(SHOES), sole=rnd.choice([(40, 60, 170), (210, 60, 70), (120, 120, 140)]),
             eye=rnd.choice(EYES), style=style, cap=rnd.choice([(222, 52, 62), (60, 100, 210), (250, 200, 60), (60, 170, 110)]),
             glasses=rnd.random() < .25, band=style == "cap" and rnd.random() < .5)

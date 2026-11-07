@@ -47,6 +47,8 @@ CHARS.update({   # elenco 2: Nico (Colombia), Sofi (Perú), Tomi (Uruguay), Dire
                   pants=(122,102,82), shoe=(96,64,44), sole=(40,26,20), eye=(60,44,30), style="bald", glasses=True, mustache=True, tie=True),
 })
 CHARS["bro_w"] = dict(CHARS["bro"], coat=(52, 64, 98), kind="blazer", trim=(244, 244, 248), pants=(70, 74, 96))   # Bro con ropa de oficina
+CHARS["zombi"] = dict(skin=(150, 196, 134), hair=(60, 70, 60), coat=(96, 84, 120), kind="jersey", trim=(150, 140, 160),
+                      pants=(70, 66, 90), shoe=(90, 70, 60), sole=(50, 40, 40), eye=(220, 200, 80), style="curly", band=False)
 _SK = [(240,196,160), (214,160,120), (170,118,86), (232,182,146), (150,104,76)]
 _HR = [(40,30,36), (96,60,40), (150,100,50), (30,24,34), (70,50,100), (180,60,60)]
 _CT = [(60,120,220), (230,90,60), (60,170,110), (250,200,60), (170,80,200), (240,120,170), (80,200,210)]
@@ -325,13 +327,38 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
     return _vivid(_outline(pad))
 
 
+STYLE = {"name": "pixel"}      # "pixel" | "kawaii"
+_CUT = 36                         # fila donde termina la cabeza en el sprite con margen
+
+
+def _kawaii(spr):
+    """Chibi/kawaii: cabeza ~30% más grande, cuerpo algo más corto y compacto, suavizado."""
+    w, h = spr.size
+    head = spr.crop((0, 0, w, _CUT)).resize((int(w * 1.3), int(_CUT * 1.3)), Image.BICUBIC)
+    body = spr.crop((0, _CUT, w, h)).resize((int(w * 1.0), int((h - _CUT) * 0.9)), Image.BICUBIC)
+    out = Image.new("RGBA", (head.width, head.height + body.height - 5), (0, 0, 0, 0))
+    out.alpha_composite(body, ((head.width - body.width) // 2, head.height - 5))
+    out.alpha_composite(head, (0, 0))
+    return out
+
+
+@lru_cache(maxsize=2048)
+def _kw(name, items):
+    return _kawaii(sprite(name, **dict(items)))
+
+
 def draw_char(canvas, name, x, feet_y, flip=False, scale=2, shadow=True, ox=0, oy=0, **kw):
-    spr = sprite(name, **kw)
+    if STYLE["name"] == "kawaii":
+        spr = _kw(name, tuple(sorted(kw.items())))
+        resample = Image.BICUBIC
+    else:
+        spr = sprite(name, **kw)
+        resample = Image.NEAREST
     if flip:
         spr = spr.transpose(Image.FLIP_LEFT_RIGHT)
-    big = spr.resize((spr.width * scale, spr.height * scale), Image.NEAREST)
+    big = spr.resize((int(spr.width * scale), int(spr.height * scale)), resample)
     if shadow:
         sh_l = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
-        ImageDraw.Draw(sh_l).ellipse([x - 14 * scale + ox, feet_y - 6, x + 14 * scale + ox, feet_y + 6], fill=(8, 6, 20, 110))
+        ImageDraw.Draw(sh_l).ellipse([x - 14 * scale + ox, feet_y - 6, x + 14 * scale + ox, feet_y + 6], fill=(8, 6, 20, 90))
         canvas.alpha_composite(sh_l)
     canvas.alpha_composite(big, (int(x - big.width // 2 + ox), int(feet_y - (spr.height - 3) * scale + oy)))
