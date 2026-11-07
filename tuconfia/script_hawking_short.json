@@ -1,0 +1,112 @@
+{
+ "titulo": "Hawking SHORT",
+ "meta": {
+  "famoso": "Stephen Hawking",
+  "persona_hashtag": "#StephenHawking",
+  "tipo_gancho": "se_nego",
+  "pregunta": "Y tú... si hoy supieras que el tiempo es más corto de lo que crees... ¿qué dejarías de aplazar... y qué harías mañana?",
+  "duracion_objetivo_s": 180
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Stephen Hawking podía rendirse... pero *se negó*.",
+   "tts": "Stíven Jóking podía rendirse... pero se negó.",
+   "gen": "[bold] Stíven Jóking podía rendirse... [pause] pero se negó.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L1"
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "Tenía veintiún años cuando su cuerpo empezó a *fallar*. Se tropezaba... se le caían las cosas... y hablaba cada vez peor.",
+   "tts": "Tenía veintiún años cuando su cuerpo empezó a fallar. Se tropezaba... se le caían las cosas... y hablaba cada vez peor.",
+   "gen": "[tense] Tenía veintiún años cuando su cuerpo empezó a fallar. [pause] Se tropezaba... se le caían las cosas... y hablaba cada vez peor.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L6"
+  },
+  {
+   "id": "L3",
+   "rol": "fracaso",
+   "t": "Los médicos lo diagnosticaron: una enfermedad que va apagando los músculos, poco a poco. Y le dieron *dos años* de vida.",
+   "tts": "Los médicos lo diagnosticaron: una enfermedad que va apagando los músculos, poco a poco. Y le dieron dos años de vida.",
+   "gen": "[sad] Los médicos lo diagnosticaron: una enfermedad que va apagando los músculos, poco a poco. [heavy sigh] Y le dieron dos años de vida.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L7"
+  },
+  {
+   "rol": "fracaso",
+   "t": "Imagina tener veintiún años... y que te digan cuánto *tiempo* te queda. ¿Qué harías *tú*?",
+   "tts": "Imagina tener veintiún años... y que te digan cuánto tiempo te queda. ¿Qué harías tú?",
+   "gen": "[softly] Imagina tener veintiún años... [pause] y que te digan cuánto tiempo te queda. [whispers] ¿Qué harías tú?",
+   "p": 0.5,
+   "tag": "",
+   "id": "L4",
+   "orig": "L8"
+  },
+  {
+   "id": "L5",
+   "rol": "fracaso",
+   "t": "Pero la vida volvió a golpear. En mil novecientos ochenta y cinco, una neumonía casi lo mata... y lo dejó *sin voz*.",
+   "tts": "Pero la vida volvió a golpear. En mil novecientos ochenta y cinco, una neumonía casi lo mata... y lo dejó sin voz.",
+   "gen": "[serious] Pero la vida volvió a golpear. [pause] En mil novecientos ochenta y cinco, una neumonía casi lo mata... [heavy sigh] y lo dejó sin voz.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L21"
+  },
+  {
+   "id": "L6",
+   "rol": "giro",
+   "t": "Los médicos hablaron de dos años. Él vivió *cincuenta y cinco* más.",
+   "tts": "Los médicos hablaron de dos años. Él vivió cincuenta y cinco más.",
+   "gen": "[intense] Los médicos hablaron de dos años. [pause] Él vivió cincuenta y cinco más.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L29"
+  },
+  {
+   "id": "L7",
+   "rol": "frase_final",
+   "t": "En dos mil doce, ante el mundo entero, pidió algo simple: *mira hacia las estrellas*... y no hacia tus pies. Y añadió: sé *curioso*.",
+   "tts": "En dos mil doce, ante el mundo entero, pidió algo simple: mira hacia las estrellas... y no hacia tus pies. Y añadió: sé curioso.",
+   "gen": "[warmly] En dos mil doce, ante el mundo entero, pidió algo simple: [whispers] mira hacia las estrellas... y no hacia tus pies. [softly] Y añadió: sé curioso.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L31"
+  },
+  {
+   "id": "L8",
+   "rol": "frase_final",
+   "t": "Porque nadie sabe cuánto tiempo tiene... pero todos podemos decidir cómo *usarlo*.",
+   "tts": "Porque nadie sabe cuánto tiempo tiene... pero todos podemos decidir cómo usarlo.",
+   "gen": "[softly] Porque nadie sabe cuánto tiempo tiene... pero todos podemos decidir cómo usarlo.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L32"
+  },
+  {
+   "id": "L9",
+   "rol": "pregunta",
+   "t": "Y tú... si hoy supieras que el tiempo es *más corto* de lo que crees... ¿qué dejarías de aplazar... y qué harías *mañana*?",
+   "tts": "Y tú... si hoy supieras que el tiempo es más corto de lo que crees... ¿qué dejarías de aplazar... y qué harías mañana?",
+   "gen": "[softly, reflective] Y tú... si hoy supieras que el tiempo es más corto de lo que crees... [pause] ¿qué dejarías de aplazar... [emotional] y qué harías mañana?",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L33"
+  },
+  {
+   "id": "L10",
+   "rol": "pregunta",
+   "t": "Ve el video completo en *YouTube*.",
+   "tts": "Ve el video completo en Yutiub.",
+   "gen": "[warmly] Ve el video completo en Yutiub.",
+   "p": 0.4,
+   "tag": "",
+   "orig": "X"
+  }
+ ]
+}
