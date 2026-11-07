@@ -941,7 +941,7 @@ def extra_pyramid(im, t, ts):
     for k in range(4): a = t * 5 + k * 1.6; d.line([(tx, 258), (tx + 6 * math.cos(a), 258 + 6 * math.sin(a))], fill=(150, 110, 60))
     x0 = 238; d.rectangle((x0 - 4, 232, x0 + 4, 262), fill=(40, 150, 80)); d.rectangle((x0 - 12, 240, x0 - 6, 244), fill=(40, 150, 80)); d.rectangle((x0 - 12, 234, x0 - 9, 244), fill=(40, 150, 80)); d.rectangle((x0 + 6, 244, x0 + 12, 248), fill=(40, 150, 80)); d.rectangle((x0 + 9, 238, x0 + 12, 248), fill=(40, 150, 80))
     shades(d, x0, 238, 4, (14, 10, 20)); d.rectangle((x0 - 6, 229, x0 + 6, 231), fill=(255, 90, 90)); d.rectangle((x0 - 3, 224, x0 + 3, 229), fill=(255, 90, 90))    # cactus with shades and a party hat
-    bx = 190 + 30 * math.sin(t * .3); by = 70 + 20 * math.sin(t * .5); d.ellipse((bx - 8, by - 10, bx + 8, by + 6), fill=(255, 140, 60))
+    bx = 222 + 14 * math.sin(t * .3); by = 128 + 8 * math.sin(t * .5); d.ellipse((bx - 8, by - 10, bx + 8, by + 6), fill=(255, 140, 60))
     for k in range(-1, 2): d.arc((bx - 8 + k * 5, by - 10, bx + 8 - k * 5, by + 6), 90, 270, fill=(255, 230, 120))
     d.line([(bx - 4, by + 6), (bx - 2, by + 12)], fill=(120, 90, 60)); d.line([(bx + 4, by + 6), (bx + 2, by + 12)], fill=(120, 90, 60)); d.rectangle((bx - 3, by + 12, bx + 3, by + 16), fill=(150, 100, 60))
     s = (t * .6) % 5
@@ -964,7 +964,7 @@ def extra_paris(im, t, ts):
     for wx in (x - 7, x + 7): d.ellipse((wx - 5, y - 5, wx + 5, y + 5), outline=(20, 14, 26)); a = t * 8; d.line([(wx - 4 * math.cos(a), y - 4 * math.sin(a)), (wx + 4 * math.cos(a), y + 4 * math.sin(a))], fill=(60, 50, 70))
     d.line([(x - 7, y), (x, y - 8), (x + 7, y)], fill=(20, 14, 26)); d.ellipse((x - 3, y - 17, x + 3, y - 11), fill=(20, 14, 26)); d.rectangle((x - 3, y - 11, x + 3, y - 4), fill=(60, 80, 170)); d.rectangle((x - 2, y - 18, x + 2, y - 16), fill=(220, 50, 70))
     d.line([(x + 2, y - 8), (x + 17, y - 14)], fill=(230, 180, 90), width=3)                              # baguette
-    px = W + 60 - (t * 26) % (W + 200); py = 42 + 4 * math.sin(t * 1.5)                                  # plane towing a banner
+    px = W + 60 - (t * 26) % (W + 200); py = 24 + 3 * math.sin(t * 1.5)                                  # plane towing a banner
     d.rectangle((px - 8, py - 2, px + 8, py + 2), fill=(240, 240, 250)); d.polygon([(px - 8, py - 2), (px - 12, py - 7), (px - 8, py + 2)], fill=(220, 50, 70)); d.line([(px - 2, py - 5), (px - 2, py + 5)], fill=(160, 160, 190), width=2)
     d.rectangle((px + 10, py - 4, px + 56, py + 6), fill=WHITE, outline=(40, 40, 70)); d.fontmode = "1"; d.text((px + 33, py + 1), "¿QUIÉN?", font=F(7), fill=(220, 50, 70), anchor="mm")
     _cat(d, 22, 154, t)                                                                                   # cat on a mansard roof
