@@ -267,6 +267,16 @@ def snoop_layer(t, mode="col"):
     if col:
         d.ellipse((sx - 2, sy + 8, sx + 8, sy + 18), outline=(240, 240, 248, 255)); d.line([(hx - 13, hy + 10), (hx + 13, hy + 10)], fill=(60, 60, 84, 255))
         d.polygon([(sx - 5, sy - 1), (sx + 5, sy - 1), (sx, sy + 5)], fill=(238, 238, 246, 255))         # white tee collar
+    BR, BRH = (74, 46, 34, 255), (122, 84, 62, 255)
+    for s in (-1, 1):                                                   # braids: hang over the shoulders and swing with the sway
+        for k in (0, 1, 2):
+            sw = 1.5 * math.sin(t * 8.6 + k * .9 + s) + .3 * hdx * (1 if k else .6)
+            p0 = (cx + s * (6 + k * 1.6), cy + 4); p1 = (sx + s * (9 + k * 2.6) + sw, sy + 22 + k * 2)
+            if col:
+                d.line([p0, p1], fill=BR, width=2)
+                for j in range(1, 6): d.point((p0[0] + (p1[0] - p0[0]) * j / 6, p0[1] + (p1[1] - p0[1]) * j / 6), fill=BRH)
+                d.rectangle((p1[0] - 1, p1[1], p1[0] + 1, p1[1] + 2), fill=(200, 170, 90, 255))     # bead tip
+            else: d.line([p0, p1], fill=DK, width=2)
     for s in (1, -1):                                                   # s=-1 circling hand (viewer's left), s=+1 low palm-down hand
         shd = (sx + s * 14, sy + 3)
         if s == -1:                                                     # elbow stays near the body; the forearm sweeps the circle
