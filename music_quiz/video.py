@@ -974,10 +974,156 @@ def extra_paris(im, t, ts):
 
 def _wrap(dyn, extra): return lambda im, t, ts, tag: (dyn(im, t, ts, tag), extra(im, t, ts))[0]
 
+# ======================= v7: Tyler, The Creator — "Call Me If You Get Lost" look (traced from the user's references) =======================
+def make_tyler2():
+    """Baby-blue faux-fur trapper hat with a gold pin, leopard-print collar, turquoise button cardigan, gem chain, gold studs,
+    brown shorts, tall white socks, two suitcases (brown leather + cream)."""
+    w, h = 104, 126; X = 52; r = random.Random(4)
+    SK = (128, 80, 54); SKS = (98, 60, 42); SKL = (150, 94, 62)
+    HAT = (176, 222, 248); HATS = (136, 192, 228); HATL = (224, 244, 255)
+    CARD = (122, 206, 228); CARDS = (88, 170, 202); CARDL = (172, 230, 244); CUFF = (150, 218, 234)
+    LEO = (238, 216, 178); SPOT = (152, 98, 58); WHITE_ = (248, 248, 250)
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    # legs, tall white socks, shoes
+    for x0 in (35, 55):
+        d.rectangle((x0, 104, x0 + 14, 116), fill=SK); d.rectangle((x0 + 10, 104, x0 + 14, 116), fill=SKS)
+        d.rectangle((x0 - 1, 112, x0 + 15, 122), fill=WHITE_); d.rectangle((x0 + 11, 112, x0 + 15, 122), fill=(214, 216, 224))
+        for k in range(3): d.line([(x0 - 1, 114 + k * 3), (x0 + 15, 114 + k * 3)], fill=(222, 224, 232))
+        d.rounded_rectangle((x0 - 3, 121, x0 + 17, 126), 2, fill=(98, 60, 40)); d.rectangle((x0 - 3, 125, x0 + 17, 126), fill=(60, 36, 26))
+    # dark-brown shorts
+    d.rectangle((31, 94, 73, 110), fill=(74, 46, 34)); d.rectangle((62, 94, 73, 110), fill=(56, 34, 26)); d.line([(52, 98), (52, 110)], fill=(52, 32, 24)); d.line([(36, 100), (36, 108)], fill=(96, 62, 46)); d.line([(68, 100), (68, 108)], fill=(96, 62, 46))
+    # suitcases (brown leather left, cream right), behind sleeves
+    d.rectangle((4, 100, 30, 122), fill=(150, 96, 58)); d.rectangle((4, 100, 30, 103), fill=(184, 128, 84)); d.rectangle((4, 118, 30, 122), fill=(108, 64, 40)); d.rectangle((24, 100, 30, 122), fill=(124, 76, 46))
+    for (cx_, cy_) in ((4, 100), (27, 100), (4, 119), (27, 119)): d.rectangle((cx_, cy_, cx_ + 3, cy_ + 3), fill=(192, 188, 182))
+    d.rectangle((15, 108, 19, 112), fill=(255, 215, 80)); d.line([(10, 100), (13, 95), (22, 95), (25, 100)], fill=(100, 60, 38), width=2)
+    d.rectangle((76, 104, 100, 124), fill=(238, 212, 180)); d.rectangle((76, 104, 100, 107), fill=(255, 232, 206)); d.rectangle((76, 118, 100, 124), fill=(214, 172, 130)); d.rectangle((94, 104, 100, 124), fill=(214, 184, 150))
+    d.rectangle((84, 108, 90, 112), fill=(196, 192, 186)); d.point((87, 110), fill=(255, 215, 80)); d.line([(80, 104), (83, 99), (93, 99), (96, 104)], fill=(190, 150, 110), width=2)
+    # cardigan body + sleeves
+    d.rounded_rectangle((28, 46, 76, 100), 6, fill=CARD); d.rectangle((66, 52, 76, 98), fill=CARDS); d.rectangle((32, 52, 40, 80), fill=CARDL)
+    d.rectangle((28, 94, 76, 100), fill=CARDS); d.rectangle((28, 96, 76, 97), fill=(70, 150, 184))                                  # ribbed hem
+    d.polygon([(28, 50), (18, 58), (14, 94), (26, 96), (30, 62)], fill=CARD); d.polygon([(76, 50), (86, 58), (90, 94), (78, 96), (74, 62)], fill=CARD)
+    d.polygon([(86, 58), (90, 94), (84, 95), (82, 62)], fill=CARDS); d.polygon([(14, 94), (26, 96), (26, 90), (14, 88)], fill=CUFF); d.polygon([(90, 94), (78, 96), (78, 90), (90, 88)], fill=CUFF)
+    d.rectangle((13, 94, 25, 102), fill=SK); d.rectangle((79, 94, 91, 102), fill=SK); d.rectangle((13, 99, 25, 102), fill=SKS)
+    for by in (66, 76, 86): d.ellipse((50, by, 54, by + 4), fill=(132, 140, 148)); d.point((51, by + 1), fill=(200, 208, 216))      # grey buttons
+    d.line([(52, 60), (52, 96)], fill=CARDS); d.rectangle((36, 80, 46, 90), outline=CARDS)                                       # placket + pocket
+    # neck, white tee, chain
+    d.rectangle((45, 42, 59, 54), fill=SKS); d.polygon([(46, 48), (58, 48), (56, 64), (52, 70), (48, 64)], fill=WHITE_)
+    # leopard-print collar flaps over the cardigan
+    mask = Image.new("L", (w, h), 0); md = ImageDraw.Draw(mask)
+    md.polygon([(46, 46), (32, 50), (26, 66), (42, 72), (50, 56)], fill=255); md.polygon([(58, 46), (72, 50), (78, 66), (62, 72), (54, 56)], fill=255)
+    lay = Image.new("RGBA", (w, h), LEO + (255,)); ld = ImageDraw.Draw(lay)
+    for _ in range(46):
+        sx_, sy_ = r.randint(22, 82), r.randint(44, 76); ld.ellipse((sx_, sy_, sx_ + r.randint(3, 5), sy_ + r.randint(2, 4)), outline=SPOT); ld.point((sx_ + 1, sy_ + 1), fill=SPOT)
+        if r.random() < .5: ld.rectangle((sx_ + 3, sy_ + 3, sx_ + 4, sy_ + 4), fill=(110, 66, 36))
+    im.paste(lay, (0, 0), mask)
+    d.line([(46, 46), (50, 56)], fill=(196, 160, 118)); d.line([(58, 46), (54, 56)], fill=(196, 160, 118))
+    pts = [(38, 50), (42, 58), (47, 64), (52, 66), (57, 64), (62, 58), (66, 50)]
+    for a_, b_ in zip(pts, pts[1:]): d.line([a_, b_], fill=(220, 224, 232), width=1)
+    for (gx_, gy_, gc) in ((44, 62, (220, 40, 60)), (48, 66, (40, 170, 90)), (53, 68, (50, 90, 220)), (58, 65, (255, 120, 190)), (62, 59, (255, 215, 80))):          # gem pendants
+        d.ellipse((gx_ - 2, gy_ - 2, gx_ + 2, gy_ + 2), fill=gc, outline=(210, 214, 222)); d.point((gx_ - 1, gy_ - 1), fill=(255, 255, 255))
+    # head: face, ears + gold studs, features
+    d.ellipse((36, 14, 68, 52), fill=SK); d.polygon([(60, 20), (68, 30), (66, 44), (58, 50)], fill=SKS); d.ellipse((38, 34, 46, 44), fill=SKL); d.ellipse((58, 34, 66, 44), fill=SKL)
+    d.ellipse((33, 28, 38, 42), fill=SK); d.ellipse((66, 28, 71, 42), fill=SKS); d.rectangle((34, 40, 36, 42), fill=(255, 215, 80)); d.rectangle((68, 40, 70, 42), fill=(255, 215, 80))
+    for (ex, dx_) in ((41, 3), (57, 2)):
+        d.rectangle((ex, 28, ex + 6, 31), fill=(238, 230, 222)); d.rectangle((ex + dx_, 28, ex + dx_ + 2, 31), fill=(36, 22, 18)); d.point((ex + dx_, 28), fill=(255, 255, 255))
+    d.line([(40, 26), (47, 24)], fill=(36, 22, 18), width=2); d.line([(57, 24), (64, 26)], fill=(36, 22, 18), width=2)               # thick brows
+    d.rectangle((50, 32, 54, 38), fill=SKL); d.rectangle((48, 38, 56, 40), fill=SKS); d.point((49, 39), fill=(60, 30, 24)); d.point((55, 39), fill=(60, 30, 24))
+    d.rectangle((46, 43, 58, 45), fill=(112, 52, 52)); d.rectangle((47, 46, 57, 48), fill=(156, 88, 84)); d.line([(47, 45), (57, 45)], fill=(54, 22, 26))      # lips, slightly parted
+    d.rectangle((44, 49, 60, 51), fill=SKS)
+    # baby-blue fluffy trapper hat: dome, ear flaps, scalloped brim, fur speckle, gold pin
+    d.ellipse((28, -3, 76, 22), fill=HAT); d.rectangle((32, 10, 72, 17), fill=HAT)                                       # dome + brim band
+    for k in range(12): d.ellipse((32 + k * 3.6 - 2, 13, 32 + k * 3.6 + 3, 20), fill=HAT)                                # scalloped fur edge
+    for (x0, x1) in ((28, 37), (67, 76)): d.rectangle((x0, 12, x1, 32), fill=HAT); d.ellipse((x0 - 1, 28, x1 + 1, 38), fill=HAT)    # ear flaps
+    d.rectangle((72, 12, 76, 32), fill=HATS); d.ellipse((71, 28, 77, 38), fill=HATS); d.ellipse((60, 0, 76, 16), fill=HATS)
+    d.ellipse((32, 0, 50, 10), fill=HATL); d.rectangle((29, 14, 33, 30), fill=HATL)
+    for _ in range(130):
+        px_, py_ = r.randint(28, 76), r.randint(-2, 38)
+        if 0 <= py_ < h and im.getpixel((px_, py_))[:3] in (HAT, HATS): d.point((px_, py_), fill=r.choice([HATL, (150, 204, 236), (200, 234, 252)]))
+    d.rectangle((62, 4, 64, 6), fill=(255, 215, 80)); d.point((63, 5), fill=(255, 245, 190))
+    return _outline_sil(im)
+TYLER_COL, TYLER_SIL = make_tyler2()
+TYLER_W, TYLER_H, TYLER_X = 104, 126, 52
+def tyler_draw(im, t, ts):
+    if ts < REVEAL:
+        im.paste(TYLER_SIL, (135 - TYLER_X, 266 - TYLER_H + (1 if int(t * 2.2) % 2 else 0)), TYLER_SIL); qmark(im, 129, 120 + int(3 * math.sin(t * 4)), 3)
+    else:
+        e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); bob = 1 if int(t * 2.4) % 2 else 0
+        y0 = 266 - TYLER_H + jump + bob; im.paste(TYLER_COL, (135 - TYLER_X, y0), TYLER_COL)
+        d = ImageDraw.Draw(im); g = int((t * 5) % 10); ox = 135 - TYLER_X
+        if g < 3: d.point((ox + 63, y0 + 5), fill=WHITE); d.point((ox + 62 + g, y0 + 3), fill=(255, 255, 255)); d.point((ox + 64, y0 + 7), fill=(255, 255, 255))        # hat-pin glint
+        k = int((t * 4) % 5); gx_, gy_ = ((44, 62), (48, 66), (53, 68), (58, 65), (62, 59))[k]; d.point((ox + gx_ + 2, y0 + gy_ - 2), fill=WHITE); d.point((ox + gx_ + 3, y0 + gy_ - 3), fill=WHITE)   # gem sparkle
+
+# ---- "lost" scene from the album-cover mood: peach sky, red mountains, lake with a sailboat, ringing payphone ----
+def base_travel():
+    a = np.zeros((H, W, 3), np.uint8)
+    a[:200] = dgrad(W, 200, (248, 214, 178), (196, 196, 190), 10); a[200:236] = dgrad(W, 36, (196, 196, 190), (130, 184, 200), 5)
+    a[236:266] = dgrad(W, 30, (132, 184, 200), (86, 138, 168), 5); a[266:] = (216, 168, 126)
+    im = Image.fromarray(a); d = ImageDraw.Draw(im)
+    for _ in range(8):                                               # painterly clouds with teal shadows
+        cx_, cy_ = rnd.randint(10, 260), rnd.randint(20, 150); wd = rnd.randint(36, 70)
+        for k in range(6): d.ellipse((cx_ + k * wd // 6 - 10, cy_ - rnd.randint(4, 12), cx_ + k * wd // 6 + 14, cy_ + rnd.randint(6, 14)), fill=(255, 248, 238))
+        d.rectangle((cx_ - 6, cy_ + 6, cx_ + wd + 10, cy_ + 12), fill=(150, 190, 204))
+    for (base, amp, c, hi) in ((236, 62, (172, 108, 74), (206, 140, 96)), (240, 40, (122, 72, 52), (158, 98, 70))):
+        pts = [(0, 244)]; x = 0
+        while x < W + 12: pts.append((x, base - amp * rnd.uniform(.35, 1.0))); x += rnd.randint(10, 22)
+        pts += [(W, 244)]; d.polygon(pts, fill=c)
+        for (p, q) in zip(pts[1:-2], pts[2:-1]): d.line([p, (p[0] + (q[0] - p[0]) // 2, p[1] + 14)], fill=hi)
+    d.rectangle((0, 234, W, 240), fill=(60, 74, 64))                  # far shore trees
+    for k in range(6): d.line([(0, 246 + k * 5), (W, 246 + k * 5)], fill=(150, 200, 214))
+    for y in range(268, H, 9):                                        # sand ripples + pebbles
+        d.arc((-30, y, W + 30, y + 14), 200, 340, fill=(200, 152, 112))
+    for _ in range(40): x, y = rnd.randint(0, W), rnd.randint(272, 400); d.ellipse((x, y, x + rnd.randint(2, 4), y + rnd.randint(1, 3)), fill=rnd.choice([(190, 146, 110), (236, 200, 168), (160, 118, 90)]))
+    for k in range(7): d.ellipse((120 + (k % 2) * 10 + k, 276 + k * 14, 126 + (k % 2) * 10 + k, 282 + k * 14), fill=(190, 142, 104)); d.ellipse((130 - (k % 2) * 10 - k, 282 + k * 14, 136 - (k % 2) * 10 - k, 288 + k * 14), fill=(190, 142, 104))
+    for _ in range(9): x, y = rnd.randint(10, 260), rnd.randint(280, 395); d.pieslice((x, y, x + 8, y + 8), 180, 360, fill=(250, 226, 210)); d.line([(x + 4, y + 3), (x + 4, y + 7)], fill=(214, 170, 150))     # shells
+    return im
+TRAVEL = base_travel()
+def dyn_travel(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for (cx_, cy_, w_, sp) in ((30, 40, 36, 5), (160, 62, 30, 4)):
+        x = (cx_ + t * sp) % (W + 90) - 45; cloud(d, x, cy_, w_, (255, 250, 242), (170, 204, 216))
+        if cx_ == 160: shades(d, x + w_ // 2 + 2, cy_ + 2, 5)
+    bx = 40 + ((t * 5) % 190); by = 250 + int(1.5 * math.sin(t * 2))                                             # sailboat crossing the lake
+    d.polygon([(bx - 12, by), (bx + 12, by), (bx + 8, by + 5), (bx - 8, by + 5)], fill=(130, 80, 50)); d.line([(bx, by), (bx, by - 26)], fill=(110, 70, 46), width=1)
+    d.polygon([(bx + 1, by - 25), (bx + 1, by - 2), (bx + 14, by - 2)], fill=(250, 246, 238)); d.polygon([(bx - 1, by - 20), (bx - 1, by - 2), (bx - 11, by - 2)], fill=(238, 232, 222))
+    for k in range(5): d.point((bx - 14 - k * 3, by + 6 + (k % 2)), fill=(226, 244, 250))
+    for k in range(3):                                                                                           # seagulls
+        gx = (k * 90 + t * 12) % (W + 40) - 20; gy = 70 + k * 22 + 5 * math.sin(t * 1.4 + k); f = int(t * 6 + k) % 2
+        d.line([(gx - 5, gy + (2 if f else -1)), (gx, gy), (gx + 5, gy + (2 if f else -1))], fill=(60, 50, 60), width=1)
+    px = 36 + int(math.sin(t * 40) * (1 if int(t * 1.6) % 2 == 0 else 0)); py = 292                               # payphone booth: it's ringing ("call me if you get lost")
+    d.rectangle((px - 14, py - 46, px + 14, py + 22), fill=(200, 44, 52), outline=(110, 20, 28)); d.rectangle((px - 11, py - 42, px + 11, py - 6), fill=(150, 214, 230))
+    d.line([(px, py - 42), (px, py - 6)], fill=(200, 44, 52)); d.line([(px - 11, py - 24), (px + 11, py - 24)], fill=(200, 44, 52)); d.rectangle((px - 16, py - 50, px + 16, py - 46), fill=(110, 20, 28))
+    d.rectangle((px - 5, py - 18, px + 5, py - 10), fill=(40, 40, 52)); d.ellipse((px - 7, py - 22, px + 7, py - 16), fill=(20, 20, 28))
+    if int(t * 1.6) % 2 == 0:
+        d.ellipse((px + 14, py - 66, px + 54, py - 46), fill=WHITE, outline=(60, 40, 40)); d.polygon([(px + 18, py - 48), (px + 24, py - 48), (px + 16, py - 42)], fill=WHITE)
+        d.fontmode = "1"; d.text((px + 34, py - 56), "¡RING!", font=F(8), fill=(200, 44, 52), anchor="mm")
+    sx = 232; d.rectangle((sx - 2, 266, sx + 2, 330), fill=(110, 76, 50)); sw = int(2 * math.sin(t * 1.2))
+    for k, (tx, c) in enumerate((("ALLÁ", (240, 190, 90)), ("ACÁ", (240, 130, 110)), ("¿?", (150, 214, 230)))):
+        yy = 270 + k * 14; d.polygon([(sx - 22 + sw * (k - 1), yy), (sx + 8, yy), (sx + 14, yy + 5), (sx + 8, yy + 10), (sx - 22 + sw * (k - 1), yy + 10)], fill=c, outline=(80, 50, 30)); d.fontmode = "1"; d.text((sx - 6, yy + 5), tx, font=F(7), fill=(60, 30, 20), anchor="mm")
+    cx = (t * 14) % (W + 40) - 20; cy = 372                                                                      # crab scuttling sideways
+    d.ellipse((cx - 7, cy - 4, cx + 7, cy + 4), fill=(226, 70, 56), outline=(130, 30, 30)); d.point((cx - 3, cy - 5), fill=WHITE); d.point((cx + 3, cy - 5), fill=WHITE)
+    for s_ in (-1, 1):
+        d.line([(cx + s_ * 7, cy - 1), (cx + s_ * (11 + int(2 * math.sin(t * 8))), cy - 7)], fill=(226, 70, 56), width=2); d.ellipse((cx + s_ * 11 - 2, cy - 10, cx + s_ * 11 + 2, cy - 6), fill=(226, 70, 56))
+        for k in range(3): d.line([(cx + s_ * 4, cy + 3), (cx + s_ * (8 + k * 2), cy + 7 + int(math.sin(t * 12 + k)))], fill=(150, 40, 40))
+    arr = np.array(im)
+    if ts < REVEAL:
+        k = min(1, ts / 2.2)
+        for kk, bx_ in enumerate((50, 220)): beam(arr, bx_, 135 + math.sin(t * 3 + kk * 3) * 40, 0, 266, 4, 40, (255, 150, 90), .22 * k)
+        arr = (arr * (1 - .26 * k) + np.array([50, 20, 60]) * .26 * k).astype(np.uint8)
+    else:
+        beam(arr, 135, 135, 0, 266, 10, 90, (255, 240, 190), .3 * min(1, (ts - REVEAL) / .3)); glow(arr, 135, 200, 100, (255, 214, 170), .45)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    if ts >= REVEAL:
+        e = ts - REVEAL
+        for (vx, vy, c) in CONF2:
+            px_ = 135 + vx * 1.6 * min(e, 1.6) ** .8; py_ = 190 + vy * 2.2 * min(e, 1.2) + 40 * e * e
+            if 0 <= px_ < W and 0 <= py_ < H: d.rectangle((px_, py_, px_ + 2, py_ + 2), fill=c)
+        for k in range(16):
+            x = (k * 37 + math.sin(t * 2 + k) * 8) % W; y = ((t - T[1]) * 28 + k * 41) % 270; d.rectangle((x, y, x + 2, y + 2), fill=[(176, 222, 248), (255, 215, 80), (255, 255, 255), (220, 40, 60)][k % 4])
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
-       "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden),
+       "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
        "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook))}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
 _hook = REG[EP.get("hook_scene", "brook")]
@@ -1027,7 +1173,7 @@ def ui_low(seg, ts, t):
             if e > .5: pill(d, 135, py, py + 20, 196, (14, 8, 34), GOLD); lt(d, (135, py + 10), PREV["sub"], 9, (255, 200, 120))
             if ts > RECAP_LEN - 2.6:
                 b = int(2 * math.sin(t * 10)); msg = "¡AHORA LOS GANADORES!" if WINNERS else "¡HOY: UN NUEVO ARTISTA!"
-                pill(d, 135, 150 + b, 172 + b, 214, GOLD); lt(d, (135, 161 + b), msg, 11, DARK, shadow=(255, 230, 140))
+                pill(d, 135, 284 + b, 306 + b, 214, GOLD); lt(d, (135, 295 + b), msg, 11, DARK, shadow=(255, 230, 140))
         return ui
     if seg == S_WIN:
         k = ease(ts / .35); dy = int((1 - k) * -26)
