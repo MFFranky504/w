@@ -108,7 +108,7 @@ def post_fx(img):
         r = np.sqrt(((xx - OUT[0] / 2) / (OUT[0] / 2)) ** 2 + ((yy - OUT[1] / 2) / (OUT[1] / 2)) ** 2)
         _VIG = (1 - 0.38 * np.clip(r - 0.55, 0, 1) ** 1.6)[..., None].astype("float32")
     from PIL import ImageEnhance
-    img = ImageEnhance.Color(img).enhance(1.12)
+    img = ImageEnhance.Color(img).enhance(1.25)
     a = np.asarray(img, dtype="float32") * _VIG
     return Image.fromarray(np.clip(a, 0, 255).astype("uint8"))
 
@@ -163,7 +163,7 @@ def title_card(img, text, cy, size=80, width=860):
 def hud(img, level, vibe):
     d = ImageDraw.Draw(img)
     f = pf(36)
-    for k, (label, val, col) in enumerate((("NIVEL DE BRO", f"{level}", (226, 196, 120)), ("AURA", f"{(vibe - 50) * 20:+d}", (214, 140, 160)))):
+    for k, (label, val, col) in enumerate((("NIVEL DE BRO", f"{level}", (255, 214, 90)), ("BUENA ONDA", f"{vibe}%", (255, 140, 180)))):
         s = f"{label}: {val}"
         w = d.textlength(s, font=f) + 40
         y = 270 + k * 68
@@ -225,7 +225,7 @@ def render_video(ep, cta, out_mp4, workdir):
         img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t))
         for c in ep["cuts"]:                       # glitch cromático (RGB split) breve en cada corte
             if 0 <= t - c < 0.17:
-                dx = int(16 * (1 - (t - c) / 0.17))
+                dx = int(8 * (1 - (t - c) / 0.17))
                 a_ = np.asarray(img).copy()
                 a_[..., 0] = np.roll(a_[..., 0], dx, axis=1); a_[..., 2] = np.roll(a_[..., 2], -dx, axis=1)
                 img = Image.fromarray(a_)

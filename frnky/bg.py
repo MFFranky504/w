@@ -192,11 +192,11 @@ def confetti(img, t, n=60):
 DY = 44  # sube toda la escena para que los personajes queden sobre la zona segura
 
 
-def grade(img, sat=0.78, bright=0.95):
+def grade(img, sat=1.18, bright=1.03):
     """Paleta apagada tipo JRPG: baja saturación y brillo, sombras frías."""
     from PIL import ImageEnhance
     rgb = ImageEnhance.Brightness(ImageEnhance.Color(img.convert("RGB")).enhance(sat)).enhance(bright)
-    a = __import__("numpy").asarray(rgb, dtype="float32") * __import__("numpy").array([0.96, 0.96, 1.04], dtype="float32")
+    a = __import__("numpy").asarray(rgb, dtype="float32") * __import__("numpy").array([1.0, 1.0, 1.02], dtype="float32")
     return Image.fromarray(a.clip(0, 255).astype("uint8")).convert("RGBA")
 
 
@@ -319,7 +319,7 @@ def room(t, night=False, score=(0, 14), verdict="DERROTA", label="K / D", cans_n
     if kind == "living":
         img = grade(_room_base(t, night))
     else:
-        img = _extras(grade({"street": _street_base, "bedroom": _bedroom_base, "arcade": _arcade_base}[kind](t), 0.95, 1.0), kind)
+        img = _extras(grade({"street": _street_base, "bedroom": _bedroom_base, "arcade": _arcade_base}[kind](t), 1.2, 1.04), kind)
     if night and kind == "living":
         night_grade(img, 0.42)
     if cans_n:
@@ -359,7 +359,7 @@ def emote(img, x, y, kind, age):
         txt(d, (x, y), kind, 24, col, outline=OL)
 
 
-def speed_lines(img, cx, cy, t, strength=170):
+def speed_lines(img, cx, cy, t, strength=110):
     """Líneas de impacto estilo manga/RPG alrededor de un punto."""
     layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)

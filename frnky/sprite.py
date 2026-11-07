@@ -44,6 +44,15 @@ def _chibi(img):
     return Image.fromarray(a)
 
 
+def _vivid(img, k=1.28):
+    """Sube la saturación de los colores del sprite (el contorno oscuro se mantiene)."""
+    a = np.array(img).astype("float32")
+    rgb = a[..., :3]
+    g = rgb.mean(axis=2, keepdims=True)
+    a[..., :3] = np.clip(g + (rgb - g) * k, 0, 255)
+    return Image.fromarray(a.astype("uint8"))
+
+
 def _outline(img):
     a = np.array(img)
     m = a[..., 3] > 0
@@ -259,7 +268,7 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(10, 4, 12, 8, (160, 200, 225, 255)); P(10, 4, WHITE)
     if "vein" in fx:
         R(-10, 0, -7, 1, (190, 50, 50, 255)); R(-9, -1, -8, 3, (190, 50, 50, 255)) if False else R(-9, 0, -8, 3, (190, 50, 50, 255))
-    return _outline(_chibi(img))
+    return _vivid(_outline(_chibi(img)))
 
 
 def draw_char(canvas, name, x, feet_y, flip=False, scale=2, shadow=True, ox=0, oy=0, **kw):

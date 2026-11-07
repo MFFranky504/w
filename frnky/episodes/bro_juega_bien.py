@@ -4,7 +4,7 @@ import math
 from PIL import Image, ImageDraw
 
 from .. import audio
-from ..bg import room, light_shaft, sparkles, confetti, emote, speed_lines, boom, sticker
+from ..bg import room, light_shaft, sparkles, confetti, emote, speed_lines, boom
 from ..engine import cam_at
 from ..sprite import draw_char
 
@@ -31,7 +31,7 @@ VOICES = {
     "todos": dict(label="TODOS", color=(255, 255, 255), pitch=250),
 }
 LINES = [
-    (0.1, 2.2, "chuy", "¡No manches, 0 y 14! ¡Skill issue!"),
+    (0.1, 2.2, "chuy", "¡No manches, 0 y 14, bro!"),
     (2.3, 3.5, "memo", "Hasta el bot te ganó, chamo."),
     (3.7, 5.2, "nati", "Che, ¿agarrás el control o lo abrazás?"),
     (5.3, 6.4, "bro", "Es que me sudan las manos, po…"),
@@ -40,12 +40,12 @@ LINES = [
     (9.6, 10.9, "bro", "Hoy me vuelvo bueno."),
     (14.7, 15.9, "bro", "Ya entendí el juego, po."),
     (17.2, 18.3, "nati", "¡Mirá vos, 25 y 0! ¡Qué bestia!"),
-    (18.4, 19.3, "chuy", "¡Órale, bro está cocinando!"),
-    (19.4, 20.3, "memo", "¡Burda de aura, pana!"),
-    (20.4, 21.9, "bro", "Cállense, bots. Skill issue."),
+    (18.4, 19.3, "chuy", "¡Órale, ese es mi bro!"),
+    (19.4, 20.3, "memo", "¡Burda de bueno, pana!"),
+    (20.4, 21.9, "bro", "Cállense, bots. Me atrasan."),
     (22.4, 23.6, "memo", "¿Qué le pasó a mi bro, chamo?"),
-    (23.7, 25.4, "bro", "Chuy, ¿ese fue tu mejor intento? Qué cringe."),
-    (25.5, 26.6, "nati", "Pérdida de aura total, che…"),
+    (23.7, 25.4, "bro", "Chuy, ¿ese fue tu mejor intento? Qué fome."),
+    (25.5, 26.6, "nati", "Era más feliz perdiendo, che…"),
     (26.7, 27.6, "chuy", "Neta, qué gacho."),
     (28.0, 29.4, "bro", "¿Mejor volvemos a ser malos?"),
     (29.5, 30.4, "todos", "¡ESE ES MI BRO!"),
@@ -114,8 +114,6 @@ def banner(t):
         return "REGRESÓ… DIFERENTE"
     if 22.2 <= t < 23.4:
         return "SE LE SUBIÓ A LA CABEZA"
-    if 27.9 <= t < 29.0:
-        return "¡PLOT TWIST!"
     return ""
 
 
@@ -130,10 +128,6 @@ def s1(c, t, lt):
         speed_lines(c, SEAT["chuy"], FEET - 80, t, int(170 * (1 - (lt - 0.12) / 0.78)))
     if 0.3 < lt < 1.5:
         emote(c, *head("nati"), "!", lt - 0.3)
-    if 0.9 < lt < 2.4:
-        sticker(c, SEAT["bro"], FEET - 158, "SKILL ISSUE", lt - 0.9)
-    if 2.4 < lt < 3.6:
-        emote(c, *head("memo"), "skull", lt - 2.4)
 
 
 def frame(t):
@@ -166,8 +160,6 @@ def frame(t):
         char(c, t, "bro", expr="sad", fx=("tear", "sweat"), look=1, oy=8 if t > 5.3 else 3)
         if pt:
             emote(c, *head("bro"), "?", t - 6.4)
-            if t > 6.6:
-                sticker(c, SEAT["bro"], FEET - 158, "TOCA PASTO", t - 6.6, (60, 140, 80))
         keys = [(3.6, 26, 222, 250), (5.2, 26, 222, 250), (5.3, 22, 135, 250), (6.4, 22, 135, 250),
                 (6.5, 40, 180, 290), (8.0, 34, 150, 296)]
         shake = 2 if pt else 0
@@ -192,8 +184,6 @@ def frame(t):
             sparkles(c, t, 180, 262, 7, 110)
         if dn == 3:
             speed_lines(c, 180, 250, t, 100)
-            if t > 14.1:
-                sticker(c, 180, FEET - 158, "MODO BESTIA", t - 14.1, (214, 150, 30))
         keys = [(11.0, 40, 180, 290), (12.2, 30, 180, 260), (14.6, 22, 180, 250), (16.0, 20, 180, 250)]
         shake = 1 if dn >= 2 else 0
     elif t < 27.8:  # ciber: vuelve "pro" y se pone insoportable
@@ -216,10 +206,6 @@ def frame(t):
                 boom(c, SEAT["bro"], FEET - 175, "¡ZAS!", t - 20.4)
             if t > 17.0:
                 sparkles(c, t, SEAT["bro"], 262, 6, 100)
-            if 16.8 < t < 17.6:
-                sticker(c, SEAT["bro"], FEET - 158, "AURA +9999", t - 16.8, (214, 150, 30))
-            if 20.5 < t < 21.9:
-                sticker(c, SEAT["bro"], FEET - 158, "SKILL ISSUE", t - 20.5)
             keys = [(16.0, 40, 180, 290), (17.1, 40, 180, 290), (17.2, 30, 222, 270), (18.3, 30, 222, 270),
                     (18.4, 28, 50, 265), (19.3, 28, 50, 265), (19.4, 28, 308, 265), (20.3, 28, 308, 265),
                     (20.4, 20, 135, 250), (22.0, 22, 135, 250)]
@@ -231,10 +217,6 @@ def frame(t):
             sparkles(c, t, SEAT["bro"], 262, 6, 100)
             if 22.4 < t < 23.4:
                 emote(c, *head("memo"), "?", t - 22.4)
-            if 23.8 < t < 25.3:
-                sticker(c, SEAT["bro"], FEET - 158, "TOXIC", t - 23.8, (120, 40, 160))
-            if 25.5 < t < 27.0:
-                sticker(c, SEAT["nati"], FEET - 158, "NPC", t - 25.5, (70, 90, 150))
             keys = [(22.0, 26, 308, 250), (23.6, 26, 308, 250), (23.7, 22, 135, 250), (25.4, 22, 135, 250),
                     (25.5, 26, 222, 250), (26.6, 26, 222, 250), (26.7, 26, 50, 250), (27.8, 24, 50, 250)]
     elif t < 29.5:  # sala: se arrepiente
@@ -255,8 +237,6 @@ def frame(t):
         shake = 1 if t < 29.9 else 0
     else:  # BUCLE: todo vuelve a la escena inicial (misma cámara, mismos gestos)
         s1(c, t, t - 30.4) if t < 31.6 else s1(c, t, 0.0)
-        if 30.8 < t < 31.8:
-            sticker(c, SEAT["bro"], FEET - 158, "SKILL ISSUE", t - 30.8)
         keys = [(30.4, 40, 180, 290), (T, 40, 180, 290)]
     return c, cam_at(keys, t), shake
 
@@ -281,12 +261,9 @@ def music(track):
 def sfx(track):
     A = audio
     A.airhorn(track, 0.0); A.hit(track, 0.0)
-    A.vine_boom(track, 0.9 * K)                           # SKILL ISSUE
-    A.bruh(track, 2.5 * K)                                # calavera
     A.ding(track, 1.7)
     for k in range(7):                                    # pasos en la calle
         A.step(track, (8.2 + 0.28 * k) * K)
-    A.bruh(track, 6.6 * K)                                # TOCA PASTO
     A.crowd(track, 8.0 * K, 0.7, 0.05)
     A.coin(track, 12.2 * K); A.levelup(track, 12.2 * K); A.levelup(track, 13.0 * K); A.levelup(track, 13.8 * K)
     A.sparkle(track, 14.1 * K)
@@ -294,20 +271,19 @@ def sfx(track):
         A.click(track, (11.2 + 0.11 * k + 0.03 * (k % 3)) * K)
     for tt in (12.2, 13.0, 13.8):
         A.put(track, tt * K, A.noise(0.25, 0.1, 0.3))     # latita: pssht
-    A.powerup(track, 16.0 * K); A.notify(track, 17.0 * K)
+    A.powerup(track, 16.0 * K)
     for k in range(6):
         A.step(track, (16.1 + 0.16 * k) * K)
     A.crowd(track, 17.2 * K, 1.0, 0.1); A.airhorn(track, 18.4 * K, 0.12)
-    A.scratch(track, 20.4 * K); A.vine_boom(track, 20.5 * K)     # callback: SKILL ISSUE
-    A.trombone(track, 22.4 * K); A.notify(track, 23.8 * K); A.notify(track, 25.5 * K)
-    A.dun_dun(track, 27.9 * K)                            # PLOT TWIST
+    A.scratch(track, 20.4 * K); A.hit(track, 20.4 * K)
+    A.trombone(track, 22.4 * K)
     A.trombone(track, 28.0 * K)
     A.jingle(track, 29.5 * K); A.crowd(track, 29.5 * K, 0.9, 0.12); A.sparkle(track, 29.6 * K)
-    A.rimshot(track, 30.6 * K); A.bruh(track, 30.9 * K); A.vine_boom(track, 30.8 * K)
+    A.rimshot(track, 30.6 * K)
     A.roll(track, T * K - 1.3, T * K)
 
 
-HOOKS = [(0.0, 1.7, "POV: TU BRO ES EL PEOR DEL EQUIPO…"), (1.7, 3.6, "¡Y SE VOLVIÓ DEMASIADO BUENO!")]
+HOOKS = [(0.0, 1.7, "LO CORRIERON POR SER MALO…"), (1.7, 3.6, "¡Y SE VOLVIÓ DEMASIADO BUENO!")]
 PUNCHES = [(c * K, 6) for c in CUTS] + [(a * K, 2.5) for a, _, _, _ in LINES]
 
 EP = dict(
