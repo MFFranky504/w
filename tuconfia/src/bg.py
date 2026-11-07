@@ -224,3 +224,111 @@ def van_side(c, x, y, w, h, body=(78, 178, 172), roof=(246, 238, 214), win_lit=T
         c.d.ellipse([cx - h // 6, y + h - h // 5, cx + h // 6, y + h + h // 8], fill=(30, 30, 40), outline=(100, 100, 116))
         c.d.ellipse([cx - h // 12, y + h - h // 8, cx + h // 12, y + h + h // 12], fill=(190, 190, 206))
     c.R(x + w - 6, y + h * 4 // 10, 5, 5, (255, 236, 150), c.ed)
+
+
+# ================================================================ escenografía (más detalle)
+def curtain(c, x, w, h=200, col=(176, 30, 62), valance=True):
+    """cortina de terciopelo con pliegues sombreados y recogida con borla; x..x+w."""
+    for k in range(w):
+        f = .72 + .38 * (0.5 + 0.5 * math.sin(k * 0.95))
+        c.R(x + k, 0, 1, h, tuple(min(255, int(v * f)) for v in col))
+    for k in range(0, w, 3): c.R(x + k, 0, 1, h, shade(col, 1.12))
+    c.R(x, h - 3, w, 3, shade(col, .55))
+    if valance:
+        c.R(x - 1, 0, w + 2, 12, shade(col, .8)); c.R(x - 1, 12, w + 2, 2, (230, 190, 90))
+        for k in range(x, x + w, 8): c.d.pieslice([k, 8, k + 8, 20], 0, 180, fill=shade(col, .9))
+    c.R(x, 110, w, 3, (230, 190, 90)); c.R(x + w // 2 - 2, 113, 4, 10, (230, 190, 90))           # lazo y borla
+
+
+def beam(c, x, y, w_top, w_bot, ybot, col=(255, 240, 200), a=34):
+    """haz de luz translúcido de un foco (sobre la capa emisiva)."""
+    c.ed.polygon([(x - w_top // 2, y), (x + w_top // 2, y), (x + w_bot // 2, ybot), (x - w_bot // 2, ybot)], fill=(*col, a))
+    c.light(x, ybot, w_bot, 26, col, .45)
+
+
+def truss(c, y, cols, t=0, x0=8, x1=152):
+    c.R(x0, y, x1 - x0, 3, (70, 72, 92)); c.R(x0, y, x1 - x0, 1, (140, 144, 170))
+    for k in range(x0, x1, 4): c.R(k, y + 3, 1, 3, (50, 52, 70)); c.R(k, y + 3, 4, 1, (50, 52, 70))
+    n = len(cols)
+    for i, col in enumerate(cols):
+        px = x0 + 10 + i * (x1 - x0 - 20) // max(1, n - 1)
+        c.R(px - 3, y + 4, 7, 6, (36, 38, 52)); c.R(px - 2, y + 9, 5, 2, col, c.ed)
+        beam(c, px, y + 10, 5, 34, y + 170, col, 22 + int(8 * math.sin(t * 2 + i)))
+
+
+def crowd(c, y, t, seed=1, cols=((18, 10, 28), (26, 14, 38), (14, 8, 24)), hands=True, phones=True):
+    """público en silueta con manos y luces de móvil (primer plano oscuro)."""
+    rnd = random.Random(seed)
+    x = -6
+    while x < WW + 8:
+        w = rnd.randint(14, 20); col = rnd.choice(cols); hy = y + rnd.randint(-4, 6)
+        c.d.ellipse([x, hy, x + w - 4, hy + w - 4], fill=col); c.R(x - 2, hy + w - 6, w + 2, 60, col)
+        if hands and rnd.random() < .5:
+            hx = x + w // 2 - 6 + int(math.sin(t * 4 + x) * 2); c.R(hx, hy - 12, 2, 12, col); c.R(hx - 1, hy - 15, 4, 4, col)
+        if phones and rnd.random() < .16 and int(t * 2 + x) % 3:
+            c.R(x + w // 2 - 1, hy - 6, 3, 5, (210, 230, 255), c.ed)
+        x += w - 2
+
+
+def speaker(c, x, y, w=20, h=34):
+    c.R(x, y, w, h, (28, 28, 40)); c.R(x, y, w, 1, (90, 92, 120)); c.R(x, y + h - 1, w, 1, (14, 14, 24))
+    c.d.ellipse([x + 3, y + 4, x + w - 3, y + 4 + w - 6], fill=(54, 56, 76), outline=(14, 14, 24))
+    c.d.ellipse([x + w // 2 - 3, y + 4 + (w - 6) // 2 - 3, x + w // 2 + 3, y + 4 + (w - 6) // 2 + 3], fill=(110, 112, 140))
+    c.d.ellipse([x + 5, y + h - 12, x + w - 5, y + h - 4], fill=(54, 56, 76), outline=(14, 14, 24))
+
+
+def tree(c, x, yb, h=44, kind='round', col=(46, 110, 70), t=0):
+    c.R(x - 2, yb - h // 3, 4, h // 3, (96, 62, 44))
+    if kind == 'pine':
+        for k in range(4):
+            wk = h // 2 - k * (h // 9); yk = yb - h // 3 - k * (h // 5)
+            c.d.polygon([(x - wk, yk), (x + wk, yk), (x, yk - h // 3)], fill=shade(col, .8 + k * .1))
+    else:
+        r = h // 3 + 2
+        for dx, dy, f in ((-r // 2, 0, .85), (r // 2, 0, .85), (0, -r // 2, 1.0), (0, r // 4, .9)):
+            c.d.ellipse([x + dx - r, yb - h // 2 + dy - r, x + dx + r, yb - h // 2 + dy + r], fill=shade(col, f))
+        c.d.ellipse([x - r // 2 - 3, yb - h // 2 - r, x + 2, yb - h // 2 - r + 6], fill=shade(col, 1.3))
+
+
+def fence(c, x0, x1, y, col=(184, 140, 96)):
+    for x in range(x0, x1, 8): c.R(x, y - 12, 3, 14, col); c.R(x, y - 12, 3, 1, shade(col, 1.3)); c.R(x, y + 2, 3, 1, shade(col, .6))
+    c.R(x0, y - 9, x1 - x0, 2, col); c.R(x0, y - 4, x1 - x0, 2, col)
+
+
+def smoke(c, x, y, t):
+    for i in range(6):
+        ph = (t * .5 + i * .17) % 1
+        r = 2 + int(ph * 5); c.d.ellipse([x + math.sin(t + i) * 4 + ph * 8 - r, y - ph * 50 - r, x + math.sin(t + i) * 4 + ph * 8 + r, y - ph * 50 + r], fill=(int(220 - ph * 40), int(214 - ph * 40), int(230 - ph * 30)))
+
+
+def foam(c, x, y, w, h, col=(48, 54, 90)):
+    """paneles acústicos de espuma (cuña en rombos)."""
+    c.R(x, y, w, h, shade(col, .6))
+    for j in range(0, h, 8):
+        for i in range(0, w, 8):
+            c.d.polygon([(x + i, y + j + 8), (x + i + 4, y + j), (x + i + 8, y + j + 8)], fill=col if (i // 8 + j // 8) % 2 else shade(col, 1.2))
+
+
+def console(c, x, y, w, t=0):
+    c.d.polygon([(x, y + 20), (x + 6, y), (x + w - 6, y), (x + w, y + 20)], fill=(52, 54, 72)); c.R(x, y + 20, w, 10, (34, 36, 50)); c.R(x + 6, y, w - 12, 1, (120, 124, 150))
+    for k in range(6, w - 6, 5):
+        c.R(x + k, y + 4, 2, 12, (20, 22, 32)); c.R(x + k, y + 6 + (k * 7) % 8, 2, 3, (220, 220, 236))
+    for k in range(5): c.R(x + 8 + k * (w - 18) // 4, y + 2, 2, 2, ((255, 80, 80), (80, 255, 120), (255, 214, 80))[(k + int(t * 3)) % 3], c.ed)
+
+
+def gold_record(c, x, y, w=22):
+    c.R(x - 2, y - 2, w + 4, w + 4, (150, 100, 40)); c.R(x - 1, y - 1, w + 2, w + 2, (230, 190, 90)); c.R(x, y, w, w, (40, 24, 40))
+    c.d.ellipse([x + 2, y + 2, x + w - 3, y + w - 3], fill=(236, 190, 70), outline=(150, 100, 30)); c.d.ellipse([x + w // 2 - 3, y + w // 2 - 3, x + w // 2 + 2, y + w // 2 + 2], fill=(40, 24, 40))
+    c.R(x + w // 3, y + w + 4, w // 3, 3, (230, 190, 90))
+
+
+def skyline(c, y0, base, cols=((40, 30, 80), (58, 44, 110)), seed=3, lit=.4, t=0, wmin=10, wmax=20, hmin=26, hmax=80):
+    rnd = random.Random(seed); x = -4
+    while x < WW:
+        w = rnd.randint(wmin, wmax); h = rnd.randint(hmin, hmax); col = rnd.choice(cols)
+        c.R(x, base - h, w, h, col); c.R(x, base - h, w, 1, shade(col, 1.4))
+        if rnd.random() < .3: c.R(x + w // 2, base - h - 6, 1, 6, shade(col, 1.2))
+        for r in range(h // 8):
+            for k in range(w // 5):
+                if rnd.random() < lit and int(t * 2 + r + k) % 17: c.R(x + 2 + k * 5, base - h + 3 + r * 8, 3, 4, (255, rnd.randint(190, 235), 120))
+        x += w

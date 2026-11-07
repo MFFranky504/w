@@ -280,9 +280,9 @@ def draw_caps(img, t):
             d.text((60, 398), l2, font=F('Medium', 36), fill=(255, 216, 74, a), stroke_width=4, stroke_fill=(14, 10, 26, a))
 
 
-HOOKS = [('duel', .1, 2.8, '¡LE DIJO NO', 'A ELVIS!', 560), ('whitney', 3.4, 5.8, '¡MILLONES', 'DE DISCOS!', 1010)]
+HOOKS = [('duel', .1, 2.8, '¡LE DIJO NO', 'A ELVIS!', 560), ('whitney', .5, 3.0, '¡MILLONES', 'DE DISCOS!', 560)]
 PLAT = (sys.argv[sys.argv.index('--cta') + 1] if '--cta' in sys.argv else 'yt')          # yt = SUSCRÍBETE, tt/ig = SÍGUEME
-CTA_T0 = en[-1] - 2.8
+CTA_T0 = en[-1] - 2.6
 SC_ = {s['n']: s for s in SCENES}
 HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
 
@@ -475,7 +475,7 @@ def synth_audio():
 
 if __name__ == '__main__':
     dur = TOTAL
-    args = sys.argv[1:]
+    args = [x for i, x in enumerate(sys.argv[1:]) if x != '--cta' and not (i > 0 and sys.argv[i] == '--cta')]   # --cta yt|tt se puede poner en cualquier posición
     out_name = 'TU_CONFIA_Dolly_Parton_El_NO_Que_Valio_Millones_' + PLAT + ('' if narr else '_PREVIEW_sin_voz') + '.mp4'
     if args and args[0] == '--still':
         t = float(args[1]); fr = frame(int(t * FPS)); fr.save(f'{ROOT}/out/still_{t:.1f}.png'); sys.exit()
