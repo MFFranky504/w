@@ -35,12 +35,12 @@ CHARS = {   # Bro (Chile), Chuy (México), Nati (Argentina), Memo (Venezuela)
 
 
 CHARS.update({   # elenco 2: Nico (Colombia), Sofi (Perú), Tomi (Uruguay), Directora Vega, Profe Ramos
-    "nico": dict(skin=(216,162,124), hair=(36,26,24), coat=(250,190,40), kind="hoodie", trim=(246,246,240),
-                 pants=(60,76,130), shoe=(246,246,246), sole=(40,60,170), eye=(90,56,34), style="spiky"),
-    "sofi": dict(skin=(226,174,134), hair=(34,24,34), coat=(214,40,56), kind="jersey", trim=(250,250,250),
-                 stripes=(250,250,250), pants=(40,40,62), shoe=(250,250,250), sole=(214,40,56), eye=(70,44,34), style="pony"),
-    "tomi": dict(skin=(242,198,162), hair=(150,100,52), coat=(120,180,236), kind="jersey", trim=(30,30,40),
-                 pants=(34,44,90), shoe=(244,244,244), sole=(60,60,70), eye=(70,130,90), style="cap", cap=(60,100,210)),
+    "nico": dict(skin=(216,162,124), hair=(36,26,24), coat=(40,56,128), kind="uniform", trim=(250,200,40),
+                 pants=(90,92,106), shoe=(246,246,246), sole=(40,60,170), eye=(90,56,34), style="spiky"),
+    "sofi": dict(skin=(226,174,134), hair=(34,24,34), coat=(40,56,128), kind="uniform", trim=(214,40,56),
+                 pants=(90,92,106), shoe=(250,250,250), sole=(214,40,56), eye=(70,44,34), style="pony"),
+    "tomi": dict(skin=(242,198,162), hair=(176,108,52), coat=(40,56,128), kind="uniform", trim=(110,190,250),
+                 pants=(90,92,106), shoe=(244,244,244), sole=(60,60,70), eye=(70,130,90), style="curly"),
     "vega": dict(skin=(232,184,152), hair=(160,160,172), coat=(132,62,164), kind="blazer", trim=(252,252,252),
                  pants=(50,40,72), shoe=(44,32,56), sole=(20,14,30), eye=(70,60,44), style="bun", glasses=True),
     "ramos": dict(skin=(214,164,128), hair=(70,56,50), coat=(84,120,76), kind="blazer", trim=(244,244,236),
@@ -50,9 +50,9 @@ _SK = [(240,196,160), (214,160,120), (170,118,86), (232,182,146), (150,104,76)]
 _HR = [(40,30,36), (96,60,40), (150,100,50), (30,24,34), (70,50,100), (180,60,60)]
 _CT = [(60,120,220), (230,90,60), (60,170,110), (250,200,60), (170,80,200), (240,120,170), (80,200,210)]
 for _i in range(10):    # alumnos de relleno (multitud)
-    CHARS[f"s{_i}"] = dict(skin=_SK[_i % 5], hair=_HR[(_i * 2) % 6], coat=_CT[_i % 7], kind="hoodie" if _i % 3 == 0 else "jersey",
-                           trim=(244,244,240), pants=[(52,60,110), (40,40,60), (90,90,110)][_i % 3], shoe=(244,244,244),
-                           sole=_CT[(_i + 3) % 7], eye=(70,50,40), style=["spiky", "cap", "pony", "curly"][_i % 4],
+    CHARS[f"s{_i}"] = dict(skin=_SK[_i % 5], hair=_HR[(_i * 2) % 6], coat=(40,56,128), kind="uniform",
+                           trim=_CT[(_i * 3) % 7], pants=[(90,92,106), (74,76,92), (100,102,116)][_i % 3], shoe=(244,244,244),
+                           sole=_CT[(_i + 3) % 7], eye=(70,50,40), style=["spiky", "curly", "pony", "spiky", "pony"][_i % 5],
                            cap=_CT[(_i + 2) % 7])
 
 
@@ -84,6 +84,8 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
            headset=False, bags=False, shirt=None, walk=0):
     ch = CHARS[name]
     skin, hair = ch["skin"] + (255,), ch["hair"] + (255,)
+    if "red" in fx:
+        skin = (244, 120, 108, 255)       # cara roja de furia
     coat = (shirt or ch["coat"]) + (255,)
     pants, acc = ch["pants"] + (255,), ch["trim"] + (255,)
     style, kind = ch["style"], ch["kind"]
@@ -126,6 +128,13 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(-6, 28, 6, 32, dk(coat, 0.62)); R(-5, 28, 5, 30, dk(coat, 0.85))
         R(-3, 32, -2, 38, acc); R(2, 32, 3, 37, acc)
         R(-5, 40, 5, 44, dk(coat, 0.82)); R(-5, 40, 5, 41, lt(coat, 1.12))
+    elif kind == "uniform":      # suéter azul marino sobre camisa blanca, corbata y escudo del cole
+        R(-4, 29, 4, 36, (244, 244, 248, 255)); R(-4, 29, -1, 31, (255, 255, 255, 255)); R(1, 29, 4, 31, (255, 255, 255, 255))
+        R(-8, 36, 8, 46, coat); R(-8, 29, -4, 36, coat); R(4, 29, 8, 36, coat)
+        R(-4, 33, -3, 36, dk(coat, 0.7)); R(3, 33, 4, 36, dk(coat, 0.7))
+        R(-1, 31, 1, 43, acc); R(-1, 31, 1, 33, dk(acc, 0.75))
+        R(4, 38, 8, 43, (250, 214, 70, 255)); R(5, 39, 7, 42, (190, 40, 50, 255)); P(6, 40, (250, 214, 70, 255))   # escudo
+        R(-8, 44, 8, 46, dk(coat, 0.75)); R(-8, 36, 8, 37, lt(coat, 1.15))
     elif kind == "blazer":
         R(-3, 29, 3, 40, acc); R(-5, 29, -3, 41, dk(coat, 0.72)); R(3, 29, 5, 41, dk(coat, 0.72)); R(-1, 40, 1, 46, dk(coat, 0.7))
         if ch.get("tie"):
@@ -138,20 +147,21 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(-4, 29, 4, 31, acc); R(-3, 31, 3, 32, acc); R(-1, 32, 1, 33, acc)
         R(-8, 29, -6, 31, acc); R(6, 29, 8, 31, acc)
         R(3, 35, 6, 38, WHITE if name != "nati" else (34, 48, 120, 255)); P(4, 36, (210, 50, 60, 255))
-    sl = 40 if kind in ("hoodie", "blazer") else 34
+    sl = 40 if kind in ("hoodie", "blazer", "uniform") else 34
     hand = skin
+    slc = (242, 242, 246, 255) if kind == "uniform" else coat      # manga de camisa blanca en uniforme
     L = sl - 30
 
     def vert_arm(x0, x1, y0, y1):
         R(x0, y0, x1, y1, hand)
-        body(x0, y0, x1, min(y1, y0 + L), coat)
+        body(x0, y0, x1, min(y1, y0 + L), slc)
         R(x0, y1 - 1, x1, y1, dk(hand, 0.8))
 
     def stair_arm(pts, hands_at):
         """Brazo en escalera: pts = [(x0,y0)...] bloques de 3x4; los últimos van en piel."""
         for i, (x0, y0) in enumerate(pts):
             if i < max(1, L // 4):
-                body(x0, y0, x0 + 4, y0 + 4, coat)
+                body(x0, y0, x0 + 4, y0 + 4, slc)
             else:
                 R(x0, y0, x0 + 4, y0 + 4, hand); R(x0, y0 + 3, x0 + 4, y0 + 4, dk(hand, 0.8))
         hx, hy = hands_at
@@ -172,7 +182,7 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         stair_arm([(8, 30), (12, 26), (15, 22)], (15, 17))
     elif pose in ("ctrl", "phone"):
         vert_arm(8, 11, 30, 40)
-        R(-11, 38, 11, 42, coat if kind in ("hoodie", "blazer") else hand)
+        R(-11, 38, 11, 42, slc if kind in ("hoodie", "blazer", "uniform") else hand)
         R(-7, 39, -4, 43, hand); R(4, 39, 7, 43, hand)
         if pose == "phone":      # celular con pantalla encendida
             R(-3, 33, 4, 44, (34, 34, 48, 255)); R(-2, 34, 3, 43, (130, 215, 255, 255)); R(-2, 34, 3, 36, (230, 250, 255, 255)); R(-1, 38, 2, 39, (60, 140, 220, 255))

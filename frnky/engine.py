@@ -248,7 +248,7 @@ def render_video(ep, cta, out_mp4, workdir):
                 if t0 <= tt < t1:
                     col = voices[who.split("+")[0]]["color"] if "+" not in who else (255, 255, 255)
                     tag = " + ".join(voices[v]["label"] for v in who.split("+"))
-                    frac = min(1.0, (tt - t0) / (0.45 * (t1 - t0)))
+                    frac = min(1.0, (tt - t0) / (0.3 * (t1 - t0)))
                     shown = int(len(text) * (max(frac, 0.5) if t0 < 0.5 else frac)) + 1
                     rpg_box(im, tag, col, text, shown, flag=None if '+' in who else voices[who].get('flag'))
             for h0, h1, htext in ep["hooks"]:      # gancho: ya está en el fotograma 0

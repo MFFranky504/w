@@ -285,7 +285,7 @@ def walkers(c, t, y_feet, names, speed=60, seed=0):
 
 
 def room2(t, kind):
-    f = {"patio": patio, "oficina": oficina, "staff": staff, "hall": hall, "stage": stage}[kind]
+    f = {"patio": patio, "oficina": oficina, "staff": staff, "hall": hall, "stage": stage, "salon": salon, "meme": meme}[kind]
     img = f(t)
     from .bg import grade as g
     img = g(img, 1.2, 1.04)
@@ -294,3 +294,65 @@ def room2(t, kind):
 
 def finish(img):
     return _finish(img)
+
+
+def salon(t):
+    """Salón de clases con el pizarrón del PLAN (letras de tiza que aparecen)."""
+    img, d = _new()
+    d.rectangle([0, 0, W, 340], fill=(238, 200, 128))
+    for x in range(0, W, 30):
+        d.rectangle([x, 0, x + 14, 340], fill=(244, 210, 140))
+    d.rectangle([0, 300, W, 340], fill=(190, 140, 90))
+    d.rectangle([34, 40, 326, 236], fill=(150, 98, 64)); d.rectangle([40, 46, 320, 230], fill=OL); d.rectangle([43, 49, 317, 227], fill=(36, 118, 98))
+    txt(d, (180, 78), "EL PLAN", 40, (250, 250, 240), outline=(24, 80, 66))
+    show = int(t * 2.0) % 6
+    rows = [("1  TODOS EN FORMACION", (250, 250, 240)), ("2  LA DIRECTORA PREGUNTA", (250, 250, 240)), ("3  TODOS: YO SOY CURIS", (255, 230, 110))]
+    for k, (txt_, col) in enumerate(rows):
+        if t * 1.2 > k + 0.5:
+            txt(d, (180, 118 + k * 30), txt_, 17, col, outline=(24, 80, 66))
+    d.rectangle([46, 224, 314, 232], fill=(150, 98, 64)); d.rectangle([60, 218, 90, 224], fill=(250, 250, 240)); d.rectangle([110, 219, 130, 224], fill=(250, 190, 80))
+    _clock(d, 340, 70, 14, t, 0.7)
+    d.rectangle([4, 80, 24, 200], fill=OL); d.rectangle([6, 82, 22, 198], fill=(130, 200, 250))      # ventana
+    d.rectangle([13, 82, 15, 198], fill=OL)
+    d.rectangle([0, 340, W, H], fill=(176, 124, 84))
+    for y in range(352, H, 28):
+        d.rectangle([0, y, W, y + 1], fill=(146, 98, 68))
+    for dx in (18, 148, 278):
+        d.rectangle([dx, 470, dx + 64, 482], fill=OL); d.rectangle([dx + 2, 472, dx + 62, 480], fill=(120, 168, 220))
+        d.rectangle([dx + 6, 482, dx + 10, 520], fill=OL); d.rectangle([dx + 54, 482, dx + 58, 520], fill=OL)
+    d.rectangle([20, 232, 124, 244], fill=OL); d.rectangle([22, 234, 122, 242], fill=(110, 78, 56))
+    d.rectangle([28, 216, 52, 232], fill=(250, 90, 80), outline=OL); d.rectangle([72, 210, 98, 232], fill=(110, 170, 230), outline=OL)
+    img = glow_img(img, (4, 80, 24, 200), (255, 245, 200), 70, 8)
+    _dust(img, t, (30, 60, 330, 330), 14)
+    return img
+
+
+def meme(t):
+    """Teléfono con el post de Curis: la directora «cantando el himno» (el sprite se pega encima en el episodio)."""
+    img, d = _new()
+    for y in range(0, H, 4):
+        u = y / H
+        d.rectangle([0, y, W, y + 4], fill=(int(44 + 30 * u), int(30 + 10 * u), int(96 + 40 * u)))
+    for k in range(14):
+        x = (k * 61) % W; y = (k * 97 + int(t * 20)) % H
+        d.rectangle([x, y, x + 2, y + 2], fill=(150, 130, 220))
+    x0, y0, x1, y1 = 48, 112, 312, 440
+    d.rounded_rectangle([x0 - 7, y0 - 7, x1 + 7, y1 + 7], radius=24, fill=OL)
+    d.rounded_rectangle([x0, y0, x1, y1], radius=18, fill=(20, 22, 44))
+    d.rectangle([158, y0 + 3, 202, y0 + 8], fill=OL)
+    d.ellipse([x0 + 12, y0 + 18, x0 + 44, y0 + 50], fill=(255, 90, 170), outline=(255, 255, 255), width=2)
+    txt(d, (x0 + 28, y0 + 34), "C", 20, (255, 255, 255), outline=(150, 20, 90))
+    txt(d, (x0 + 54, y0 + 28), "curis_del_cole", 17, (255, 255, 255), outline=(20, 22, 44), anchor="lm")
+    txt(d, (x0 + 54, y0 + 46), "cuenta anonima", 12, (150, 160, 200), outline=(20, 22, 44), anchor="lm")
+    py = y0 + 60
+    d.rectangle([x0 + 8, py, x1 - 8, py + 176], fill=(120, 190, 240))                 # foto del post (cielo del patio)
+    d.rectangle([x0 + 8, py + 120, x1 - 8, py + 176], fill=(196, 196, 214))
+    d.rectangle([x0 + 8, py + 150, x1 - 8, py + 176], fill=(14, 14, 28))
+    txt(d, ((x0 + x1) // 2, py + 163), "LA DIRECTORA vs EL HIMNO", 15, (255, 255, 255), outline=(14, 14, 28))
+    iy = py + 190
+    hx = x0 + 22
+    d.rectangle([hx - 6, iy - 2, hx + 6, iy + 4], fill=(240, 60, 90)); d.rectangle([hx + 6, iy - 2, hx + 18, iy + 4], fill=(240, 60, 90))
+    d.polygon([(hx - 6, iy + 3), (hx + 18, iy + 3), (hx + 6, iy + 15)], fill=(240, 60, 90))
+    txt(d, (hx + 36, iy + 6), f"{9000 + int(t * 211):,} me gusta", 15, (255, 255, 255), outline=(20, 22, 44), anchor="lm")
+    txt(d, (x0 + 18, iy + 32), "TODO EL COLE LO COMPARTIO", 13, (200, 210, 240), outline=(20, 22, 44), anchor="lm")
+    return img
