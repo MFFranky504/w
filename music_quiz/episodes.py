@@ -30,8 +30,8 @@ EPISODES = {
     # ------------------------------------------------------------------ Parte 11: Daft Punk
     "p11": dict(
         part=11, artist="Daft Punk", genre="electrónica", music="house", hook="b", next_part=12,
-        hook_len=2.0, reveal=2.6, hook_scene="sunset", outro_scene="paris", outro_sign=None,
-        prev=dict(sprite="nas", scene="brook", part=9, lines=("NAS",), sub="QUEENSBRIDGE · NUEVA YORK",
+        hook_len=2.0, reveal=2.6, hook_scene="hook_sunset", outro_scene="paris", outro_sign=None,
+        prev=dict(sprite="tyler", scene="garden", part=9, lines=("TYLER,", "THE CREATOR"), sub="LOS ÁNGELES, CALIFORNIA",
                   winners=[], winners_part=None, special={}),
         clues=[
             dict(n=1, diff="ULTRA DIFÍCIL", pts=5, chip="1978", scene="disco",
