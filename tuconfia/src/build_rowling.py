@@ -278,7 +278,7 @@ def draw_caps(img, t):
             d.text((60, 398), l2, font=F('Medium', 36), fill=(255, 216, 74, a), stroke_width=4, stroke_fill=(14, 10, 26, a))
 
 
-HOOKS = [('street', .2, 2.9, '¡TOCÓ FONDO!', 'SIN NADA', 560), ('books', .5, 3.2, '¡MILLONES DE', 'LECTORES!', 860)]
+HOOKS = [('street', .2, 2.9, '¡TOCÓ FONDO!', 'SIN NADA', 560), ('books', 3.5, 6.2, '¡MILLONES DE', 'LECTORES!', 1000)]
 SC_ = {s['n']: s for s in SCENES}
 HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
 

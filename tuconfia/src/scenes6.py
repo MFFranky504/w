@@ -62,7 +62,7 @@ def flat_wide(t, u):
     zz = (t * 1.2) % 1; bg.wtext(c, 140 + int(zz * 4), 134 - int(zz * 12), 'Z', (200, 220, 255), 8, outline=None)
     PR.keep(c, PR.barrel(), 134, 184)
     if u > .42:
-        bg.sign2(c, 80, 38, 'SIN EMPLEO', (255, 70, 80), 16, plate=(50, 14, 26))
+        bg.sign2(c, 80, 66, 'SIN EMPLEO', (255, 70, 80), 16, plate=(50, 14, 26))
     b = 1.5 * max(0, math.sin(t * 2))
     place(c, rpg('rowling', 0), 74, 212 + b)
     c.amb = (.92, .92, 1.06); c.vig = .75
@@ -121,7 +121,7 @@ def rejections_wide(t, u):
         PR.keep(c, PR.envelope(20, 14), sx + 1, sy + 12 - off)
         if k >= 1 and ease((u * 14 - idx - 1.2) / .6) > 0: bg.wtext(c, sx + 11, sy + 17, 'NO', (230, 40, 60), 8, outline=(250, 240, 230), center=True)
     n = min(12, int(u * 14))
-    c.R(80 - 34, 38, 68, 36, (20, 12, 30)); c.R(80 - 34, 38, 68, 2, (250, 200, 90)); c.R(80 - 34, 72, 68, 2, (140, 100, 40)); bg.wtext(c, 80, 42, str(n), (255, 216, 74), 24, outline=None, center=True)
+    c.R(80 - 34, 56, 68, 36, (20, 12, 30)); c.R(80 - 34, 56, 68, 2, (250, 200, 90)); c.R(80 - 34, 90, 68, 2, (140, 100, 40)); bg.wtext(c, 80, 60, str(n), (255, 216, 74), 24, outline=None, center=True)
     bg.planks(c, 0, 206, WW, 90, (90, 58, 52), seed=41, pw=9); c.R(0, 204, WW, 3, (40, 26, 30))
     place(c, rpg('rowling_rain', int(t * 3) % 2 if u < .3 else 0), 80, 214 + math.sin(t * 2))
     c.light(80, 130, 90, 80, (200, 140, 255), .35)
@@ -267,7 +267,7 @@ def flat_med(t, u):
         ph = (t * .5 + i * .14) % 1; xx = 20 + (i * 47) % 120
         if not (50 < xx < 100): PR.keep(c, PR.bill_red(), xx + int(math.sin(t * 3 + i) * 5), int(ph * 220) - 10)
     k = ease((u - .5) / .12)
-    if u > .55: bg.sign2(c, 80, 30, 'SIN EMPLEO', (255, 70, 80), 16, plate=(50, 14, 26))
+    if u > .55: bg.sign2(c, 80, 66, 'SIN EMPLEO', (255, 70, 80), 16, plate=(50, 14, 26))
     place(c, bat('rowling', 'hip'), 74, 218 + 1.2 * math.sin(t * 2))
     c.amb = (.92, .92, 1.06); c.vig = .75
     return c.render()
@@ -302,13 +302,13 @@ def cafe_med(t, u):
 def rejections_med(t, u):
     c = Canvas(vgrad([(0, '#2a1a3a'), (1, '#140c1e')]))
     bg.wallpaper(c, 0, 0, WW, 206, (66, 46, 96), (58, 40, 86), (92, 70, 132))
-    c.R(0, 100, WW, 78, (86, 54, 38)); c.R(0, 100, WW, 3, (190, 130, 90))
+    c.R(0, 118, WW, 80, (86, 54, 38)); c.R(0, 118, WW, 3, (190, 130, 90))
     for i in range(7):
-        for j in range(2): c.R(4 + i * 23, 105 + j * 36, 20, 32, (34, 22, 26))
+        for j in range(2): c.R(4 + i * 23, 123 + j * 36, 20, 32, (34, 22, 26))
     bg.planks(c, 0, 206, WW, 90, (90, 58, 52), seed=41, pw=9); c.R(0, 204, WW, 3, (40, 26, 30))
     n = min(12, int(u * 24) - 12) if u > .5 else 0
     n = max(0, min(12, int((u - .5) * 2 * 14)))
-    bg.sign2(c, 80, 42, str(n), (255, 216, 74), 24, plate=(20, 12, 30))
+    bg.sign2(c, 80, 68, str(n), (255, 216, 74), 24, plate=(20, 12, 30))
     for i in range(8):                                                  # sobres que vuelan y sellos NO que golpean
         ph = (t * .7 + i * .125) % 1; xx = 10 + ph * 150; yy = 60 + 70 * math.sin(ph * math.pi) + (i % 3) * 14
         PR.keep(c, PR.envelope(20, 14), xx, yy)
