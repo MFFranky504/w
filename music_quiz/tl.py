@@ -5,7 +5,7 @@ WIPE = 0.6
 TW0, TWS = 1.4, 0.032                   # typewriter start (segment time) and sec/char
 REVEAL = 3.4                            # recap: reveal moment (segment time)
 S_HOOK, S_RECAP, S_WIN, S_C1, S_OUT = 0, 1, 2, 3, 7
-ROW_H, WIN_SPEED, WIN_WH, WIN_START = 88, 190, 686, 0.8   # winners list (full-res px, px/s)
+ROW_H, WIN_SPEED, WIN_WH, WIN_START = 88, 270, 686, 0.8   # winners list (full-res px, px/s)
 
 CLUES = [
     dict(n=1, diff="MUY DIFÍCIL", pts=4, chip="1991",
