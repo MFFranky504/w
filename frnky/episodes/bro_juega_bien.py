@@ -149,7 +149,7 @@ def frame(t):
 
     if t < 3.6:  # S1: el conflicto, desde el primer fotograma
         s1(c, t, t)
-        keys = [(0, 40, 180, 290), (2.0, 36, 160, 290), (2.3, 26, 308, 250), (3.6, 24, 308, 250)]
+        keys = [(0, 40, 180, 290), (2.0, 36, 160, 290), (2.3, 26, 308, 268), (3.6, 24, 308, 268)]
         shake = 1 if t < 0.4 else 0
     elif t < 8.0:  # S2: lo corren
         light_shaft(c)
@@ -160,7 +160,7 @@ def frame(t):
         char(c, t, "bro", expr="sad", fx=("tear", "sweat"), look=1, oy=8 if t > 5.3 else 3)
         if pt:
             emote(c, *head("bro"), "?", t - 6.4)
-        keys = [(3.6, 26, 222, 250), (5.2, 26, 222, 250), (5.3, 22, 135, 250), (6.4, 22, 135, 250),
+        keys = [(3.6, 26, 222, 268), (5.2, 26, 222, 268), (5.3, 22, 135, 268), (6.4, 22, 135, 268),
                 (6.5, 40, 180, 290), (8.0, 34, 150, 296)]
         shake = 2 if pt else 0
     elif t < 11.0:  # calle: Bro se va caminando y se promete mejorar
@@ -174,7 +174,7 @@ def frame(t):
         if lt >= 1.9:
             speed_lines(c, x, 230, t, 120)
             sparkles(c, t, x, 230, 6, 100)
-        keys = [(8.0, 40, 100, 290), (9.6, 36, 170, 290), (9.7, 24, 190, 250), (11.0, 22, 190, 250)]
+        keys = [(8.0, 40, 100, 290), (9.6, 36, 170, 290), (9.7, 24, 190, 268), (11.0, 22, 190, 268)]
     elif t < 16.0:  # cuarto: entrenamiento
         dn = 0 if t < 12.2 else (1 if t < 13.0 else (2 if t < 13.8 else 3))
         expr = ["neutral", "angry", "angry", "shock"][dn]
@@ -184,7 +184,7 @@ def frame(t):
             sparkles(c, t, 180, 262, 7, 110)
         if dn == 3:
             speed_lines(c, 180, 250, t, 100)
-        keys = [(11.0, 40, 180, 290), (12.2, 30, 180, 260), (14.6, 22, 180, 250), (16.0, 20, 180, 250)]
+        keys = [(11.0, 40, 180, 290), (12.2, 30, 180, 260), (14.6, 22, 180, 268), (16.0, 20, 180, 268)]
         shake = 1 if dn >= 2 else 0
     elif t < 27.8:  # ciber: vuelve "pro" y se pone insoportable
         light_shaft(c, 18)
@@ -208,7 +208,7 @@ def frame(t):
                 sparkles(c, t, SEAT["bro"], 262, 6, 100)
             keys = [(16.0, 40, 180, 290), (17.1, 40, 180, 290), (17.2, 30, 222, 270), (18.3, 30, 222, 270),
                     (18.4, 28, 50, 265), (19.3, 28, 50, 265), (19.4, 28, 308, 265), (20.3, 28, 308, 265),
-                    (20.4, 20, 135, 250), (22.0, 22, 135, 250)]
+                    (20.4, 20, 135, 268), (22.0, 22, 135, 268)]
         else:
             char(c, t, "chuy", expr="sad", fx=("tear",), oy=4 if t > 23.7 else 0, pose="down")
             char(c, t, "nati", expr="sad" if t > 25.5 else "shock", pose="down")
@@ -217,8 +217,8 @@ def frame(t):
             sparkles(c, t, SEAT["bro"], 262, 6, 100)
             if 22.4 < t < 23.4:
                 emote(c, *head("memo"), "?", t - 22.4)
-            keys = [(22.0, 26, 308, 250), (23.6, 26, 308, 250), (23.7, 22, 135, 250), (25.4, 22, 135, 250),
-                    (25.5, 26, 222, 250), (26.6, 26, 222, 250), (26.7, 26, 50, 250), (27.8, 24, 50, 250)]
+            keys = [(22.0, 26, 308, 268), (23.6, 26, 308, 268), (23.7, 22, 135, 268), (25.4, 22, 135, 268),
+                    (25.5, 26, 222, 268), (26.6, 26, 222, 268), (26.7, 26, 50, 268), (27.8, 24, 50, 268)]
     elif t < 29.5:  # sala: se arrepiente
         light_shaft(c)
         gone = t > 28.4
@@ -227,7 +227,7 @@ def frame(t):
         char(c, t, "bro", expr="shy", pose="down" if gone else "ctrl", look=-1, shirt=(34, 34, 46))
         if t > 28.0:
             emote(c, *head("bro"), "?", t - 28.0)
-        keys = [(27.8, 22, 135, 250), (29.5, 24, 135, 250)]
+        keys = [(27.8, 22, 135, 268), (29.5, 24, 135, 268)]
     elif t < 30.4:  # todos felices
         light_shaft(c)
         for n_ in ("chuy", "nati", "bro", "memo"):

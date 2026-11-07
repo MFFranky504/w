@@ -162,8 +162,8 @@ def title_card(img, text, cy, size=80, width=860):
 
 def hud(img, level, vibe):
     d = ImageDraw.Draw(img)
-    f = pf(36)
-    for k, (label, val, col) in enumerate((("NIVEL DE BRO", f"{level}", (255, 214, 90)), ("BUENA ONDA", f"{vibe}%", (255, 140, 180)))):
+    f = pf(34)
+    for k, (label, val, col) in enumerate((("NIVEL", f"{level}", (255, 214, 90)), ("ONDA", f"{vibe}%", (255, 140, 180)))):
         s = f"{label}: {val}"
         w = d.textlength(s, font=f) + 40
         y = 270 + k * 68
