@@ -1,7 +1,10 @@
 """«¿Qué pasaría si mi bro finalmente comenzara a josear?» (josear = trabajar, jerga venezolana). Trabajo."""
 import math
 
-from .. import audio, scenes2 as S2
+import zlib
+
+from .. import audio, scenes2 as S2, scenes3 as S3
+from ..cast import make_cast
 from ..bg import room, light_shaft, sparkles, confetti, emote, speed_lines
 from ..engine import cam_at
 from ..sprite import draw_char
@@ -14,23 +17,32 @@ CUTS = [6.9, 11.9, 14.2, 20.4, 27.5]
 META = dict(id="bro-josea", category="trabajo",
             title="¿Qué pasaría si mi bro finalmente comenzara a josear?",
             caption_hook="Cuando tu bro por fin consigue josear y ya no habla como persona 😭")
-VOICES = dict(V0)
-VOICES["ramos"] = dict(label="JEFE RAMOS", color=(170, 226, 150), pitch=150)
+# Elenco propio de este video (cambia con cada episodio). «Josear» es venezolano: el rol c lo es siempre.
+CAST = make_cast(META["id"], force={"c": "VE"})
+ROLE = {"bro": "bro", "chuy": "a", "nati": "b", "memo": "c"}          # clave de subtítulos -> rol del elenco
+SPRITE = {k: CAST[r]["sprite"] for k, r in ROLE.items()}
+SPRITE["bro_w"] = CAST["bro"]["work"]
+SPRITE["ramos"] = "vega" if zlib.crc32(META["id"].encode()) % 2 else "ramos"
+BOSS = "JEFA VEGA" if SPRITE["ramos"] == "vega" else BOSS
+VOICES = {k: dict(label=CAST[r]["label"], color=CAST[r]["color"], pitch=CAST[r]["pitch"], flag=CAST[r]["flag"]) for k, r in ROLE.items()}
+VOICES["ramos"] = dict(label=BOSS, color=(170, 226, 150), pitch=150)
+VOICES["todos"] = dict(label="TODOS", color=(255, 255, 255), pitch=250)
+T_ = {k: CAST[r]["tag"] for k, r in ROLE.items()}
 LINES = [
     (0.1, 2.0, "memo", "¡¿Mi bro consiguió josear?!"),
-    (2.1, 3.5, "chuy", "¿Josear? ¿Tú, güey?"),
-    (3.6, 5.0, "nati", "Che, ¿y los videojuegos?"),
-    (5.1, 6.6, "bro", "Empiezo el lunes, po."),
-    (7.2, 8.8, "ramos", "Bienvenido. Su primera junta."),
+    (2.1, 3.5, "chuy", f"¿Josear? ¿Tú, {T_['chuy']}?"),
+    (3.6, 5.0, "nati", f"¿Y los videojuegos, {T_['nati']}?"),
+    (5.1, 6.6, "bro", f"Empiezo el lunes, {T_['bro']}."),
+    (7.2, 8.8, "ramos", "Pase. Su primera junta."),
     (8.9, 10.3, "bro", "Perfecto. Quedamos pendientes."),
     (10.4, 11.8, "ramos", "Eso fue un meme, no un informe."),
     (12.2, 13.8, "bro", "Hay que alinear sinergias."),
     (14.5, 15.8, "chuy", "Bro, ¿jugamos hoy?"),
     (15.9, 17.2, "bro", "No puedo. Tengo junta."),
-    (17.3, 18.6, "memo", "¡Ya ni habla como persona, chamo!"),
-    (18.7, 20.2, "nati", "Habla como LinkedIn, che."),
-    (20.7, 22.1, "bro", "Me cayó el primer pago, po."),
-    (22.2, 23.5, "chuy", "¡Ahora sí invitas, güey!"),
+    (17.3, 18.6, "memo", f"¡Ya ni habla como persona, {T_['memo']}!"),
+    (18.7, 20.2, "nati", f"Habla como LinkedIn, {T_['nati']}."),
+    (20.7, 22.1, "bro", f"Me cayó el primer pago, {T_['bro']}."),
+    (22.2, 23.5, "chuy", f"¡Ahora sí invitas, {T_['chuy']}!"),
     (23.6, 25.0, "bro", "Mejor… ¡pago los tacos de todos!"),
     (25.1, 26.4, "todos", "¡ESE ES MI BRO!"),
 ]
@@ -69,7 +81,7 @@ def ch(c, t, name, spk=None, **kw):
     hop = kw.pop("hop", 0)
     ox = round(math.sin(t * 61) * shake) if shake else 0
     oy = round(math.sin(t * 5 + x) * 1.5) - (round(abs(math.sin(t * 9 + x)) * hop) if hop else 0) + kw.pop("oy", 0)
-    draw_char(c, name, x, kw.pop("feet", FEET), ox=ox, oy=oy, scale=sc, **kw)
+    draw_char(c, SPRITE[name], x, kw.pop("feet", FEET), ox=ox, oy=oy, scale=sc, **kw)
 
 
 def s1(c, t, lt):
@@ -90,14 +102,14 @@ def frame(t):
     te = t if t < 27.5 else t - T
     if t < 6.9 or t >= 27.5:
         lt = t if t < 6.9 else 0.0
-        c = room(te, score=(0, 14), verdict="SIN CHAMBA", label="SUELDO", big="$0")
+        c = S3.azotea(te)
         s1(c, te, lt)
         keys = [(0, 40, 180, 290), (2.0, 36, 300, 285), (2.1, 28, 50, 268), (3.5, 28, 50, 268), (3.6, 28, 222, 268),
                 (5.0, 28, 222, 268), (5.1, 26, 135, 268), (6.6, 26, 135, 268), (6.9, 40, 180, 290)]
         if t >= 27.5:
             keys = [(27.5, 40, 180, 290), (T, 40, 180, 290)]
     elif t < 11.9:
-        c = S2.finish(S2.room2(t, "cubiculo"))
+        c = S3.oficina(t)
         light_shaft(c, 10)
         ch(c, t, "bro_w", spk="bro", x=105, expr="happy" if t < 8.9 else "shy", pose="phone" if 8.9 <= t < 10.4 else "down", fx=("sweat",) if t >= 10.4 else ())
         ch(c, t, "ramos", x=255, expr="neutral" if t < 10.4 else "angry", pose="point" if t >= 10.4 else "down", flip=True)
@@ -106,14 +118,14 @@ def frame(t):
         keys = [(6.9, 40, 180, 290), (7.2, 30, 255, 268), (8.8, 30, 255, 268), (8.9, 30, 105, 268), (10.3, 30, 105, 268),
                 (10.4, 30, 255, 268), (11.9, 30, 255, 268)]
     elif t < 14.2:
-        c = S2.finish(S2.room2(t, "cubiculo"))
+        c = S3.oficina(t)
         light_shaft(c, 10)
         ch(c, t, "bro_w", spk="bro", x=180, expr="smug", pose="phone", shades=False, bags=True)
         ch(c, t, "ramos", x=300, expr="happy", pose="down", flip=True, scale=2, feet=352)
         sparkles(c, t, 180, 262, 6, 100)
         keys = [(11.9, 40, 180, 290), (12.2, 30, 180, 268), (14.2, 28, 180, 268)]
     elif t < 20.4:
-        c = room(t, score=(0, 14), verdict="SIN CHAMBA", label="SUELDO", big="$0")
+        c = S3.azotea(t)
         light_shaft(c, 14)
         ch(c, t, "chuy", x=50, scale=2, expr="happy", pose="down", feet=352)
         ch(c, t, "nati", x=222, scale=2, expr="shock" if t >= 18.7 else "sad", pose="down", feet=352)
@@ -124,7 +136,7 @@ def frame(t):
         keys = [(14.2, 40, 180, 290), (14.5, 28, 50, 268), (15.8, 28, 50, 268), (15.9, 28, 135, 268), (17.2, 28, 135, 268),
                 (17.3, 28, 308, 268), (18.6, 28, 308, 268), (18.7, 28, 222, 268), (20.2, 28, 222, 268), (20.4, 40, 180, 290)]
     elif t < 27.5:
-        c = room(t, kind="street")
+        c = S3.taqueria(t)
         light_shaft(c, 10)
         ch(c, t, "bro_w", spk="bro", x=60 if t < 25.1 else 60, expr="happy" if t >= 20.7 else "neutral", pose="phone" if t < 23.6 else "cheer",
            hop=4 if t >= 25.1 else 0, scale=2, feet=392)
