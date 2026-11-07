@@ -46,7 +46,7 @@ def street(t, u):
     c.R(38, 120, 3, 86, (20, 20, 36)); c.R(30, 118, 20, 3, (20, 20, 36)); c.R(32, 121, 6, 5, (255, 220, 140), c.ed)
     c.light(35, 126, 40, 50, (255, 210, 130), .8)
     # Rowling empuja el cochecito
-    x = 30 + 62 * ease(u * 1.05)
+    x = 40 + 52 * ease(u * 1.05)
     step = int(t * 4) % 2
     stroller(c, x + 30, 214, rock=int(math.sin(t * 8) > .5))
     place(c, fig(rpg('rowling_rain', step), .8), x, 214)
@@ -142,29 +142,25 @@ def cafe(t, u):
 # ============================================================ 5. doce rechazos
 def rejections(t, u):
     c = Canvas(vgrad([(0, '#2a1a3a'), (1, '#140c1e')]))
-    c.R(10, 62, 140, 112, (58, 44, 80)); c.R(10, 62, 140, 3, (140, 110, 190))
-    for i in range(1, 4): c.R(10 + i * 35, 65, 1, 109, (40, 30, 60))
-    for j in range(1, 3): c.R(10, 65 + j * 36, 140, 1, (40, 30, 60))
-    # 12 sobres, cada uno recibe su sello NO
+    c.R(12, 92, 136, 92, (58, 44, 80)); c.R(12, 92, 136, 3, (140, 110, 190))
+    for i in range(1, 4): c.R(12 + i * 34, 95, 1, 89, (40, 30, 60))
+    for j in range(1, 3): c.R(12, 92 + j * 30, 136, 1, (40, 30, 60))
     for idx in range(12):
         col_, row_ = idx % 4, idx // 4
-        ex, ey = 14 + col_ * 35, 64 + row_ * 36
+        ex, ey = 14 + col_ * 34, 94 + row_ * 30
         k = ease((u * 14 - idx) / 1.2)
         if k <= 0: continue
         off = int((1 - k) * 60)
-        c.R(ex + 3, ey + 6 - off, 26, 18, (244, 236, 214)); c.R(ex + 3, ey + 6 - off, 26, 1, (255, 252, 240))
-        c.d.polygon([(ex + 3, ey + 6 - off), (ex + 29, ey + 6 - off), (ex + 16, ey + 17 - off)], outline=(190, 176, 150))
+        c.R(ex + 2, ey + 4 - off, 26, 18, (244, 236, 214)); c.R(ex + 2, ey + 4 - off, 26, 1, (255, 252, 240))
+        c.d.polygon([(ex + 2, ey + 4 - off), (ex + 28, ey + 4 - off), (ex + 15, ey + 15 - off)], outline=(190, 176, 150))
         if k >= 1:
             st = ease((u * 14 - idx - 1.2) / .6)
-            if st > 0:
-                kk = 2 if st < 1 else 2
-                ptext(c.ed, ex + 8, ey + 12, 'NO', (230, 40, 60), kk)
+            if st > 0: ptext(c.ed, ex + 7, ey + 10, 'NO', (230, 40, 60), 2)
     n = min(12, int(u * 14))
-    w = ptext_w(str(n), 5)
-    c.R(80 - 28, 26, 56, 30, (14, 10, 26)); ptext(c.ed, 80 - w // 2, 32, str(n), (255, 216, 74), 5)
+    w = ptext_w(str(n), 6)
+    c.R(80 - 30, 56, 60, 34, (14, 10, 26)); ptext(c.ed, 80 - w // 2, 62, str(n), (255, 216, 74), 6)
     c.R(0, 206, WW, 90, (30, 20, 44)); c.R(0, 206, WW, 2, (100, 80, 140))
-    k = ease(u * 2)
-    place(c, fig(rpg('rowling_rain', int(t * 3) % 2 if u < .3 else 0), .7), 80, 214 + 1.2 * math.sin(t * 2))
+    place(c, fig(rpg('rowling_rain', int(t * 3) % 2 if u < .3 else 0), .5), 80, 212 + 1.0 * math.sin(t * 2))
     c.light(80, 140, 90, 90, (200, 140, 255), .35)
     c.amb = (.9, .86, 1.05); c.vig = .8
     return c.render()
@@ -251,32 +247,33 @@ def bookstore(t, u):
 def finale(t, u):
     k = ease(u * 1.1)
     c = Canvas(vgrad([(0, '#1a1a5a'), (.35, '#c0408a'), (.55, '#ff9a50'), (.75, '#ffd080'), (1, '#3a2438')]))
-    # sol saliendo detrás de Edimburgo
-    sy = 150 - 40 * k
+    sy = 138 - 36 * k                                                           # el sol sube
     c.d.ellipse([60, sy - 22, 100, sy + 18], fill=(255, 240, 170))
     for i in range(12):
         a = i / 12 * math.pi * 2 + t * .15
         c.d.polygon([(80, sy), (80 + 200 * math.cos(a), sy + 200 * math.sin(a)), (80 + 200 * math.cos(a + .1), sy + 200 * math.sin(a + .1))], fill=(255, 200, 130))
-    poly_sil(c, [(0, 190), (14, 164), (30, 158), (46, 172), (80, 150), (112, 172), (130, 160), (146, 166), (160, 190)], (60, 34, 70))
+    poly_sil(c, [(0, 160), (14, 140), (30, 134), (46, 146), (80, 126), (112, 146), (130, 136), (146, 142), (160, 160)], (60, 34, 70))
     for x0, h in ((58, 18), (72, 28), (88, 20), (100, 14)):
-        c.R(x0, 156 - h, 10, h, (50, 28, 62)); c.d.polygon([(x0 - 1, 156 - h), (x0 + 5, 156 - h - 9), (x0 + 11, 156 - h)], fill=(50, 28, 62))
-    c.R(0, 190, WW, 20, (50, 28, 62))
-    # escritorio con libro enorme abierto y brillante
-    c.R(0, 206, WW, 90, (96, 56, 44)); c.R(0, 206, WW, 3, (170, 110, 80))
-    c.R(26, 196, 108, 12, (150, 84, 60))
-    c.d.polygon([(32, 196), (78, 190), (78, 208), (32, 208)], fill=(252, 248, 236)); c.d.polygon([(82, 190), (128, 196), (128, 208), (82, 208)], fill=(246, 242, 226))
-    c.R(78, 190, 4, 18, (200, 150, 110))
-    # texto que se va escribiendo en la página derecha
-    nl = int(ease((u - .15) / .6) * 6)
-    for i in range(nl): c.R(88, 195 + i * 2, 34 - (i * 5) % 12, 1, (60, 50, 110))
-    # página que pasa
+        c.R(x0, 130 - h, 10, h, (50, 28, 62)); c.d.polygon([(x0 - 1, 130 - h), (x0 + 5, 130 - h - 9), (x0 + 11, 130 - h)], fill=(50, 28, 62))
+    c.R(0, 160, WW, 50, (50, 28, 62))
+    # escritorio con el libro enorme abierto y brillante (alto: queda sobre los subtítulos)
+    c.R(0, 190, WW, 110, (96, 56, 44)); c.R(0, 190, WW, 3, (170, 110, 80))
+    c.R(16, 176, 128, 16, (150, 84, 60))
+    c.d.polygon([(22, 168), (78, 160), (78, 182), (22, 184)], fill=(252, 248, 236)); c.d.polygon([(82, 160), (138, 168), (138, 184), (82, 182)], fill=(246, 242, 226))
+    c.R(78, 160, 4, 22, (200, 150, 110))
+    nl = int(ease((u - .15) / .6) * 7)
+    for i in range(nl): c.R(88, 167 + i * 2, 40 - (i * 5) % 14, 1, (60, 50, 110))
+    for i in range(5): c.R(28, 169 + i * 2, 38 - (i * 7) % 16, 1, (120, 110, 150))
     fl = (t * .6) % 1
-    if fl < .5: c.d.polygon([(82, 190), (82 + 40 * math.sin(fl * math.pi), 190 - 8 * math.sin(fl * math.pi)), (82 + 40 * math.sin(fl * math.pi), 204 - 6 * math.sin(fl * math.pi)), (82, 208)], fill=(255, 252, 244))
-    c.light(80, 192, 60, 40, (255, 230, 150), .9)
-    # el espectador a un lado, sin rayos: solo la luz del libro
-    place(c, fig(rpg('you', int(t * 3) % 2 if u < .15 else 0), .85), 38, 214)
+    if fl < .5: c.d.polygon([(82, 160), (82 + 50 * math.sin(fl * math.pi), 158 - 8 * math.sin(fl * math.pi)), (82 + 50 * math.sin(fl * math.pi), 180 - 6 * math.sin(fl * math.pi)), (82, 182)], fill=(255, 252, 244))
+    c.light(80, 166, 70, 46, (255, 230, 150), 1.0)
+    # el espectador, detrás del escritorio (se le ve de la cintura para arriba), mirando el libro
+    full = fig(rpg('you', 0), .95)
+    top = full.crop((0, 0, full.width, int(full.height * .78)))
+    place(c, top, 46, 176 + 0, sh=False)
+    c.R(16, 176, 128, 16, (150, 84, 60)); c.R(16, 176, 128, 2, (206, 140, 100))
     for i in range(16):
-        ph = (t * .45 + i * .063) % 1; xx = 40 + (i * 37 + math.sin(t * 2 + i) * 5) % 90; yy = 196 - ph * 120
+        ph = (t * .45 + i * .063) % 1; xx = 44 + (i * 37 + math.sin(t * 2 + i) * 5) % 90; yy = 170 - ph * 100
         c.R(xx, yy, 2, 2, (255, 236, 170))
     c.amb = (1.0 + .06 * k, .94 + .08 * k, .95); c.vig = .6
     return c.render()

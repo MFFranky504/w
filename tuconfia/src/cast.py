@@ -24,8 +24,8 @@ CAST = {
  'prod2': dict(style='short', skin=(236, 190, 154), hair=ramp((60, 52, 50)), iris=(60, 84, 120), outfit='teacher', glasses=True),
 
  # --- historia 5: J. K. Rowling
- 'rowling': dict(style='tab', skin=(252, 222, 198), hair=ramp((150, 98, 62)), iris=(96, 70, 48), outfit='cardigan'),
- 'rowling_rain': dict(style='tab', skin=(252, 222, 198), hair=ramp((150, 98, 62)), iris=(96, 70, 48), outfit='blazer'),
+ 'rowling': dict(style='tab', skin=(246, 208, 176), hair=ramp((150, 98, 62)), iris=(96, 70, 48), outfit='cardigan'),
+ 'rowling_rain': dict(style='tab', skin=(246, 208, 176), hair=ramp((150, 98, 62)), iris=(96, 70, 48), outfit='blazer'),
  'alice': dict(style='tab', skin=(252, 224, 200), hair=ramp((208, 160, 80)), iris=(80, 120, 170), outfit='tee_red', kid=True),
 
  # --- historia 4: Steve Jobs

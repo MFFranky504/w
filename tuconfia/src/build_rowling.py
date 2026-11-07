@@ -113,15 +113,15 @@ print('modo:', MODE, 'duración total', round(TOTAL, 2), file=sys.stderr)
 # ---------------------------------------------------------------- escenas
 PS = S2.portrait_scene
 SCENES = [
-    dict(n='street', a='L1', b='L1', fn=lambda t, u: S6.street(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.04), (.5001, 70, 168, 1.6), (1, 66, 170, 1.8)]),
-    dict(n='flat', a='L2', b='L2', fn=lambda t, u: S6.flat(t, u), cam=[(0, 80, 146, 1.0), (.5, 84, 150, 1.05), (.5001, 106, 176, 1.6), (1, 108, 178, 1.75)]),
+    dict(n='street', a='L1', b='L1', fn=lambda t, u: S6.street(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.04), (.5001, 66, 168, 1.55), (1, 92, 170, 1.55)]),
+    dict(n='flat', a='L2', b='L2', fn=lambda t, u: S6.flat(t, u), cam=[(0, 80, 146, 1.0), (.5, 84, 150, 1.05), (.5001, 84, 172, 1.45), (1, 88, 174, 1.55)]),
     dict(n='portS', a='L3', b='L3', fn=lambda t, u: PS(t, 'rowling', 'sad', (0, 1), 'cold'), cam=[(0, 80, 160, 1.3), (1, 80, 150, 1.6)]),
     dict(n='cafe', a='L4', b='L4', fn=lambda t, u: S6.cafe(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 150, 1.04), (.5001, 50, 172, 1.7), (1, 52, 174, 1.9)]),
-    dict(n='rejections', a='L5', b='L5', fn=lambda t, u: S6.rejections(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 146, 1.1)]),
-    dict(n='alice', a='L6', b='L6', fn=lambda t, u: S6.alice(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 150, 1.03), (.5001, 82, 176, 1.6), (1, 82, 178, 1.75)]),
+    dict(n='rejections', a='L5', b='L5', fn=lambda t, u: S6.rejections(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.05)]),
+    dict(n='alice', a='L6', b='L6', fn=lambda t, u: S6.alice(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 150, 1.03), (.5001, 82, 168, 1.5), (1, 82, 170, 1.6)]),
     dict(n='books', a='L7', b='L7', fn=lambda t, u: S6.bookstore(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.08)]),
     dict(n='portW', a='L8', b='L8', fn=lambda t, u: PS(t, 'rowling', 'warm', (0, 0), 'warm'), cam=[(0, 80, 160, 1.3), (1, 80, 150, 1.6)]),
-    dict(n='finale', a='L9', b='L9', fn=lambda t, u: S6.finale(t, u), cam=[(0, 80, 146, 1.0), (.55, 80, 150, 1.05), (1, 76, 168, 1.35)]),
+    dict(n='finale', a='L9', b='L9', fn=lambda t, u: S6.finale(t, u), cam=[(0, 80, 140, 1.0), (.6, 80, 142, 1.03), (1, 80, 146, 1.1)]),
 ]
 for i, s in enumerate(SCENES):
     s['t0'] = 0.0 if i == 0 else (LEND[SCENES[i - 1]['b']] + LSTART[s['a']]) / 2 if False else (LSTART[s['a']] if i else 0.0)
@@ -182,7 +182,7 @@ BAYF = np.kron(np.tile(np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [
 
 # ---------------------------------------------------------------- overlay
 F = lambda w, s: ImageFont.truetype(f'/usr/share/fonts/opentype/inter/Inter-{w}.otf', s)
-FL = lambda s: ImageFont.truetype(f'{ROOT}/assets/fonts/pixelify-sans-latin-700-normal.woff', s)      # tipografía de subtítulos y marca
+FL = lambda s: ImageFont.truetype(f'{ROOT}/assets/fonts/silkscreen-latin-700-normal.woff', s)      # tipografía de subtítulos y marca
 YEL, WHITE, DARK = (255, 216, 74), (255, 255, 255), (14, 10, 26)
 PURPLE = (139, 92, 246)      # logo TU CONF.IA
 BRAND = Image.new('RGBA', (VW, VH), (0, 0, 0, 0))
@@ -237,7 +237,7 @@ def draw_sub(img, t):
     if not ch and t >= CHUNKS[-1][1]: ch = CHUNKS[-1]            # la pregunta final se queda en pantalla
     if not ch: return
     a, b, g, lid = ch
-    size = 112
+    size = 100
     ft = FL(size)
     d = ImageDraw.Draw(img)
     txt = ' '.join(w for w, _ in g).upper()
@@ -251,7 +251,7 @@ def draw_sub(img, t):
     SUBCX = 500; x = (2 * SUBCX - total) / 2; y = 50
     for w, e in g:
         w = w.upper()
-        ld.text((x, y), w, font=ft, fill=YEL if e else WHITE, stroke_width=8, stroke_fill=DARK)
+        ld.text((x, y), w, font=ft, fill=YEL if e else WHITE, stroke_width=7, stroke_fill=DARK)
         x += ld.textlength(w, font=ft) + GAP()
     for w, e in g: pass
     # relleno encima del trazo
@@ -277,7 +277,7 @@ def draw_caps(img, t):
             d.text((60, 398), l2, font=F('Medium', 36), fill=(255, 216, 74, a), stroke_width=4, stroke_fill=(14, 10, 26, a))
 
 
-HOOKS = [('street', .2, 2.9, '¡TOCÓ FONDO!', 'SIN NADA', 560), ('rejections', .5, 3.0, '¡12 VECES', 'LE DIJERON NO!', 330), ('books', .5, 3.2, '¡MILLONES DE', 'LECTORES!', 330)]
+HOOKS = [('street', .2, 2.9, '¡TOCÓ FONDO!', 'SIN NADA', 560), ('books', .5, 3.2, '¡MILLONES DE', 'LECTORES!', 560)]
 SC_ = {s['n']: s for s in SCENES}
 HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
 
@@ -287,7 +287,7 @@ def draw_hooks(img, t):
         if not (a <= t < c_): continue
         k = min(1, (t - a) / .14); out = min(1, (c_ - t) / .15)
         sc = (.6 + .5 * k - .1 * k * k) if k < 1 else 1.0
-        d = ImageDraw.Draw(img); ft = FL(86 if max(len(l1), len(l2)) < 17 else 74)
+        d = ImageDraw.Draw(img); ft = FL(76 if max(len(l1), len(l2)) < 15 else 64)
         w = max(d.textlength(l1, font=ft), d.textlength(l2, font=ft))
         lay = Image.new('RGBA', (900, 230), (0, 0, 0, 0)); ld = ImageDraw.Draw(lay)
         for dx, dy, col in ((6, 6, (230, 40, 110)), (0, 0, None)):
