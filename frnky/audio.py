@@ -72,11 +72,22 @@ MEL_MAJ = [(0, 79, 1), (1, 79, 1), (2, 84, 2), (4, 86, 2), (6, 84, 1), (7, 79, 1
            (24, 77, 2), (26, 79, 1), (27, 81, 1), (28, 84, 3), (31, 79, 1)]
 
 
-def groove(track, t0, t1, bpm, mode="min", layers=("bass", "pad", "arp", "lead", "drums"), vol=1.0):
-    """Loop de 4 compases (Am-F-C-G o C-G-Am-F) con bajo sincopado, pad, arpegio, melodía con eco y batería."""
+MEL_MIN2 = [(0, 81, 2), (2, 79, 1), (3, 76, 1), (4, 72, 2), (6, 76, 2),
+            (8, 77, 2), (10, 81, 1), (11, 79, 1), (12, 77, 2), (14, 72, 2),
+            (16, 79, 2), (18, 76, 1), (19, 72, 1), (20, 76, 2), (22, 79, 2),
+            (24, 83, 1), (25, 81, 1), (26, 79, 2), (28, 74, 3), (31, 71, 1)]
+MEL_MAJ2 = [(0, 84, 1), (1, 88, 1), (2, 91, 2), (4, 88, 2), (6, 84, 2),
+            (8, 83, 1), (9, 86, 1), (10, 91, 2), (12, 86, 3), (15, 83, 1),
+            (16, 84, 1), (17, 88, 1), (18, 93, 2), (20, 91, 2), (22, 88, 2),
+            (24, 86, 2), (26, 88, 1), (27, 86, 1), (28, 84, 3), (31, 79, 1)]
+
+
+def groove(track, t0, t1, bpm, mode="min", layers=("bass", "pad", "arp", "lead", "drums"), vol=1.0, mel="a"):
+    """Loop de 4 compases con bajo sincopado y glissando, pad grueso, arpegio, plucks, melodía con eco, batería con
+    aplauso, hi-hat abierto y redoble de relleno cada 4 compases."""
     step = 60 / bpm / 2
     prog = PROG_MIN if mode == "min" else PROG_MAJ
-    mel = MEL_MIN if mode == "min" else MEL_MAJ
+    melody = {("min", "a"): MEL_MIN, ("min", "b"): MEL_MIN2, ("maj", "a"): MEL_MAJ, ("maj", "b"): MEL_MAJ2}[(mode, mel)]
     lead = np.zeros(len(track))
     n = int((t1 - t0) / step)
     for i in range(n):
@@ -86,23 +97,33 @@ def groove(track, t0, t1, bpm, mode="min", layers=("bass", "pad", "arp", "lead",
         third = 3 if q == "m" else 4
         if "bass" in layers and st in (0, 3, 6):
             put(track, t, note(midi(root - 12 + (12 if st == 6 else 0)), step * 2.2, 0.17, "tri", rel=0.35), vol)
+            if st == 6 and bar % 2:      # glissando de bajo hacia el siguiente acorde
+                put(track, t + step, note(midi(prog[(bar + 1) % 4][0] - 12), step * 0.9, 0.12, "tri", rel=0.3), vol)
         if "pad" in layers and st == 0:
             for off in (0, third, 7):
-                put(track, t, note(midi(root + 12 + off), step * 7.5, 0.035, "tri", rel=1.6), vol)
+                for det in (0.994, 1.006):   # pad grueso con dos osciladores desafinados
+                    put(track, t, note(midi(root + 12 + off) * det, step * 7.5, 0.02, "sq", 0.5, 1.6), vol)
         if "arp" in layers:
             for sub in (0, 1):
                 k = (i * 2 + sub) % 4
                 f = midi(root + 24 + (0, third, 7, 12)[k])
                 put(track, t + sub * step / 2, note(f, step * 0.45, 0.028, "sq", 0.125, 0.25), vol)
+            if st % 2 == 1:                  # pluck contramelodía a contratiempo
+                put(track, t, note(midi(root + 12 + (7, third, 12, 7)[(i // 2) % 4]), step * 0.7, 0.04, "tri", rel=0.2), vol)
         if "drums" in layers:
             if st in (0, 4) or (st == 7 and bar % 2):
                 put(track, t, kick(0.42), vol)
             if st in (2, 6):
                 put(track, t, noise(0.1, 0.15, 0.07), vol)
+                put(track, t, noise(0.03, 0.12, 0.02), vol)          # aplauso
             put(track, t, noise(0.018, 0.04 if st % 2 else 0.06, 0.02), vol)
+            if st % 2 == 1:
+                put(track, t + step / 2, noise(0.07, 0.05, 0.05), vol)    # hi-hat abierto
+            if bar == 3 and st >= 6:
+                put(track, t, noise(0.05, 0.12, 0.03), vol); put(track, t + step / 2, noise(0.05, 0.14, 0.03), vol)
     if "lead" in layers:
         for k in range(int((t1 - t0) / (step * 32)) + 1):
-            for s0, m, ln in mel:
+            for s0, m, ln in melody:
                 tt = t0 + (k * 32 + s0) * step
                 if tt < t1 - 0.05:
                     f = midi(m)
@@ -224,3 +245,60 @@ def roll(track, t0, t1, vol=0.16):
 def rimshot(track, t0):
     put(track, t0, noise(0.08, 0.2, 0.05)); put(track, t0 + 0.12, noise(0.08, 0.2, 0.05))
     put(track, t0 + 0.3, noise(0.5, 0.12, 0.5)); put(track, t0 + 0.3, kick(0.5))
+
+
+def _lp(x, k):
+    return np.convolve(x, np.ones(k) / k, mode="same")
+
+
+def ambient(track, t0, t1, kind, vol=1.0):
+    """Ambientes por escenario: calle (tráfico + pajaritos), cuarto (ventilador), ciber (bips), sala (zumbido suave)."""
+    n = int((t1 - t0) * SR)
+    bed = np.zeros(n)
+    if kind == "street":
+        bed += _lp(rng.uniform(-1, 1, n), 60) * 0.5
+        for tt in np.arange(0.3, t1 - t0 - 0.2, 0.85):
+            f = np.linspace(3200, 4200, int(0.09 * SR))
+            bed[int(tt * SR):int(tt * SR) + len(f)] += np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.05 * np.hanning(len(f))
+    elif kind == "bedroom":
+        bed += _lp(rng.uniform(-1, 1, n), 25) * 0.25 + 0.01 * np.sin(2 * np.pi * 120 * _t((t1 - t0)))[:n]
+    elif kind == "arcade":
+        bed += _lp(rng.uniform(-1, 1, n), 40) * 0.12
+        for tt in np.arange(0.1, t1 - t0 - 0.2, 0.31):
+            f = midi(int(rng.choice([84, 88, 91, 96])))
+            sq_ = square(f, 0.06, 0.25) * np.hanning(int(0.06 * SR)) * 0.025
+            bed[int(tt * SR):int(tt * SR) + len(sq_)] += sq_
+    else:
+        bed += 0.006 * np.sin(2 * np.pi * 60 * _t(t1 - t0))[:n]
+    put(track, t0, bed, vol)
+
+
+def vine_boom(track, t0, vol=0.5):
+    t = _t(0.9)
+    f = 120 * np.exp(-t * 5) + 38
+    s = np.tanh(3 * np.sin(2 * np.pi * np.cumsum(f) / SR)) * np.exp(-t * 3.2)
+    put(track, t0, s * vol); put(track, t0, noise(0.1, 0.2, 0.08))
+
+
+def bruh(track, t0, vol=0.22):
+    d = 0.5
+    t = _t(d)
+    f = 150 - 70 * (t / d)
+    saw = 2 * ((np.cumsum(f) / SR) % 1) - 1
+    s = _lp(saw, 12) * np.exp(-t * 2.5) * np.minimum(1, t * 40)
+    put(track, t0, s * vol)
+
+
+def dun_dun(track, t0, vol=0.3):
+    for k, (n, dd) in enumerate(((50, 0.32), (50, 0.32), (45, 0.9))):
+        s = (square(midi(n), dd, 0.4) + 0.6 * square(midi(n) * 2.01, dd, 0.5)) * env(int(dd * SR), a=0.004, rel=0.5)
+        put(track, t0 + k * 0.42, s * vol * 0.5)
+
+
+def notify(track, t0, vol=0.18):
+    put(track, t0, note(midi(88), 0.18, vol, "tri", rel=0.4)); put(track, t0 + 0.14, note(midi(95), 0.4, vol, "tri", rel=0.6))
+
+
+def sparkle(track, t0, vol=0.1):
+    for k in range(8):
+        put(track, t0 + k * 0.045, note(midi(88 + (k * 5) % 12 + 12 * (k // 5)), 0.12, vol, "tri", rel=0.3))

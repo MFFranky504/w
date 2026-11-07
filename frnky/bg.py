@@ -339,10 +339,19 @@ def emote(img, x, y, kind, age):
     d = ImageDraw.Draw(img)
     pop = min(1.0, age / 0.18)
     y = y - 10 * math.sin(min(age, 0.3) / 0.3 * math.pi)
-    col = {"!": (255, 214, 60), "?": (90, 160, 230), "love": (240, 90, 130)}[kind]
-    r = int(13 * min(1.0, 0.4 + pop))
-    d.ellipse([x - r, y - r, x + r, y + r], fill=(255, 255, 255), outline=OL, width=2)
-    d.polygon([(x - 4, y + r - 2), (x + 4, y + r - 2), (x, y + r + 6)], fill=(255, 255, 255), outline=OL)
+    col = {"!": (255, 214, 60), "?": (90, 160, 230), "love": (240, 90, 130), "skull": (240, 240, 228)}[kind]
+    r = int((15 if kind == "skull" else 13) * min(1.0, 0.4 + pop))
+    bub = (52, 40, 74) if kind == "skull" else (255, 255, 255)
+    d.ellipse([x - r, y - r, x + r, y + r], fill=bub, outline=OL, width=2)
+    d.polygon([(x - 4, y + r - 2), (x + 4, y + r - 2), (x, y + r + 6)], fill=bub, outline=OL)
+    if kind == "skull":
+        pat = ["..11111..", ".1111111.", "111111111", "11o111o11", "11o111o11", "111111111", ".1111111.", "..1.1.1..", "..1.1.1.."]
+        for ry, row in enumerate(pat):
+            for rx, ch in enumerate(row):
+                if ch != ".":
+                    d.rectangle([x - 9 + rx * 2, y - 9 + ry * 2, x - 8 + rx * 2, y - 8 + ry * 2],
+                                fill=(240, 240, 228) if ch == "1" else (30, 24, 44))
+        return
     if kind == "love":
         d.rectangle([x - 6, y - 5, x - 2, y - 1], fill=col); d.rectangle([x + 2, y - 5, x + 6, y - 1], fill=col)
         d.rectangle([x - 6, y - 2, x + 6, y + 2], fill=col); d.rectangle([x - 3, y + 2, x + 3, y + 5], fill=col)
@@ -368,3 +377,15 @@ def boom(img, x, y, text, age, color=(255, 214, 70)):
     d = ImageDraw.Draw(img)
     sc = 1 + 0.5 * math.exp(-age * 9) * math.cos(age * 22)
     txt(d, (x, y), text, int(46 * sc), color, outline=(160, 30, 50))
+
+
+def sticker(img, x, y, text, age, fill=(236, 54, 84)):
+    """Calcomanía de meme (SKILL ISSUE, AURA…): aparece con rebote sobre el personaje."""
+    d = ImageDraw.Draw(img)
+    f = _font(20)
+    w = int(d.textlength(text, font=f)) + 18
+    y = y - 14 * max(0.0, math.sin(min(age, 0.28) / 0.28 * math.pi)) * 1.0
+    x0, y0 = x - w // 2, y - 15
+    d.rounded_rectangle([x0 - 2, y0 - 2, x0 + w + 2, y0 + 30], radius=6, fill=(255, 255, 255))
+    d.rounded_rectangle([x0, y0, x0 + w, y0 + 28], radius=5, fill=fill)
+    txt(d, (x, y0 + 14), text, 20, (255, 255, 255), outline=(60, 10, 30))

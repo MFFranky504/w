@@ -163,7 +163,7 @@ def title_card(img, text, cy, size=80, width=860):
 def hud(img, level, vibe):
     d = ImageDraw.Draw(img)
     f = pf(36)
-    for k, (label, val, col) in enumerate((("NIVEL DE BRO", f"{level}", (226, 196, 120)), ("BUENA ONDA", f"{vibe}%", (214, 140, 160)))):
+    for k, (label, val, col) in enumerate((("NIVEL DE BRO", f"{level}", (226, 196, 120)), ("AURA", f"{(vibe - 50) * 20:+d}", (214, 140, 160)))):
         s = f"{label}: {val}"
         w = d.textlength(s, font=f) + 40
         y = 270 + k * 68
@@ -204,6 +204,7 @@ def render_video(ep, cta, out_mp4, workdir):
            "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", "-shortest", str(out_mp4)]
     pipe = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     saved = {}
+    cs, cv = None, [0.0, 0.0, 0.0]          # cámara con resorte críticamente amortiguado
     for i in range(n):
         t = i / FPS
         canvas, cam, shake = ep["frame"](t)
@@ -211,8 +212,23 @@ def render_video(ep, cta, out_mp4, workdir):
         for te, amp in ep.get("punches", ()):          # "golpes" de zoom al empezar cada frase y cada corte
             if 0 <= t - te < 1.0:
                 k -= amp * math.exp(-(t - te) * 7)
-        cam = (k,) + tuple(cam[1:])
+        tgt = [k, cam[1], cam[2]]
+        if cs is None or any(0 <= t - c < 1.5 / FPS for c in ep["cuts"]):
+            cs, cv = tgt[:], [0.0, 0.0, 0.0]      # en cada corte la cámara salta (lo tapa el destello)
+        else:
+            for _ in range(4):                     # zoom con ease-in/ease-out: entra y sale suave
+                h = 1 / FPS / 4
+                for q in range(3):
+                    cv[q] += (170 * (tgt[q] - cs[q]) - 26 * cv[q]) * h
+                    cs[q] += cv[q] * h
+        cam = tuple(cs)
         img = post_fx(apply_cam(canvas.convert("RGB"), *cam, shake=shake, t=t))
+        for c in ep["cuts"]:                       # glitch cromático (RGB split) breve en cada corte
+            if 0 <= t - c < 0.17:
+                dx = int(16 * (1 - (t - c) / 0.17))
+                a_ = np.asarray(img).copy()
+                a_[..., 0] = np.roll(a_[..., 0], dx, axis=1); a_[..., 2] = np.roll(a_[..., 2], -dx, axis=1)
+                img = Image.fromarray(a_)
         bt = ep["banner"](t) if "banner" in ep else ""
         hook_on = any(h0 <= t < h1 for h0, h1, _ in ep["hooks"])
         if "hud" in ep and not bt and not hook_on:   # el HUD cede su lugar a los carteles de título

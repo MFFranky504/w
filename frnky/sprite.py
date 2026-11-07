@@ -34,6 +34,16 @@ CHARS = {   # Bro (Chile), Chuy (México), Nati (Argentina), Memo (Venezuela)
 }
 
 
+def _chibi(img):
+    """Más chibi: cuerpo más corto (borra filas del torso/piernas) y cabeza más grande (duplica filas/columnas planas)."""
+    a = np.array(img)
+    a = np.delete(a, [34, 44, 55, 61], axis=0)                 # torso y piernas más cortos
+    a = np.insert(a, [9, 19], a[[9, 19]], axis=0)              # cabeza +2 filas (frente y mejillas)
+    c = SW // 2
+    a = np.insert(a, [c - 9, c, c + 8], a[:, [c - 9, c, c + 8]], axis=1)   # cabeza +3 columnas
+    return Image.fromarray(a)
+
+
 def _outline(img):
     a = np.array(img)
     m = a[..., 3] > 0
@@ -74,6 +84,8 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
     R(-7, 56 - lL, -3, 57 - lL, lt(pants, 1.25)); R(2, 56 - lR, 6, 57 - lR, lt(pants, 1.25))
     if ch.get("jog"):
         R(-8, 49, -7, 64 - lL, (236, 236, 240, 255)); R(7, 49, 8, 64 - lR, (236, 236, 240, 255))
+    if name in ("bro", "chuy"):   # pantalón cargo
+        R(-8, 52, -4, 57, dk(pants, 0.8)); R(4, 52, 8, 57, dk(pants, 0.8)); R(-8, 52, -4, 53, lt(pants, 1.2)); R(4, 52, 8, 53, lt(pants, 1.2))
     shoe, sole = ch["shoe"] + (255,), ch["sole"] + (255,)
     body(-9, 63 - lL, -1, 69 - lL, shoe); body(1, 63 - lR, 9, 69 - lR, shoe)
     R(-9, 68 - lL, -1, 70 - lL, sole); R(1, 68 - lR, 9, 70 - lR, sole)
@@ -137,6 +149,7 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
     d.rounded_rectangle([CX - 9, 5, CX + 8, 24], radius=4, fill=skin)
     R(6, 8, 9, 23, dk(skin, 0.86)); R(-8, 22, 8, 24, dk(skin, 0.84))
     R(-10, 13, -9, 19, dk(skin, 0.92)); R(9, 13, 10, 19, dk(skin, 0.8))   # orejas
+    R(-11, 16, -10, 19, (240, 240, 246, 255)); R(10, 16, 11, 19, (240, 240, 246, 255))   # AirPods
     # pelo
     if style == "spiky":
         d.rounded_rectangle([CX - 10, 2, CX + 9, 13], radius=4, fill=hair)
@@ -246,16 +259,16 @@ def sprite(name, expr="neutral", mouth=None, pose="down", look=0, fx=(), shades=
         R(10, 4, 12, 8, (160, 200, 225, 255)); P(10, 4, WHITE)
     if "vein" in fx:
         R(-10, 0, -7, 1, (190, 50, 50, 255)); R(-9, -1, -8, 3, (190, 50, 50, 255)) if False else R(-9, 0, -8, 3, (190, 50, 50, 255))
-    return _outline(img)
+    return _outline(_chibi(img))
 
 
 def draw_char(canvas, name, x, feet_y, flip=False, scale=2, shadow=True, ox=0, oy=0, **kw):
     spr = sprite(name, **kw)
     if flip:
         spr = spr.transpose(Image.FLIP_LEFT_RIGHT)
-    big = spr.resize((SW * scale, SH * scale), Image.NEAREST)
+    big = spr.resize((spr.width * scale, spr.height * scale), Image.NEAREST)
     if shadow:
         sh_l = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
-        ImageDraw.Draw(sh_l).ellipse([x - 30 * scale / 2 + ox, feet_y - 6, x + 30 * scale / 2 + ox, feet_y + 6], fill=(8, 6, 20, 110))
+        ImageDraw.Draw(sh_l).ellipse([x - 15 * scale + ox, feet_y - 6, x + 15 * scale + ox, feet_y + 6], fill=(8, 6, 20, 110))
         canvas.alpha_composite(sh_l)
-    canvas.alpha_composite(big, (int(x - SW * scale // 2 + ox), int(feet_y - FOOT * scale + oy)))
+    canvas.alpha_composite(big, (int(x - big.width // 2 + ox), int(feet_y - (spr.height - 2) * scale + oy)))
