@@ -7,6 +7,7 @@ import bg
 import props as PR
 from scenes3 import rpg, place
 from scenes5 import bubble, _sign
+from scenes3 import bat
 
 
 def top_half(img, f=.72):
@@ -14,7 +15,7 @@ def top_half(img, f=.72):
 
 
 # ============================================================ 1. calle de Edimburgo, noche de lluvia (hook)
-def street(t, u):
+def street_wide(t, u):
     c = Canvas(vgrad([(0, '#0c1850'), (.3, '#24409a'), (.5, '#6a4eb0'), (.66, '#d0709a'), (.78, '#2a2250'), (1, '#161224')]))
     stars(c, t, 50, 5, 80)
     c.d.ellipse([122, 26, 140, 44], fill=(248, 244, 214)); c.d.ellipse([127, 24, 145, 42], fill=(36, 64, 154))     # luna creciente
@@ -25,7 +26,7 @@ def street(t, u):
     c.R(0, 204, WW, 3, (150, 140, 196)); c.R(0, 207, WW, 1, (60, 56, 100))                                         # bordillo
     bg.puddle_reflections(c, 214, 40, t)
     # cartel de café colgando de un brazo de hierro
-    c.R(112, 150, 14, 2, (30, 30, 50)); c.R(124, 150, 2, 10, (30, 30, 50)); _sign(c, 108, 160, 'CAFE', (255, 176, 96), 3)
+    c.R(112, 150, 14, 2, (30, 30, 50)); c.R(124, 150, 2, 10, (30, 30, 50)); bg.sign2(c, 122, 120, 'CAFE', (255, 176, 96), 16)
     bg.lamp_post(c, 56, 206, t, h=70)
     bg.lamp_post(c, 104, 206, t + .4, h=60)
     x = 36 + 54 * ease(u * 1.05)
@@ -39,7 +40,7 @@ def street(t, u):
 
 
 # ============================================================ 2. el piso (sin trabajo, cuna, facturas)
-def flat(t, u):
+def flat_wide(t, u):
     c = Canvas(vgrad([(0, '#2a2a46'), (1, '#1a1a2c')]))
     bg.wallpaper(c, 0, 0, WW, 200, (84, 96, 156), (74, 86, 146), (110, 126, 190))
     c.R(0, 176, WW, 24, (110, 74, 54)); c.R(0, 176, WW, 2, (200, 150, 104)); c.R(0, 198, WW, 2, (60, 40, 32))        # zócalo de madera
@@ -58,11 +59,10 @@ def flat(t, u):
         if k > 0: PR.keep(c, PR.bill_red(), 18 + i * 13, 146 - (i % 2) * 2 - int((1 - k) * 40))
     PR.keep(c, PR.lamp_table(), 20, 134)
     PR.keep(c, PR.baby_crib(), 100, 158)                                   # cuna con bebé
-    zz = (t * 1.2) % 1; ptext(c.ed, 140 + int(zz * 4), 142 - int(zz * 12), 'Z', (200, 220, 255), 2)
+    zz = (t * 1.2) % 1; bg.wtext(c, 140 + int(zz * 4), 134 - int(zz * 12), 'Z', (200, 220, 255), 8, outline=None)
     PR.keep(c, PR.barrel(), 134, 184)
     if u > .42:
-        k = ease((u - .42) / .08); kk = max(2, int(5 - 3 * k)); w = ptext_w('SIN TRABAJO', kk)
-        c.R(80 - w // 2 - 4, 40 - 4, w + 8, 5 * kk + 8, (60, 16, 28)); ptext(c.ed, 80 - w // 2, 40, 'SIN TRABAJO', (255, 70, 80), kk)
+        bg.sign2(c, 80, 38, 'SIN EMPLEO', (255, 70, 80), 16, plate=(50, 14, 26))
     b = 1.5 * max(0, math.sin(t * 2))
     place(c, rpg('rowling', 0), 74, 212 + b)
     c.amb = (.92, .92, 1.06); c.vig = .75
@@ -70,7 +70,7 @@ def flat(t, u):
 
 
 # ============================================================ 4. la cafetería (escribe mientras la niña duerme)
-def cafe(t, u):
+def cafe_wide(t, u):
     c = Canvas(vgrad([(0, '#4a2a1e'), (1, '#2a160e')]))
     bg.brick(c, 0, 0, WW, 150, base=(172, 92, 66), mortar=(84, 46, 40), seed=31)
     c.R(0, 118, WW, 4, (240, 190, 110)); bg.planks(c, 0, 122, WW, 80, (130, 82, 52), seed=32, horizontal=False, pw=8)      # friso de madera
@@ -81,7 +81,7 @@ def cafe(t, u):
         c.R(lx, 0, 1, 34, (30, 20, 20)); PR.keep(c, PR.pendant((255, 196, 96)), lx - 9 + sw, 34)
         c.light(lx + sw, 52, 36, 32, (255, 200, 110), .85)
     # pizarra del menú
-    c.R(64, 82, 24, 22, (60, 44, 36)); c.R(66, 84, 20, 18, (36, 56, 52)); ptext(c.d, 69, 87, 'CAFE', (250, 240, 200), 2); c.R(69, 96, 14, 1, (250, 240, 200)); c.R(69, 98, 10, 1, (250, 240, 200))
+    c.R(60, 78, 54, 30, (60, 44, 36)); c.R(62, 80, 50, 26, (36, 56, 52)); bg.wtext(c, 87, 82, 'CAFE', (250, 240, 200), 16, outline=None, center=True)
     bg.planks(c, 0, 202, WW, 100, (110, 68, 46), seed=33, pw=9)
     c.R(0, 200, WW, 3, (60, 38, 30))
     PR.keep(c, PR.plant(), 136, 176)
@@ -96,14 +96,14 @@ def cafe(t, u):
     for i in range(n): c.R(32 + (i % 3) * 7, 166 + (i // 7), 5, 1, (40, 40, 100))
     px = 34 + (t * 14) % 14; c.R(px, 160 + int(math.sin(t * 12) * 1), 1, 5, (30, 30, 80))
     PR.keep(c, PR.stroller(), 104, 164)
-    zz = (t * 1.1) % 1; ptext(c.ed, 124 + int(zz * 4), 156 - int(zz * 10), 'Z', (200, 220, 255), 2)
+    zz = (t * 1.1) % 1; bg.wtext(c, 124 + int(zz * 4), 148 - int(zz * 10), 'Z', (200, 220, 255), 8, outline=None)
     c.light(56, 156, 56, 46, (255, 210, 130), .3)
     c.amb = (1.02, .93, .86); c.vig = .7
     return c.render()
 
 
 # ============================================================ 5. doce rechazos
-def rejections(t, u):
+def rejections_wide(t, u):
     c = Canvas(vgrad([(0, '#2a1a3a'), (1, '#140c1e')]))
     bg.wallpaper(c, 0, 0, WW, 206, (66, 46, 96), (58, 40, 86), (92, 70, 132))
     # armario de casilleros de madera (6 x 2)
@@ -119,10 +119,9 @@ def rejections(t, u):
         if k <= 0: continue
         off = int((1 - k) * 70)
         PR.keep(c, PR.envelope(20, 14), sx + 1, sy + 12 - off)
-        if k >= 1 and ease((u * 14 - idx - 1.2) / .6) > 0: ptext(c.ed, sx + 4, sy + 18, 'NO', (230, 40, 60), 2)
+        if k >= 1 and ease((u * 14 - idx - 1.2) / .6) > 0: bg.wtext(c, sx + 11, sy + 17, 'NO', (230, 40, 60), 8, outline=(250, 240, 230), center=True)
     n = min(12, int(u * 14))
-    w = ptext_w(str(n), 6)
-    c.R(80 - 34, 38, 68, 36, (20, 12, 30)); c.R(80 - 34, 38, 68, 2, (250, 200, 90)); c.R(80 - 34, 72, 68, 2, (140, 100, 40)); ptext(c.ed, 80 - w // 2, 46, str(n), (255, 216, 74), 6)
+    c.R(80 - 34, 38, 68, 36, (20, 12, 30)); c.R(80 - 34, 38, 68, 2, (250, 200, 90)); c.R(80 - 34, 72, 68, 2, (140, 100, 40)); bg.wtext(c, 80, 42, str(n), (255, 216, 74), 24, outline=None, center=True)
     bg.planks(c, 0, 206, WW, 90, (90, 58, 52), seed=41, pw=9); c.R(0, 204, WW, 3, (40, 26, 30))
     place(c, rpg('rowling_rain', int(t * 3) % 2 if u < .3 else 0), 80, 214 + math.sin(t * 2))
     c.light(80, 130, 90, 80, (200, 140, 255), .35)
@@ -131,7 +130,7 @@ def rejections(t, u):
 
 
 # ============================================================ 6. la niña que pidió el siguiente capítulo
-def alice(t, u):
+def alice_wide(t, u):
     c = Canvas(vgrad([(0, '#3a2018'), (1, '#24120e')]))
     bg.wallpaper(c, 0, 0, WW, 206, (150, 78, 70), (138, 68, 62), (176, 104, 90))
     bg.shelf(c, 8, 40, 60, 100, seed=51, rows=3); bg.shelf(c, 92, 40, 60, 100, seed=52, rows=3)
@@ -150,8 +149,8 @@ def alice(t, u):
     pg = ease(u * 3)
     for i in range(3):
         PR.keep(c, PR.stamp_paper(), 71 + i * 4, 186 - int(pg * 3) - i)                                              # páginas del manuscrito
-    if u > .25: ptext(c.ed, 22, 120 - int(((u - .25) * 8) % 2), '?', (255, 220, 90), 3)
-    if u > .5: bubble(c, 100, 118 - int(2 * ease((u - .5) / .1)), 'MAS!', 3)
+    if u > .25: bg.wtext(c, 22, 110 - int(((u - .25) * 8) % 2), '?', (255, 220, 90), 24)
+    if u > .5: bg.bubble2(c, 104, 104 - int(2 * ease((u - .5) / .1)), '¡MÁS!', 16)
     for i in range(10):
         ph = (t * .5 + i * .1) % 1; xx = 60 + i * 5 + math.sin(t * 3 + i) * 4; yy = 190 - ph * 70
         c.R(xx, yy, 2, 2, (255, 236, 160))
@@ -160,15 +159,14 @@ def alice(t, u):
 
 
 # ============================================================ 7. 1997: la librería
-def bookstore(t, u):
+def bookstore_wide(t, u):
     c = Canvas(vgrad([(0, '#2a1a5a'), (.5, '#c04a8a'), (1, '#ffb060')]))
     bg.wallpaper(c, 0, 0, WW, 206, (176, 74, 120), (164, 66, 110), (210, 120, 150))
     for i in range(14):                                                                                             # rayos de fiesta
         a = i / 14 * math.pi * 2 + t * .2
         c.d.polygon([(80, 130), (80 + 260 * math.cos(a), 130 + 260 * math.sin(a)), (80 + 260 * math.cos(a + .12), 130 + 260 * math.sin(a + .12))], fill=(214, 110, 146))
     bg.shelf(c, 4, 60, 34, 120, seed=61, rows=4); bg.shelf(c, 122, 60, 34, 120, seed=62, rows=4)
-    w = ptext_w('1997', 6)
-    c.R(80 - w // 2 - 6, 54, w + 12, 40, (50, 20, 70)); c.R(80 - w // 2 - 6, 54, w + 12, 2, (255, 220, 100)); ptext(c.ed, 80 - w // 2, 60, '1997', (255, 240, 120), 6)
+    bg.sign2(c, 80, 56, '1997', (255, 240, 120), 24, plate=(50, 20, 70))
     # tablero de baldosas y mesa de novedades con torres de libros
     for yy in range(206, 296, 10):
         for xx in range(-(yy // 10 % 2) * 10, WW, 20): c.R(xx, yy, 10, 10, (236, 226, 206)); c.R(xx + 10, yy, 10, 10, (150, 70, 80))
@@ -192,7 +190,7 @@ def bookstore(t, u):
 
 
 # ============================================================ 9. el libro en blanco al amanecer
-def finale(t, u):
+def finale_wide(t, u):
     k = ease(u * 1.1)
     c = Canvas(vgrad([(0, '#1a1a5a'), (.35, '#c0408a'), (.55, '#ff9a50'), (.75, '#ffd080'), (1, '#3a2438')]))
     sy = 126 - 30 * k
@@ -227,3 +225,180 @@ def finale(t, u):
         c.R(xx, yy, 2, 2, (255, 236, 170))
     c.amb = (1.0 + .06 * k, .94 + .08 * k, .95); c.vig = .6
     return c.render()
+
+
+# ====================================================================== TOMAS MEDIAS (modelos "trainer", tamaño de batalla)
+def _tile_x(period, off, n=4):
+    return [k * period - off for k in range(-1, n)]
+
+
+def street_med(t, u):
+    c = Canvas(vgrad([(0, '#0c1850'), (.4, '#24409a'), (.62, '#8a56b0'), (1, '#161224')]))
+    off = (t * 34) % 160
+    # fachada de ladrillo grande con ventanas altas que pasan (paralaje) y farolas
+    bg.brick(c, 0, 40, WW, 170, base=(142, 78, 66), mortar=(70, 38, 40), seed=81, bh=8, bw=16)
+    for x in _tile_x(80, off % 80, 3):
+        bg.window(c, x + 14, 82, 38, 60, t=t, curtain=(210, 120, 70) if int(x) % 160 else (120, 80, 170), rain=False, lights=False, seed=int(x) % 7,
+                  glass=((255, 214, 130), (240, 170, 90)))
+        c.R(x + 8, 150, 50, 3, (200, 190, 170))
+    c.R(0, 204, WW, 4, (190, 180, 220))
+    bg.cobble(c, 0, 208, WW, 90, base=(88, 88, 146), seed=83)
+    bg.puddle_reflections(c, 218, 50, t * 3)
+    for x in _tile_x(160, (off * 1.6) % 160, 2):
+        bg.lamp_post(c, x + 30, 212, t, h=118)
+    step = int(t * 4) % 2
+    place(c, bat('rowling_rain', 'stand'), 70, 218 + (1 if step else 0))
+    rain(c, t, 190, 4, 220)
+    c.amb = (.86, .9, 1.1); c.vig = .7
+    return c.render()
+
+
+def flat_med(t, u):
+    c = Canvas(vgrad([(0, '#2a2a46'), (1, '#1a1a2c')]))
+    bg.wallpaper(c, 0, 0, WW, 200, (84, 96, 156), (74, 86, 146), (110, 126, 190))
+    c.R(0, 176, WW, 24, (110, 74, 54)); c.R(0, 176, WW, 2, (200, 150, 104))
+    bg.planks(c, 0, 200, WW, 100, (122, 80, 58), seed=21, pw=8)
+    bg.window(c, 96, 56, 48, 80, t=t, curtain=(196, 72, 96), seed=3)
+    sw = math.sin(t * 2) * 4
+    c.R(30, 0, 1, 40, (20, 20, 30)); c.d.ellipse([25 + sw, 40, 36 + sw, 52], fill=(255, 232, 150) if int(t * 7) % 9 else (130, 110, 80))
+    c.light(31 + sw, 46, 70, 70, (255, 214, 130), .9 if int(t * 7) % 9 else .25)
+    PR.keep(c, PR.baby_crib(), 4, 170)
+    for i in range(7):                                                  # facturas que caen alrededor
+        ph = (t * .5 + i * .14) % 1; xx = 20 + (i * 47) % 120
+        if not (50 < xx < 100): PR.keep(c, PR.bill_red(), xx + int(math.sin(t * 3 + i) * 5), int(ph * 220) - 10)
+    k = ease((u - .5) / .12)
+    if u > .55: bg.sign2(c, 80, 30, 'SIN EMPLEO', (255, 70, 80), 16, plate=(50, 14, 26))
+    place(c, bat('rowling', 'hip'), 74, 218 + 1.2 * math.sin(t * 2))
+    c.amb = (.92, .92, 1.06); c.vig = .75
+    return c.render()
+
+
+def cafe_med(t, u):
+    c = Canvas(vgrad([(0, '#4a2a1e'), (1, '#2a160e')]))
+    bg.brick(c, 0, 0, WW, 160, base=(172, 92, 66), mortar=(84, 46, 40), seed=31, bh=8, bw=16)
+    c.R(0, 124, WW, 4, (240, 190, 110)); bg.planks(c, 0, 128, WW, 80, (130, 82, 52), seed=32, horizontal=False, pw=10)
+    bg.window(c, 12, 40, 62, 74, t=t, curtain=(230, 150, 70), seed=5)
+    bg.shelf(c, 96, 40, 52, 66, seed=9, rows=2, pal=((236, 120, 60), (240, 196, 70), (200, 80, 90), (90, 170, 120)))
+    for lx in (84, 132):
+        sw = math.sin(t * 1.7 + lx) * 1.2
+        c.R(lx, 0, 1, 24, (30, 20, 20)); PR.keep(c, PR.pendant((255, 196, 96)), lx - 9 + sw, 24)
+        c.light(lx + sw, 42, 36, 32, (255, 200, 110), .7)
+    bg.planks(c, 0, 206, WW, 100, (110, 68, 46), seed=33, pw=10)
+    c.R(0, 204, WW, 3, (60, 38, 30))
+    place(c, bat('rowling', 'hold').crop((0, 0, 86, 98)), 78, 190, sh=False)      # sentada: la mesa tapa las piernas
+    c.R(14, 184, 128, 8, (160, 108, 70)); c.R(14, 184, 128, 2, (222, 164, 112)); c.R(14, 192, 128, 20, (110, 68, 46)); c.R(14, 192, 128, 1, (80, 50, 36))
+    PR.keep(c, PR.teacup(), 112, 172)
+    for i in range(3):
+        ph = (t * .8 + i * .33) % 1; c.R(119 + int(math.sin(t * 3 + i) * 1.5), 166 - int(ph * 12), 1, 2, (255, 255, 255))
+    c.R(24, 176, 40, 8, (250, 244, 224)); c.R(24, 176, 40, 1, (210, 200, 176))                  # cuaderno grande
+    n = int(u * 24)
+    for i in range(n): c.R(26 + (i % 6) * 6, 178 + (i // 12) * 2, 5, 1, (40, 40, 100))
+    px = 26 + (t * 16) % 30; c.R(px, 172 + int(math.sin(t * 12) * 1), 1, 7, (30, 30, 80))
+    c.light(78, 150, 64, 50, (255, 210, 130), .3)
+    c.amb = (1.02, .93, .86); c.vig = .7
+    return c.render()
+
+
+def rejections_med(t, u):
+    c = Canvas(vgrad([(0, '#2a1a3a'), (1, '#140c1e')]))
+    bg.wallpaper(c, 0, 0, WW, 206, (66, 46, 96), (58, 40, 86), (92, 70, 132))
+    c.R(0, 100, WW, 78, (86, 54, 38)); c.R(0, 100, WW, 3, (190, 130, 90))
+    for i in range(7):
+        for j in range(2): c.R(4 + i * 23, 105 + j * 36, 20, 32, (34, 22, 26))
+    bg.planks(c, 0, 206, WW, 90, (90, 58, 52), seed=41, pw=9); c.R(0, 204, WW, 3, (40, 26, 30))
+    n = min(12, int(u * 24) - 12) if u > .5 else 0
+    n = max(0, min(12, int((u - .5) * 2 * 14)))
+    bg.sign2(c, 80, 42, str(n), (255, 216, 74), 24, plate=(20, 12, 30))
+    for i in range(8):                                                  # sobres que vuelan y sellos NO que golpean
+        ph = (t * .7 + i * .125) % 1; xx = 10 + ph * 150; yy = 60 + 70 * math.sin(ph * math.pi) + (i % 3) * 14
+        PR.keep(c, PR.envelope(20, 14), xx, yy)
+    place(c, bat('rowling_rain', 'hold'), 80, 218 + math.sin(t * 2))
+    for i, (xx, yy) in enumerate(((22, 130), (118, 120), (26, 176), (114, 170))):
+        if int(t * 3 + i) % 4 < 2: bg.wtext(c, xx, yy, 'NO', (236, 44, 64), 24, outline=(250, 240, 230))
+    c.light(80, 140, 90, 80, (200, 140, 255), .35)
+    c.amb = (.92, .88, 1.05); c.vig = .8
+    return c.render()
+
+
+def alice_med(t, u):
+    c = Canvas(vgrad([(0, '#3a2018'), (1, '#24120e')]))
+    bg.wallpaper(c, 0, 0, WW, 206, (150, 78, 70), (138, 68, 62), (176, 104, 90))
+    bg.shelf(c, 6, 34, 148, 104, seed=51, rows=3)
+    c.R(0, 150, WW, 2, (240, 190, 120)); bg.planks(c, 0, 152, WW, 150, (150, 92, 60), seed=53, pw=9)
+    c.R(14, 226, 132, 28, (186, 66, 80)); c.R(14, 226, 132, 2, (240, 130, 140)); c.R(18, 230, 124, 20, (150, 46, 66))
+    for xx in range(24, 140, 12): c.R(xx, 238, 6, 2, (250, 210, 140))
+    PR.keep(c, PR.lamp_table(), 136, 128); c.light(144, 136, 50, 40, (255, 214, 130), .8)
+    place(c, bat('rexach', 'stand', 'blazer'), 122, 216)
+    sway = math.sin(t * 2) * .8
+    place(c, bat('alice', 'hold'), 56, 218 + sway)
+    if u > .55: bg.bubble2(c, 52, 84 - int(2 * ease((u - .55) / .1)), '¡MÁS!', 16)
+    if u > .7: bg.wtext(c, 118, 70 - int(((u - .7) * 8) % 2), '!', (255, 220, 90), 24)
+    for i in range(10):
+        ph = (t * .5 + i * .1) % 1; xx = 30 + i * 9 + math.sin(t * 3 + i) * 4; yy = 200 - ph * 90
+        c.R(xx, yy, 2, 2, (255, 236, 160))
+    c.amb = (1.03, .94, .88); c.vig = .65
+    return c.render()
+
+
+def books_med(t, u):
+    c = Canvas(vgrad([(0, '#2a1a5a'), (.5, '#c04a8a'), (1, '#ffb060')]))
+    bg.wallpaper(c, 0, 0, WW, 206, (176, 74, 120), (164, 66, 110), (210, 120, 150))
+    for i in range(14):
+        a = i / 14 * math.pi * 2 + t * .25
+        c.d.polygon([(80, 120), (80 + 260 * math.cos(a), 120 + 260 * math.sin(a)), (80 + 260 * math.cos(a + .12), 120 + 260 * math.sin(a + .12))], fill=(214, 110, 146))
+    bg.shelf(c, 2, 70, 40, 110, seed=61, rows=4); bg.shelf(c, 118, 70, 40, 110, seed=62, rows=4)
+    bg.sign2(c, 80, 58, '1997', (255, 240, 120), 24, plate=(50, 20, 70))
+    for yy in range(206, 296, 10):
+        for xx in range(-(yy // 10 % 2) * 10, WW, 20): c.R(xx, yy, 10, 10, (236, 226, 206)); c.R(xx + 10, yy, 10, 10, (150, 70, 80))
+    c.R(0, 204, WW, 3, (90, 50, 40))
+    for i, w_ in enumerate(('kid_a', 'kid_b', 'kid_c')):                      # lectores al fondo (chibi: lejos)
+        place(c, rpg(w_, int(t * 4 + i) % 2), 20 + i * 62 + (t * 8) % 12, 200, sh=False)
+    place(c, bat('rowling', 'trophy'), 80, 220 + abs(math.sin(t * 5)) * -2)
+    PR.keep(c, PR.book_closed((220, 70, 90), 24, 8, True), 91, 100 + int(math.sin(t * 6) * 2))   # el libro en alto
+    cols2 = ((255, 90, 120), (90, 220, 255), (255, 230, 90), (140, 255, 140))
+    for i in range(44):
+        ph = (t * .6 + i * .023) % 1; xx = (i * 53 + math.sin(t * 3 + i) * 6) % 150 + 4; yy = ph * 280
+        c.R(xx, yy, 2, 3, cols2[i % 4])
+    c.light(80, 130, 90, 90, (255, 220, 150), .5)
+    c.amb = (1.03, .98, .98); c.vig = .55
+    return c.render()
+
+
+def finale_med(t, u):
+    k = ease(u * 1.1)
+    c = Canvas(vgrad([(0, '#1a1a5a'), (.35, '#c0408a'), (.55, '#ff9a50'), (.75, '#ffd080'), (1, '#3a2438')]))
+    sy = 112 - 26 * k
+    c.d.ellipse([58, sy - 26, 102, sy + 22], fill=(255, 244, 180))
+    for i in range(12):
+        a = i / 12 * math.pi * 2 + t * .15
+        c.d.polygon([(80, sy), (80 + 200 * math.cos(a), sy + 200 * math.sin(a)), (80 + 200 * math.cos(a + .1), sy + 200 * math.sin(a + .1))], fill=(255, 206, 140))
+    bg.castle_sil(c, 118, col=(78, 44, 96))
+    c.R(0, 0, 8, 190, (120, 70, 56)); c.R(152, 0, 8, 190, (120, 70, 56))
+    for kx in range(8):
+        col = (200, 70, 100) if kx % 2 else (170, 50, 84)
+        c.R(8 + kx, 0, 1, 190, col); c.R(151 - kx, 0, 1, 190, col)
+    bg.planks(c, 0, 190, WW, 110, (110, 66, 50), seed=73, pw=8); c.R(0, 188, WW, 3, (200, 140, 100))
+    place(c, bat('you', 'hold').crop((0, 0, 86, 92)), 50, 176, sh=False)
+    c.R(10, 172, 140, 8, (176, 112, 74)); c.R(10, 172, 140, 2, (236, 176, 124)); c.R(10, 180, 140, 26, (116, 70, 50)); c.R(10, 180, 140, 2, (90, 52, 40))
+    PR.keep(c, PR.book_open(80, 34, 7), 70, 142)
+    nl = int(ease((u - .15) / .6) * 7)
+    for i in range(nl): c.R(112, 152 + i * 3 - 3, 28 - (i * 5) % 10, 1, (60, 50, 110))
+    fl = (t * .6) % 1
+    if fl < .5: c.d.polygon([(110, 144), (110 + 34 * math.sin(fl * math.pi), 142 - 8 * math.sin(fl * math.pi)), (110 + 34 * math.sin(fl * math.pi), 164 - 6 * math.sin(fl * math.pi)), (110, 168)], fill=(255, 252, 244))
+    c.light(110, 154, 80, 50, (255, 230, 150), .9)
+    for i in range(18):
+        ph = (t * .45 + i * .056) % 1; xx = 60 + (i * 37 + math.sin(t * 2 + i) * 5) % 90; yy = 170 - ph * 120
+        c.R(xx, yy, 2, 2, (255, 236, 170))
+    c.amb = (1.0 + .06 * k, .94 + .08 * k, .95); c.vig = .6
+    return c.render()
+
+
+# ---- cada escena: toma ancha (chibi, lejos) y toma media (trainer) con corte duro
+CUT = .5
+def street(t, u): return street_wide(t, u / CUT) if u < CUT else street_med(t, u)
+def flat(t, u): return flat_wide(t, u / CUT) if u < CUT else flat_med(t, u)
+def cafe(t, u): return cafe_wide(t, u / CUT) if u < CUT else cafe_med(t, u)
+def rejections(t, u): return rejections_wide(t, u / CUT) if u < CUT else rejections_med(t, u)
+def alice(t, u): return alice_wide(t, u / CUT) if u < CUT else alice_med(t, u)
+def bookstore(t, u): return bookstore_wide(t, u / CUT) if u < CUT else books_med(t, u)
+def finale(t, u): return finale_wide(t, u / .45) if u < .45 else finale_med(t, u)

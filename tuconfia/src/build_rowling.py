@@ -113,15 +113,15 @@ print('modo:', MODE, 'duración total', round(TOTAL, 2), file=sys.stderr)
 # ---------------------------------------------------------------- escenas
 PS = S2.portrait_scene
 SCENES = [
-    dict(n='street', a='L1', b='L1', fn=lambda t, u: S6.street(t, u), cam=[(0, 80, 146, 1.0), (.5, 82, 146, 1.0), (.5001, 78, 172, 1.5), (1, 114, 172, 1.5)]),
-    dict(n='flat', a='L2', b='L2', fn=lambda t, u: S6.flat(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 86, 170, 1.5), (1, 90, 172, 1.5)]),
+    dict(n='street', a='L1', b='L1', fn=lambda t, u: S6.street(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 80, 146, 1.0), (1, 80, 146, 1.0)]),
+    dict(n='flat', a='L2', b='L2', fn=lambda t, u: S6.flat(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 80, 146, 1.0), (1, 80, 146, 1.0)]),
     dict(n='portS', a='L3', b='L3', fn=lambda t, u: PS(t, 'rowling', 'sad', (0, 1), 'cold'), cam=[(0, 80, 160, 1.25), (1, 80, 152, 1.25)]),
-    dict(n='cafe', a='L4', b='L4', fn=lambda t, u: S6.cafe(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 52, 172, 1.5), (1, 56, 174, 1.5)]),
-    dict(n='rejections', a='L5', b='L5', fn=lambda t, u: S6.rejections(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.0)]),
-    dict(n='alice', a='L6', b='L6', fn=lambda t, u: S6.alice(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 82, 172, 1.5), (1, 82, 174, 1.5)]),
-    dict(n='books', a='L7', b='L7', fn=lambda t, u: S6.bookstore(t, u), cam=[(0, 80, 140, 1.0), (1, 80, 142, 1.0)]),
+    dict(n='cafe', a='L4', b='L4', fn=lambda t, u: S6.cafe(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 80, 146, 1.0), (1, 80, 146, 1.0)]),
+    dict(n='rejections', a='L5', b='L5', fn=lambda t, u: S6.rejections(t, u), cam=[(0, 80, 144, 1.0), (.5, 80, 144, 1.0), (.5001, 80, 144, 1.0), (1, 80, 144, 1.0)]),
+    dict(n='alice', a='L6', b='L6', fn=lambda t, u: S6.alice(t, u), cam=[(0, 80, 146, 1.0), (.5, 80, 146, 1.0), (.5001, 80, 146, 1.0), (1, 80, 146, 1.0)]),
+    dict(n='books', a='L7', b='L7', fn=lambda t, u: S6.bookstore(t, u), cam=[(0, 80, 140, 1.0), (.5, 80, 140, 1.0), (.5001, 80, 140, 1.0), (1, 80, 140, 1.0)]),
     dict(n='portW', a='L8', b='L8', fn=lambda t, u: PS(t, 'rowling', 'warm', (0, 0), 'warm'), cam=[(0, 80, 160, 1.25), (1, 80, 152, 1.25)]),
-    dict(n='finale', a='L9', b='L9', fn=lambda t, u: S6.finale(t, u), cam=[(0, 80, 140, 1.0), (.6, 80, 140, 1.0), (1, 80, 146, 1.25)]),
+    dict(n='finale', a='L9', b='L9', fn=lambda t, u: S6.finale(t, u), cam=[(0, 80, 140, 1.0), (.45, 80, 140, 1.0), (.4501, 80, 142, 1.0), (1, 80, 142, 1.0)]),
 ]
 for i, s in enumerate(SCENES):
     s['t0'] = 0.0 if i == 0 else (LEND[SCENES[i - 1]['b']] + LSTART[s['a']]) / 2 if False else (LSTART[s['a']] if i else 0.0)

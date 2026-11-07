@@ -155,3 +155,56 @@ def puddle_reflections(c, y0, h, t, col=(120, 110, 200)):
     for i in range(14):
         x = (i * 23 + int(t * 8)) % WW; y = y0 + (i * 9) % h
         c.R(x, y, 10 + i % 7, 1, col)
+
+
+# ---------------------------------------------------------------- texto pixel-art nítido dentro del mundo (Silkscreen, sin antialias)
+from PIL import ImageFont
+_FONTS = {}
+def _font(size):
+    if size not in _FONTS:
+        _FONTS[size] = ImageFont.truetype('/home/user/w/tuconfia/assets/fonts/silkscreen-latin-700-normal.woff', size)
+    return _FONTS[size]
+
+
+def text_img(txt, col, size=16, outline=(14, 10, 26)):
+    f = _font(size)
+    d0 = ImageDraw.Draw(Image.new('L', (1, 1))); w = int(d0.textlength(txt, font=f)) + 4; h = int(size * 1.3) + 4
+    m = Image.new('L', (w, h), 0); d = ImageDraw.Draw(m); d.fontmode = '1'; d.text((2, 2), txt, font=f, fill=255)
+    a = np.array(m) > 0
+    out = np.zeros((h, w, 4), np.uint8)
+    if outline is not None:
+        p = np.pad(a, 1); dil = np.zeros_like(p)
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1): dil |= np.roll(np.roll(p, dy, 0), dx, 1)
+        dil = dil[1:-1, 1:-1]
+        out[dil & ~a] = (*outline, 255)
+    out[a] = (*col, 255)
+    return Image.fromarray(out, 'RGBA')
+
+
+def wtext(c, x, y, txt, col, size=16, outline=(14, 10, 26), emissive=False, center=False):
+    im = text_img(txt, col, size, outline)
+    if center: x = x - im.width // 2
+    tgt = c.emis if emissive else c.im
+    tgt.alpha_composite(im, (int(x), int(y))) if x >= 0 and y >= 0 else tgt.paste(im, (int(x), int(y)), im)
+    return im.width
+
+
+def sign2(c, cx, y, txt, col, size=16, plate=(16, 12, 30), emissive=False):
+    im = text_img(txt, col, size, None)
+    w, h = im.width + 8, im.height + 4
+    x = int(cx - w // 2)
+    c.R(x, y, w, h, plate); c.R(x, y, w, 1, col); c.R(x, y + h - 1, w, 1, col); c.R(x, y, 1, h, col); c.R(x + w - 1, y, 1, h, col)
+    (c.emis if emissive else c.im).alpha_composite(im, (x + 4, y + 2))
+    c.light(cx, y + h // 2, w, 28, col, .4)
+    return w, h
+
+
+def bubble2(c, cx, y, txt, size=16, col=(30, 20, 40)):
+    im = text_img(txt, col, size, None)
+    w, h = im.width + 8, im.height + 4
+    x = int(cx - w // 2)
+    c.R(x - 1, y - 1, w + 2, h + 2, (20, 14, 30)); c.R(x, y, w, h, (252, 250, 242)); c.R(x, y, w, 1, (255, 255, 255))
+    c.d.polygon([(cx - 5, y + h), (cx + 3, y + h), (cx - 1, y + h + 7)], fill=(252, 250, 242))
+    c.R(cx - 6, y + h, 1, 1, (20, 14, 30))
+    c.im.alpha_composite(im, (x + 4, y + 2))
