@@ -1,0 +1,77 @@
+{
+ "titulo": "Jim Carrey: de la furgoneta al cheque",
+ "lines": [
+  {
+   "id": "L1",
+   "t": "¿Sabías que *Jim Carrey* transformó vivir en una furgoneta... en un cheque de *diez millones* de dólares?",
+   "tts": "¿Sabías que Yim Cárri transformó vivir en una furgoneta... en un cheque de diez millones de dólares?",
+   "gen": "[curious] ¿Sabías que Yim Cárri transformó vivir en una furgoneta... [pause] en un cheque de DIEZ MILLONES de dólares?",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "t": "Su familia lo *perdió todo*... y durante un tiempo vivieron dentro de una furgoneta.",
+   "tts": "Su familia lo perdió todo... y durante un tiempo vivieron dentro de una furgoneta.",
+   "gen": "[softly] Su familia lo perdió todo... [sighs] y durante un tiempo vivieron dentro de una furgoneta.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "t": "A los *dieciséis* dejó la escuela... para trabajar y ayudar a pagar las cuentas.",
+   "tts": "A los dieciséis dejó la escuela... para trabajar y ayudar a pagar las cuentas.",
+   "gen": "[sadly] A los dieciséis dejó la escuela... para trabajar y ayudar a pagar las cuentas.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "t": "Pero soñaba con hacer *reír* al mundo... así que a los diecinueve se fue a Los Ángeles... con casi nada.",
+   "tts": "Pero soñaba con hacer reír al mundo... así que a los diecinueve se fue a Los Ángeles... con casi nada.",
+   "gen": "[determined] Pero soñaba con hacer reír al mundo... [warmly] así que a los diecinueve se fue a Los Ángeles... con casi nada.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "t": "Pasaron los años... y casi *nadie* le daba una oportunidad.",
+   "tts": "Pasaron los años... y casi nadie le daba una oportunidad.",
+   "gen": "[tense] Pasaron los años... [pause] y casi nadie le daba una oportunidad.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "t": "Hasta que una noche de 1987 subió a una colina... y se escribió un *cheque*. ¡Diez millones de dólares... por servicios de actuación!",
+   "tts": "Hasta que una noche de mil novecientos ochenta y siete subió a una colina... y se escribió un cheque. ¡Diez millones de dólares... por servicios de actuación!",
+   "gen": "[intense] Hasta que una noche de mil novecientos ochenta y siete... [whispers] subió a una colina... y se escribió un cheque. [excited] ¡Diez millones de dólares... por servicios de actuación!",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "t": "Lo fechó *ocho años* después y lo guardó en su cartera. Según cuenta él, justo antes de esa fecha... ¡le ofrecieron esa cifra por una película!",
+   "tts": "Lo fechó ocho años después y lo guardó en su cartera. Según cuenta él, justo antes de esa fecha... ¡le ofrecieron esa cifra por una película!",
+   "gen": "[amazed] Lo fechó ocho años después... y lo guardó en su cartera. [excited] Según cuenta él, justo antes de esa fecha... ¡le ofrecieron esa cifra por una película!",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "t": "Años más tarde diría que puedes fracasar haciendo lo que *no* amas... así que más vale arriesgarte por lo que *sí* amas.",
+   "tts": "Años más tarde diría que puedes fracasar haciendo lo que no amas... así que más vale arriesgarte por lo que sí amas.",
+   "gen": "[warmly] Años más tarde diría... que puedes fracasar haciendo lo que no amas... así que más vale arriesgarte por lo que sí amas.",
+   "p": 0.5,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "t": "Quizás nadie cree en ti todavía... pero si hoy te escribieras un *cheque* a tu futuro... ¿qué le pondrías... y qué harías *mañana* para merecerlo?",
+   "tts": "Quizás nadie cree en ti todavía... pero si hoy te escribieras un cheque a tu futuro... ¿qué le pondrías... y qué harías mañana para merecerlo?",
+   "gen": "[softly, reflective] Quizás nadie cree en ti todavía... [pause] pero si hoy te escribieras un cheque a tu futuro... [whispers] ¿qué le pondrías... [emotional] y qué harías mañana para merecerlo?",
+   "p": 0.5,
+   "tag": ""
+  }
+ ]
+}

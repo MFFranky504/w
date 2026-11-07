@@ -28,6 +28,13 @@ CAST = {
  'rowling_rain': dict(style='tab', skin=(246, 208, 176), hair=ramp((150, 98, 62)), iris=(96, 70, 48), outfit='blazer'),
  'alice': dict(style='tab', skin=(252, 224, 200), hair=ramp((208, 160, 80)), iris=(80, 120, 170), outfit='tee_red', kid=True),
 
+ # --- historia 6: Jim Carrey
+ 'carrey_y': dict(style='king', skin=(246, 204, 170), hair=ramp((62, 42, 34)), iris=(84, 120, 160), outfit='tee_green'),
+ 'carrey_y2': dict(style='king', skin=(246, 204, 170), hair=ramp((62, 42, 34)), iris=(84, 120, 160), outfit='plaid'),
+ 'carrey': dict(style='king', skin=(246, 204, 170), hair=ramp((62, 42, 34)), iris=(84, 120, 160), outfit='blazer'),
+ 'dad': dict(style='short', skin=(236, 192, 156), hair=ramp((90, 70, 60)), iris=(80, 60, 44), outfit='polo', beard=True),
+ 'mom': dict(style='tab', skin=(246, 208, 176), hair=ramp((120, 70, 44)), iris=(90, 64, 44), outfit='cardigan'),
+
  # --- historia 4: Steve Jobs
  'jobs':   dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='turtle', glasses=True),
  'jobs85': dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='suit85'),

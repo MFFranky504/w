@@ -208,3 +208,19 @@ def bubble2(c, cx, y, txt, size=16, col=(30, 20, 40)):
     c.d.polygon([(cx - 5, y + h), (cx + 3, y + h), (cx - 1, y + h + 7)], fill=(252, 250, 242))
     c.R(cx - 6, y + h, 1, 1, (20, 14, 30))
     c.im.alpha_composite(im, (x + 4, y + 2))
+
+
+def van_side(c, x, y, w, h, body=(78, 178, 172), roof=(246, 238, 214), win_lit=True, t=0):
+    """furgoneta clásica de lado (se puede salir del cuadro por la derecha)."""
+    c.R(x, y + h * 3 // 10, w, h * 7 // 10, body); c.R(x, y + h * 3 // 10, w, 2, shade(body, 1.25))
+    c.d.polygon([(x + 4, y + h * 3 // 10), (x + w - 4, y + h * 3 // 10), (x + w - 10, y), (x + 14, y)], fill=roof)
+    c.R(x + 14, y, w - 24, 2, shade(roof, .8))
+    c.R(x, y + h * 6 // 10, w, h // 10, roof)                                                    # franja central
+    for k in range(3):                                                                           # ventanas
+        wx = x + 14 + k * (w - 36) // 3
+        c.R(wx, y + 4, (w - 36) // 3 - 4, h * 3 // 10 - 2, (255, 214, 130) if win_lit else (90, 120, 150)); c.R(wx, y + 4, (w - 36) // 3 - 4, 1, (255, 240, 190))
+    c.R(x, y + h - 6, w, 3, (60, 70, 76))
+    for cx in (x + w // 5, x + w * 4 // 5):
+        c.d.ellipse([cx - h // 6, y + h - h // 5, cx + h // 6, y + h + h // 8], fill=(30, 30, 40), outline=(100, 100, 116))
+        c.d.ellipse([cx - h // 12, y + h - h // 8, cx + h // 12, y + h + h // 12], fill=(190, 190, 206))
+    c.R(x + w - 6, y + h * 4 // 10, 5, 5, (255, 236, 150), c.ed)

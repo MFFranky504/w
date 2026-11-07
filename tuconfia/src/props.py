@@ -199,3 +199,83 @@ def keep(c, img, x, y, flip=False):
     """pega un prop (RGBA) con su esquina sup-izq en (x, y)."""
     if flip: img = img.transpose(Image.FLIP_LEFT_RIGHT)
     c.im.alpha_composite(img, (int(x), int(y))) if x >= 0 and y >= 0 else c.im.paste(img, (int(x), int(y)), img)
+
+
+def palm():
+    def mk():
+        P = Paint(40, 70)
+        for i, (dx, dy) in enumerate(((-16, -2), (-10, -10), (0, -14), (10, -10), (16, -2), (-14, 6), (14, 6))):
+            cx, cy = 20, 16
+            P.add(lambda d, dx=dx, dy=dy: d.polygon([(cx, cy), (cx + dx // 2, cy + dy - 4), (cx + dx * 2 // 1 if abs(dx) < 15 else cx + dx + dx // 3, cy + dy + 2)], fill=255), (70 + i * 6, 170 - i * 4, 90), edge_k=.5)
+        P.add(lambda d: d.polygon([(18, 16), (23, 16), (24, 69), (17, 69)], fill=255), (150, 100, 64), edge_k=.5)
+        for y in range(22, 68, 6): P.rect(17, y, 24, y, (110, 72, 46))
+        P.add(lambda d: d.ellipse([16, 14, 24, 22], fill=255), (110, 70, 44), edge_k=.5)
+        return P.final()
+    return cached('palm', mk)
+
+
+def car():
+    def mk():
+        P = Paint(56, 26)
+        P.add(lambda d: d.rounded_rectangle([2, 10, 53, 20], radius=4, fill=255), (200, 60, 70), edge_k=.5)
+        P.add(lambda d: d.polygon([(12, 10), (18, 2), (38, 2), (46, 10)], fill=255), (210, 80, 90), edge_k=.5)
+        P.add(lambda d: d.polygon([(15, 9), (20, 4), (28, 4), (28, 9)], fill=255), (150, 200, 240), edge=False, sh=False, hi=False)
+        P.add(lambda d: d.polygon([(30, 9), (30, 4), (37, 4), (43, 9)], fill=255), (150, 200, 240), edge=False, sh=False, hi=False)
+        P.rect(50, 13, 53, 15, (255, 236, 150)); P.rect(2, 13, 4, 15, (255, 80, 80))
+        for cx in (13, 42):
+            P.add(lambda d, cx=cx: d.ellipse([cx - 5, 15, cx + 5, 25], fill=255), (36, 36, 50), edge_k=.5, sh=False)
+            P.add(lambda d, cx=cx: d.ellipse([cx - 2, 18, cx + 2, 22], fill=255), (190, 190, 206), edge=False, sh=False, hi=False)
+        return P.final()
+    return cached('car', mk)
+
+
+def chair_wait():
+    def mk():
+        P = Paint(20, 24)
+        P.add(lambda d: d.rounded_rectangle([2, 2, 17, 12], radius=2, fill=255), (96, 110, 176), edge_k=.5)
+        P.add(lambda d: d.rounded_rectangle([1, 11, 18, 17], radius=2, fill=255), (116, 130, 200), edge_k=.5)
+        P.rect(3, 17, 4, 23, (60, 60, 80)); P.rect(15, 17, 16, 23, (60, 60, 80))
+        return P.final()
+    return cached('chair', mk)
+
+
+def check_prop(w=84, h=38, amount=True, filled=1.0):
+    def mk():
+        P = Paint(w, h)
+        P.add(lambda d: d.rectangle([0, 0, w - 1, h - 1], fill=255), (236, 246, 226), edge_k=.55)
+        P.rect(2, 2, w - 3, 3, (150, 190, 150)); P.rect(2, h - 4, w - 3, h - 3, (150, 190, 150))
+        for x in range(4, w - 4, 4): P.px(x, 5, (170, 200, 170))
+        P.rect(w - 22, 8, w - 4, 8, (120, 150, 120)); P.rect(6, h - 10, 30, h - 10, (120, 150, 120)); P.rect(w - 34, h - 10, w - 6, h - 10, (120, 150, 120))
+        P.add(lambda d: d.ellipse([w - 18, 11, w - 6, 23], fill=255), (222, 190, 90), edge_k=.55)
+        return P.final()
+    return cached(('check', w, h, amount, filled), mk)
+
+
+def calendar_page():
+    def mk():
+        P = Paint(28, 30)
+        P.add(lambda d: d.rectangle([0, 0, 27, 29], fill=255), (252, 250, 240), edge_k=.55)
+        P.rect(0, 0, 27, 7, (210, 60, 70)); P.rect(6, 1, 7, 3, (250, 240, 230)); P.rect(20, 1, 21, 3, (250, 240, 230))
+        for r in range(3):
+            for c_ in range(5): P.rect(3 + c_ * 5, 12 + r * 5, 5 + c_ * 5, 14 + r * 5, (170, 170, 190))
+        return P.final()
+    return cached('cal', mk)
+
+
+def box_cardboard(w=22, h=16):
+    def mk():
+        P = Paint(w, h)
+        P.add(lambda d: d.rectangle([0, 0, w - 1, h - 1], fill=255), (196, 150, 98), edge_k=.5)
+        P.rect(w // 2 - 2, 0, w // 2 + 2, h - 1, (230, 196, 140)); P.rect(2, 3, 7, 5, (250, 240, 220))
+        return P.final()
+    return cached(('box', w, h), mk)
+
+
+def camera_pro():
+    def mk():
+        P = Paint(20, 16)
+        P.add(lambda d: d.rounded_rectangle([1, 4, 18, 14], radius=2, fill=255), (50, 52, 70), edge_k=.5)
+        P.add(lambda d: d.ellipse([6, 5, 14, 13], fill=255), (150, 170, 210), edge_k=.5)
+        P.rect(3, 1, 8, 4, (90, 92, 110))
+        return P.final()
+    return cached('cam', mk)
