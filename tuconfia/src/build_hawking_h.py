@@ -290,7 +290,7 @@ def draw_caps(img, t):
             d.text((60, 398), l2, font=F('Medium', 36), fill=(255, 216, 74, a), stroke_width=4, stroke_fill=(14, 10, 26, a))
 
 
-HOOKS = [('sky', .15, 2.6, '¡LE DIERON', '2 AÑOS DE VIDA!', 330), ('hosp', 1.4, 4.2, '¡SE QUEDÓ', 'SIN VOZ!', 330), ('books', .3, 3.0, '¡10 MILLONES', 'DE LIBROS!', 330), ('years', 6.7, 9.6, '¡VIVIÓ 55', 'AÑOS MÁS!', 470)]
+HOOKS = [('sky', .15, 2.6, '¡LE DIERON', '2 AÑOS DE VIDA!', 330), ('hosp', 1.4, 4.2, '¡SE QUEDÓ', 'SIN VOZ!', 330), ('books', .3, 3.0, '¡10 MILLONES', 'DE LIBROS!', 330), ('years', 6.7, 9.6, '¡VIVIÓ 55', 'AÑOS MÁS!', 250)]
 SC_ = {s['n']: s for s in SCENES}
 HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
 PLAT = (sys.argv[sys.argv.index('--cta') + 1] if '--cta' in sys.argv else 'yt')          # yt = SUSCRÍBETE, tt/ig = SÍGUEME

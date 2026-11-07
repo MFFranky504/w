@@ -481,7 +481,7 @@ def years_b(t, u):
     for i in range(10):
         ph = (t * .6 + i * .1) % 1; PR.keep(c, PR.calendar_page(), 10 + (i * 71) % 290, int(ph * 190) - 20)
     seated(c, 'hawking', 160, 172, 'bat', t=t)
-    sign(c, 160, 8, str(yr), (255, 230, 120), 24, (50, 24, 60))
+    sign(c, 268, 8, str(yr), (255, 230, 120), 16, (50, 24, 60))
     c.amb = (1.0, .96, .98); c.vig = .6
     return c.render()
 
