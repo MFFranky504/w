@@ -177,8 +177,8 @@ def hill_med(t, u):
     if k > 0:
         ck = PR.check_prop(132, 52)
         PR.keep(c, ck, 14, 70 - int((1 - k) * 30) + int(math.sin(t * 3) * 1.5))
-        bg.wtext(c, 70, 84 - int((1 - k) * 30), '$10.000.000', (60, 96, 60), 16, outline=None, center=True)
-        bg.wtext(c, 70, 104 - int((1 - k) * 30), 'DIEZ MILLONES', (60, 96, 60), 8, outline=None, center=True)
+        bg.wtext(c, 80, 84 - int((1 - k) * 30), '$10.000.000', (60, 96, 60), 16, outline=None, center=True)
+        bg.wtext(c, 80, 104 - int((1 - k) * 30), 'DIEZ MILLONES', (60, 96, 60), 8, outline=None, center=True)
     c.amb = (.9, .92, 1.1); c.vig = .65
     return c.render()
 
