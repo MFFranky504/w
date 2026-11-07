@@ -423,3 +423,34 @@ def hospital_wall(c, t=0):
     for yy in range(206, 296, 14):
         for xx in range(-(yy // 14 % 2) * 14, WW, 28): c.R(xx, yy, 14, 14, (228, 232, 238)); c.R(xx + 14, yy, 14, 14, (200, 208, 220))
     c.R(0, 204, WW, 3, (90, 140, 142))
+
+
+# ================================================================ variantes para el mundo apaisado (320x180)
+def hill_l(c, y0, col=(20, 18, 46), t=0):
+    c.d.polygon([(0, y0 + 10), (60, y0 - 8), (130, y0 + 6), (200, y0 - 10), (270, y0 + 4), (320, y0 - 2), (320, 300), (0, 300)], fill=col)
+
+
+def nebula_l(c, t, seed=2, cols=((120, 60, 200), (60, 120, 220), (220, 80, 160))):
+    rnd = random.Random(seed)
+    for i in range(10):
+        x, y, w, h = rnd.randint(0, 320), rnd.randint(10, 110), rnd.randint(70, 140), rnd.randint(20, 46)
+        col = cols[i % 3]
+        for k in range(4): c.ed.ellipse([x - w // 2 + k * 8, y - h // 2 + k * 3, x + w // 2 - k * 8, y + h // 2 - k * 3], fill=(*col, 12 + k * 5))
+
+
+def shoot_l(c, t, seed=0, period=3.0):
+    ph = ((t + seed * 1.3) % period) / period
+    if ph < .22:
+        x = 300 - ph * 4.5 * 240 - seed * 30; y = 14 + ph * 4.5 * 50 + seed * 12
+        c.d.line([(x, y), (x + 20, y - 8)], fill=(255, 255, 255)); c.R(int(x), int(y), 2, 2, (255, 255, 230), c.ed)
+
+
+def hospital_wall_l(c, t=0):
+    c.R(0, 0, WW, 136, (150, 206, 204))
+    for x in range(0, WW, 16):
+        for y in range(0, 100, 16): c.R(x + 1, y + 1, 14, 14, (176, 226, 224)); c.R(x + 1, y + 1, 14, 1, (210, 244, 242))
+    c.R(0, 100, WW, 36, (120, 176, 178)); c.R(0, 100, WW, 3, (230, 250, 250))
+    for x in range(0, WW, 44): c.R(x + 6, 108, 32, 26, (104, 160, 162)); c.R(x + 6, 108, 32, 1, (150, 206, 206))
+    for yy in range(136, 180, 11):
+        for xx in range(-(yy // 11 % 2) * 14, WW, 28): c.R(xx, yy, 14, 11, (228, 232, 238)); c.R(xx + 14, yy, 14, 11, (200, 208, 220))
+    c.R(0, 134, WW, 3, (90, 140, 142))

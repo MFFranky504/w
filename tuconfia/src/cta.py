@@ -16,7 +16,7 @@ def _txt(d, xy, text, size, fill, stroke=5):
     d.text(xy, text, font=f, fill=fill, anchor='mm')
 
 
-def draw_cta(img, t, t0, total, platform='yt', loop_d=0.9, ytop=330, show=2.6):
+def draw_cta(img, t, t0, total, platform='yt', loop_d=0.9, ytop=330, show=2.6, cx=500, scale=1.0):
     t1 = min(total - loop_d - .1, t0 + show)
     if not (t0 <= t < t1): return
     k = min(1, (t - t0) / .3); out = min(1, (t1 - t) / .25)
@@ -35,4 +35,5 @@ def draw_cta(img, t, t0, total, platform='yt', loop_d=0.9, ytop=330, show=2.6):
     d.rectangle([x0 + 24, y0 + 40, x0 + 54, y0 + 47], fill=WHITE); d.rectangle([x0 + 36, y0 + 28, x0 + 42, y0 + 58], fill=WHITE)
     _txt(d, (x0 + bw // 2 + 26, y0 + bh // 2 + 6), LABEL.get(platform, 'SÍGUEME'), 40, WHITE, 6)
     lay.putalpha(lay.getchannel('A').point(lambda v: int(v * min(1, k * 2) * out)))
-    img.alpha_composite(lay, (500 - W // 2, ytop + slide))
+    if scale != 1.0: lay = lay.resize((int(W * scale), int(H * scale)), Image.NEAREST)
+    img.alpha_composite(lay, (cx - lay.width // 2, ytop + int(slide * scale)))

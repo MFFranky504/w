@@ -63,3 +63,9 @@ King y Tabitha vivían en un remolque en Hermon, Maine; él daba clases (Hampden
 ## Video 7 — Jim Carrey (de la furgoneta al cheque)
 - `src/build_carrey.py` + `src/scenes7.py`, guion `guion_carrey.md`, caption `caption_carrey.txt`, voz Charlie con etiquetas de emoción + alineación forzada, música "Mrs Magic".
 - Dato a verificar antes de publicar: la anécdota del cheque está contada por el propio Carrey; la cifra/película del cobro es discutida, por eso el guion dice "según cuenta él".
+
+## Video 8 — Stephen Hawking, 3 min, HORIZONTAL (YouTube)
+- Formato 1920×1080: `src/build_hawking_h.py` (+ `src/scenes10.py`, mundo apaisado 320×180 ×6). Activa el mundo apaisado con `TC_LAND=1` (lo hace el propio script); `lib.py` toma el tamaño de esa variable. La versión vertical (`build_hawking.py` + `scenes9.py`) queda para Shorts/TikTok/Reels.
+- Guion `guion_hawking.md` (formato de la skill `guiones-reels-videos-cortos`), textos de voz `elevenlabs_hawking_v3.txt` (~3.400 caracteres, se genera de una vez), captions por plataforma (`caption_hawking_*.txt`).
+- Composición: logo arriba a la izquierda, subtítulos abajo centrados, ganchos al centro, botón SUSCRÍBETE arriba a la derecha (últimos 2,6 s).
+- Estado: vista previa SIN voz (la cuota gratuita de ElevenLabs está agotada hasta el 5-dic-2026). Con la voz: guardar `audio/narracion_hawking.mp3` (y `audio/alineacion_hawking.json` de la alineación forzada) y volver a ejecutar `python3 src/build_hawking_h.py --cta yt`.

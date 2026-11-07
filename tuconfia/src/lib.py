@@ -2,7 +2,9 @@
 import numpy as np, math, random
 from PIL import Image, ImageDraw
 
-WW, WH = 160, 284
+import os
+LAND = os.environ.get('TC_LAND') == '1'                    # 1 = mundo apaisado 320x180 (x6 = 1920x1080); si no, vertical 160x284 (x8 = 1080x1920)
+WW, WH = (320, 180) if LAND else (160, 284)
 B4 = np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]], float) / 16
 BAY = np.tile(B4, (WH // 4 + 1, WW // 4 + 1))[:WH, :WW]
 YY, XX = np.mgrid[0:WH, 0:WW]
@@ -80,7 +82,7 @@ class Canvas:
         al = e[..., 3:4] / 255
         arr = arr * (1 - al) + e[..., :3] * al
         if s.vig:
-            dd = np.sqrt(((XX - 80) / 95) ** 2 + ((YY - 142) / 160) ** 2)
+            dd = np.sqrt(((XX - WW / 2) / (WW * .594)) ** 2 + ((YY - WH / 2) / (WH * .563)) ** 2)
             arr *= (1 - s.vig * np.clip(dd - 0.35, 0, 1) ** 1.4)[..., None]
         lv = 255 / 31
         arr = np.floor(arr / lv + BAY[..., None]) * lv
