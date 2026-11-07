@@ -9,7 +9,14 @@ import scenes3 as S3
 from scenes3 import rpg, bat, place, shrink, shadow
 
 
-def fig(img, f): return img.resize((max(1, int(img.width * f)), max(1, int(img.height * f))), Image.NEAREST)
+def fig(img, f):
+    """reduce un sprite conservando los detalles finos (gafas, ojos, boca): promedio por caja + nitidez, borde sin semitransparencias."""
+    from PIL import ImageFilter
+    sm = img.resize((max(1, int(img.width * f)), max(1, int(img.height * f))), Image.BOX)
+    a_ = sm.getchannel('A').point(lambda v: 255 if v > 110 else 0)
+    rgb = sm.convert('RGB').filter(ImageFilter.UnsharpMask(radius=.8, percent=90, threshold=0))
+    out = rgb.convert('RGBA'); out.putalpha(a_)
+    return out
 
 
 def bubble(c, x, y, txt, k=2):
@@ -91,7 +98,7 @@ def boardroom(t, u):
         c.light(lx + sw, 52, 26, 24, (255, 200, 110), .55)
     c.R(136, 100, 14, 14, (240, 240, 244)); c.d.ellipse([137, 101, 149, 113], outline=(40, 40, 60)); a_ = t * 3; c.d.line([(143, 107), (143 + 4 * math.cos(a_), 107 + 4 * math.sin(a_))], fill=(200, 40, 50))   # reloj
     # junta (más pequeña que Jobs en primer plano); asienten y señalan
-    mem = (('prod1', 50, 'blazer'), ('prod2', 82, 'teacher'), ('prod1', 114, 'cardigan'), ('prod2', 140, 'plaid'))
+    mem = (('prod1', 44, 'blazer'), ('prod2', 72, 'teacher'), ('prod1', 100, 'cardigan'), ('prod2', 128, 'plaid'))
     for k, (who, x, of) in enumerate(mem):
         nod = 1.5 * max(0, math.sin(t * 5 + k)) if u > .35 else math.sin(t * 2 + k) * .5
         place(c, fig(rpg(who, 0, of), .62), x, 172 + nod, sh=False)
@@ -100,10 +107,10 @@ def boardroom(t, u):
     if u > .45:
         k = ease((u - .45) / .3); px = 100 - 74 * k
         c.R(px, 160, 14, 5, (250, 248, 240)); c.R(px, 160, 14, 1, (200, 196, 188)); c.R(px + 2, 162, 8, 1, (160, 60, 60))
-    for k, x in enumerate((50, 82, 114, 140)):
+    for k, x in enumerate((44, 72, 100, 128)):
         ph = (u * 3.4 - k * .4)
         if 0 < ph < 1: ptext(c.ed, x - 2, 120 - int(ph * 4), '!', (255, 90, 90), 3)
-    if .45 < u < .8: bubble(c, 82, 118, 'FUERA', 2)
+    if .45 < u < .8: bubble(c, 72, 112, 'FUERA', 2)
     # Jobs de pie delante: entra, retrocede y baja la cabeza (zoom de cámara)
     k = ease(u * 1.6); back = ease((u - .55) / .3)
     place(c, fig(rpg('jobs85', int(t * 4) % 2 if u < .55 else 0), .78), 38 + 10 * k - 4 * back, 222 + 1.5 * back, sh=True)
