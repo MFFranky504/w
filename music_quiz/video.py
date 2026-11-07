@@ -286,7 +286,7 @@ def snoop_layer(t, mode="col"):
         for ex in (-5, 2):                                              # eyes (no sunglasses): heavy lids, white, pupil
             d.rectangle((cx + ex + look * 1.5, cy - 1, cx + ex + 3 + look * 1.5, cy - 1), fill=(30, 18, 16, 255))
             d.rectangle((cx + ex + look * 1.5, cy, cx + ex + 3 + look * 1.5, cy + 1), fill=(245, 240, 235, 255))
-            d.point((cx + ex + 1 + look * 2 + (1 if look > 0 else 0), cy), fill=(20, 12, 12, 255)); d.point((cx + ex + 1 + look * 2 + (1 if look > 0 else 0), cy + 1), fill=(20, 12, 12, 255))
+            px_ = int(cx + ex + 1 + (1 if look > .3 else 0) - (1 if look < -.3 else 0)); d.rectangle((px_, cy, px_ + 1, cy + 1), fill=(20, 12, 12, 255))
         d.rectangle((cx - 2 + look, cy + 6, cx + 2 + look, cy + 9), fill=(40, 26, 24, 255))
     if col: return L_
     a = np.array(L_)[..., 3] > 0; arr = np.zeros((130, 110, 4), np.uint8); arr[a] = (14, 8, 34, 255)
