@@ -6,3 +6,6 @@ build/*.jpg
 build/*.log
 build/mix.wav
 build/voices.json
+build/frames2/
+build/mix2.wav
+build/q*.log
