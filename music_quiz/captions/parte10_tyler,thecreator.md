@@ -2,7 +2,7 @@
 
 Instagram:
 ```
-¿Quién es el artista? 🎤 MODO MEGA DIFÍCIL: 6 pistas y ninguna es fácil.
+¿Quién es el artista? 🎤 MODO MEGA DIFÍCIL: 4 pistas y ninguna es fácil.
 Responde en comentarios, mañana revelo la respuesta.
 Sígueme para ver la respuesta.
 
@@ -11,7 +11,7 @@ Sígueme para ver la respuesta.
 
 TikTok:
 ```
-¿Quién es el artista? 🎤 MODO MEGA DIFÍCIL: 6 pistas y ninguna es fácil.
+¿Quién es el artista? 🎤 MODO MEGA DIFÍCIL: 4 pistas y ninguna es fácil.
 Responde en comentarios, mañana revelo la respuesta.
 Sígueme para ver la respuesta.
 
@@ -20,11 +20,11 @@ Sígueme para ver la respuesta.
 
 YouTube — título:
 ```
-¿Quién es el artista? MEGA DIFÍCIL · Adivina con 6 pistas | Parte 10
+¿Quién es el artista? MEGA DIFÍCIL · Adivina con 4 pistas | Parte 10
 ```
 YouTube — descripción:
 ```
-¿Quién es el artista? 🎤 MODO MEGA DIFÍCIL: 6 pistas y ninguna es fácil.
+¿Quién es el artista? 🎤 MODO MEGA DIFÍCIL: 4 pistas y ninguna es fácil.
 Responde en comentarios, mañana revelo la respuesta.
 Sígueme para ver la respuesta.
 
