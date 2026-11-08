@@ -426,7 +426,7 @@ def strike_a(t, u):
     for i in range(7):
         x = 30 + i * 40 + int(math.sin(t * 2 + i) * 3)
         place(c, rpg(('kid_a', 'prod1', 'prod2', 'rexach', 'dad', 'ub', 'kid_c')[i], int(t * 2 + i) % 2), x, FW + 18 + (i % 2) * 6, sh=False)
-        c.R(x + 8, FW - 18, 2, 18, (140, 100, 70)); c.R(x - 2, FW - 34, 22, 16, (240, 240, 230))            # cartel en blanco
+        c.R(x + 11, FW - 62, 2, 62, (140, 100, 70)); c.R(x, FW - 80, 24, 16, (240, 240, 230))            # cartel en blanco, por encima de las cabezas
     sign(c, 160, 6, '1941', (220, 220, 230), 24, (30, 30, 40))
     c.amb = (.84, .84, .88); c.vig = .85
     return c.render()

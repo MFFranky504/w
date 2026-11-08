@@ -5,7 +5,7 @@
   "persona_hashtag": "#WaltDisney",
   "tipo_gancho": "se_nego",
   "duracion_objetivo_s": 170,
-  "pregunta": "Y tú... ¿a qué trato injusto le dirías que no... y qué vas a empezar a crear que sea solo tuyo?"
+  "pregunta": "Y tú... ¿a qué trato injusto le dirías que no... y qué empezarías a crear que sea tuyo?"
  },
  "lines": [
   {
@@ -20,9 +20,9 @@
   {
    "id": "L2",
    "rol": "fracaso",
-   "t": "Ese *no* le costó su personaje... y a casi todo su equipo. Y lo que pasó después con ese personaje... casi nadie lo sabe.",
-   "tts": "Ese no le costó su personaje... y a casi todo su equipo. Y lo que pasó después con ese personaje... casi nadie lo sabe.",
-   "gen": "[serious] Ese no le costó su personaje... y a casi todo su equipo. [whispers] Y lo que pasó después con ese personaje... casi nadie lo sabe.",
+   "t": "Por ese *no*, tuvo que dejar a su personaje... y a casi todo su equipo. Y lo que pasó después con ese personaje... casi nadie lo sabe.",
+   "tts": "Por ese no, tuvo que dejar a su personaje... y a casi todo su equipo. Y lo que pasó después con ese personaje... casi nadie lo sabe.",
+   "gen": "[serious] Por ese no, tuvo que dejar a su personaje... y a casi todo su equipo. [softly] Y lo que pasó después con ese personaje... casi nadie lo sabe.",
    "p": 0.5,
    "tag": ""
   },
@@ -48,8 +48,8 @@
    "id": "L5",
    "rol": "fracaso",
    "t": "Y le muestra dos cosas. Primera: Oswald no es de Walt. Los derechos son del estudio *Universal*.",
-   "tts": "Y le muestra dos cosas. Primera: Ósuald no es de Uólt. Los derechos son del estudio Iuniversal.",
-   "gen": "[tense] Y le muestra dos cosas. [pause] Primera: Ósuald no es de Uólt. [sad] Los derechos son del estudio Iuniversal.",
+   "tts": "Y le muestra dos cosas. Primera: Ósuald no es de Uólt. Los derechos son del estudio Universal.",
+   "gen": "[tense] Y le muestra dos cosas. [pause] Primera: Ósuald no es de Uólt. [sad] Los derechos son del estudio Universal.",
    "p": 0.5,
    "tag": ""
   },
@@ -65,9 +65,9 @@
   {
    "id": "L7",
    "rol": "giro",
-   "t": "Podía quedarse y trabajar por menos para otro. Pero dijo *no*... y se fue sin su conejo.",
-   "tts": "Podía quedarse y trabajar por menos para otro. Pero dijo no... y se fue sin su conejo.",
-   "gen": "[determined] Podía quedarse y trabajar por menos para otro. [bold] Pero dijo no... [pause] y se fue sin su conejo.",
+   "t": "Podía quedarse, cobrar menos y trabajar para Mintz. Pero dijo *no*... y se fue sin Oswald.",
+   "tts": "Podía quedarse, cobrar menos y trabajar para Mínts. Pero dijo no... y se fue sin Ósuald.",
+   "gen": "[determined] Podía quedarse, cobrar menos y trabajar para Mínts. [bold] Pero dijo no... [pause] y se fue sin Ósuald.",
    "p": 0.5,
    "tag": ""
   },
@@ -101,36 +101,36 @@
   {
    "id": "L11",
    "rol": "giro",
-   "t": "Y tenía a un amigo que se negó a firmar con Mintz: el animador *Ub Iwerks*.",
-   "tts": "Y tenía a un amigo que se negó a firmar con Mínts: el animador Ab Áiuerks.",
-   "gen": "[warmly] Y tenía a un amigo que se negó a firmar con Mínts: [proud] el animador Ab Áiuerks.",
+   "t": "Y tenía a uno de los pocos que se negaron a irse con Mintz: su amigo, el animador *Ub Iwerks*.",
+   "tts": "Y tenía a uno de los pocos que se negaron a irse con Mínts: su amigo, el animador Ab Áiuerks.",
+   "gen": "[warmly] Y tenía a uno de los pocos que se negaron a irse con Mínts: [proud] su amigo, el animador Ab Áiuerks.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L12",
    "rol": "giro",
-   "t": "Según contó Walt, en el tren de regreso imaginó un ratón. Pero fue Ub quien le dio su *forma*... y lo animó.",
-   "tts": "Según contó Uólt, en el tren de regreso imaginó un ratón. Pero fue Ab quien le dio su forma... y lo animó.",
-   "gen": "[curious] Según contó Uólt, en el tren de regreso imaginó un ratón. [pause] Pero fue Ab quien le dio su forma... y lo animó.",
+   "t": "Según contó Walt, en el tren de regreso imaginó un ratón. Pero fue Ub quien le dio su *forma*... y quien lo hizo moverse.",
+   "tts": "Según contó Uólt, en el tren de regreso imaginó un ratón. Pero fue Ab quien le dio su forma... y quien lo hizo moverse.",
+   "gen": "[curious] Según contó Uólt, en el tren de regreso imaginó un ratón. [pause] Pero fue Ab quien le dio su forma... [proud] y quien lo hizo moverse.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L13",
    "rol": "fracaso",
-   "t": "El primer corto del ratón no le interesó a *ningún* distribuidor. Otro rechazo.",
-   "tts": "El primer corto del ratón no le interesó a ningún distribuidor. Otro rechazo.",
-   "gen": "[sad] El primer corto del ratón no le interesó a ningún distribuidor. [heavy sigh] Otro rechazo.",
+   "t": "El primer corto del ratón, todavía *mudo*, no le interesó a *ningún* distribuidor. Otro rechazo.",
+   "tts": "El primer corto del ratón, todavía mudo, no le interesó a ningún distribuidor. Otro rechazo.",
+   "gen": "[sad] El primer corto del ratón, todavía mudo, no le interesó a ningún distribuidor. [heavy sigh] Otro rechazo.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L14",
    "rol": "giro",
-   "t": "Entonces apostó por algo nuevo: dibujos con *sonido* sincronizado. Y él mismo le puso la voz al ratón.",
-   "tts": "Entonces apostó por algo nuevo: dibujos con sonido sincronizado. Y él mismo le puso la voz al ratón.",
-   "gen": "[determined] Entonces apostó por algo nuevo: dibujos con sonido sincronizado. [playful] Y él mismo le puso la voz al ratón.",
+   "t": "Entonces apostó por la gran novedad del momento: dibujos con *sonido* sincronizado. Y él mismo le puso la voz al ratón.",
+   "tts": "Entonces apostó por la gran novedad del momento: dibujos con sonido sincronizado. Y él mismo le puso la voz al ratón.",
+   "gen": "[determined] Entonces apostó por la gran novedad del momento: dibujos con sonido sincronizado. [playful] Y él mismo le puso la voz al ratón.",
    "p": 0.5,
    "tag": ""
   },
@@ -146,72 +146,72 @@
   {
    "id": "L16",
    "rol": "giro",
-   "t": "Y el público *estalló* de risa. El ratón fue un éxito.",
-   "tts": "Y el público estalló de risa. El ratón fue un éxito.",
-   "gen": "[excited] Y el público estalló de risa. [proud] El ratón fue un éxito.",
+   "t": "Y el público *estalló* de risa. El ratón fue un éxito... y esta vez, era *suyo*.",
+   "tts": "Y el público estalló de risa. El ratón fue un éxito... y esta vez, era suyo.",
+   "gen": "[excited] Y el público estalló de risa. [proud] El ratón fue un éxito... [pause] y esta vez, era suyo.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L17",
    "rol": "fracaso",
-   "t": "Pero en 1930, Ub se fue. Firmó con Pat Powers, un distribuidor con el que Walt se había *peleado*.",
-   "tts": "Pero en mil novecientos treinta, Ab se fue. Firmó con Pat Páuers, un distribuidor con el que Uólt se había peleado.",
-   "gen": "[serious] Pero en mil novecientos treinta, Ab se fue. [pause] Firmó con Pat Páuers, un distribuidor con el que Uólt se había peleado.",
+   "t": "Pero en 1930, Ub se fue. Firmó con Pat Powers, el distribuidor de Walt... con quien Walt peleaba por *dinero*.",
+   "tts": "Pero en mil novecientos treinta, Ab se fue. Firmó con Pat Páuers, el distribuidor de Uólt... con quien Uólt peleaba por dinero.",
+   "gen": "[serious] Pero en mil novecientos treinta, Ab se fue. [pause] Firmó con Pat Páuers, el distribuidor de Uólt... con quien Uólt peleaba por dinero.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L18",
    "rol": "fracaso",
-   "t": "El amigo que se quedó cuando todos se fueron... ahora era su *competencia*.",
-   "tts": "El amigo que se quedó cuando todos se fueron... ahora era su competencia.",
-   "gen": "[sad] El amigo que se quedó cuando todos se fueron... [softly] ahora era su competencia.",
+   "t": "El amigo que se quedó cuando *casi* todos se fueron... ahora era su *competencia*.",
+   "tts": "El amigo que se quedó cuando casi todos se fueron... ahora era su competencia.",
+   "gen": "[sad] El amigo que se quedó cuando casi todos se fueron... [softly] ahora era su competencia.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L19",
    "rol": "fracaso",
-   "t": "Walt mismo contó que en 1931 se vino *abajo*. Su médico le ordenó parar y descansar.",
-   "tts": "Uólt mismo contó que en mil novecientos treinta y uno se vino abajo. Su médico le ordenó parar y descansar.",
-   "gen": "[softly] Uólt mismo contó que en mil novecientos treinta y uno se vino abajo. [sad] Su médico le ordenó parar y descansar.",
+   "t": "Al año siguiente, agotado, Walt se vino *abajo*: así lo contó él mismo. Su médico le ordenó parar y descansar.",
+   "tts": "Al año siguiente, agotado, Uólt se vino abajo: así lo contó él mismo. Su médico le ordenó parar y descansar.",
+   "gen": "[softly] Al año siguiente, agotado, Uólt se vino abajo: así lo contó él mismo. [sad] Su médico le ordenó parar y descansar.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L20",
    "rol": "giro",
-   "t": "Descansó... y volvió. Y en 1940 pasó algo que pocos cuentan: Ub *regresó* al estudio.",
-   "tts": "Descansó... y volvió. Y en mil novecientos cuarenta pasó algo que pocos cuentan: Ab regresó al estudio.",
-   "gen": "[warmly] Descansó... y volvió. [pause] Y en mil novecientos cuarenta pasó algo que pocos cuentan: [emotional] Ab regresó al estudio.",
+   "t": "Descansó... y volvió. Y en 1940, Ub *regresó* al estudio.",
+   "tts": "Descansó... y volvió. Y en mil novecientos cuarenta, Ab regresó al estudio.",
+   "gen": "[warmly] Descansó... y volvió. [pause] Y en mil novecientos cuarenta, [emotional] Ab regresó al estudio.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L21",
    "rol": "fracaso",
-   "t": "Y no, Walt no fue un hombre perfecto. En 1941, muchos de sus propios animadores le hicieron *huelga*.",
-   "tts": "Y no, Uólt no fue un hombre perfecto. En mil novecientos cuarenta y uno, muchos de sus propios animadores le hicieron huelga.",
-   "gen": "[serious] Y no, Uólt no fue un hombre perfecto. [pause] En mil novecientos cuarenta y uno, muchos de sus propios animadores le hicieron huelga.",
+   "t": "Y no, Walt no fue un hombre perfecto. El hombre que se negó a cobrar menos... en 1941 vio a cientos de sus animadores en *huelga*, pidiendo mejores sueldos.",
+   "tts": "Y no, Uólt no fue un hombre perfecto. El hombre que se negó a cobrar menos... en mil novecientos cuarenta y uno vio a cientos de sus animadores en huelga, pidiendo mejores sueldos.",
+   "gen": "[serious] Y no, Uólt no fue un hombre perfecto. [pause] El hombre que se negó a cobrar menos... en mil novecientos cuarenta y uno vio a cientos de sus animadores en huelga, pidiendo mejores sueldos.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L22",
    "rol": "giro",
-   "t": "¿Y el conejo que le quitaron? En 2006, *setenta y ocho* años después, la compañía Disney recuperó a Oswald.",
-   "tts": "¿Y el conejo que le quitaron? En dos mil seis, setenta y ocho años después, la compañía Dísney recuperó a Ósuald.",
-   "gen": "[curious] ¿Y el conejo que le quitaron? [pause] En dos mil seis, setenta y ocho años después, [excited] la compañía Dísney recuperó a Ósuald.",
+   "t": "¿Y el conejo que tuvo que dejar? En 2006, *setenta y ocho* años después, la compañía Disney recuperó a Oswald.",
+   "tts": "¿Y el conejo que tuvo que dejar? En dos mil seis, setenta y ocho años después, la compañía Dísney recuperó a Ósuald.",
+   "gen": "[curious] ¿Y el conejo que tuvo que dejar? [pause] En dos mil seis, setenta y ocho años después, [excited] la compañía Dísney recuperó a Ósuald.",
    "p": 0.5,
    "tag": ""
   },
   {
    "id": "L23",
    "rol": "giro",
-   "t": "¿Cómo? Cambiándolo por un *narrador* deportivo, Al Michaels, que quería irse a otra cadena.",
-   "tts": "¿Cómo? Cambiándolo por un narrador deportivo, Al Máikols, que quería irse a otra cadena.",
-   "gen": "[playful] ¿Cómo? [pause] Cambiándolo por un narrador deportivo, Al Máikols, que quería irse a otra cadena.",
+   "t": "¿Cómo? Dejando ir a un *narrador* deportivo, Al Michaels, que quería irse a la competencia... justo a la empresa dueña del conejo.",
+   "tts": "¿Cómo? Dejando ir a un narrador deportivo, Al Máikols, que quería irse a la competencia... justo a la empresa dueña del conejo.",
+   "gen": "[playful] ¿Cómo? [pause] Dejando ir a un narrador deportivo, Al Máikols, que quería irse a la competencia... [pause] justo a la empresa dueña del conejo.",
    "p": 0.5,
    "tag": ""
   },
@@ -227,9 +227,9 @@
   {
    "id": "L25",
    "rol": "frase_final",
-   "t": "Le quitaron su personaje y casi todo su equipo... pero no las ganas de *empezar* otra vez.",
-   "tts": "Le quitaron su personaje y casi todo su equipo... pero no las ganas de empezar otra vez.",
-   "gen": "[determined] Le quitaron su personaje y casi todo su equipo... [pause] pero no las ganas de empezar otra vez.",
+   "t": "*Perdió* su personaje y casi todo su equipo... pero no las ganas de *empezar* otra vez.",
+   "tts": "Perdió su personaje y casi todo su equipo... pero no las ganas de empezar otra vez.",
+   "gen": "[determined] Perdió su personaje y casi todo su equipo... [pause] pero no las ganas de empezar otra vez.",
    "p": 0.5,
    "tag": ""
   },
@@ -254,9 +254,9 @@
   {
    "id": "L28",
    "rol": "pregunta",
-   "t": "Y tú... ¿a qué trato injusto le dirías que *no*... y qué vas a empezar a crear que sea solo tuyo?",
-   "tts": "Y tú... ¿a qué trato injusto le dirías que no... y qué vas a empezar a crear que sea solo tuyo?",
-   "gen": "[softly, reflective] Y tú... ¿a qué trato injusto le dirías que no... [pause] [warmly] y qué vas a empezar a crear que sea solo tuyo?",
+   "t": "Y tú... ¿a qué trato injusto le dirías que *no*... y qué empezarías a crear que sea *tuyo*?",
+   "tts": "Y tú... ¿a qué trato injusto le dirías que no... y qué empezarías a crear que sea tuyo?",
+   "gen": "[softly, reflective] Y tú... ¿a qué trato injusto le dirías que no... [pause] [warmly] y qué empezarías a crear que sea tuyo?",
    "p": 0.5,
    "tag": ""
   }
