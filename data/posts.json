@@ -70,5 +70,13 @@
   "cta": "Etiqueta a tu bro que haría esto",
   "date": "2026-11-08",
   "metrics": {}
+ },
+ {
+  "id": "beto-cuernos",
+  "category": "crush",
+  "hook": "Mi bro no veía nada… hasta que lo vio. ¿Tú lo hubieras visto antes? A o B",
+  "cta": "Mándaselo a tu bro",
+  "date": "2026-11-08",
+  "metrics": {}
  }
 ]
