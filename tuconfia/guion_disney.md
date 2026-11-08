@@ -12,7 +12,7 @@ Hecho con la skill `/yt-script` sobre el formato de TU CONF.IA: gancho → fraca
 
 **Cómo leer esto:** la herramienta está calibrada con ganchos en inglés. Con el equivalente en inglés los puntajes suben un poco (A: 47, D: 41) pero siguen en «flojo», porque sus reglas se basan en palabras como «you» o números. Es una guía, no un veredicto.
 **Los dos mejores por puntaje:** A (36) y B (35). **Mi elección: D**, por el formato «podía… pero se negó», que es el de tu mejor video de TikTok («el guion que se negó a vender»). A queda como gancho de reserva para una segunda versión del título/miniatura.
-**Fórmula del ganchon ganador:** Someone Else's Result / negativa: abre una pregunta que el espectador no puede cerrar (¿qué perdió y por qué dijo que no?) y promete el resultado.
+**Fórmula del gancho ganador:** Someone Else's Result / negativa: abre una pregunta que el espectador no puede cerrar (¿qué perdió y por qué dijo que no?) y promete el resultado.
 
 ## Guion, beat por beat
 **[0:00] HOOK**
@@ -111,7 +111,7 @@ Porque lo que te quitan... no es lo único que sabes *crear*.
 Y tú... ¿qué te quitaron, o qué perdiste... y qué vas a crear *con lo que sí te queda*?
 `[ON SCREEN: El mismo cielo del inicio (bucle). Tarjeta final de 6 s con botón SUSCRÍBETE.]`
 
-**Palabras habladas:** 417 → **2.8 min a 150 palabras/min** (≈3:-13) más la tarjeta final de 6 s. Tus videos hablan algo más rápido, así que la voz real saldrá en unos 3 min.
+**Palabras habladas:** 417 → **2.8 min a 150 palabras/min** (≈2:50), más la tarjeta final de 6 s: en total unos 3 min. Tu voz habla más rápido, así que quedará cerca de 2:45 a 3:00 con las pausas.
 
 ## Verificar antes de producir (no inventé cifras)
 - 1901 (nacimiento), quiebra de 1923, 1928 (Oswald y «Steamboat Willie»), estreno de 1937, Disneyland 1955 y muerte en 1966 son fechas publicadas. Confírmalas con fuente antes de publicar.
