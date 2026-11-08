@@ -50,3 +50,18 @@ walt disney, historia de walt disney, oswald el conejo afortunado, ub iwerks, ro
 
 ## Qué cambió gracias a la revisión
 Se quitó «perdió todo»; se da crédito a Roy y a Ub Iwerks; una línea honesta sobre la huelga de 1941; el final paga la curiosidad (Oswald vuelve en 2006 por un narrador deportivo y Walt nunca lo vio); miniatura veraz; carteles y capas corregidos.
+
+## Short / Reel / TikTok (vertical, 55 s)
+Archivo: out/TU_CONFIA_Disney_SHORT_Vertical_yt.mp4
+
+### YouTube Shorts
+Título: Walt Disney dijo NO al trato... y se quedó sin su conejo 🐭
+Descripción: ver caption_disney_short_youtube.txt. Termina con el canal @tu.conf.ia77.
+
+### TikTok
+Primera línea (gancho): Walt Disney podía aceptar el trato... pero se negó 🐭 ¿Tú qué harías? Texto completo en caption_disney_short_tiktok.txt (enlace en el perfil).
+
+### Instagram Reels
+Texto completo en caption_disney_short_instagram.txt (enlace en la bio).
+
+Nota: el título del Short evita decir que Disney "perdió" el conejo por robo; en el video se dice que Oswald era de Universal.

@@ -1,0 +1,112 @@
+{
+ "titulo": "Disney SHORT",
+ "meta": {
+  "famoso": "Walt Disney",
+  "persona_hashtag": "#WaltDisney",
+  "tipo_gancho": "se_nego",
+  "duracion_objetivo_s": 170,
+  "pregunta": "Y tú... ¿a qué trato injusto le dirías que no... y qué empezarías a crear que sea tuyo?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Walt Disney podía aceptar el trato... pero *se negó*.",
+   "tts": "Uólt Dísney podía aceptar el trato... pero se negó.",
+   "gen": "[bold] Uólt Dísney podía aceptar el trato... [pause] pero se negó.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L1"
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "Pero el distribuidor, Charles Mintz, le ofrece *menos* dinero... no más.",
+   "tts": "Pero el distribuidor, Chárls Mínts, le ofrece menos dinero... no más.",
+   "gen": "[serious] Pero el distribuidor, Chárls Mínts, le ofrece menos dinero... [pause] no más.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L4"
+  },
+  {
+   "id": "L3",
+   "rol": "fracaso",
+   "t": "Y le muestra dos cosas. Primera: Oswald no es de Walt. Los derechos son del estudio *Universal*.",
+   "tts": "Y le muestra dos cosas. Primera: Ósuald no es de Uólt. Los derechos son del estudio Universal.",
+   "gen": "[tense] Y le muestra dos cosas. [pause] Primera: Ósuald no es de Uólt. [sad] Los derechos son del estudio Universal.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L5"
+  },
+  {
+   "id": "L4",
+   "rol": "fracaso",
+   "t": "Segunda: ya contrató a casi todos sus animadores... a sus *espaldas*.",
+   "tts": "Segunda: ya contrató a casi todos sus animadores... a sus espaldas.",
+   "gen": "[serious] Segunda: ya contrató a casi todos sus animadores... [whispers] a sus espaldas.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L6"
+  },
+  {
+   "id": "L5",
+   "rol": "giro",
+   "t": "Podía quedarse, cobrar menos y trabajar para Mintz. Pero dijo *no*... y se fue sin Oswald.",
+   "tts": "Podía quedarse, cobrar menos y trabajar para Mínts. Pero dijo no... y se fue sin Ósuald.",
+   "gen": "[determined] Podía quedarse, cobrar menos y trabajar para Mínts. [bold] Pero dijo no... [pause] y se fue sin Ósuald.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L7"
+  },
+  {
+   "id": "L6",
+   "rol": "giro",
+   "t": "¿Y el conejo que tuvo que dejar? En 2006, *setenta y ocho* años después, la compañía Disney recuperó a Oswald.",
+   "tts": "¿Y el conejo que tuvo que dejar? En dos mil seis, setenta y ocho años después, la compañía Dísney recuperó a Ósuald.",
+   "gen": "[curious] ¿Y el conejo que tuvo que dejar? [pause] En dos mil seis, setenta y ocho años después, [excited] la compañía Dísney recuperó a Ósuald.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L22"
+  },
+  {
+   "id": "L7",
+   "rol": "giro",
+   "t": "¿Cómo? Dejando ir a un *narrador* deportivo, Al Michaels, que quería irse a la competencia... justo a la empresa dueña del conejo.",
+   "tts": "¿Cómo? Dejando ir a un narrador deportivo, Al Máikols, que quería irse a la competencia... justo a la empresa dueña del conejo.",
+   "gen": "[playful] ¿Cómo? [pause] Dejando ir a un narrador deportivo, Al Máikols, que quería irse a la competencia... [pause] justo a la empresa dueña del conejo.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L23"
+  },
+  {
+   "id": "L8",
+   "rol": "fracaso",
+   "t": "Pero Walt había muerto en 1966. *Nunca* vio volver a su conejo.",
+   "tts": "Pero Uólt había muerto en mil novecientos sesenta y seis. Nunca vio volver a su conejo.",
+   "gen": "[sad] Pero Uólt había muerto en mil novecientos sesenta y seis. [heavy sigh] Nunca vio volver a su conejo.",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L24"
+  },
+  {
+   "id": "L9",
+   "rol": "pregunta",
+   "t": "Y tú... ¿a qué trato injusto le dirías que *no*... y qué empezarías a crear que sea *tuyo*?",
+   "tts": "Y tú... ¿a qué trato injusto le dirías que no... y qué empezarías a crear que sea tuyo?",
+   "gen": "[softly, reflective] Y tú... ¿a qué trato injusto le dirías que no... [pause] [warmly] y qué empezarías a crear que sea tuyo?",
+   "p": 0.5,
+   "tag": "",
+   "orig": "L28"
+  },
+  {
+   "id": "L10",
+   "rol": "pregunta",
+   "t": "Ve el video completo en *YouTube*.",
+   "tts": "Ve el video completo en Yutiub.",
+   "gen": "[warmly] Ve el video completo en Yutiub.",
+   "p": 0.4,
+   "tag": "",
+   "orig": "X"
+  }
+ ]
+}
