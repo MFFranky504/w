@@ -54,5 +54,13 @@
   "cta": "¿Quién es tu bro?",
   "date": "2026-11-08",
   "metrics": {}
+ },
+ {
+  "id": "novia-usa",
+  "category": "crush",
+  "hook": "Si tu pareja solo te usa, ¿te das cuenta o te haces el ciego? A o B",
+  "cta": "Comenta qué haría tu bro",
+  "date": "2026-11-08",
+  "metrics": {}
  }
 ]
