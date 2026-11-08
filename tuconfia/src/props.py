@@ -454,3 +454,70 @@ def cane():
         P.add(lambda d: d.arc([3, 0, 13, 10], 180, 360, fill=255, width=3), (120, 84, 50), edge_k=.5)
         return P.final()
     return cached('cane', mk)
+
+
+# ================================================================ historia Disney
+def film_reel(r=10):
+    def mk():
+        P = Paint(r * 2 + 1, r * 2 + 1)
+        P.add(lambda d: d.ellipse([0, 0, r * 2, r * 2], fill=255), (50, 52, 70), edge_k=.5)
+        for k in range(6):
+            a = k * math.pi / 3; cx = r + int((r - 4) * math.cos(a)); cy = r + int((r - 4) * math.sin(a))
+            P.add(lambda d, cx=cx, cy=cy: d.ellipse([cx - 2, cy - 2, cx + 2, cy + 2], fill=255), (14, 14, 24), edge=False, sh=False, hi=False)
+        P.add(lambda d: d.ellipse([r - 2, r - 2, r + 2, r + 2], fill=255), (190, 192, 210), edge=False, sh=False, hi=False)
+        return P.final()
+    return cached(('reel', r), mk)
+
+
+def drawing_desk():
+    def mk():
+        P = Paint(64, 44)
+        P.add(lambda d: d.polygon([(4, 12), (60, 12), (64, 30), (0, 30)], fill=255), (176, 130, 84), edge_k=.5)
+        P.add(lambda d: d.polygon([(10, 14), (54, 14), (57, 27), (7, 27)], fill=255), (250, 246, 232), edge=False, sh=False, hi=False)
+        for y in (18, 22): P.line([(14, y), (50, y)], (150, 146, 170))
+        P.rect(6, 30, 8, 43, (120, 84, 54)); P.rect(56, 30, 58, 43, (120, 84, 54)); P.rect(2, 3, 5, 12, (200, 200, 220))
+        return P.final()
+    return cached('ddesk', mk)
+
+
+def doodle_page(ears=True):
+    """hoja con un boceto genérico (círculo y garabatos); sin silueta de ningún personaje real."""
+    def mk():
+        P = Paint(26, 32)
+        P.add(lambda d: d.rectangle([0, 0, 25, 31], fill=255), (252, 248, 236), edge_k=.6)
+        P.add(lambda d: d.ellipse([6, 5, 19, 18], fill=255), (60, 56, 80), edge=False, sh=False, hi=False)
+        P.add(lambda d: d.ellipse([8, 7, 17, 16], fill=255), (252, 248, 236), edge=False, sh=False, hi=False)
+        P.line([(9, 12), (12, 10), (16, 13)], (60, 56, 80))
+        for y in (24, 27): P.line([(3, y), (22, y)], (170, 166, 190))
+        return P.final()
+    return cached(('doodle', ears), mk)
+
+
+def statuette(h=24):
+    def mk():
+        P = Paint(h // 2 + 2, h)
+        c = (h // 2 + 2) // 2
+        P.add(lambda d: d.ellipse([c - 3, 0, c + 3, 6], fill=255), (240, 200, 80), edge_k=.5)
+        P.add(lambda d: d.rectangle([c - 2, 6, c + 2, h - 6], fill=255), (232, 188, 72), edge_k=.5)
+        P.add(lambda d: d.rectangle([c - 5, h - 6, c + 5, h - 1], fill=255), (150, 110, 40), edge_k=.5)
+        return P.final()
+    return cached(('stat', h), mk)
+
+
+def marquee_light(n=14):
+    def mk():
+        P = Paint(n * 6 + 2, 8)
+        P.add(lambda d: d.rectangle([0, 0, n * 6 + 1, 7], fill=255), (50, 30, 40), edge_k=.5)
+        for i in range(n): P.rect(2 + i * 6, 2, 4 + i * 6, 5, (255, 230, 130))
+        return P.final()
+    return cached(('marq', n), mk)
+
+
+def clapper():
+    def mk():
+        P = Paint(28, 24)
+        P.add(lambda d: d.rectangle([0, 8, 27, 23], fill=255), (40, 40, 52), edge_k=.5)
+        P.add(lambda d: d.polygon([(0, 0), (27, 3), (27, 8), (0, 8)], fill=255), (240, 240, 244), edge_k=.5)
+        for x in range(2, 26, 6): P.line([(x, 8), (x + 3, 1)], (30, 30, 40))
+        return P.final()
+    return cached('clap', mk)

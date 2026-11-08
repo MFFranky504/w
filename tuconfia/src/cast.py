@@ -48,6 +48,14 @@ CAST = {
  'jane': dict(style='tab', skin=(250, 214, 186), hair=ramp((100, 66, 46)), iris=(96, 70, 52), outfit='tee_green'),
  'nurse': dict(style='tab', skin=(246, 208, 176), hair=ramp((60, 44, 40)), iris=(70, 56, 44), outfit='coat'),
 
+ # --- historia 9: Walt Disney
+ 'disney_k': dict(style='short', skin=(246, 208, 176), hair=ramp((60, 42, 34)), iris=(80, 60, 44), outfit='tee_green', kid=True),
+ 'disney_y': dict(style='short', skin=(244, 204, 172), hair=ramp((58, 40, 32)), iris=(80, 60, 44), outfit='blazer'),
+ 'disney': dict(style='short', skin=(240, 200, 168), hair=ramp((88, 76, 70)), iris=(80, 60, 44), outfit='blazer'),
+ 'roy': dict(style='short', skin=(244, 204, 172), hair=ramp((84, 62, 50)), iris=(70, 56, 44), outfit='teacher'),
+ 'ub': dict(style='short', skin=(246, 208, 176), hair=ramp((110, 84, 60)), iris=(80, 100, 130), outfit='polo', glasses=True),
+ 'mintz': dict(style='short', skin=(236, 192, 156), hair=ramp((28, 24, 26)), iris=(60, 44, 36), outfit='tux'),
+
  # --- historia 4: Steve Jobs
  'jobs':   dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='turtle', glasses=True),
  'jobs85': dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='suit85'),
