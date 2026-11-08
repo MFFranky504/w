@@ -24,3 +24,8 @@ build/mix5.wav
 build/r5_*.log
 build/enc5.log
 build/v5.ok
+build/frames6/
+build/mix6.wav
+build/r6_*.log
+build/enc6.log
+build/v6.ok
