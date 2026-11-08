@@ -1,0 +1,91 @@
+{
+ "titulo": "gaga_short",
+ "meta": {
+  "famoso": "Lady Gaga",
+  "persona_hashtag": "#LadyGaga",
+  "pregunta": "¿Qué te cerraron... y qué vas a construir con eso?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Hasta *Lady Gaga* fue despedida.",
+   "tts": "Hasta Léidi Gágá fue despedida.",
+   "gen": "[bold] Hasta Léidi Gágá fue despedida.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "En dos mil seis, su discográfica la dejó ir... a los pocos meses de *firmar*.",
+   "tts": "En dos mil seis, su discográfica la dejó ir... a los pocos meses de firmar.",
+   "gen": "[sad] En dos mil seis, su discográfica la dejó ir... a los pocos meses de firmar.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "fracaso",
+   "t": "Según ha contado, siguió trabajando de *mesera*.",
+   "tts": "Según ha contado, siguió trabajando de mesera.",
+   "gen": "[sad] Según ha contado, siguió trabajando de mesera.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "giro",
+   "t": "Pero no dejó de escribir. Compuso canciones para *otros* artistas.",
+   "tts": "Pero no dejó de escribir. Compuso canciones para otros artistas.",
+   "gen": "[hopeful] Pero no dejó de escribir. Compuso canciones para otros artistas.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "giro",
+   "t": "Hasta que firmó con una nueva discográfica.",
+   "tts": "Hasta que firmó con una nueva discográfica.",
+   "gen": "[hopeful] Hasta que firmó con una nueva discográfica.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "giro",
+   "t": "Y su primer disco, The Fame, llegó al *número uno* en varios países.",
+   "tts": "Y su primer disco, De Féim, llegó al número uno en varios países.",
+   "gen": "[excited] Y su primer disco, De Féim, llegó al número uno en varios países.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "frase",
+   "t": "A veces te sacan del camino... para que *construyas* el tuyo.",
+   "tts": "A veces te sacan del camino... para que construyas el tuyo.",
+   "gen": "[warmly] A veces te sacan del camino... para que construyas el tuyo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "frase",
+   "t": "Ser despedida no apagó su talento. Lo obligó a buscar *otra puerta*.",
+   "tts": "Ser despedida no apagó su talento. Lo obligó a buscar otra puerta.",
+   "gen": "[warmly] Ser despedida no apagó su talento. Lo obligó a buscar otra puerta.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "pregunta",
+   "t": "Y tú... ¿qué te *cerraron*... y qué vas a *construir* con eso?",
+   "tts": "Y tú... ¿qué te cerraron... y qué vas a construir con eso?",
+   "gen": "[softly] Y tú... ¿qué te cerraron... y qué vas a construir con eso?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

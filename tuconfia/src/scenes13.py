@@ -326,3 +326,133 @@ def _you_close(who_a):
 
 
 close = _you_close(None)
+
+# ======================================================== GAGA
+from scenes12 import _office
+
+
+def _club(c, t):
+    c.im.paste(Image.fromarray(vgrad([(0, '#1a0a30'), (1, '#40164a')]).astype('uint8')), (0, 0))
+    bg.truss(c, 40, ((220, 60, 140), (110, 80, 230), (255, 210, 90)), t)
+    bg.crowd(c, 160, t, seed=5)
+    c.R(0, 184, WW, 120, (30, 14, 44)); c.R(0, 184, WW, 3, (255, 150, 200))
+    for lx, col in ((40, (255, 120, 180)), (120, (140, 140, 255))): c.light(lx, 70, 60, 120, col, .5)
+
+
+def g_hook_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _club(c, t)
+    PR.keep(c, PR.mic_stand(), 94, 176); place(c, rpg('gaga', int(t * 2) % 2), 70, 212); c.amb = (1.0, .96, 1.06); c.vig = .6
+    return c.render()
+
+
+def g_hook_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _club(c, t)
+    PR.keep(c, PR.mic_stand(), 98, 196); place(c, bat('gaga', 'stand'), 70, FM + 2 + math.sin(t * 3)); c.amb = (1.0, .96, 1.06); c.vig = .6
+    return c.render()
+
+
+g_hook = phased(g_hook_a, g_hook_b, cuts=(.5,))
+
+
+def g_label_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _office(c, t)
+    place(c, rpg('execg', 0), 124, 172, sh=False); PR.keep(c, PR.contract(), 84, 140)
+    c.R(70, 170, 80, 6, (130, 84, 54)); c.R(70, 170, 80, 2, (200, 150, 100)); place(c, rpg('gaga', 0), 40, FW + 4)
+    c.amb = (.94, .94, 1.0); c.vig = .7
+    return c.render()
+
+
+def g_label_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _office(c, t)
+    place(c, bat('execg', 'stand'), 112, FM); PR.keep(c, PR.contract(), 50, 150)
+    c.amb = (.86, .88, 1.0); c.vig = .85
+    return c.render()
+
+
+g_label = phased(g_label_a, g_label_b, cuts=(.5,))
+
+
+def _diner(c, t):
+    bg.wallpaper(c, 0, 0, WW, FLR, (150, 70, 74), (140, 62, 66), (190, 110, 112))
+    c.R(0, 120, WW, 6, (230, 230, 240)); c.R(20, 40, 50, 50, (30, 30, 46)); c.R(23, 43, 44, 44, (240, 240, 230))
+    a = t * 0.5; c.d.line([(45, 65), (45 + 14 * math.cos(a), 65 + 14 * math.sin(a))], fill=(30, 30, 40))
+    bg.planks(c, 0, FLR, WW, 90, (90, 90, 110), seed=95, pw=12); c.R(0, FLR - 2, WW, 3, (40, 40, 56))
+    c.R(0, 176, WW, 8, (230, 230, 240)); c.R(0, 184, WW, 30, (120, 50, 56)); c.light(80, 60, 120, 80, (255, 220, 160), .3)
+
+
+def g_diner_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _diner(c, t)
+    place(c, rpg('gagaw', int(t * 2) % 2), 60 + 40 * u, 224); c.amb = (.94, .92, 1.0); c.vig = .7
+    return c.render()
+
+
+def g_diner_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _diner(c, t)
+    place(c, bat('gagaw', 'hold'), 80, FM); c.amb = (.9, .88, .98); c.vig = .8
+    return c.render()
+
+
+g_diner = phased(g_diner_a, g_diner_b, cuts=(.5,))
+
+
+def _studio_n(c, t):
+    bg.wallpaper(c, 0, 0, WW, FLR, (40, 34, 70), (36, 30, 64), (62, 54, 104))
+    bg.planks(c, 0, FLR, WW, 90, (70, 50, 54), seed=97, pw=9); c.R(0, FLR - 2, WW, 3, (34, 24, 30))
+    bg.window(c, 100, 50, 46, 60, t=t, night=True, curtain=None, rain=False, lights=True)
+    c.R(14, 176, 110, 8, (130, 84, 54)); c.R(14, 176, 110, 2, (200, 150, 100)); c.R(18, 184, 4, 28, (100, 66, 44)); c.R(116, 184, 4, 28, (100, 66, 44))
+    c.light(60, 150, 70, 60, (255, 210, 130), .5)
+
+
+def g_write_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _studio_n(c, t)
+    PR.keep(c, PR.book_open(40, 22, 5), 30, 160); place(c, rpg('gaga', int(t * 2) % 2 if u < .3 else 0), 80, 188, sh=False)
+    c.R(14, 176, 110, 8, (130, 84, 54)); c.R(14, 176, 110, 2, (200, 150, 100)); c.amb = (.9, .9, 1.0); c.vig = .75
+    return c.render()
+
+
+def g_write_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _studio_n(c, t)
+    place(c, bat('gaga', 'hold'), 80, FM)
+    for i in range(10): c.R(30 + (i * 41) % 100, 220 - ((t * 30 + i * 21) % 130), 3, 3, (255, 230, 150))
+    c.amb = (.9, .9, 1.0); c.vig = .8
+    return c.render()
+
+
+g_write = phased(g_write_a, g_write_b, cuts=(.5,))
+
+
+def g_sign_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _office(c, t)
+    place(c, rpg('execg', 0), 124, 172, sh=False); PR.keep(c, PR.contract(), 84, 140)
+    c.R(70, 170, 80, 6, (130, 84, 54)); c.R(70, 170, 80, 2, (200, 150, 100)); place(c, rpg('gaga', 0), 40, FW + 4); c.light(80, 170, 80, 60, (255, 230, 150), .5)
+    c.amb = (1.0, .98, 1.0); c.vig = .65
+    return c.render()
+
+
+def g_sign_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _office(c, t)
+    place(c, bat('gaga', 'hold'), 80, FM); PR.keep(c, PR.contract(), 98, 150); c.light(80, 190, 90, 90, (255, 230, 150), .4)
+    c.amb = (1.0, .98, 1.0); c.vig = .65
+    return c.render()
+
+
+g_sign = phased(g_sign_a, g_sign_b, cuts=(.5,))
+
+
+def g_one_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _club(c, t)
+    place(c, rpg('gaga', int(t * 3) % 2), 80, 216); PR.keep(c, PR.vinyl(12), 112, 190); c.amb = (1.04, .98, 1.06); c.vig = .55
+    return c.render()
+
+
+def g_one_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _club(c, t)
+    place(c, bat('gaga', 'hold'), 80, FM + 2)
+    for i in range(30):
+        x = (i * 37 + t * 30) % WW; y = (t * 60 + i * 31) % 230
+        c.R(int(x), int(y), 2, 3, [(255, 90, 120), (255, 220, 100), (110, 190, 255)][i % 3])
+    c.amb = (1.04, .98, 1.06); c.vig = .55
+    return c.render()
+
+
+g_one = phased(g_one_a, g_one_b, cuts=(.5,))

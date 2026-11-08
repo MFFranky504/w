@@ -37,3 +37,10 @@ Revisar a las 48 h de cada publicación. No sacar conclusiones con menos de 14 v
 Archivos: out/TU_CONFIA_johnson_SHORT_Vertical_yt.mp4 y out/TU_CONFIA_brady_SHORT_Vertical_yt.mp4 (vertical 1080x1920, unos 38 s). Textos por plataforma: caption_johnson_short_*.txt y caption_brady_short_*.txt.
 Títulos YouTube Shorts: «Lo cortaron... y volvió a casa con 7 dólares 🔥» y «199 jugadores fueron elegidos antes que él 🏈».
 Hechos a confirmar antes de publicar: los siete dólares de Johnson se basan en lo que él ha contado (una sola fuente encontrada); el resto coincide con Wikipedia.
+
+## Short Lady Gaga
+Archivo: out/TU_CONFIA_gaga_SHORT_Vertical_yt.mp4 (vertical, 37 s). Textos: caption_gaga_short_*.txt.
+Título YouTube Shorts: «Hasta Lady Gaga fue despedida... y luego llegó al número uno 🎤».
+Comentario fijado: «Cuéntame, ¿cuál es ese "no" que recibiste y que ahora estás transformando en una oportunidad? 👇».
+Hechos revisados con Gemini y con conocimiento propio: despido de Island Def Jam en 2006, trabajo de mesera (narrado como «según ha contado»), composiciones para otros, nuevo contrato, The Fame en el número uno de varios países. Confirmar en una fuente antes de publicar: el plazo exacto («pocos meses»).
+Aviso visual: la tarjeta final tapa la cara del personaje durante los últimos 2-3 s.

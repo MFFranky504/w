@@ -125,6 +125,9 @@ CFG = {
  'brady': dict(turn='injury', pre='bench', late='win',
    sc=[('draft', 'Hasta Tom', 'b_draft'), ('passed', 'Ciento noventa', 'b_passed'), ('bench', 'Empezó', 'b_bench'), ('injury', 'Hasta que', 'b_injury'), ('win', 'Ganó ese', 'b_win'), ('grind', 'Según ha', 'b_grind'), ('cierre', 'No eligieron', 'close')],
    hooks=[('draft', .15, 2.6, '¡EL NÚMERO', '199!', 700), ('passed', .3, 2.9, '¡198 ANTES', 'QUE ÉL!', 700), ('injury', .3, 2.9, '¡LE LLEGÓ', 'SU TURNO!', 520), ('win', .3, 3.0, '¡7 SÚPER', 'BOWLS!', 520), ('cierre', 3.6, 6.2, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
+ 'gaga': dict(turn='sign', pre='write', late='one',
+   sc=[('hook', 'Hasta Lady', 'g_hook'), ('label', 'En dos mil', 'g_label'), ('diner', 'Según ha', 'g_diner'), ('write', 'Pero no', 'g_write'), ('sign', 'Hasta que', 'g_sign'), ('one', 'Y su primer', 'g_one'), ('cierre', 'A veces', 'close')],
+   hooks=[('hook', .15, 1.9, '¡LA', 'DESPIDIERON!', 520), ('label', .3, 3.0, '¡A LOS POCOS', 'MESES!', 520), ('diner', .3, 2.0, '¡DE MESERA!', '', 520), ('sign', .2, 2.0, '¡OTRA', 'OPORTUNIDAD!', 520), ('one', .3, 3.4, '¡NÚMERO UNO', 'EN EL MUNDO!', 520), ('cierre', 5.8, 8.4, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
 }[STORY]
 SCENES = []
 for n_, p_, f_ in CFG['sc']:

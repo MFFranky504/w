@@ -67,6 +67,9 @@ CAST = {
  'brady_y':   dict(style='short', skin=(240, 196, 160), hair=ramp((82, 58, 42)), iris=(80, 100, 130), outfit='tee_blue'),
  'brady':     dict(style='short', skin=(238, 194, 158), hair=ramp((108, 94, 84)), iris=(80, 100, 130), outfit='blazer'),
  'qb2':       dict(style='short', skin=(236, 190, 152), hair=ramp((60, 46, 36)), iris=(70, 56, 44), outfit='tee_red'),
+ 'gaga':   dict(style='tab', skin=(250, 214, 184), hair=ramp((238, 214, 140)), iris=(90, 110, 150), outfit='tee_yellow'),
+ 'gagaw':  dict(style='tab', skin=(250, 214, 184), hair=ramp((238, 214, 140)), iris=(90, 110, 150), outfit='tee_red'),
+ 'execg':  dict(style='short', skin=(236, 192, 156), hair=ramp((34, 30, 32)), iris=(60, 44, 36), outfit='tux'),
 }
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False)
