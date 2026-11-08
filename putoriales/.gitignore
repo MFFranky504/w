@@ -29,3 +29,8 @@ build/mix6.wav
 build/r6_*.log
 build/enc6.log
 build/v6.ok
+build/frames7/
+build/mix7.wav
+build/r7_*.log
+build/enc7.log
+build/v7.ok
