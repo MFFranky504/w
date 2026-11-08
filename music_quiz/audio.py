@@ -232,7 +232,7 @@ for ci, c in enumerate(CLUES):
     sc = c.get("scene")
     if sc == "block": S(lp(noise(d), 40) * .12 + crackle_bed(d, 12, .3), t0, 1.0)
     elif sc == "jazz": S(lp(noise(d), 90) * .08, t0, 1.0); S(boom(.6) * .4, t0 + .3, .8)
-    elif sc in ("set", "tv", "store", "bedroom"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
+    elif sc in ("set", "tv", "store", "bedroom", "cafe", "school", "airport"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc == "awards":
         S(lp(noise(d), 10) * (.08 + .05 * np.sin(2*np.pi*.4*tt(d))), t0, 1.0)
         for tp in (1.0, 3.5): S(cymbal(.9), t0 + tp, .5)

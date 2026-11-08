@@ -1360,12 +1360,97 @@ def nas2_draw(im, t, ts):
     k = int((t * 5) % 6)
     if k < 2: d.point((ox + 50 + (k * 2 - 1), y0 + 77), fill=WHITE); d.point((ox + 50, y0 + 75 + k), fill=WHITE)            # cross sparkle
 
+# ======================= v10: ultra-hard Tyler scenes: café job, 12 schools, UK ban airport =======================
+def base_cafe():
+    im = _gradient_bg((70, 44, 34), (130, 86, 58), 8, 266, (60, 40, 30)); d = ImageDraw.Draw(im)
+    d.rectangle((150, 130, 262, 210), fill=(150, 200, 230), outline=(60, 40, 30), width=3); d.line([(206, 130), (206, 210)], fill=(60, 40, 30), width=2)     # street window
+    d.rectangle((150, 196, 262, 210), fill=(90, 90, 100))
+    d.rectangle((10, 132, 128, 196), fill=(30, 36, 34), outline=(150, 110, 70), width=3); d.fontmode = "1"                                                # chalk menu
+    for k, (tx, c) in enumerate((("LATTE ....... 4", WHITE), ("MOCHA ....... 5", (255, 220, 160)), ("FRAPPÉ ...... 6", (190, 230, 255)), ("¿?????? ..... 9", (255, 150, 190)))): d.text((16, 140 + k * 13), tx, font=F(8), fill=c)
+    d.rectangle((0, 222, W, 266), fill=(120, 76, 44)); d.rectangle((0, 218, W, 224), fill=(170, 120, 74))                                                 # counter
+    d.rectangle((14, 190, 58, 222), fill=(190, 194, 206), outline=(100, 100, 116)); d.rectangle((20, 196, 52, 206), fill=(60, 60, 72)); d.rectangle((30, 206, 34, 214), fill=(80, 80, 90))   # espresso machine
+    d.rectangle((196, 196, 258, 222), fill=(220, 236, 244), outline=(120, 130, 140))                                                                     # pastry case
+    for k in range(4): d.ellipse((200 + k * 14, 206, 210 + k * 14, 214), fill=[(220, 160, 80), (200, 120, 70), (240, 200, 120), (150, 90, 50)][k])
+    for y in range(272, H, 12):
+        for x in range(0, W, 24): o = 12 if (y // 12) % 2 else 0; d.rectangle((x + o, y, x + o + 11, y + 11), fill=(70, 46, 34))
+    return dim_top(im, 120)
+CAFE = base_cafe()
+def dyn_cafe(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    vx = (t * 30) % (W + 220) + 40                                                                                    # delivery van passing the window
+    if 140 < vx < 300: d.rectangle((vx - 40, 168, vx, 196), fill=(110, 70, 170)); d.rectangle((vx - 12, 172, vx - 2, 182), fill=(180, 220, 240)); d.ellipse((vx - 36, 192, vx - 28, 200), fill=(30, 30, 36)); d.ellipse((vx - 12, 192, vx - 4, 200), fill=(30, 30, 36))
+    d.rectangle((150, 130, 262, 133), fill=(60, 40, 30)); d.rectangle((262, 130, W, 210), fill=(110, 70, 50)); d.rectangle((126, 130, 150, 210), fill=(110, 70, 50))
+    for k in range(5): d.point((32 + 2 * math.sin(t * 3 + k), 188 - ((t * 12 + k * 6) % 26)), fill=(236, 236, 240))                                 # steam
+    if int(t * 2) % 3: d.line([(32, 206), (32, 212)], fill=(90, 50, 30))
+    cx = 88; d.rectangle((cx - 9, 202, cx + 9, 222), fill=(250, 248, 240), outline=(120, 110, 100)); d.rectangle((cx - 10, 198, cx + 10, 202), fill=(40, 120, 70))   # cup with a misspelled name
+    d.fontmode = "1"; d.text((cx, 212), "TAILER", font=F(6), fill=(30, 30, 30), anchor="mm")
+    for k in range(3): d.point((cx - 3 + k * 3, 194 - ((t * 10 + k * 4) % 10)), fill=(236, 236, 240))
+    bx = 110; by = 214 - (abs(math.sin(t * 2.2)) * 6 if int(t / 2.9) % 2 else 0); d.rectangle((bx - 8, by - 8, bx + 8, by + 6), fill=(200, 150, 90), outline=(120, 80, 40)); d.text((bx, by - 1), "FRÁGIL", font=F(5), fill=(200, 40, 40), anchor="mm")
+
+def base_school():
+    im = _gradient_bg((200, 210, 180), (226, 214, 170), 8, 266, (150, 110, 80)); d = ImageDraw.Draw(im)
+    d.rectangle((50, 126, 220, 196), fill=(36, 74, 52), outline=(150, 110, 70), width=4); d.rectangle((50, 196, 220, 200), fill=(150, 110, 70))                      # chalkboard
+    for x0 in (4, 228):
+        for k in range(2):
+            d.rectangle((x0 + k * 19, 130, x0 + k * 19 + 17, 262), fill=(60, 110, 170), outline=(30, 60, 110))
+            for s in range(4): d.line([(x0 + k * 19 + 4, 140 + s * 3), (x0 + k * 19 + 13, 140 + s * 3)], fill=(30, 60, 110))
+            d.rectangle((x0 + k * 19 + 13, 196, x0 + k * 19 + 15, 204), fill=(200, 200, 210))
+    for k in range(3):                                                                                                    # desks
+        x = 40 + k * 80; d.rectangle((x, 238, x + 50, 244), fill=(190, 140, 80)); d.rectangle((x + 4, 244, x + 8, 266), fill=(110, 110, 120)); d.rectangle((x + 42, 244, x + 46, 266), fill=(110, 110, 120))
+    for y in range(272, H, 16):
+        for x in range(0, W, 32): o = 16 if (y // 16) % 2 else 0; d.rectangle((x + o, y, x + o + 15, y + 15), fill=(170, 130, 96))
+    return dim_top(im, 120)
+SCHOOL = base_school()
+def dyn_school(im, t, ts, tag):
+    d = ImageDraw.Draw(im); d.fontmode = "1"
+    n = min(12, int((t * 2.4) % 16))                                                                                       # tally marks being chalked up to 12
+    for k in range(n):
+        g, i = divmod(k, 5); x = 64 + g * 34 + i * 5
+        if i == 4: d.line([(x - 22, 160), (x - 1, 146)], fill=(240, 240, 230), width=2)
+        else: d.line([(x, 144), (x, 164)], fill=(240, 240, 230), width=2)
+    d.text((168, 152), "ESCUELA", font=F(8), fill=(240, 240, 230), anchor="mm"); d.text((168, 166), f"#{max(n, 1)}", font=F(12), fill=(255, 230, 120), anchor="mm")
+    d.ellipse((120, 104, 140, 124), fill=WHITE, outline=(40, 40, 50)); a = t * 2; d.line([(130, 114), (130 + 7 * math.cos(a), 114 + 7 * math.sin(a))], fill=(220, 40, 50)); d.line([(130, 114), (130 + 5 * math.cos(a / 12), 114 + 5 * math.sin(a / 12))], fill=(20, 20, 20))
+    px = 40 + (t * 46) % 200; py = 214 + 14 * math.sin(t * 3)                                                              # paper plane
+    d.polygon([(px, py), (px - 12, py - 4), (px - 8, py), (px - 12, py + 4)], fill=WHITE, outline=(150, 150, 170))
+    for k in range(6):
+        x = 70 + (k * 23 + t * 6) % 120; y = 200 + ((t * 18 + k * 9) % 30); d.point((x, y), fill=(236, 236, 228))       # chalk dust
+    bx = (t * 26) % (W + 120) - 60                                                                                        # backpack-carrying kid silhouette switching schools
+    d.ellipse((bx - 3, 222, bx + 3, 228), fill=(30, 26, 40)); d.rectangle((bx - 3, 228, bx + 3, 240), fill=(30, 26, 40)); d.rectangle((bx - 8, 228, bx - 3, 238), fill=(230, 60, 80))
+    d.line([(bx - 2, 240), (bx - 4 + 3 * math.sin(t * 9), 248)], fill=(30, 26, 40), width=2); d.line([(bx + 2, 240), (bx + 4 - 3 * math.sin(t * 9), 248)], fill=(30, 26, 40), width=2)
+
+def base_airport():
+    im = _gradient_bg((150, 190, 230), (230, 236, 244), 9, 266, (186, 190, 204)); d = ImageDraw.Draw(im)
+    d.rectangle((0, 126, W, 214), fill=(170, 210, 240))
+    for x in range(0, W + 1, 45): d.rectangle((x - 2, 126, x + 2, 214), fill=(80, 90, 110))
+    d.rectangle((0, 198, W, 214), fill=(120, 126, 140)); d.rectangle((0, 214, W, 218), fill=(80, 90, 110))
+    d.rectangle((12, 222, 120, 236), fill=(30, 30, 40), outline=(120, 120, 140))                                          # departures board
+    d.rectangle((150, 236, 262, 262), fill=(90, 94, 110)); [d.line([(150 + k * 14, 236), (150 + k * 14, 262)], fill=(70, 74, 90)) for k in range(9)]
+    for y in range(272, H, 20): d.line([(0, y), (W, y)], fill=(200, 204, 218))
+    for k in range(-8, 9): d.line([(135, 266), (135 + k * 50, H)], fill=(200, 204, 218))
+    return dim_top(im, 120)
+AIRPORT = base_airport()
+def dyn_airport(im, t, ts, tag):
+    d = ImageDraw.Draw(im); d.fontmode = "1"
+    p = (t * .22) % 1.0; px = -30 + p * 330; py = 196 - max(0, p - .35) * 120                                               # plane taking off (without him)
+    d.polygon([(px - 18, py), (px + 18, py - 2), (px + 22, py + 2), (px - 18, py + 4)], fill=(250, 250, 252), outline=(140, 150, 170)); d.polygon([(px - 2, py), (px + 8, py), (px - 8, py + 10)], fill=(220, 226, 236)); d.polygon([(px - 18, py), (px - 14, py - 10), (px - 10, py)], fill=(220, 50, 70))
+    for k, (tx, st) in enumerate((("LONDRES", "CANCELADO"),)):
+        flip = int(t * 8) % 14
+        d.text((18, 229), tx, font=F(7), fill=(255, 214, 60), anchor="lm"); d.text((116, 229), st if flip > 2 else "########", font=F(7), fill=(255, 70, 70), anchor="rm")
+    for k in range(5):                                                                                                    # suitcases on the carousel
+        x = 150 + (k * 26 + t * 18) % 112; d.rectangle((x, 238, x + 14, 248), fill=[(220, 60, 80), (60, 130, 220), (240, 200, 60), (90, 180, 110), (150, 100, 200)][k], outline=(40, 40, 50)); d.line([(x + 4, 238), (x + 10, 238)], fill=(40, 40, 50))
+    q = (t % 3.0)                                                                                                         # passport + DENEGADO stamp slamming down
+    d.rectangle((206, 150, 252, 186), fill=(40, 60, 120), outline=(255, 214, 60)); d.rectangle((210, 154, 248, 182), fill=(244, 236, 214))
+    if q > 1.6:
+        s = 1 + max(0, (1.8 - q)) * 4; d.rectangle((229 - 17 * s, 162 - 6 * s, 229 + 17 * s, 174 + 6 * s), outline=(220, 30, 40), width=2); d.text((229, 168), "DENEGADO", font=F(6), fill=(220, 30, 40), anchor="mm")
+    else: hy = 130 + q * 20; d.rectangle((222, hy, 236, hy + 8), fill=(120, 80, 50)); d.rectangle((226, hy - 10, 232, hy), fill=(90, 60, 40))
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
        "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
        "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook)),
-       "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards)}
+       "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards),
+       "cafe": (CAFE, dyn_cafe), "school": (SCHOOL, dyn_school), "airport": (AIRPORT, dyn_airport)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
 _hook = REG[EP.get("hook_scene", "brook")]
 _pb, _pd = REG[PREV["scene"]]
@@ -1389,6 +1474,7 @@ def ui_low(seg, ts, t):
                 lt(d, (135, 46 + dy), "MODO", 24, WHITE, shadow=(255, 40, 60)); lt(d, (135, 96 + dy), "MEGA", 64, GOLD, shadow=(220, 20, 40)); lt(d, (135, 150 + dy), "DIFÍCIL", 40, WHITE, shadow=(220, 20, 40))
             if ts > 1.0: pill(d, 135, 300, 322, 222, (14, 8, 34), (255, 40, 60)); lt(d, (135, 311), f"{NCL} PISTAS · 0 FÁCILES", 11, WHITE)
             if ts > 1.4: lt(d, (135, 342), f"ARTISTA MISTERIOSO · PARTE {EP['part']}", 10, (255, 200, 120))
+            if ts > 1.2: lt(d, (135, 362), f"¡SOLO {CLUE_LEN:g} SEGUNDOS POR PISTA!", 10, (255, 90, 90))
             return ui
         if EP["hook"] == "b":                           # NEW HOOK (first 2 s): "Solo el 1% adivina este artista"
             on = ts > .45 or int(ts * 15) % 3 != 2

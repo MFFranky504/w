@@ -4,14 +4,15 @@ from episodes import current
 EP = current()
 FPS = 30
 WIPE = 0.6
-TW0, TWS = 1.4, 0.032                    # typewriter start (segment time) and sec/char
+TW0, TWS = 1.4, 0.032                    # typewriter start (segment time) and sec/char (episode can override)
 CLUES = EP["clues"]; NCL = len(CLUES)
 PREV = EP["prev"]; WINNERS = PREV["winners"]; SPECIAL = PREV["special"]
 HOOK_LEN = EP["hook_len"]; REVEAL = EP["reveal"]
 S_HOOK, S_RECAP, S_WIN, S_C1 = 0, 1, 2, 3
 S_OUT = S_C1 + NCL
 ROW_H, WIN_SPEED, WIN_WH, WIN_START = 88, 270, 686, 0.8   # winners list (full-res px, px/s)
-CLUE_LEN, LAST_CLUE_LEN = 7.5, 9.0                        # the easiest clue is last and gets a 3-2-1 countdown
+CLUE_LEN, LAST_CLUE_LEN = EP.get("clue_len", 7.5), EP.get("last_clue_len", 9.0)   # last clue gets a 3-2-1 countdown
+TW0, TWS = EP.get("tw0", TW0), EP.get("tws", TWS)
 RECAP_LEN = 9.0 if WINNERS else REVEAL + 3.6
 PCOL_KEYS = (1, 2, 3, 0)
 
@@ -31,7 +32,7 @@ END = T[S_OUT] + 7.0
 BANNERS = {S_C1: "¿YA LO SABES? ¡COMÉNTALO!", S_C1 + 1: "¿TE SALIÓ? ¡ESCRÍBELO YA!"}
 if NCL >= 3: BANNERS[S_C1 + NCL - 2] = "LA ÚLTIMA PISTA ES REGALADA"
 if "banners" in EP: BANNERS = {S_C1 + i: txt for i, txt in EP["banners"].items()}
-BANNER_T = 5.4
+BANNER_T = min(5.4, CLUE_LEN - 1.8)
 def plain(s): return s.replace("*", "")
 if __name__ == "__main__":
     print(EP["artist"], "clues", NCL, "winners", len(WINNERS), "T", [round(x, 1) for x in T], "END", round(END, 1))
