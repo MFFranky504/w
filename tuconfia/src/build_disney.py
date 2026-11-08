@@ -131,8 +131,8 @@ SCENES = [
     dict(n='amigo_va', a=lid('Pero en 1930'), b=lid('Pero en 1930'), fn=lambda t, u: S11.amigo_va(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
     dict(n='derrumbe', a=lid('Al año siguiente'), b=lid('Al año siguiente'), fn=lambda t, u: S11.derrumbe(t, u), cam=[(0, 160, 90, 1.0), (0.34, 160, 90, 1.0), (0.3401, 160, 90, 1.0), (0.6, 160, 90, 1.0), (0.6001, 160, 112, 1.5), (1, 160, 112, 1.5)]),
     dict(n='huelga', a=lid('Y no, Walt'), b=lid('Y no, Walt'), fn=lambda t, u: S11.huelga(t, u), cam=[(0, 160, 90, 1.0), (0.5, 160, 90, 1.0), (0.5001, 160, 90, 1.0), (1, 160, 90, 1.0)]),
-    dict(n='conejo', a=lid('¿Y el conejo'), b=lid('¿Y el conejo'), fn=lambda t, u: S11.conejo(t, u), cam=[(0, 160, 90, 1.0), (0.35, 160, 90, 1.0), (0.35009999999999997, 160, 90, 1.0), (0.7, 160, 90, 1.0), (0.7001, 160, 112, 1.5), (1, 160, 112, 1.5)]),
-    dict(n='cierre', a=lid('Perdió su'), b=lid('Perdió su'), fn=lambda t, u: S11.cierre(t, u), cam=[(0, 160, 90, 1.0), (0.55, 160, 90, 1.0), (0.5501, 160, 90, 1.0), (1, 160, 90, 1.0)]),
+    dict(n='conejo', a=lid('¿Y el conejo'), b=lid('¿Y el conejo'), fn=lambda t, u: S11.conejo(t, u), cam=[(0, 160, 90, 1.0), (0.35, 160, 90, 1.0), (0.3501, 160, 90, 1.0), (0.52, 160, 90, 1.0), (0.5201, 160, 90, 1.2), (0.7, 160, 90, 1.2), (0.7001, 160, 112, 1.5), (1, 160, 112, 1.5)]),
+    dict(n='cierre', a=lid('Perdió su'), b=lid('Perdió su'), fn=lambda t, u: S11.cierre(t, u), cam=[(0, 160, 90, 1.0), (0.22, 160, 90, 1.0), (0.2201, 160, 100, 1.3), (0.55, 160, 100, 1.3), (0.5501, 160, 112, 1.5), (1, 160, 112, 1.5)]),
 ]
 for i, s in enumerate(SCENES):
     s['t0'] = 0.0 if i == 0 else (LEND[SCENES[i - 1]['b']] + LSTART[s['a']]) / 2 if False else (LSTART[s['a']] if i else 0.0)
@@ -202,6 +202,7 @@ bd = ImageDraw.Draw(BRAND)
 fb = F('Black', 44)
 w1 = bd.textlength('TU CONF', font=fb); w2 = bd.textlength('.IA', font=fb)
 bx = 72
+bd.rounded_rectangle([bx - 14, 46, bx + w1 + w2 + 24, 130], radius=14, fill=(14, 10, 26, 150))
 bd.text((bx + 3, 63), 'TU CONF', font=fb, fill=(0, 0, 0, 160)); bd.text((bx, 60), 'TU CONF', font=fb, fill=WHITE)
 bd.rounded_rectangle([bx + w1 - 2, 58, bx + w1 + w2 + 10, 118], radius=8, fill=PURPLE)
 bd.text((bx + w1 + 4, 60), '.IA', font=fb, fill=WHITE)
@@ -260,6 +261,7 @@ def draw_sub(img, t):
     sc = .86 + .14 * (1 - (1 - pop) ** 2)
     layer = Image.new('RGBA', (VW, 220), (0, 0, 0, 0)); ld = ImageDraw.Draw(layer)
     total = wid()
+    ld.rounded_rectangle([(2 * 960 - total) / 2 - 34, 14, (2 * 960 + total) / 2 + 34, size + 82], radius=22, fill=(10, 6, 22, 105))
     SUBCX = 960; x = (2 * SUBCX - total) / 2; y = 50
     for w, e in g:
         w = w.upper()
@@ -289,14 +291,13 @@ def draw_caps(img, t):
             d.text((60, 398), l2, font=F('Medium', 36), fill=(255, 216, 74, a), stroke_width=4, stroke_fill=(14, 10, 26, a))
 
 
-HOOKS = [('office', .15, 3.0, '¡PODÍA ACEPTAR', 'Y SE NEGÓ!', 330), ('worse', 10.4, 13.2, '¡CASI TODO', 'SU EQUIPO!', 330),
+HOOKS = [('office', .15, 3.0, '¡PODÍA ACEPTAR', 'Y SE NEGÓ!', 440, 780),
          ('sonido', .3, 3.2, '¡DIBUJOS CON', 'SONIDO!', 330), ('conejo', 14.0, 17.0, '¡NUNCA LO', 'VIO VOLVER!', 520)]
 SC_ = {s['n']: s for s in SCENES}
-HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
+HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy, (rest[0] if rest else 960)) for n, a, c_, l1, l2, yy, *rest in HOOKS]
 PLAT = (sys.argv[sys.argv.index('--cta') + 1] if '--cta' in sys.argv else 'yt')          # yt = SUSCRÍBETE, tt/ig = SÍGUEME
 CTA_T0 = en[-1] - .2
 SC_ = {s['n']: s for s in SCENES}
-HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
 
 
 CHAPS = [('office', 'CAPÍTULO 1 · DIJO QUE NO'), ('bros', 'CAPÍTULO 2 · LO QUE LE QUEDÓ'), ('rechazo', 'CAPÍTULO 3 · OTRO RECHAZO'), ('amigo_va', 'CAPÍTULO 4 · EL AMIGO QUE SE FUE'),
@@ -318,7 +319,7 @@ def draw_chapter(img, t):
 
 
 def draw_hooks(img, t):
-    for a, c_, l1, l2, yy in HOOK_T:
+    for a, c_, l1, l2, yy, hx in HOOK_T:
         if not (a <= t < c_): continue
         k = min(1, (t - a) / .14); out = min(1, (c_ - t) / .15)
         sc = (.6 + .5 * k - .1 * k * k) if k < 1 else 1.0
@@ -331,7 +332,7 @@ def draw_hooks(img, t):
                 ld.text((x, y), ln, font=ft, fill=col or (YEL if n_ == 0 else WHITE), stroke_width=8, stroke_fill=DARK if col is None else col)
         lay = lay.resize((int(1700 * sc), int(340 * sc)), Image.BILINEAR)
         lay.putalpha(lay.getchannel('A').point(lambda v: int(v * min(1, k * 2) * out)))
-        img.alpha_composite(lay, (960 - lay.width // 2 + int(math.sin(t * 50) * 3 * (1 - k)), yy - lay.height // 2))
+        img.alpha_composite(lay, (hx - lay.width // 2 + int(math.sin(t * 50) * 3 * (1 - k)), yy - lay.height // 2))
 
 
 def draw_outro(img, t):
@@ -468,7 +469,7 @@ def synth_audio():
     add(pad * np.minimum(1, tt(dur('cierre')) / 1.5) * np.minimum(1, (dur('cierre') - tt(dur('cierre'))) / 1.0), g('cierre')['t0'], .5)
     d = .5; env = np.sin(np.pi * np.clip(tt(d) / d, 0, 1)) ** 2
     add(noise(d, 1800) * env * .3, TOTAL - LOOP_D - .1, .5)
-    for a, c_, l1, l2, yy in HOOK_T:                               # blip de cada gancho de texto
+    for a, c_, l1, l2, yy, hx in HOOK_T:                           # blip de cada gancho de texto
         ft_ = tt(.16); add(np.sign(np.sin(2 * np.pi * (700 + 900 * ft_ / .16) * ft_)) * np.exp(-ft_ * 14) * .22, a, .6)
     for tc in CUTS: add(noise(.14, 4000) * np.exp(-tt(.14) * 30) * .5, tc, .6)
     for bi, kd in enumerate(TKIND):

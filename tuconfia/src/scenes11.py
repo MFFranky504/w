@@ -140,14 +140,13 @@ def _hall(c, t):
 def no_a(t, u):
     c = cv((0, BLK), (1, BLK)); _hall(c, t)
     place(c, rpg('disney_y', int(t * 3) % 2), 80 + 160 * u, FW + 8)
-    PR.keep(c, PR.contract(), 80 + 160 * u - 30, FW - 20 + int(u * 24))
     c.amb = (.9, .9, 1.0); c.vig = .75
     return c.render()
 
 
 def no_b(t, u):
     c = cv((0, BLK), (1, BLK)); _hall(c, t)
-    PR.keep(c, PR.contract(), 200, 96 + int(u * 60))
+    PR.keep(c, PR.contract(), 200, 60 + int(u * 44))
     place(c, bat('disney_y', 'stand'), 140, FM)
     if int(t * 5) % 2 == 0 or u > .7: sign(c, 160, 6, '¡Y DIJO NO!', (255, 90, 90), 24, (40, 10, 24))
     c.amb = (.9, .9, 1.0); c.vig = .75
@@ -260,7 +259,7 @@ def ub_b(t, u):
     return c.render()
 
 
-amigo = phased(ub_a, ub_b, cuts=(.45,))
+amigo = phased(ub_b, ub_a, ub_b, cuts=(.46, .75))
 
 
 # ---------------------------------------------------------------- 8. rechazo (sala vacía) y 9. sonido
@@ -332,7 +331,7 @@ def _premiere(c, t):
 def prem_a(t, u):
     c = cv((0, BLK), (1, BLK)); _premiere(c, t)
     sign(c, 160, 44, '18 · NOV · 1928', (255, 236, 140), 16, (50, 20, 30))
-    for i, f in enumerate(('kid_a', 'kid_b', 'mom', 'dad', 'kid_c', 'alice', 'prod1', 'prod2')): place(c, rpg(f, int(t * 3 + i) % 2), 30 + i * 38, FW + 22 + (i % 2) * 6, sh=False)
+    for i, f in enumerate(('kid_a', 'kid_b', 'mom', 'doctor', 'kid_c', 'alice', 'prod1', 'prod2')): place(c, rpg(f, int(t * 3 + i) % 2), 30 + i * 38, FW + 22 + (i % 2) * 6, sh=False)
     for i in range(40): c.R((i * 53 + math.sin(t * 3 + i) * 6) % 310 + 4, ((t * .5 + i * .025) % 1) * 176, 2, 3, ((255, 90, 120), (90, 220, 255), (255, 230, 90), (140, 255, 140))[i % 4])
     c.amb = (1.02, .98, 1.02); c.vig = .6
     return c.render()
@@ -420,8 +419,9 @@ def strike_a(t, u):
     bg.planks(c, 0, FL, WW, 44, (80, 80, 90), seed=71, pw=9); c.R(0, FL - 2, WW, 3, (50, 50, 60))
     for i in range(7):
         x = 30 + i * 40 + int(math.sin(t * 2 + i) * 3)
-        place(c, rpg(('kid_a', 'prod1', 'prod2', 'rexach', 'dad', 'ub', 'kid_c')[i], int(t * 2 + i) % 2), x, FW + 18 + (i % 2) * 6, sh=False)
-        c.R(x + 11, FW - 62, 2, 62, (140, 100, 70)); c.R(x, FW - 80, 24, 16, (240, 240, 230))            # cartel en blanco, por encima de las cabezas
+        place(c, rpg(('kid_a', 'prod1', 'prod2', 'rexach', 'doctor', 'mom', 'kid_c')[i], int(t * 2 + i) % 2), x, FW + 18 + (i % 2) * 6, sh=False)
+        yo = (i % 2) * 20
+        c.R(x + 11, FW - 62 - yo, 2, 62 + yo, (140, 100, 70)); c.R(x - 6, FW - 80 - yo, 36, 16, (240, 240, 230)); bg.wtext(c, x + 12, FW - 76 - yo, 'HUELGA', (60, 60, 80), 8, outline=None, center=True)   # cartel genérico, por encima de las cabezas
     sign(c, 262, 6, '1941', (220, 220, 230), 24, (30, 30, 40))
     c.amb = (.84, .84, .88); c.vig = .85
     return c.render()
@@ -430,9 +430,10 @@ def strike_a(t, u):
 def strike_b(t, u):
     c = cv((0, '#2a2a30'), (1, '#18181c')); bg.brick(c, 0, 0, WW, FL, base=(110, 110, 120), mortar=(60, 60, 70), seed=51, bh=8, bw=16)
     bg.planks(c, 0, FL, WW, 44, (80, 80, 90), seed=71, pw=9)
-    place(c, bat('disney_y', 'hip'), 100, FM); place(c, bat('ub', 'stand'), 230, FM)
-    c.R(190, 78, 2, 62, (140, 100, 70)); c.R(150, 36, 84, 40, (240, 240, 230))
-    bg.wtext(c, 192, 42, 'NO FUE', (60, 60, 80), 8, outline=None, center=True); bg.wtext(c, 192, 56, 'PERFECTO', (60, 60, 80), 8, outline=None, center=True)
+    place(c, bat('disney_y', 'hip'), 90, FM)
+    place(c, bat('prod1', 'hold'), 240, FM)
+    c.R(240, 56, 2, 64, (140, 100, 70)); c.R(198, 14, 84, 42, (240, 240, 230))
+    bg.wtext(c, 240, 19, 'MEJORES', (60, 60, 80), 8, outline=None, center=True); bg.wtext(c, 240, 34, 'SUELDOS', (60, 60, 80), 8, outline=None, center=True)
     c.amb = (.84, .84, .88); c.vig = .85
     return c.render()
 
@@ -452,7 +453,7 @@ def back_a(t, u):
     c = cv((0, BLK), (1, BLK)); _tv(c, t)
     sign(c, 220, 8, '2006 · 78 AÑOS DESPUÉS', (255, 230, 120), 8, (30, 20, 60))
     PR.keep(c, PR.mic_stand(), 150, 100)
-    place(c, rpg('dad', int(t * 2) % 2), 130, FW + 10)
+    place(c, rpg('prod2', int(t * 2) % 2), 130, FW + 10)
     c.R(210, 90, 4, 46, (150, 150, 170)); c.R(180, 86, 64, 4, (150, 150, 170))                              # balanza
     c.R(176, 90, 24, 3, (230, 230, 240)); PR.keep(c, PR.mic_stand(), 244, 84)
     c.amb = (.96, .98, 1.06); c.vig = .65
@@ -461,9 +462,9 @@ def back_a(t, u):
 
 def back_b(t, u):
     c = cv((0, BLK), (1, BLK)); _tv(c, t)
-    place(c, bat('dad', 'hold'), 120, FM)
+    place(c, bat('prod2', 'hold'), 90, FM)
     PR.keep(c, PR.mic_stand(), 160, 80)
-    sign(c, 220, 8, 'UN NARRADOR', (255, 230, 120), 16, (30, 20, 60)); sign(c, 220, 40, 'POR UN CONEJO', (255, 255, 255), 16, (30, 20, 60))
+    sign(c, 210, 8, 'UN NARRADOR', (255, 230, 120), 16, (30, 20, 60)); sign(c, 210, 40, 'POR UN CONEJO', (255, 255, 255), 16, (30, 20, 60))
     c.amb = (.96, .98, 1.06); c.vig = .65
     return c.render()
 

@@ -49,7 +49,7 @@ CAST = {
  'nurse': dict(style='tab', skin=(246, 208, 176), hair=ramp((60, 44, 40)), iris=(70, 56, 44), outfit='coat'),
 
  # --- historia 9: Walt Disney
- 'disney_k': dict(style='short', skin=(246, 208, 176), hair=ramp((60, 42, 34)), iris=(80, 60, 44), outfit='tee_green', kid=True),
+ 'disney_k': dict(style='short', skin=(246, 208, 176), hair=ramp((60, 42, 34)), iris=(80, 60, 44), outfit='blazer', kid=True),
  'disney_y': dict(style='short', skin=(244, 204, 172), hair=ramp((58, 40, 32)), iris=(80, 60, 44), outfit='blazer'),
  'disney': dict(style='short', skin=(240, 200, 168), hair=ramp((88, 76, 70)), iris=(80, 60, 44), outfit='blazer'),
  'roy': dict(style='short', skin=(244, 204, 172), hair=ramp((84, 62, 50)), iris=(70, 56, 44), outfit='teacher'),
