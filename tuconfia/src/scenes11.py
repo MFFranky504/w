@@ -464,7 +464,7 @@ def back_b(t, u):
     c = cv((0, BLK), (1, BLK)); _tv(c, t)
     place(c, bat('prod2', 'hold'), 90, FM)
     PR.keep(c, PR.mic_stand(), 160, 80)
-    sign(c, 210, 8, 'UN NARRADOR', (255, 230, 120), 16, (30, 20, 60)); sign(c, 210, 40, 'POR UN CONEJO', (255, 255, 255), 16, (30, 20, 60))
+    sign(c, 196, 22, 'UN NARRADOR', (255, 230, 120), 16, (30, 20, 60)); sign(c, 196, 54, 'POR UN CONEJO', (255, 255, 255), 16, (30, 20, 60))
     c.amb = (.96, .98, 1.06); c.vig = .65
     return c.render()
 
