@@ -1,0 +1,82 @@
+{
+ "titulo": "brady_short",
+ "meta": {
+  "famoso": "Tom Brady",
+  "persona_hashtag": "#TomBrady",
+  "pregunta": "¿Qué rechazo vas a convertir en trabajo?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Hasta *Tom Brady* fue el jugador número *199*.",
+   "tts": "Hasta Tom Bréidi fue el jugador número ciento noventa y nueve.",
+   "gen": "[bold] Hasta Tom Bréidi fue el jugador número ciento noventa y nueve.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "Ciento noventa y ocho jugadores fueron elegidos *antes* que él.",
+   "tts": "Ciento noventa y ocho jugadores fueron elegidos antes que él.",
+   "gen": "[sad] Ciento noventa y ocho jugadores fueron elegidos antes que él.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "fracaso",
+   "t": "Empezó como *suplente*. Casi nadie creía en él.",
+   "tts": "Empezó como suplente. Casi nadie creía en él.",
+   "gen": "[sad] Empezó como suplente. Casi nadie creía en él.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "giro",
+   "t": "Hasta que en dos mil uno, el titular se *lesionó*... y le tocó jugar.",
+   "tts": "Hasta que en dos mil uno, el titular se lesionó... y le tocó jugar.",
+   "gen": "[hopeful] Hasta que en dos mil uno, el titular se lesionó... y le tocó jugar.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "giro",
+   "t": "Ganó ese Súper Bowl. Y después, seis más: *siete* en total, más que cualquier otro jugador.",
+   "tts": "Ganó ese Súper Bol. Y después, seis más: siete en total, más que cualquier otro jugador.",
+   "gen": "[excited] Ganó ese Súper Bol. Y después, seis más: siete en total, más que cualquier otro jugador.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "frase",
+   "t": "Según ha contado, no ser elegido le dio *rabia*... y esa rabia se volvió *trabajo*.",
+   "tts": "Según ha contado, no ser elegido le dio rabia... y esa rabia se volvió trabajo.",
+   "gen": "[warmly] Según ha contado, no ser elegido le dio rabia... y esa rabia se volvió trabajo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "frase",
+   "t": "No eligieron su nombre. Pero él *eligió* su esfuerzo.",
+   "tts": "No eligieron su nombre. Pero él eligió su esfuerzo.",
+   "gen": "[warmly] No eligieron su nombre. Pero él eligió su esfuerzo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "pregunta",
+   "t": "Y tú... ¿qué *rechazo* vas a convertir en *trabajo*?",
+   "tts": "Y tú... ¿qué rechazo vas a convertir en trabajo?",
+   "gen": "[softly] Y tú... ¿qué rechazo vas a convertir en trabajo?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

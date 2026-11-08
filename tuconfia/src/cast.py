@@ -59,6 +59,14 @@ CAST = {
  # --- historia 4: Steve Jobs
  'jobs':   dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='turtle', glasses=True),
  'jobs85': dict(style='short', skin=(236, 196, 164), hair=ramp((46, 34, 30)), iris=(70, 52, 40), outfit='suit85'),
+ # --- shorts: Johnson y Brady
+ 'johnson_y': dict(style='short', skin=(214, 164, 122), hair=ramp((30, 24, 24)), iris=(60, 44, 36), outfit='tee_red', strong=True),
+ 'johnson':   dict(style='short', skin=(214, 164, 122), hair=ramp((24, 20, 20)), iris=(60, 44, 36), outfit='grey', strong=True, stubble=True),
+ 'rockyj':    dict(style='short', skin=(204, 154, 112), hair=ramp((36, 30, 30)), iris=(60, 44, 36), outfit='polo', strong=True, stubble=True),
+ 'coachj':    dict(style='short', skin=(240, 196, 160), hair=ramp((120, 120, 128)), iris=(70, 90, 120), outfit='polo', stubble=True),
+ 'brady_y':   dict(style='short', skin=(240, 196, 160), hair=ramp((82, 58, 42)), iris=(80, 100, 130), outfit='tee_blue'),
+ 'brady':     dict(style='short', skin=(238, 194, 158), hair=ramp((108, 94, 84)), iris=(80, 100, 130), outfit='blazer'),
+ 'qb2':       dict(style='short', skin=(236, 190, 152), hair=ramp((60, 46, 36)), iris=(70, 56, 44), outfit='tee_red'),
 }
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False)

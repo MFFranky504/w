@@ -32,3 +32,8 @@ Revisar a las 48 h de cada publicación. No sacar conclusiones con menos de 14 v
 - `src/build_hawking.py` + `src/scenes9.py`, guion `guion_hawking.md` (formato de la skill `guiones-reels-videos-cortos`), textos de voz `elevenlabs_hawking_v3.txt` (~3.400 caracteres).
 - Se publica como video largo / Short de 3 min en YouTube y como video normal en TikTok e Instagram; el mismo guion se puede recortar a 60 s con las líneas L1, L5-L7, L19, L26-L27 y L30.
 - Voz: pendiente por cuota (ver `README.md`).
+
+## Shorts nuevos: Dwayne Johnson y Tom Brady
+Archivos: out/TU_CONFIA_johnson_SHORT_Vertical_yt.mp4 y out/TU_CONFIA_brady_SHORT_Vertical_yt.mp4 (vertical 1080x1920, unos 38 s). Textos por plataforma: caption_johnson_short_*.txt y caption_brady_short_*.txt.
+Títulos YouTube Shorts: «Lo cortaron... y volvió a casa con 7 dólares 🔥» y «199 jugadores fueron elegidos antes que él 🏈».
+Hechos a confirmar antes de publicar: los siete dólares de Johnson se basan en lo que él ha contado (una sola fuente encontrada); el resto coincide con Wikipedia.

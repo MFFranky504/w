@@ -1,0 +1,91 @@
+{
+ "titulo": "johnson_short",
+ "meta": {
+  "famoso": "Dwayne Johnson",
+  "persona_hashtag": "#DwayneJohnson",
+  "pregunta": "¿Qué rechazo te cerró una puerta... y qué puerta nueva vas a abrir?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Hasta *Dwayne Johnson* fue cortado.",
+   "tts": "Hasta Duéin Yónson fue cortado.",
+   "gen": "[bold] Hasta Duéin Yónson fue cortado.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "Soñaba con la NFL... y *nadie* lo eligió.",
+   "tts": "Soñaba con la NFL... y nadie lo eligió.",
+   "gen": "[sad] Soñaba con la NFL... y nadie lo eligió.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "fracaso",
+   "t": "Firmó en Canadá... y a los dos meses, lo *cortaron*.",
+   "tts": "Firmó en Canadá... y a los dos meses, lo cortaron.",
+   "gen": "[sad] Firmó en Canadá... y a los dos meses, lo cortaron.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "fracaso",
+   "t": "Según ha contado, volvió a casa con *siete dólares*.",
+   "tts": "Según ha contado, volvió a casa con siete dólares.",
+   "gen": "[whispers] Según ha contado, volvió a casa con siete dólares.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "giro",
+   "t": "Su padre era luchador. Y Dwayne decidió *intentarlo*.",
+   "tts": "Su padre era luchador. Y Dwayne decidió intentarlo.",
+   "gen": "[hopeful] Su padre era luchador. Y Dwayne decidió intentarlo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "giro",
+   "t": "En mil novecientos noventa y seis, debutó en la WWE.",
+   "tts": "En mil novecientos noventa y seis, debutó en la WWE.",
+   "gen": "[excited] En mil novecientos noventa y seis, debutó en la WWE.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "giro",
+   "t": "Y el que fue cortado... se volvió una de las mayores *estrellas* de la lucha libre y del cine.",
+   "tts": "Y el que fue cortado... se volvió una de las mayores estrellas de la lucha libre y del cine.",
+   "gen": "[excited] Y el que fue cortado... se volvió una de las mayores estrellas de la lucha libre y del cine.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "frase",
+   "t": "Ser cortado no fue el final. Fue el *punto de partida*.",
+   "tts": "Ser cortado no fue el final. Fue el punto de partida.",
+   "gen": "[warmly] Ser cortado no fue el final. Fue el punto de partida.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "pregunta",
+   "t": "Y tú... ¿qué *rechazo* te cerró una puerta... y qué puerta nueva vas a *abrir*?",
+   "tts": "Y tú... ¿qué rechazo te cerró una puerta... y qué puerta nueva vas a abrir?",
+   "gen": "[softly] Y tú... ¿qué rechazo te cerró una puerta... y qué puerta nueva vas a abrir?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}
