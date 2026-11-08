@@ -60,23 +60,19 @@ EPISODES = {
         ]),
     # ------------------------------------------------------------------ Parte 10: MEGA DIFÍCIL (Tyler, The Creator)
     "p10": dict(
-        part=10, artist="Tyler, The Creator", genre="hip hop", music="trap", hook="c", next_part=11, mega=True,
-        hook_len=2.0, reveal=2.6, hook_scene="danger", outro_scene="sunset", outro_sign=None, diff_nb=16,
+        part=10, artist="Tyler, The Creator", genre="hip hop", music="tyler", hook="c", next_part=11, mega=True,
+        hook_len=2.0, reveal=2.6, hook_scene="danger", outro_scene="sunset", outro_sign=None, diff_nb=12,
         clue_len=5.5, last_clue_len=7.0, tw0=1.0, tws=0.024,                  # less time to answer
-        banners={0: "¡NIVEL: MEGA DIFÍCIL!", 1: "SOLO PARA FANS DE VERDAD", 4: "NI LA ÚLTIMA ES FÁCIL"},
+        banners={0: "¡NIVEL: MEGA DIFÍCIL!", 1: "SOLO PARA FANS DE VERDAD", 2: "NI LA ÚLTIMA ES FÁCIL"},
         prev=dict(sprite="nas2", scene="brook", part=9, lines=("NAS",), sub="QUEENSBRIDGE · NUEVA YORK", winners=[], winners_part=9, special=SPECIAL_P9),
         clues=[
-            dict(n=1, diff="IMPOSIBLE", pts=5, chip="CAFÉ", scene="cafe",
+            dict(n=1, diff="IMPOSIBLE", pts=4, chip="CAFÉ", scene="cafe",
                  text="Antes de la fama trabajó más de *dos años* en *Starbucks*... y en *FedEx* duró menos de dos semanas."),
-            dict(n=2, diff="IMPOSIBLE", pts=5, chip="12", scene="school",
+            dict(n=2, diff="IMPOSIBLE", pts=3, chip="12", scene="school",
                  text="De niño pasó por *12 escuelas distintas* en 12 años, entre Los Ángeles y Sacramento."),
-            dict(n=3, diff="IMPOSIBLE", pts=5, chip="2015", scene="airport",
+            dict(n=3, diff="ULTRA DIFÍCIL", pts=2, chip="2015", scene="airport",
                  text="En *2015* le prohibieron entrar al *Reino Unido* por letras de sus primeros discos. Volvió en *2019*."),
-            dict(n=4, diff="ULTRA DIFÍCIL", pts=4, chip="25/12/2009", scene="bedroom",
-                 text="Su primer álbum lo lanzó por su cuenta y gratis el *25 de diciembre de 2009*."),
-            dict(n=5, diff="ULTRA DIFÍCIL", pts=4, chip="2012", scene="tv",
-                 text="En *2012* su colectivo estrenó en *Adult Swim* un programa de sketches que duró *tres temporadas*."),
-            dict(n=6, diff="ULTRA DIFÍCIL", pts=3, chip="SEUDÓNIMO", scene="set",
+            dict(n=4, diff="ULTRA DIFÍCIL", pts=1, chip="SEUDÓNIMO", scene="set",
                  text="Dirige todos sus propios videos musicales, pero firma como director con un seudónimo: *Wolf Haley*."),
         ]),
     # ------------------------------------------------------------------ Parte 9: Nas (ya publicado)

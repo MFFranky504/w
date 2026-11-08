@@ -6,7 +6,7 @@ from episodes import current
 EP = current()
 GENRE_TAG = {"hip hop": "#HipHop", "reggaetón": "#Reggaeton", "pop": "#Pop", "electrónica": "#Electronica"}
 BASE = ["#MusicQuiz", "#AdivinaElArtista", GENRE_TAG.get(EP["genre"], "#HipHop"), "#Música"]
-BODY = (("¿Quién es el artista? 🎤 MODO MEGA DIFÍCIL: 6 pistas y ninguna es fácil.\n" if EP.get("mega") else "¿Quién es el artista? 🎤\n") +
+BODY = ((f"¿Quién es el artista? 🎤 MODO MEGA DIFÍCIL: {len(EP['clues'])} pistas y ninguna es fácil.\n" if EP.get("mega") else "¿Quién es el artista? 🎤\n") +
         "Responde en comentarios, mañana revelo la respuesta.\n"
         "Sígueme para ver la respuesta.")
 def caption(platform):

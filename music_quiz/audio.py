@@ -102,6 +102,41 @@ elif STYLE == "trap":                                  # 140 BPM half-time dark 
         add(horn(nfq(CH[c][2] + 12), nfq(CH[c][2] + 10), BAR * .9), t0, .45, pan=.1, bus=stems["horn"])
         add(string_pad([nfq(x - 12) for x in CH[c][:3]], BAR + .3), t0, .55, bus=stems["strings"])
     PUMP = None
+elif STYLE == "tyler":                                 # 88 BPM neo-soul / synth-funk in the Igor-Flower Boy mood (original): Dbmaj9 | Cm9 | Fm9 | Bbm9
+    BPM = 88; BEAT = 60 / BPM; BAR = 4 * BEAT; SW = BEAT * .07
+    nfq = lambda s, base=130.81: base * 2 ** (s / 12)
+    CH = [[1, 5, 8, 12, 15], [0, 3, 7, 10, 14], [5, 8, 12, 15, 19], [-2, 1, 5, 8, 12]]; ROOT = [1, 0, 5, -2]
+    def juno(freqs, d):                                   # warm detuned saw pad with slow attack
+        t = tt(d); e_ = np.minimum(t / .35, 1) * np.minimum((d - t) / .4, 1)
+        s = sum(sum(np.sin(2*np.pi*f*(1 + dt)*k*t) / k for k in range(1, 7)) for f in freqs for dt in (-.006, 0, .006))
+        return lp(s, 7) * e_ / (len(freqs) * 3) * .9
+    def fuzzbass(f, d):                                   # fuzzy synth bass
+        t = tt(d); x = np.sin(2*np.pi*f*t) + .5 * (2 * ((f * t) % 1) - 1)
+        return lp(np.tanh(3.2 * x), 3) * np.minimum(t / .01, 1) * np.exp(-t * 1.6) * np.minimum((d - t) / .04, 1) * .55
+    def glide(f0, f1, d):                                 # Juno-style square lead with portamento
+        t = tt(d); g_ = np.clip(t / .09, 0, 1); f = f0 + (f1 - f0) * g_; f = f * (1 + .007 * np.sin(2*np.pi*5.5*t) * np.minimum(t / .3, 1))
+        ph = 2*np.pi*np.cumsum(f) / SR; s = np.sign(np.sin(ph)) * .5 + np.sin(ph) * .5
+        return lp(s, 5) * np.minimum(t / .02, 1) * np.minimum((d - t) / .1, 1) * .5
+    def shaker():
+        t = tt(.06); return hp(noise(.06), 2) * np.exp(-t * 60) * .18
+    def clap2():
+        t = tt(.2); return hp(noise(.2), 4) * (np.exp(-t * 24) + .6 * np.exp(-((t - .011) * 90) ** 2)) * .55
+    MEL = [(0, 0, 1.5, 15, 13), (0, 2, 1, 12, 12), (0, 3, .9, 10, 8), (1, .5, 2, 7, 10), (1, 3, .8, 12, 15),
+           (2, 0, 1, 17, 15), (2, 1.5, 2.2, 12, 12), (3, 0, 1, 13, 12), (3, 1.5, 2.3, 8, 5)]
+    for b in range(int(END / BAR) + 2):
+        t0 = b * BAR; c = b % 4
+        add(juno([nfq(x) for x in CH[c][:4]], BAR + .4), t0, .55, bus=stems["strings"])
+        for bt in (0, 1.5, 2.5, 3.5):                     # syncopated Rhodes comps
+            for n_ in CH[c][1:]: add(ep(nfq(n_), BEAT * .7, .8), t0 + bt * BEAT + (SW if bt % 1 else 0), .22, pan=(n_ % 5 - 2) * .08, bus=stems["keys"])
+        for bt, ln, sm in ((0, 1.2, 0), (1.5, .5, 0), (2, .8, 7), (3, .5, 12), (3.5, .5, 10)):
+            add(fuzzbass(nfq(ROOT[c], 65.41) * 2 ** (sm / 12), ln * BEAT), t0 + bt * BEAT + (SW if bt % 1 else 0), .9, bus=stems["bass"])
+        for kb in ((0, 2.25, 2.75) if b % 2 == 0 else (0, .75, 2.5)): add(kick(), t0 + kb * BEAT + (SW if kb % 1 else 0), .95, bus=stems["kick"])
+        for sb in (1, 3): add(snare(), t0 + sb * BEAT, .6, bus=stems["snare"]); add(clap2(), t0 + sb * BEAT + .004, .7, bus=stems["snare"])
+        for i in range(16): add(shaker(), t0 + i * BEAT / 4 + (SW / 2 if i % 2 else 0), .6 + .4 * (i % 4 == 2), pan=.25, bus=stems["hat"])
+        add(hat(True), t0 + 3.5 * BEAT, .5, pan=-.2, bus=stems["hat"])
+        for (bar, bt, dur, s0, s1) in MEL:
+            if bar == c: add(glide(nfq(s0, 261.63), nfq(s1, 261.63), dur * BEAT), t0 + bt * BEAT, .5, pan=.1, bus=stems["horn"])
+    PUMP = None
 else:                                                    # "house": 122 BPM French-touch, Dm9 | Bbmaj7 | F | C (original), 4-on-the-floor + sidechain pump
     BPM = 122; BEAT = 60 / BPM; BAR = 4 * BEAT
     A2 = 110.0; nfq = lambda s, base=A2: base * 2 ** (s / 12)
