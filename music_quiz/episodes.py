@@ -21,6 +21,19 @@ WINNERS_P8 = [
 
 SPECIAL_P8 = {"va.lencia06": "1º EN ADIVINAR"}      # the channel replied "eres el primero en adivinarlo"
 
+# ---- winners of Parte 9 (Nas): only comments that say "Nas" (screenshots of IG, TikTok and YouTube, 8-nov-2026) ----
+WINNERS_P9 = [
+ ("chicocool789","IG",2,1,22),("annczyy__","IG",1,1,22),("mmmaaaxiii","IG",4,1,21),("va.lencia06","IG",3,1,22),
+ ("brvjo.7","IG",2,1,21),("xanderrni","IG",2,1,21),("_alimjacob_","IG",1,1,8),("bastiano.wlr","IG",1,1,21),
+ ("ricardox_c7","IG",2,1,21),("shoujizz","IG",1,1,3),("arisakatype99a","IG",3,1,11),("im_andrezzzes","IG",0,1,5),
+ ("el_sebas84","IG",1,1,5),("devx_.sk","IG",1,1,0.3),("songomaro","IG",2,1,7),("pollo_bskt","IG",1,1,3),
+ ("nataa.cug","IG",0,1,18),("a.vivanco__21","IG",1,1,14),("mosh.king2","IG",2,1,21),("_.missael98","IG",2,1,21),
+ ("dieg.o021022","IG",3,1,20),("alexxnder_ybv","IG",1,1,22),("_jav_mendivil_","IG",1,1,4),
+ ("Sergio","TT",0,3,21),("ŤĂĬĶ","TT",0,1,7),("fan de yiyis-enamorada","TT",0,0,7),
+ ("raperonose","YT",0,1,12),("derekmp67","YT",0,1,13),
+]
+SPECIAL_P9 = {"Sergio": "1ER COMENTARIO"}                 # TikTok marked it "Primer comentario"
+
 def _sort_rows(raw):
     """Order requested by the channel owner: pista (1,2,3, sin pista) -> más likes -> comentó antes (más horas)."""
     s = sorted(enumerate(raw), key=lambda e: ((e[1][2] if e[1][2] else 9), -e[1][3], -e[1][4], e[0]))
@@ -50,7 +63,7 @@ EPISODES = {
         part=10, artist="Tyler, The Creator", genre="hip hop", music="trap", hook="c", next_part=11, mega=True,
         hook_len=2.0, reveal=2.6, hook_scene="danger", outro_scene="sunset", outro_sign=None, diff_nb=9,
         banners={0: "¡NIVEL: MEGA DIFÍCIL!", 1: "SOLO PARA FANS DE VERDAD", 4: "NI LA ÚLTIMA ES FÁCIL"},
-        prev=dict(sprite="nas2", scene="brook", part=9, lines=("NAS",), sub="QUEENSBRIDGE · NUEVA YORK", winners=[], winners_part=None, special={}),
+        prev=dict(sprite="nas2", scene="brook", part=9, lines=("NAS",), sub="QUEENSBRIDGE · NUEVA YORK", winners=[], winners_part=9, special=SPECIAL_P9),
         clues=[
             dict(n=1, diff="IMPOSIBLE", pts=5, chip="SEUDÓNIMO", scene="set",
                  text="Dirige todos sus propios videos musicales, pero firma como director con un seudónimo: *Wolf Haley*."),
@@ -84,6 +97,7 @@ EPISODES = {
 }
 # the Parte 8 winners list needs the extra rows added after Parte 8 (jesus_rch27)
 EPISODES["p9"]["prev"]["winners"] = _sort_rows(WINNERS_P8)
+EPISODES["p10"]["prev"]["winners"] = _sort_rows(WINNERS_P9)
 
 def current():
     ep = dict(EPISODES[os.environ.get("EPISODE", "p11")])

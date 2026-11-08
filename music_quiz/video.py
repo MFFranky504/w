@@ -1368,7 +1368,9 @@ REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (
        "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
 _hook = REG[EP.get("hook_scene", "brook")]
-SCENES = [_hook, REG[PREV["scene"]], (SUNSET, dyn_win)] + [REG[c["scene"]] for c in CLUES] + [_outro]
+_pb, _pd = REG[PREV["scene"]]
+_win = (SUNSET, dyn_win) if PREV["sprite"] == "snoop" else (_pb, lambda im, t, ts, tag: _pd(im, t, REVEAL + 1.5 + ts, tag))
+SCENES = [_hook, REG[PREV["scene"]], _win] + [REG[c["scene"]] for c in CLUES] + [_outro]
 
 
 
@@ -1471,8 +1473,8 @@ def ui_low(seg, ts, t):
         lt(d, (135, 236), "¡ÚLTIMA OPORTUNIDAD!" if num == 3 else "¡ESCRÍBELO YA!", 11, GOLD)
     return ui
 
-PCOL = {1: (255, 205, 60), 2: (90, 235, 255), 3: (255, 90, 170), 0: (190, 170, 255)}
-PTXT = {1: "PISTA 1", 2: "PISTA 2", 3: "PISTA 3", 0: "SIN PISTA INDICADA"}
+PCOL = {1: (255, 205, 60), 2: (90, 235, 255), 3: (255, 90, 170), 4: (130, 235, 140), 0: (190, 170, 255)}
+PTXT = {1: "PISTA 1", 2: "PISTA 2", 3: "PISTA 3", 4: "PISTA 4", 0: "SIN PISTA INDICADA"}
 F_ROW = {}
 def fnt(sz):
     if sz not in F_ROW: F_ROW[sz] = ImageFont.truetype(SANS, sz)
@@ -1480,7 +1482,7 @@ def fnt(sz):
 def draw_winners(img, ts):
     k = ease(ts / .35)
     if k <= 0: return
-    dy = int((1 - k) * 70); y0, y1 = 800 + dy, 1540 + dy; d = ImageDraw.Draw(img)
+    dy = int((1 - k) * 70); wb = 800 if PREV["sprite"] == "snoop" else 840; y0, y1 = wb + dy, wb + 740 + dy; d = ImageDraw.Draw(img)
     d.rectangle((44, y0 - 8, 1036, y1 + 8), fill=(14, 10, 36)); d.rectangle((52, y0, 1028, y1), fill=(24, 42, 150), outline=(255, 205, 60), width=8)
     d.rectangle((60, y0 + 8, 1020, y0 + 38), fill=(120, 70, 10)); d.fontmode = "1"
     d.text((540, y0 + 24), "ORDEN: PISTA > LIKES > QUIÉN COMENTÓ ANTES", font=F(22), fill=(255, 235, 170), anchor="mm"); d.fontmode = "L"
@@ -1498,7 +1500,7 @@ def draw_winners(img, ts):
         wd.rounded_rectangle((6, y + 6, ww - 6, y + ROW_H - 8), 14, fill=(255, 205, 60) if top else (40, 66, 190))
         wd.rectangle((6, y + 12, 14, y + ROW_H - 14), fill=col)
         wd.ellipse((26, y + 14, 94, y + ROW_H - 16), fill=(14, 10, 36)); wd.text((60, y + ROW_H // 2 - 4), str(r["rank"]), font=fnt(32), fill=col, anchor="mm")
-        badge = " · ".join(([SPECIAL[r["h"]]] if r["h"] in SPECIAL else []) + ([f"♥{r['lk']}"] if r["lk"] else []) + (["TT"] if r["pl"] == "TT" else []))
+        badge = " · ".join(([SPECIAL[r["h"]]] if r["h"] in SPECIAL else []) + ([f"♥{r['lk']}"] if r["lk"] else []) + ([r["pl"]] if r["pl"] in ("TT", "YT") else []))
         fb = fnt(26 if r["h"] in SPECIAL else 32); bw = int(wd.textlength(badge, font=fb))
         sz = 44; avail = ww - 110 - bw - 40
         while sz > 22 and wd.textlength(r["h"], font=fnt(sz)) > avail: sz -= 2
@@ -1577,14 +1579,14 @@ def render(t):
     if seg not in (S_RECAP, S_WIN): notes(im, t)
     scn = CLUES[seg - S_C1]["scene"] if IS_CLUE(seg) else None
     if seg == S_RECAP: prev_draw(im, t, ts)
-    elif seg == S_WIN: snoop(im, t)
+    elif seg == S_WIN: (snoop(im, t) if PREV["sprite"] == "snoop" else prev_draw(im, t, REVEAL + 6.0))
     elif scn == "battle":
         sil(im, 98, 266, t, q=False); im.paste(SPR_HAT_M, (178 - 24, 266 - 96), SPR_HAT_M); qmark(im, 134, 150 + int(3 * math.sin(t * 3)), 2)
     elif scn == "robots":                                    # last clue: the two helmeted silhouettes finally show up
         b1 = 1 if int(t * 4.5) % 2 else 0; im.paste(SPR_ROBOT_A, (98 - 24, 266 - 96 + b1), SPR_ROBOT_A); im.paste(SPR_ROBOT_B, (172 - 24, 266 - 96 + 1 - b1), SPR_ROBOT_B)
     else: sil(im, 135, 266, t)
     if seg == S_WIN:
-        im2 = Image.new("RGB", (W, H), (20, 10, 38)); im2.paste(im, (0, -SHIFT)); im = im2
+        im2 = Image.new("RGB", (W, H), (20, 10, 38)); im2.paste(im, (0, -(SHIFT if PREV["sprite"] == "snoop" else 58))); im = im2
     seg_len = (T[seg + 1] if seg < S_OUT else END) - T[seg]
     punch = .03 * max(0, 1 - (ts - 1.0) / .25) if IS_CLUE(seg) and ts > 1.0 else 0
     z = 1.04 + .05 * (ts / seg_len) + punch
