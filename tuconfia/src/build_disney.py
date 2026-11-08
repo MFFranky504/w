@@ -290,7 +290,7 @@ def draw_caps(img, t):
 
 
 HOOKS = [('office', .15, 3.0, '¡PODÍA ACEPTAR', 'Y SE NEGÓ!', 330), ('worse', 10.4, 13.2, '¡CASI TODO', 'SU EQUIPO!', 330),
-         ('sonido', .3, 3.2, '¡DIBUJOS CON', 'SONIDO!', 330), ('conejo', 14.0, 17.0, '¡NUNCA LO', 'VIO VOLVER!', 330)]
+         ('sonido', .3, 3.2, '¡DIBUJOS CON', 'SONIDO!', 330), ('conejo', 14.0, 17.0, '¡NUNCA LO', 'VIO VOLVER!', 520)]
 SC_ = {s['n']: s for s in SCENES}
 HOOK_T = [(SC_[n]['t0'] + a, SC_[n]['t0'] + c_, l1, l2, yy) for n, a, c_, l1, l2, yy in HOOKS]
 PLAT = (sys.argv[sys.argv.index('--cta') + 1] if '--cta' in sys.argv else 'yt')          # yt = SUSCRÍBETE, tt/ig = SÍGUEME

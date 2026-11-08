@@ -35,7 +35,6 @@ def office_a(t, u):
     PR.keep(c, PR.contract(), 190, 90)
     c.R(150, 112, 130, 6, (130, 84, 54)); c.R(150, 112, 130, 2, (200, 150, 100))
     place(c, rpg('disney_y', int(t * 2) % 2 if u < .3 else 0), 120, FW + 8)
-    if u > .35: bg.bubble2(c, 120, 62, 'NO', 16)
     c.amb = (.94, .94, 1.0); c.vig = .7
     return c.render()
 
@@ -120,7 +119,6 @@ def worse_c(t, u):
         PR.keep(c, PR.drawing_desk(), x - 20, 118); PR.keep(c, PR.chair_wait(), x + 22, 130)
         sc = ease(u * 5 - i * .6); 
         if sc > 0: bg.wtext(c, x, 100 - int((1 - sc) * 10), 'X', (255, 70, 70), 24, center=True)
-    sign(c, 160, 8, 'SE LLEVÓ A SU EQUIPO', (255, 200, 90), 16, (40, 20, 10))
     place(c, bat('disney_y', 'stand'), 160, FM + 8, sh=False)
     c.amb = (.9, .9, .98); c.vig = .75
     return c.render()
@@ -160,7 +158,6 @@ def no_c(t, u):
     c = cv((0, BLK), (1, BLK)); _hall(c, t)
     place(c, bat('disney_y', 'hold'), 160, FM + 2)
     c.light(160, 90, 110, 80, (200, 210, 255), .25); c.amb = (.8, .84, .98); c.vig = .9
-    if u > .3: bg.sign2(c, 160, 8, '¿Y TÚ?', (255, 230, 120), 24, plate=(20, 12, 30))
     return c.render()
 
 
@@ -206,7 +203,6 @@ def _la(c, t):
 
 def bros_a(t, u):
     c = cv((0, BLK), (1, BLK)); _la(c, t)
-    sign(c, 160, 8, 'LO QUE LE QUEDÓ', (255, 230, 120), 16, (50, 24, 60))
     place(c, rpg('roy', int(t * 2) % 2), 110, FW + 10); place(c, rpg('disney_y', int(t * 2) % 2), 210, FW + 10)
     PR.keep(c, PR.drawing_desk(), 140, FW - 20)
     c.amb = (1.02, .96, .96); c.vig = .6
@@ -409,7 +405,6 @@ def down_c(t, u):
     bg.planks(c, 0, FL, WW, 44, (110, 78, 56), seed=33, pw=9)
     c.R(20, 20, 70, 76, (255, 190, 120)); c.R(22, 22, 66, 72, (255, 220, 160))
     place(c, bat('ub', 'stand'), 220 - 60 * ease(u), FM); place(c, bat('disney_y', 'stand'), 110, FM)
-    sign(c, 160, 6, '1940 · VOLVIÓ', (255, 230, 120), 16, (40, 20, 40))
     c.light(160, 90, 150, 80, (255, 220, 160), .4); c.amb = (1.04, .98, .94); c.vig = .6
     return c.render()
 
@@ -427,7 +422,7 @@ def strike_a(t, u):
         x = 30 + i * 40 + int(math.sin(t * 2 + i) * 3)
         place(c, rpg(('kid_a', 'prod1', 'prod2', 'rexach', 'dad', 'ub', 'kid_c')[i], int(t * 2 + i) % 2), x, FW + 18 + (i % 2) * 6, sh=False)
         c.R(x + 11, FW - 62, 2, 62, (140, 100, 70)); c.R(x, FW - 80, 24, 16, (240, 240, 230))            # cartel en blanco, por encima de las cabezas
-    sign(c, 160, 6, '1941', (220, 220, 230), 24, (30, 30, 40))
+    sign(c, 262, 6, '1941', (220, 220, 230), 24, (30, 30, 40))
     c.amb = (.84, .84, .88); c.vig = .85
     return c.render()
 
@@ -436,8 +431,8 @@ def strike_b(t, u):
     c = cv((0, '#2a2a30'), (1, '#18181c')); bg.brick(c, 0, 0, WW, FL, base=(110, 110, 120), mortar=(60, 60, 70), seed=51, bh=8, bw=16)
     bg.planks(c, 0, FL, WW, 44, (80, 80, 90), seed=71, pw=9)
     place(c, bat('disney_y', 'hip'), 100, FM); place(c, bat('ub', 'stand'), 230, FM)
-    c.R(180, 70, 2, 70, (140, 100, 70)); c.R(160, 40, 44, 32, (240, 240, 230))
-    bg.wtext(c, 182, 50, 'NO FUE', (60, 60, 80), 8, outline=None, center=True); bg.wtext(c, 182, 60, 'PERFECTO', (60, 60, 80), 8, outline=None, center=True)
+    c.R(190, 78, 2, 62, (140, 100, 70)); c.R(150, 36, 84, 40, (240, 240, 230))
+    bg.wtext(c, 192, 42, 'NO FUE', (60, 60, 80), 8, outline=None, center=True); bg.wtext(c, 192, 56, 'PERFECTO', (60, 60, 80), 8, outline=None, center=True)
     c.amb = (.84, .84, .88); c.vig = .85
     return c.render()
 
@@ -448,7 +443,7 @@ huelga = phased(strike_a, strike_b, cuts=(.5,))
 # ---------------------------------------------------------------- 14. el conejo vuelve en 2006
 def _tv(c, t):
     bg.wallpaper(c, 0, 0, WW, FL, (36, 40, 90), (30, 34, 80), (60, 66, 140))
-    c.R(10, 14, 90, 70, (20, 20, 30)); c.R(13, 17, 84, 64, (40, 90, 200)); bg.wtext(c, 55, 38, 'EN VIVO', (255, 255, 255), 16, center=True)
+    c.R(10, 14, 90, 70, (20, 20, 30)); c.R(13, 17, 84, 64, (40, 90, 200)); bg.wtext(c, 55, 40, 'EN VIVO', (255, 255, 255), 8, center=True)
     bg.planks(c, 0, FL, WW, 44, (70, 70, 100), seed=87, pw=9); c.R(0, FL - 2, WW, 3, (140, 140, 220))
     c.light(55, 50, 70, 50, (120, 160, 255), .45)
 
@@ -477,7 +472,6 @@ def back_c(t, u):
     c = cv((0, '#1a1a5a'), (1, '#3a2438')); stars(c, t, 220, 7, 170)
     bg.hill_l(c, 140, (14, 12, 34))
     c.R(150, 120, 20, 20, (130, 84, 54)); c.R(150, 120, 20, 2, (200, 150, 100)); c.R(152, 140, 3, 20, (110, 72, 46)); c.R(165, 140, 3, 20, (110, 72, 46))   # silla vacía
-    sign(c, 160, 8, 'WALT NO LO VIO', (255, 230, 120), 16, (30, 20, 60))
     c.amb = (.9, .92, 1.1); c.vig = .75
     return c.render()
 
