@@ -1,0 +1,16 @@
+{
+ "objetivo": {
+  "lufs": -14.0,
+  "true_peak_dbtp": -1.0
+ },
+ "medido": {
+  "lufs_integrado": -14.0,
+  "true_peak_dbtp": -1.8,
+  "lra": 9.7
+ },
+ "antes_de_normalizar": {
+  "lufs_integrado": -21.8,
+  "true_peak_dbtp": -0.6
+ },
+ "cumple": true
+}
