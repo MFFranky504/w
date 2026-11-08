@@ -1,0 +1,91 @@
+{
+ "titulo": "eminem_short",
+ "meta": {
+  "famoso": "Eminem",
+  "persona_hashtag": "#Eminem",
+  "pregunta": "¿Qué estás trabajando en silencio...?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Hasta *Éminem* fracasó con su primer disco.",
+   "tts": "Hasta Éminem fracasó con su primer disco.",
+   "gen": "[bold] Hasta Éminem fracasó con su primer disco.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "En mil novecientos noventa y seis, «Infinite» vendió apenas unas *mil* copias, según se ha reportado.",
+   "tts": "En mil novecientos noventa y seis, Infinite vendió apenas unas mil copias, según se ha reportado.",
+   "gen": "[sad] En mil novecientos noventa y seis, Infinite vendió apenas unas mil copias, según se ha reportado.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "fracaso",
+   "t": "Después lo despidieron de su trabajo en un *restaurante*.",
+   "tts": "Después lo despidieron de su trabajo en un restaurante.",
+   "gen": "[sad] Después lo despidieron de su trabajo en un restaurante.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "giro",
+   "t": "Pero siguió *escribiendo*... aunque casi nadie lo escuchaba.",
+   "tts": "Pero siguió escribiendo... aunque casi nadie lo escuchaba.",
+   "gen": "[hopeful] Pero siguió escribiendo... aunque casi nadie lo escuchaba.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "giro",
+   "t": "En mil novecientos noventa y ocho, el Doctor Drei lo *fichó*.",
+   "tts": "En mil novecientos noventa y ocho, el Doctor Drei lo fichó.",
+   "gen": "[hopeful] En mil novecientos noventa y ocho, el Doctor Drei lo fichó.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "giro",
+   "t": "Un año después llegó «The Slim Shady LP»... y todo *cambió*.",
+   "tts": "Un año después llegó Slim Shéidi El Pi... y todo cambió.",
+   "gen": "[excited] Un año después llegó Slim Shéidi El Pi... y todo cambió.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "giro",
+   "t": "Luego vino «8 Mile»... y un *Óscar* por «Lose Yourself».",
+   "tts": "Luego vino Éit Máil... y un Óscar por Lus Yorself.",
+   "gen": "[excited] Luego vino Éit Máil... y un Óscar por Lus Yorself.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "frase",
+   "t": "Su fracaso no fue su final. Fue su *entrenamiento*.",
+   "tts": "Su fracaso no fue su final. Fue su entrenamiento.",
+   "gen": "[warmly] Su fracaso no fue su final. Fue su entrenamiento.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "pregunta",
+   "t": "Y tú... ¿qué estás *trabajando* en silencio... para que mañana nadie pueda *ignorarte*?",
+   "tts": "Y tú... ¿qué estás trabajando en silencio... para que mañana nadie pueda ignorarte?",
+   "gen": "[softly] Y tú... ¿qué estás trabajando en silencio... para que mañana nadie pueda ignorarte?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

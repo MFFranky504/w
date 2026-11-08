@@ -44,3 +44,10 @@ Título YouTube Shorts: «Hasta Lady Gaga fue despedida... y luego llegó al nú
 Comentario fijado: «Cuéntame, ¿cuál es ese "no" que recibiste y que ahora estás transformando en una oportunidad? 👇».
 Hechos revisados con Gemini y con conocimiento propio: despido de Island Def Jam en 2006, trabajo de mesera (narrado como «según ha contado»), composiciones para otros, nuevo contrato, The Fame en el número uno de varios países. Confirmar en una fuente antes de publicar: el plazo exacto («pocos meses»).
 Aviso visual: la tarjeta final tapa la cara del personaje durante los últimos 2-3 s.
+
+## Short Eminem
+Archivo: out/TU_CONFIA_eminem_SHORT_Vertical_yt.mp4 (vertical, 40 s). Textos: caption_eminem_short_*.txt.
+Título YouTube Shorts: «Hasta Eminem fracasó con su primer disco... y años después ganó un Óscar 🎤».
+Comentario fijado sugerido: «¿Qué estás trabajando en silencio hoy? Cuéntamelo 👇».
+Revisión: Gemini verificó los hechos y actuó como abogado del diablo sobre el guion y los fotogramas. Se corrigió: ventas de Infinite narradas como «según se ha reportado», un solo Óscar, sin «leyenda más grande de la historia». Se descartaron sus avisos de «HATA» (era un subtítulo a medias) y del cabello azul (es la mascota del cierre).
+Confirmar antes de publicar: ventas de Infinite (cifra reportada), despido del restaurante.

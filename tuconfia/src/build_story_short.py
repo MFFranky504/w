@@ -128,6 +128,9 @@ CFG = {
  'gaga': dict(turn='sign', pre='write', late='one',
    sc=[('hook', 'Hasta Lady', 'g_hook'), ('label', 'En dos mil', 'g_label'), ('diner', 'Según ha', 'g_diner'), ('write', 'Pero no', 'g_write'), ('sign', 'Hasta que', 'g_sign'), ('one', 'Y su primer', 'g_one'), ('cierre', 'A veces', 'close')],
    hooks=[('hook', .15, 1.9, '¡LA', 'DESPIDIERON!', 520), ('label', .3, 3.0, '¡A LOS POCOS', 'MESES!', 520), ('diner', .3, 2.0, '¡DE MESERA!', '', 520), ('sign', .2, 2.0, '¡OTRA', 'OPORTUNIDAD!', 520), ('one', .3, 3.4, '¡NÚMERO UNO', 'EN EL MUNDO!', 520), ('cierre', 5.8, 8.4, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
+ 'eminem': dict(turn='dre', pre='write', late='oscar',
+   sc=[('hook', 'Hasta Éminem', 'e_hook'), ('flop', 'En mil novecientos noventa y seis', 'e_flop'), ('fired', 'Después', 'e_fired'), ('write', 'Pero siguió', 'e_write'), ('dre', 'En mil novecientos noventa y ocho', 'e_sign'), ('album', 'Un año', 'e_one'), ('oscar', 'Luego', 'e_oscar'), ('cierre', 'Su fracaso', 'close')],
+   hooks=[('hook', .15, 2.0, '¡FRACASÓ CON', 'SU 1ER DISCO!', 520), ('fired', .3, 2.6, '¡LO', 'DESPIDIERON!', 520), ('dre', .2, 2.0, '¡UNA NUEVA', 'OPORTUNIDAD!', 520), ('album', .3, 2.6, '¡Y TODO', 'CAMBIÓ!', 520), ('oscar', .3, 2.8, '¡GANÓ UN', 'ÓSCAR!', 520), ('cierre', 5.2, 7.8, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
 }[STORY]
 SCENES = []
 for n_, p_, f_ in CFG['sc']:
