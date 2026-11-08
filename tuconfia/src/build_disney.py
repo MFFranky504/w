@@ -463,9 +463,9 @@ def synth_audio():
     chime(sc_('estreno') + .1, [523, 659, 784, 1047], .35)
     chime(sc_('cierre') + .1, [523, 659, 784, 1047], .35)
     chime(CTA_T0 + .1, [988, 1319], .3)
-    chime(g('final')['t0'] + .1, [523, 659, 784, 1047], .35)
-    pad = sum(np.sin(2 * np.pi * f * tt(dur('final'))) for f in (261.6, 329.6, 392.0, 523.3)) * .06       # acorde cálido del amanecer
-    add(pad * np.minimum(1, tt(dur('final')) / 1.5) * np.minimum(1, (dur('final') - tt(dur('final'))) / 1.0), g('final')['t0'], .5)
+    chime(g('cierre')['t0'] + .1, [523, 659, 784, 1047], .35)
+    pad = sum(np.sin(2 * np.pi * f * tt(dur('cierre'))) for f in (261.6, 329.6, 392.0, 523.3)) * .06       # acorde cálido del amanecer
+    add(pad * np.minimum(1, tt(dur('cierre')) / 1.5) * np.minimum(1, (dur('cierre') - tt(dur('cierre'))) / 1.0), g('cierre')['t0'], .5)
     d = .5; env = np.sin(np.pi * np.clip(tt(d) / d, 0, 1)) ** 2
     add(noise(d, 1800) * env * .3, TOTAL - LOOP_D - .1, .5)
     for a, c_, l1, l2, yy in HOOK_T:                               # blip de cada gancho de texto
