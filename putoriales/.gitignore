@@ -9,3 +9,8 @@ build/voices.json
 build/frames2/
 build/mix2.wav
 build/q*.log
+build/frames3/
+build/mix3.wav
+build/r3_*.log
+build/enc3.log
+build/v3.ok
