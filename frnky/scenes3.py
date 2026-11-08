@@ -354,3 +354,48 @@ def super_vacio(t):
             d.line([gx, cy_, gx, cy_ + 14], fill=(150, 150, 170))
     d.ellipse([60, 250, 120, 262], fill=(240, 230, 210)); d.rectangle([72, 252, 108, 258], fill=(255, 200, 70))   # papas regadas
     return _fin(img)
+
+
+def parada(t):
+    """Parada de camión bajo la lluvia: carril alto (los camiones se ven sobre los personajes), marquesina «PARADA 52», farola, charcos."""
+    img, d = _new()
+    top, bot = (64, 74, 100), (150, 158, 178)
+    for y in range(0, 150, 2):
+        u = y / 150
+        d.rectangle([0, y, LW, y + 2], fill=tuple(int(top[i] + (bot[i] - top[i]) * u) for i in range(3)))
+    cols = [(86, 92, 120), (100, 96, 128), (78, 90, 116), (110, 104, 130), (92, 100, 124)]
+    x = -6
+    for k in range(5):
+        w, hh = 40, [104, 84, 112, 90, 98][k]
+        box(d, x, 150 - hh, x + w, 150, cols[k])
+        for wy in range(150 - hh + 8, 140, 13):
+            for wx in range(x + 5, x + w - 8, 12):
+                lit = (wx * 5 + wy * 3 + k) % 4 != 0
+                d.rectangle([wx, wy, wx + 6, wy + 8], fill=(255, 226, 140) if lit else (44, 50, 72)); d.rectangle([wx, wy, wx + 6, wy], fill=OL)
+        x += w
+    d.rectangle([0, 150, LW, 196], fill=(58, 60, 78))                          # carril
+    for k in range(0, LW, 26):
+        d.rectangle([k + 4, 174, k + 18, 176], fill=(214, 196, 96))
+    d.rectangle([0, 150, LW, 153], fill=(86, 88, 108))
+    d.rectangle([0, 196, LW, 202], fill=(168, 168, 190)); d.rectangle([0, 196, LW, 197], fill=(206, 206, 224))   # banqueta
+    d.rectangle([0, 202, LW, LH], fill=(110, 114, 138))
+    for y in range(210, LH, 14):
+        d.rectangle([0, y, LW, y], fill=(92, 96, 120))
+    for xx in range(0, LW, 28):
+        d.rectangle([xx, 202, xx, LH], fill=(98, 102, 126))
+    # marquesina con banca, letrero y mapa de ruta (al fondo derecho, detrás de los personajes)
+    d.rectangle([128, 160, 176, 166], fill=OL); d.rectangle([129, 161, 175, 165], fill=(220, 90, 70)); d.rectangle([129, 161, 175, 162], fill=(250, 140, 110))
+    d.rectangle([130, 166, 132, 202], fill=OL); d.rectangle([172, 166, 174, 202], fill=OL)
+    d.rectangle([133, 168, 171, 196], fill=(150, 190, 220)); d.rectangle([133, 168, 171, 171], fill=(210, 232, 248))
+    d.ellipse([144, 140, 162, 158], fill=OL); d.ellipse([146, 142, 160, 156], fill=(250, 214, 80)); txt(d, (153, 149), "52", 9, OL, outline=(250, 214, 80))
+    d.rectangle([151, 158, 154, 166], fill=OL)
+    box(d, 136, 186, 168, 194, (176, 130, 80))
+    # farola con halo
+    d.rectangle([14, 128, 17, 202], fill=OL); d.rectangle([8, 124, 24, 130], fill=OL); d.rectangle([9, 125, 23, 129], fill=(255, 244, 190))
+    # charcos con reflejo y ondas
+    for cx, cy, w in ((38, 250, 34), (116, 276, 44), (158, 232, 24), (60, 300, 28)):
+        d.ellipse([cx - w, cy - 6, cx + w, cy + 6], fill=(74, 84, 124)); d.ellipse([cx - w + 6, cy - 3, cx + w - 6, cy + 3], fill=(104, 118, 164))
+        r = (t * 9 + cx) % 10
+        d.ellipse([cx - r, cy - r / 3, cx + r, cy + r / 3], outline=(170, 190, 230))
+    img = glow_img(_up(img), (8 * 2, 124 * 2, 24 * 2, 130 * 2), (255, 244, 190), 120, 16)
+    return _finish(img)

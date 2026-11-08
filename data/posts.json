@@ -46,5 +46,13 @@
   "cta": "Mándaselo a tu bro",
   "date": "2026-11-08",
   "metrics": {}
+ },
+ {
+  "id": "fiel-camion",
+  "category": "fiel",
+  "hook": "Si tu camión nunca llega, ¿te subes a otro o esperas? A o B",
+  "cta": "¿Quién es tu bro?",
+  "date": "2026-11-08",
+  "metrics": {}
  }
 ]
