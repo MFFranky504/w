@@ -1,12 +1,12 @@
 import json,base64,urllib.request,sys
 LINES=[
-"¿Sigues respirando? Pues lo estás haciendo de la verga.",
-"Cómo respirar. Sí, pendejo, respirar. Alguien tenía que decirlo.",
-"Primero, abra la nariz. Ese par de hoyos donde se mete el dedo, cochino.",
-"Ahora jale aire. Despacio. No se chingue toda la habitación, animal.",
-"Sostenga. Uno... dos... pinche tres.",
-"Ahora suelte el aire. Con cuidado... Ah, valió verga.",
-"Felicidades. Ya respira. Ahora váyase a la chingada, que yo ya cobré.",
+"¿Sigues respirando? Pues lo estás haciendo de la verga, hijo de la chingada.",
+"Cómo respirar. Sí, pendejo, respirar. Alguien tenía que decirlo, porque eres un puto inútil.",
+"Primero, abra la nariz. Ese par de hoyos donde se mete el dedo, cochino de mierda.",
+"Ahora jale aire. Despacio. No se chingue toda la habitación, pedazo de animal hijo de puta.",
+"Sostenga. Uno... dos... pinche tres, cabrón.",
+"Ahora suelte el aire. Con cuidado... Ah, valió verga, puta madre.",
+"Felicidades. Ya respira. Ahora váyase a la chingada, hijo de su puta madre, que yo ya cobré.",
 ]
 text=" ".join(LINES)
 body={"text":text,"model_id":"eleven_multilingual_v2","language_code":"es",

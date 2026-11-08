@@ -162,10 +162,11 @@ const HP=new THREE.Vector3(), HEROPOS=new THREE.Vector3();
 
 // ---------- timeline keys
 const T_VERGA1=K('verga',0), POP=T_VERGA1+0.12;
-const T_INH0=12.35, T_INH1=15.6;
+const T_INH0=K('ahora',0)+0.1, T_INH1=K('sostenga')-0.35, HOOKEND=K('cómo')-0.3;
+const S_OFF=[0.35,0.75,1.15,1.75,2.1,2.5];
 const T_BLAST=K('verga',1);
 const LAND=T_BLAST+1.85;
-const SW=new Set(['chingada','pendejo','cochino','verga','pinche','chingue','animal','chingada']);
+const SW=new Set(['chingada','pendejo','cochino','verga','pinche','chingue','animal','mierda','puta','puto','cabrón','madre']);
 const isSW=w=>SW.has(norm(w));
 const swT=words.filter(w=>isSW(w[0])).map(w=>w[1]);
 const T_FINGER=K('mete'), T_COCHINO=K('cochino');
@@ -181,7 +182,7 @@ const infl=t=>{
 };
 let FLY=0;
 function applyHero(t){
-  hero.visible=!(t>=POP&&t<2.9);
+  hero.visible=!(t>=POP&&t<HOOKEND);
   const I=infl(t);
   const sx=1+0.95*I,sy=1+0.42*I,sz=1+0.85*I;
   torso.scale.set(0.85*sx,0.78*sy,0.78*sz);
@@ -262,12 +263,12 @@ function applyItems(t){
   ITEMS.forEach((it,i)=>{
     const g=it.g;const [hx,hz]=it.home;const DUR=0.8;
     g.visible=true;g.scale.setScalar(1);g.rotation.set(0,0,0);
-    if(t<it.s-0.45||t>=T_INH1+99){g.position.set(hx,0,hz)}
-    if(t<it.s){ // pre-suction wobble
-      const w=seg(t,it.s-0.45,it.s);g.position.set(hx+0.08*Math.sin(t*50)*w,0.15*w*Math.abs(Math.sin(t*20)),hz);
-      if(t<=it.s-0.45)g.position.set(hx,0,hz);
-    }else if(t<it.s+DUR){
-      const k=eio(seg(t,it.s,it.s+DUR));const p0=V(hx,0,hz);const mid=V((hx+NOSE.x)/2,5.5+i*0.3,(hz+NOSE.z)/2);
+    if(t<(T_INH0+S_OFF[i])-0.45||t>=T_INH1+99){g.position.set(hx,0,hz)}
+    if(t<(T_INH0+S_OFF[i])){ // pre-suction wobble
+      const w=seg(t,(T_INH0+S_OFF[i])-0.45,(T_INH0+S_OFF[i]));g.position.set(hx+0.08*Math.sin(t*50)*w,0.15*w*Math.abs(Math.sin(t*20)),hz);
+      if(t<=(T_INH0+S_OFF[i])-0.45)g.position.set(hx,0,hz);
+    }else if(t<(T_INH0+S_OFF[i])+DUR){
+      const k=eio(seg(t,(T_INH0+S_OFF[i]),(T_INH0+S_OFF[i])+DUR));const p0=V(hx,0,hz);const mid=V((hx+NOSE.x)/2,5.5+i*0.3,(hz+NOSE.z)/2);
       const a=p0.clone().lerp(mid,k),b=mid.clone().lerp(NOSE,k);g.position.copy(a.lerp(b,k));
       g.scale.setScalar(Math.max(0.03,1-k*0.97));g.rotation.set(k*9,k*12,k*7);
     }else if(t<T_BLAST+i*0.05){g.visible=false}
@@ -316,7 +317,7 @@ function applyRoom(t){
 // ---------- camera
 const P=(a,b,k)=>a.map((v,i)=>lerp(v,b[i],k));
 const add=(v,x,y,z)=>[v.x+x,v.y+y,v.z+z];
-const CUTS=[0,1.39,2.2,2.9,K('sí'),K('alguien'),K('primero'),K('ese'),T_COCHINO+0.2,K('ahora',0),K('no'),K('sostenga'),T_UNO,T_DOS,T_PINCHE,K('ahora',1),T_BLAST,LAND-1.15,LAND,LAND+1.1];
+const CUTS=[0,K('pues'),K('verga',0)-0.15,HOOKEND,K('sí'),K('alguien'),K('primero'),K('ese'),T_COCHINO+0.2,K('ahora',0),K('no'),K('sostenga'),T_UNO,T_DOS,T_PINCHE,K('ahora',1),T_BLAST,LAND-1.15,LAND,LAND+1.1];
 const hpa=(x,y,z)=>add(HP,x,y,z);
 const shots=[
  (u,t)=>({p:P([0,1.0,7],[0,HP.y-0.6,5.0],eio(u)),l:[0,HP.y+0.1,0.5],f:lerp(55,48,u)}),                 // 0 hook: balloon from below
@@ -367,7 +368,7 @@ function applyUI(t){
   else subEl.innerHTML=phrases[idx].map(w=>{const sw=isSW(w[0]);const d=t-w[1];const act=d>=0&&t<w[2]+0.1;const sc=d<0?0.001:(pop(d,sw?0.5:0.4)*(sw?1.08:1));const rot=sw&&d>=0&&d<0.4?-4*Math.exp(-d*8):0;
     return `<span class="${sw?'sw':''}" style="transform:scale(${sc}) rotate(${rot}deg);color:${act&&!sw?'#ffe600':''}">${w[0].replace(/\.\.\.|[.,¿]/g,'')}</span>`}).join('');
   // hook text
-  const hk=t>=0.1&&t<2.9;hook.style.display=hk?'block':'none';if(hk){const d=t-0.1;hook.style.transform=`scale(${pop(d,0.9,14)}) rotate(${-2+Math.sin(t*30)*0.6}deg)`}
+  const hk=t>=0.1&&t<HOOKEND;hook.style.display=hk?'block':'none';if(hk){const d=t-0.1;hook.style.transform=`scale(${pop(d,0.9,14)}) rotate(${-2+Math.sin(t*30)*0.6}deg)`}
   // title slam
   const T3=K('cómo');const ts=t>=T3&&t<T3+1.2;title.style.display=ts?'block':'none';if(ts){const d=t-T3;title.style.transform=`scale(${pop(d,1.4,11)}) rotate(${-4+Math.sin(t*25)*(d<0.3?2:0.4)}deg)`}
   // counter
@@ -375,7 +376,7 @@ function applyUI(t){
   for(let i=0;i<nums.length;i++){const [s,n]=nums[i];const e=i<2?nums[i+1][0]:T_BLAST-0.2;if(t>=s&&t<e){cnt.style.display='block';cnt.textContent=n;cnt.style.transform=`scale(${pop(t-s,0.7,12)}) rotate(${(i-1)*6}deg)`;cnt.style.opacity=.92;shown=true}}
   if(!shown)cnt.style.display='none';
   // flash
-  let f=0;[[POP,1],[T_BLAST,1],[T_BLAST+0.38,1],[2.9,0.5]].forEach(([s,a])=>{const d=t-s;if(d>=0&&d<0.18)f=Math.max(f,a*(1-d/0.18))});
+  let f=0;[[POP,1],[T_BLAST,1],[T_BLAST+0.38,1],[HOOKEND,0.5]].forEach(([s,a])=>{const d=t-s;if(d>=0&&d<0.18)f=Math.max(f,a*(1-d/0.18))});
   swT.forEach(s=>{const d=t-s;if(d>=0&&d<0.1)f=Math.max(f,0.35*(1-d/0.1))});
   flash.style.opacity=f;
   // speed lines on swears + blast
@@ -383,7 +384,7 @@ function applyUI(t){
   speed.style.opacity=sp;
   // crack
   const cd=t-(T_BLAST+0.38);crack.style.opacity=cd>=0&&cd<1.3?(cd<0.9?1:1-(cd-0.9)/0.4):0;
-  pill.style.display=(t>=3.9&&t<7.4)?'block':'none';
+  pill.style.display=(t>=K('cómo')+1.4&&t<K('alguien')+0.6)?'block':'none';
   endEl.style.display=t>=END+0.1?'block':'none';
   $('logo').style.display=t<END+0.1?'block':'none';
 }

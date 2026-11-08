@@ -54,9 +54,10 @@ def rasp(d,f0=180,f1=70):
 def squeak(d=0.12,f=900): return sweep(f,f*1.8,d,g=0.6)*np.sin(np.pi*tt(d)/d)
 def pop(): return noise(0.18,0.4,1.3)*env(0.18,0.001,0.1)+sweep(1400,120,0.18,g=1.0)
 T_BLAST=K('verga',1); LAND=T_BLAST+1.85; POPT=K('verga',0)+0.12
-CUTS=[0,1.39,2.2,2.9,K('sí'),K('alguien'),K('primero'),K('ese'),K('cochino')+0.2,K('ahora',0),K('no'),K('sostenga'),K('uno'),K('dos'),K('pinche'),K('ahora',1),T_BLAST,LAND-1.15,LAND,LAND+1.1]
+INH0=K('ahora',0)+0.1;HOOKEND=K('cómo')-0.3;INH1=K('sostenga')-0.35
+CUTS=[0,K('pues'),K('verga',0)-0.15,HOOKEND,K('sí'),K('alguien'),K('primero'),K('ese'),K('cochino')+0.2,K('ahora',0),K('no'),K('sostenga'),K('uno'),K('dos'),K('pinche'),K('ahora',1),T_BLAST,LAND-1.15,LAND,LAND+1.1]
 for c in CUTS[1:]: add(c-0.04,whoosh(0.3),0.35)
-SWS={'chingada','pendejo','cochino','verga','pinche','chingue','animal'}
+SWS={'chingada','pendejo','cochino','verga','pinche','chingue','animal','mierda','puta','puto','cabrón','madre'}
 for w in words:
     if norm(w[0]) in SWS:
         i=int((w[1]-0.02)*SR); x=boom(0.5)*0.5; sfx[i:i+len(x)]+=x[:N-i]
@@ -73,12 +74,13 @@ for k in range(5): add(K('mete')+k*0.08,tick(500+60*k,0.03),0.5)
 add(K('cochino')+0.25,trombone(220,0.5),0.7)
 add(K('cochino')+0.35,noise(0.4,0.05,0.4)*env(0.4,0.01,0.4),0.5)
 # inhale
-add(12.35,noise(3.3,0.04,0.5)*np.hanning(int(3.3*SR)),0.9)
-add(12.35,sweep(180,1000,3.3,g=0.5),0.5)
-for it in [12.7,13.1,13.5,14.1,14.45,14.85]: add(it+0.78,sweep(700,140,0.14,g=0.9),0.9); add(it+0.78,tick(300,0.04),0.7)
-for k in range(10): add(14.2+k*0.14,squeak(0.12,500+80*k),0.35)
+DI=INH1-INH0
+add(INH0,noise(DI,0.04,0.5)*np.hanning(int(DI*SR)),0.9)
+add(INH0,sweep(180,1000,DI,g=0.5),0.5)
+for it in [INH0+o for o in [0.35,0.75,1.15,1.75,2.1,2.5]]: add(it+0.78,sweep(700,140,0.14,g=0.9),0.9); add(it+0.78,tick(300,0.04),0.7)
+for k in range(10): add(INH0+1.9+k*0.14,squeak(0.12,500+80*k),0.35)
 # tension: creaks + heartbeat
-for k in range(14): add(15.8+k*0.4+(0.1 if k%2 else 0),squeak(0.16,420+25*k),0.28)
+for k in range(14): add(INH1+0.2+k*0.4+(0.1 if k%2 else 0),squeak(0.16,420+25*k),0.28)
 t=K('uno')-0.3;step=0.62
 while t<T_BLAST-0.2:
     add(t,thud(0.14),0.7);add(t+0.17,thud(0.12),0.5);t+=step;step=max(0.28,step*0.92)
