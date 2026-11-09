@@ -46,3 +46,7 @@ ep9/test.log
 ep9/tpl_*.js
 build/t9/
 scene9.html
+build/frames9/
+build/mix9.wav
+build/r9_*.log
+build/v9.ok
