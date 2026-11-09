@@ -40,3 +40,5 @@ build/r8_*.log
 build/enc8.log
 build/v8.ok
 ep8/qa/
+__pycache__/
+build/_tts.py
