@@ -34,6 +34,18 @@ WINNERS_P9 = [
 ]
 SPECIAL_P9 = {"Sergio": "1ER COMENTARIO"}                 # TikTok marked it "Primer comentario"
 
+# ---- winners of Parte 10 (Tyler): comments that say "Tyler" (IG + TikTok screenshots, 9-nov-2026; transcribed by Gemini, checked by hand) ----
+WINNERS_P10 = [
+ ("chicocool789","IG",1,6,21),("pollo_thecreator","IG",1,3,19),("mosh.king2","IG",1,1,20),("cxml.mp3","IG",1,1,19),
+ ("jaydx.5","IG",1,1,18),("1544c_lol","IG",1,1,18),("eyoklem","IG",1,1,18),("samuapont","IG",1,1,17),
+ ("ludomzz_","IG",1,1,17),("_dx.gozz","IG",1,1,17),("marc_bno306","IG",1,1,14),
+ ("dieg.o021022","IG",2,1,21),("ricardox_c7","IG",2,1,21),("alegre_changuito","IG",2,1,21),("ahmedcarmenateperez","IG",2,1,19),
+ ("_mtosn","IG",2,1,19),("ssh_15_2011","IG",2,1,19),("oaxaca_187","IG",2,1,18),("alexxnder_ybv","IG",2,1,1),
+ ("dylangabrielcruzcastano","IG",3,1,20),("diego._glzz","IG",3,1,20),("megalody34_ts_","IG",4,1,20),
+ ("chris","TT",0,2,4),("Osamu Dazai","TT",0,1,4),
+]
+SPECIAL_P10 = {"Osamu Dazai": "1ER COMENTARIO"}
+
 def _sort_rows(raw):
     """Order requested by the channel owner: pista (1,2,3, sin pista) -> más likes -> comentó antes (más horas)."""
     s = sorted(enumerate(raw), key=lambda e: ((e[1][2] if e[1][2] else 9), -e[1][3], -e[1][4], e[0]))
@@ -62,7 +74,7 @@ EPISODES = {
     "p11": dict(
         part=11, artist="Queen", genre="rock", music="rock", hook="b", next_part=12,
         hook_len=2.0, reveal=2.6, hook_scene="hook_sunset", outro_scene="grammy", outro_sign=None, diff_nb=5,
-        prev=dict(sprite="tyler", scene="travel", part=10, lines=("TYLER,", "THE CREATOR"), sub="LOS ÁNGELES, CALIFORNIA", winners=[], winners_part=None, special={}),
+        prev=dict(sprite="tyler", scene="travel", part=10, lines=("TYLER,", "THE CREATOR"), sub="LOS ÁNGELES, CALIFORNIA", winners=[], winners_part=10, special=SPECIAL_P10),
         clues=[
             dict(n=1, diff="ULTRA DIFÍCIL", pts=4, chip="1963", scene="workshop",
                  text="Su guitarrista construyó su guitarra con su papá, a partir de *1963*, usando madera de una *repisa de chimenea* vieja."),
@@ -110,6 +122,7 @@ EPISODES = {
 # the Parte 8 winners list needs the extra rows added after Parte 8 (jesus_rch27)
 EPISODES["p9"]["prev"]["winners"] = _sort_rows(WINNERS_P8)
 EPISODES["p10"]["prev"]["winners"] = _sort_rows(WINNERS_P9)
+EPISODES["p11"]["prev"]["winners"] = _sort_rows(WINNERS_P10)
 
 def current():
     ep = dict(EPISODES[os.environ.get("EPISODE", "p11")])
