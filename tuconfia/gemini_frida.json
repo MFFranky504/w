@@ -1,0 +1,163 @@
+{
+ "hechos": {
+  "Frida Kahlo, pintora mexicana": "VERIFICADO",
+  "Tuvo polio de niña, a los seis años": "VERIFICADO",
+  "Accidente de autobús a los dieciocho años (columna y pelvis)": "VERIFICADO",
+  "Pasó meses en cama tras el accidente": "VERIFICADO",
+  "Empezó a pintar con un espejo sobre el techo": "VERIFICADO",
+  "Se casó con Diego Rivera en 1929": "VERIFICADO"
+ },
+ "lines": [
+  {
+   "t": "Hasta Frida Kahlo tuvo que pintar acostada.",
+   "tts": "Hasta Fríida Káalo tuvo que pintar acostada.",
+   "emo": "bold"
+  },
+  {
+   "t": "De niña, Frida Kahlo enfrentó el *polio* a los 6.",
+   "tts": "De niña, Fríida Káalo enfrentó el polio a los seis.",
+   "emo": "sad"
+  },
+  {
+   "t": "A los 18, un accidente destrozó su columna y pelvis.",
+   "tts": "A los dieciocho, un accidente destrozó su columna y pelvis.",
+   "emo": "sad"
+  },
+  {
+   "t": "Pasó meses atrapada en una cama de hospital.",
+   "tts": "Pasó meses atrapada en una cama de hospital.",
+   "emo": "sad"
+  },
+  {
+   "t": "Pero usó un *espejo* en el techo para pintar.",
+   "tts": "Pero usó un espejo en el techo para pintar.",
+   "emo": "hopeful"
+  },
+  {
+   "t": "Su dolor no decidió su *destino* como pintora mexicana.",
+   "tts": "Su dolor no decidió su destino como pintora mexicana.",
+   "emo": "warmly"
+  },
+  {
+   "t": "En 1929, su vida cambió al casarse con Diego Rivera.",
+   "tts": "En mil novecientos veintinueve, su vida cambió al casarse con Diego Rribera.",
+   "emo": "warmly"
+  },
+  {
+   "t": "Ella no esperó estar bien para crear *arte*.",
+   "tts": "Ella no esperó estar bien para crear arte.",
+   "emo": "bold"
+  },
+  {
+   "t": "¿Qué estás esperando tú para empezar?",
+   "tts": "¿Qué estás esperando tú para empezar?",
+   "emo": "softly"
+  }
+ ],
+ "cast": {
+  "young": {
+   "skin": [
+    200,
+    150,
+    100
+   ],
+   "hair": [
+    0,
+    0,
+    0
+   ],
+   "style": "short",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    200,
+    150,
+    100
+   ],
+   "hair": [
+    0,
+    0,
+    0
+   ],
+   "style": "short",
+   "outfit": "blazer",
+   "beard": false,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_hook",
+   "line": 0
+  },
+  {
+   "kit": "e_flop",
+   "line": 1
+  },
+  {
+   "kit": "e_flop",
+   "line": 2
+  },
+  {
+   "kit": "e_write",
+   "line": 3
+  },
+  {
+   "kit": "e_write",
+   "line": 4
+  },
+  {
+   "kit": "e_sign",
+   "line": 6
+  },
+  {
+   "kit": "close",
+   "line": 8
+  }
+ ],
+ "turn": 4,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "FRIDA KAHLO",
+   "l2": "PINTÓ ACOSTA"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "DOLOR A LOS 6",
+   "l2": "PASÓ POLIO"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "ACCIDENTE",
+   "l2": "A LOS 18"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "EL GIRO",
+   "l2": "USÓ UN ESPEJO"
+  }
+ ],
+ "titulo_short": "El poder de Frida Kahlo 🎨",
+ "resumen": "Frida Kahlo sufrió un accidente a los 18 años. Pintó desde su cama usando un espejo.",
+ "pregunta": "¿Qué estás esperando tú para empezar?",
+ "hashtag": "#FridaKahlo",
+ "riesgos": [],
+ "fonetica": {
+  "Frida Kahlo": "Frída Kálo",
+  "Diego Rivera": "Diégo Ribéra"
+ }
+}

@@ -1,0 +1,89 @@
+{
+ "titulo": "frida",
+ "meta": {
+  "famoso": "Frida Kahlo"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Hasta Frida Kahlo tuvo que pintar acostada.",
+   "tts": "Hasta Fríida Káalo tuvo que pintar acostada.",
+   "gen": "[bold] Hasta Fríida Káalo tuvo que pintar acostada.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "De niña, Frida Kahlo enfrentó el *polio* a los 6.",
+   "tts": "De niña, Fríida Káalo enfrentó el polio a los seis.",
+   "gen": "[sad] De niña, Fríida Káalo enfrentó el polio a los seis.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "A los 18, un accidente destrozó su columna y pelvis.",
+   "tts": "A los dieciocho, un accidente destrozó su columna y pelvis.",
+   "gen": "[sad] A los dieciocho, un accidente destrozó su columna y pelvis.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "Pasó meses atrapada en una cama de hospital.",
+   "tts": "Pasó meses atrapada en una cama de hospital.",
+   "gen": "[sad] Pasó meses atrapada en una cama de hospital.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Pero usó un *espejo* en el techo para pintar.",
+   "tts": "Pero usó un espejo en el techo para pintar.",
+   "gen": "[hopeful] Pero usó un espejo en el techo para pintar.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Su dolor no decidió su *destino* como pintora mexicana.",
+   "tts": "Su dolor no decidió su destino como pintora mexicana.",
+   "gen": "[warmly] Su dolor no decidió su destino como pintora mexicana.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "En 1929, su vida cambió al casarse con Diego Rivera.",
+   "tts": "En mil novecientos veintinueve, su vida cambió al casarse con Diego Rribera.",
+   "gen": "[warmly] En mil novecientos veintinueve, su vida cambió al casarse con Diego Rribera.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "Ella no esperó estar bien para crear *arte*.",
+   "tts": "Ella no esperó estar bien para crear arte.",
+   "gen": "[bold] Ella no esperó estar bien para crear arte.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "",
+   "t": "¿Qué estás esperando tú para empezar?",
+   "tts": "¿Qué estás esperando tú para empezar?",
+   "gen": "[softly] ¿Qué estás esperando tú para empezar?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

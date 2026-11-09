@@ -56,7 +56,7 @@ def hablado(t):
     return re.sub(r'\d+', lambda m: num2words(int(m.group()), lang='es'), t)
 EN = {'Harrison Ford': 'Járison Ford', 'Star Wars': 'Star Uars', 'Indiana Jones': 'Índiana Yons', 'American Graffiti': 'Américan Grafiti',
       'Michael Jordan': 'Máicol Yórdan', 'Taylor Swift': 'Téilor Suift', 'Morgan Freeman': 'Mórgan Fríman', 'Eminem': 'Éminem',
-      'Lady Gaga': 'Léidi Gágá', 'Albert Einstein': 'Álbert Áinstain', 'ETH Zurich': 'E T H Súrij', 'Nobel': 'Nóbel', 'Dwayne Johnson': 'Duéin Yónson', 'Tom Brady': 'Tom Bréidi', 'Million Dollar Baby': 'Míllion Dólar Béibi',
+      'Lady Gaga': 'Léidi Gágá', 'Albert Einstein': 'Álbert Áinstain', 'Frida Kahlo': 'Fríida Káalo', 'Diego Rivera': 'Diego Rribera', 'ETH Zurich': 'E T H Súrij', 'Nobel': 'Nóbel', 'Dwayne Johnson': 'Duéin Yónson', 'Tom Brady': 'Tom Bréidi', 'Million Dollar Baby': 'Míllion Dólar Béibi',
       'Lose Yourself': 'Lus Yorself', 'The Shawshank Redemption': 'The Shóshank Ridénshon', 'Driving Miss Daisy': 'Dráiving Mis Deisi'}
 def hablado_en(t):
     t = t.replace('*', '')

@@ -1,0 +1,19 @@
+Como tu QA hostil, aquí tienes los fallos críticos de este desastre visual. Si esto sale así, el video está muerto antes de publicarse:
+
+1.  **Inconsistencia de personaje (Error grave de continuidad):** El avatar cambia drásticamente entre fotogramas. En el último frame (35s), el avatar tiene **cabello azul**, mientras que en los anteriores es **negruzco/café oscuro**. Es un error amateur que destruye la identidad visual.
+2.  **Texto cortado / Mal uso de "zona segura":**
+    *   En el frame 1, la línea "KAHLO TUVO" está obstruida visualmente por la línea horizontal rosa, haciendo que parezca un error de renderizado.
+    *   En el frame 4, la frase "ESPEJO EN EL" está cortada abruptamente por el margen inferior, obligando al usuario a forzar la vista.
+3.  **Ortografía y puntuación:**
+    *   **Frame 1:** Título "PINTÓ ACOSTA". El verbo es "acostada". Escribirlo como "acosta" suena a un apellido o a una mala conjugación del verbo acostar. Es un error gramatical grave.
+    *   **Frame 2:** "DOLOR A LOS 6 | PASÓ POLIO". La redacción es pobre y gramaticalmente incorrecta. Se dice "sufrió polio" o "tuvo polio", no "pasó polio".
+4.  **Sprites flotando / Error de perspectiva:**
+    *   **Frame 4:** El espejo está suspendido en el aire a la altura de la cabeza del personaje, pero no hay soporte físico visible. Parece un objeto "pegado" encima del fondo pixel art.
+    *   **Frame 5:** El personaje parece estar atravesado por una viga o estante de madera debido a una mala composición de capas.
+5.  **Contradicción Narrativa/Visual:**
+    *   **Frame 5:** La narración dice "A los 18, un accidente destrozó su columna y pelvis", pero el avatar está de pie, perfectamente erguido y sonriente, sosteniendo un papel. El tono de la voz y el texto contrastan de forma cínica con la imagen.
+    *   **Frame 6:** El "documento" que sostiene parece una hoja de papel estándar de oficina, rompiendo totalmente la estética pixel-art retro y coherente del resto de los elementos.
+6.  **Problemas de diseño en la tarjeta final (Frame 35s):**
+    *   El logo y el CTA (Call to Action) están demasiado juntos, y el avatar queda "pegado" al borde inferior, dando la sensación de que el diseño está comprimido o mal encuadrado para un formato 1080x1920.
+
+**Veredicto:** No es publicable. Corrijan la continuidad del personaje, eliminen la ambigüedad gramatical ("acosta") y revisen la escala de los objetos.
