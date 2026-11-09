@@ -1,0 +1,54 @@
+Entendido. Tras analizar el audio, el problema principal es un **desbalanceo en el rango de frecuencias y volumen** entre la voz y la música de fondo. Aquí tienes el diagnóstico y las correcciones:
+
+### Diagnóstico técnico:
+1. **Inteligibilidad de voz:** Muy pobre. La música tiene muchos graves y saturación en los medios, lo que "enmascara" (esconde) las frecuencias de la voz.
+2. **Volumen general:** El volumen percibido es bajo porque el rango dinámico de la voz no ha sido comprimido. La música tiene picos demasiado altos que compiten con el narrador.
+3. **Ecos y reverb:** La voz suena "alejada" o con demasiado espacio. El efecto de reverb es excesivo para un audio con música de fondo tan densa, creando una "bola de sonido" ininteligible.
+4. **Ritmo del narrador:** El ritmo es bueno, pero la falta de claridad en las consonantes (probablemente por compresión excesiva del archivo original) hace que se pierda la nitidez.
+5. **Cruce de frecuencias:** La música y la voz comparten el mismo espectro de frecuencias (especialmente entre 200Hz y 800Hz), lo que genera el "ruido" que impide entender las palabras.
+
+---
+
+### Propuesta de ajustes de mezcla (cifras sugeridas):
+
+1. **Atenuación de música (Duck):** Baja el volumen del canal de música/efectos en **-6 dB a -8 dB** respecto al nivel actual.
+2. **Ganancia de voz:** Sube el nivel de la pista de voz en **+3 dB** y aplica un *hard limiter* para evitar saturación (clipping).
+3. **Ecualización voz (EQ):** Aplica un *High Pass Filter* (filtro paso alto) cortando por debajo de los **100 Hz** y realiza un realce suave de **+2 dB** entre **2 kHz y 4 kHz** para mejorar la claridad de las consonantes.
+4. **Ecualización música (Sidechain EQ):** Haz un corte (notch) en la música de **-4 dB** en el rango de **1 kHz a 3 kHz**. Esto crea un "hueco" en la música donde la voz encajará perfectamente.
+5. **Reducción de Reverb:** Reduce el efecto de *wet* del reverb de la voz en un **50%**. Si es posible, aplica una puerta de ruido (*Noise Gate*) para limpiar los silencios.
+6. **Compresión:** Aplica una compresión en la voz con un ratio de **4:1** y un *attack* rápido para que la voz se sienta al frente y constante todo el tiempo.
+
+**Consejo extra:** Si estás en CapCut o Premiere, utiliza la función **"Audio Ducking"** automática y configúrala con una sensibilidad del 70%. Esto hará que la música baje de volumen automáticamente cuando el narrador hable.
+----
+El problema principal de tu reel es la **sobrecarga cognitiva**: intentas explicar un sistema de juego complejo (reglas, inventario, lore y opciones) en un formato diseñado para el impacto visual rápido. El espectador no sabe qué leer primero porque los elementos visuales compiten entre sí.
+
+Aquí tienes el diagnóstico y la solución:
+
+### Diagnóstico de los 8 puntos de confusión
+
+1.  **Falta de Jerarquía Visual:** Los textos importantes (opciones A/B/C) tienen el mismo tamaño visual que el decorativo (nombres de países). Todo compite por atención.
+2.  **Narrativa "Fragmentada":** Saltas de banderas, a un termómetro, a un hacha y a un acertijo. El espectador no entiende si esto es un juego de supervivencia, un test de cultura general o un acertijo lógico.
+3.  **Legibilidad del Texto:** El contraste entre el fondo (texturas oscuras/papel envejecido) y la tipografía es pobre. En pantallas móviles pequeñas, el texto se vuelve borroso.
+4.  **Ritmo de "Flash":** Los primeros 16 segundos pasan demasiados objetos (hacha, mapa, nota) sin dar tiempo a procesar la "necesidad" del personaje.
+5.  **Exceso de Información:** Intentar mostrar 4 países al principio es ruido innecesario si la decisión es personal. ¿Qué aportan las banderas al problema de la cabaña?
+6.  **Desconexión entre el Acertijo y las Opciones:** El texto de la "Nota" es críptico, pero las opciones A/B/C aparecen de golpe. No hay un puente visual que invite a la reflexión.
+7.  **Falta de "Gancho" de Dolor:** La premisa (el frío) se pierde entre tantos elementos. El usuario debe sentir la urgencia antes de ver las opciones.
+8.  **Ausencia de Foco (Call to Action):** El cierre es informativo ("Episodio 1"), pero no es una llamada clara a la acción. El usuario termina el video sin saber qué debe hacer exactamente.
+
+---
+
+### Propuesta de arreglos exactos
+
+1.  **Simplifica el Gancho (0-4s):** Elimina las banderas. Pon una imagen potente de la cabaña y el termómetro bajando drásticamente. Texto grande: **"Estás atrapado a 6°C. Solo tienes una oportunidad."**
+2.  **Define el Inventario (4-12s):** No muestres el mapa, el hacha y la nota por separado. Crea una pantalla de "Inventario" que muestre los 3 objetos a la vez. Así el espectador siente que tiene "herramientas".
+3.  **Lee la Nota con Voz en Off:** No obligues al usuario a leer un texto largo. Usa una voz en off (IA tipo suspenso) para narrar la nota mientras el texto aparece resaltado línea por línea.
+4.  **Aumenta el Contraste:** Cambia el fondo del texto a un recuadro negro con 80% de opacidad y letras blancas o amarillas brillantes. La legibilidad es prioridad.
+5.  **Haz las opciones A/B/C más visuales:** No uses solo texto. Acompaña cada opción con un icono claro (Fuego, Hacha, Velas). El cerebro procesa iconos 60.000 veces más rápido que texto.
+6.  **Crea una Pausa de Tensión (16s):** Antes de mostrar las opciones A/B/C, inserta un frame negro de 0.5s con la pregunta: **"¿Qué haces?"**. Esto fuerza al cerebro a prepararse para la decisión.
+7.  **Agrupa la información:**
+    *   *Bloque 1:* El Peligro (Frío/Cabaña).
+    *   *Bloque 2:* Los Recursos (Hacha/Mapa/Nota).
+    *   *Bloque 3:* El Desafío (Opciones A/B/C).
+8.  **CTA Directo:** Cambia el cierre informativo por algo que incite al engagement: **"¿Qué camino eliges? Comenta A, B o C y mira el resultado en el siguiente video."** (Esto obliga a comentar para alimentar el algoritmo).
+
+**Consejo final:** Si el video dura 64 segundos, asegúrate de que el "Gancho" ocurra en los primeros 3 segundos. Si la gente no sabe por qué está viendo el video en los primeros 3 segundos, harán scroll (deslizarán hacia arriba). **Reduce la duración a 45 segundos eliminando elementos decorativos.**

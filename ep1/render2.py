@@ -3,25 +3,35 @@ from multiprocessing import Pool
 import render as R
 from lib import *
 FPS = 24; DUR = 64.5
-SEGS = [(6.0,9.4,6.2,1.0),(9.4,13.4,22.0,1.325),(13.4,17.9,27.3,1.42),(17.9,21.4,33.7,1.57),(21.4,22.1,39.2,1.57),(22.1,24.1,40.3,1.75),(24.1,24.9,43.8,1.5),(24.9,26.8,45.0,1.0),(26.8,27.6,46.9,1.375),(27.6,28.4,48.0,1.25),(28.4,29.2,49.0,1.25),(29.2,43.2,50.0,1.0),(43.2,54.45,64.0,1.0),(54.45,61.85,77.9,1.0),(61.85,64.6,85.3,0.8)]
-SUBS2 = [(.2,1.5,'Diez países.'),(1.6,3.0,'Una cabaña helada.'),(3.1,4.4,'Una sola chispa.'),(4.7,6.0,'¿Tú qué harías?'),(6.3,8.1,'Nadie sabe por qué están aquí.'),(8.4,9.3,'Yo sí.'),
- (9.5,10.9,'Una decisión por país.'),(11.1,12.9,'Ustedes deciden.'),(13.5,15.0,'Cien de resistencia.'),(15.3,17.4,'Cero... eliminado.'),(18.0,21.3,'La cabaña se congela: tres grados menos cada hora.'),
- (21.45,22.2,'Un hacha.'),(22.3,24.0,'Un encendedor.'),(24.95,25.8,'Un cuchillo.'),(25.85,27.2,'Un mapa.'),(27.25,28.0,'Cinco velas.'),(28.05,28.8,'Troncos húmedos.'),(28.85,29.6,'Tres leños secos.'),
- (29.4,30.2,'Y una nota.'),(30.6,31.9,'Léanla con cuidado.'),(32.15,34.8,'El frío no se vence con fuerza.'),(34.9,36.4,'Lo que pesa, no te salvará.'),(36.6,41.0,'Lo que brilla poco, gástalo una sola vez, y donde más dure.'),(41.6,43.1,'El humo conoce la salida.'),
- (43.5,44.6,'Tres caminos.'),(44.8,48.2,'A: la chimenea, con los leños secos.'),(48.6,51.7,'B: el muro, con el hacha.'),(52.1,54.3,'C: las cinco velas.'),
- (54.6,57.2,'Escriban país y letra en los comentarios.'),(57.55,59.2,'Veinticuatro horas.'),(59.55,61.85,'Después... no habrá marcha atrás.'),(62.0,64.0,'¿Qué país caerá primero?')]
-R.SUBS = SUBS2
+import json
+DUR = 74.8
+SEGS = [(6.4,10.4,5.6,1.0),(10.4,15.4,22.0,1.06),(15.4,21.4,27.3,1.067),(21.4,27.4,33.7,0.917),(27.4,28.5,39.2,1.0),(28.5,31.6,40.3,1.129),(31.6,32.7,43.8,1.09),(32.7,35.2,45.0,0.76),(35.2,36.3,46.9,1.0),(36.3,37.3,48.0,1.0),(37.3,38.3,49.0,1.0),(38.3,52.3,50.0,1.0),(52.3,53.2,None,0),(53.2,64.45,64.0,1.0),(64.45,71.85,77.9,1.0),(71.85,74.9,85.3,0.8)]
+PLACE = json.load(open('place.json'))
+
+def subs(im, T):
+    for t0, t1, s in PLACE:
+        if t0 - .05 <= T < t1 + .25:
+            d = ImageDraw.Draw(im, 'RGBA'); f = font(64, 'ExtraBold'); ls = R.wrap(s, f, 900); y = 1440 - (len(ls) - 1) * 40
+            wmax = max(f.getlength(l) for l in ls)
+            d.rounded_rectangle((540 - wmax / 2 - 30, y - 46, 540 + wmax / 2 + 30, y + 80 * (len(ls) - 1) + 50), 28, fill=(0, 0, 0, 165))
+            for l in ls: d.text((540, y), l, font=f, fill=(255, 255, 250), anchor='mm', stroke_width=5, stroke_fill=(0, 0, 0)); y += 80
+            break
+    return im
+
+def pause_scene(Tn):
+    im = Image.new('RGB', (W, H), (6, 6, 8)); d = ImageDraw.Draw(im)
+    text_c(d, (540, 900), '¿QUÉ HACES?', font(170, 'Black'), (245, 245, 240), 8); d.rectangle((140, 1020, 940, 1030), fill=(200, 30, 30))
+    return np.array(im, np.float32)
 
 def hook(Tn):
-    if Tn < 1.0: arr = R.obj_scene(42.5 + Tn, 40.3, 43.8, 'lighter', '', 940 + 120 * Tn, 0, 800, spark=42.6)
-    elif Tn < 2.0: arr = R.world_scene(Tn + 3.0, *R.kf(Tn, [(1.0, 1080, 3100, 1.0), (2.0, 1080, 3000, 1.5)]), 'all')
-    elif Tn < 3.0: arr = R.world_scene(8.3, 1090, 430, 2.6 + (Tn - 2) * .8, 'speaker')
-    elif Tn < 4.2: arr = R.termo_scene(Tn, 6.0 - 1.6 * ease((Tn - 3.0) / 1.2))
-    else: arr = R.obj_scene(40.5 + (Tn - 4.2) * 1.6, 40.3, 43.8, 'lighter', '', 1000 + 80 * (Tn - 4.2), 0, 760, spark=None)
+    if Tn < 1.6: arr = R.obj_scene(42.4 + Tn * .6, 40.3, 43.8, 'lighter', '', 940 + 90 * Tn, 0, 800, spark=42.6 if Tn < .5 else None)
+    elif Tn < 3.2: arr = R.world_scene(Tn + 2.0, *R.kf(Tn, [(1.6, 1080, 3100, 1.0), (3.2, 1080, 3000, 1.45)]), 'all')
+    elif Tn < 4.6: arr = R.termo_scene(Tn, 6.0 - 1.6 * ease((Tn - 3.4) / 1.2))
+    else: arr = R.obj_scene(40.5 + (Tn - 4.6) * .8, 40.3, 43.8, 'lighter', '', 1000 + 60 * (Tn - 4.6), 0, 760, spark=None)
     im = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)); d = ImageDraw.Draw(im, 'RGBA')
-    sh = 8 * math.sin(Tn * 55) if int(Tn * 5) % 2 == 0 else 0
-    if Tn < 4.2:
-        d.rounded_rectangle((60, 190, 1020, 600), 30, fill=(0, 0, 0, 150))
+    sh = 6 * math.sin(Tn * 55) if int(Tn * 5) % 2 == 0 else 0
+    if Tn < 4.6:
+        d.rounded_rectangle((60, 190, 1020, 600), 30, fill=(0, 0, 0, 160))
         text_c(d, (540 + sh, 320), 'UNA SOLA', font(170, 'Black'), (245, 245, 240), 8); text_c(d, (540 - sh, 490), 'CHISPA.', font(170, 'Black'), (225, 40, 40), 8)
     else:
         d.rounded_rectangle((40, 1010, 1040, 1230), 30, fill=(0, 0, 0, 170))
@@ -32,22 +42,23 @@ def scene(Tn):
     if Tn < 6.0: return hook(Tn), 5.0 + Tn
     for n0, n1, o0, sp in SEGS:
         if Tn < n1:
+            if o0 is None: return pause_scene(Tn), 63.0
             To = o0 + (Tn - n0) * sp; return R.render(To), To
     To = 87.3; return R.render(To), To
 
 def frame(i):
     Tn = i / FPS; arr, To = scene(Tn)
     a = np.clip(arr, 0, 255)
-    cuts = [1.0, 2.0, 3.0, 4.2, 6.0]
+    cuts = [1.6, 3.2, 4.6, 6.4, 52.3, 53.2]
     for c in cuts:
         if 0 <= Tn - c < .12: a = a * .6 + 150 * (1 - (Tn - c) / .12) * .4 + a * 0
     fr = .25 if Tn < 6 else min(.55, max(0, (To - 33.7) / 60))
     if 33.7 <= To < 39.2: fr = .35 + .3 * ease((To - 36.5) / 2.7)
     a = a * R.VIG * (1 + .035 * math.sin(Tn * 23 + 1.3) + .02 * math.sin(Tn * 7))
     a = a * np.array([.96, 1.0, 1.06], np.float32)[None, None, :]
-    a = a + R.FROST * fr * np.array([70, 100, 130], np.float32) + R.GRAIN[i % 6]
+    a = a + R.FROST * fr * np.array([70, 100, 130], np.float32) * 0.8 + R.GRAIN[i % 6]
     a = np.clip(a * min(1, (Tn + .05) / .15) * min(1, (DUR - Tn) / .5), 0, 255).astype(np.uint8)
-    im = Image.fromarray(a); im = R.subs(im, Tn)
+    im = Image.fromarray(a); im = subs(im, Tn) if not (52.3 <= Tn < 53.2) else im
     return im.tobytes()
 
 if __name__ == '__main__':

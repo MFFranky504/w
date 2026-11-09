@@ -159,12 +159,13 @@ def note_scene(T):
     pap = PAPER.copy(); d = ImageDraw.Draw(pap)
     text_c(d, (430, 120), 'NOTA', serif(60), (70, 40, 25))
     d.line((250, 165, 610, 165), fill=(70, 40, 25), width=4)
-    f = serif(58); y = 260
+    f = serif(62); y = 250
     for t0, s in NOTE:
-        ls = wrap(s, f, 690); a = ease((T - t0) / .6) if T >= t0 else 0
+        ls = wrap(s, f, 700); a = ease((T - t0) / .6) if T >= t0 else 0
         cur = T >= t0 and not any(T >= t1 for t1, _ in NOTE if t1 > t0)
         for l in ls:
-            col = tuple(int(lerp(218 - 0, c, a)) for c, _ in zip((52, 34, 24), range(1))) if False else (int(lerp(205, 52 if cur else 84, a)), int(lerp(185, 34 if cur else 58, a)), int(lerp(145, 24 if cur else 44, a)))
+            col = (40, 26, 18) if cur else (78, 56, 42)
+            if T < t0: y += 82; continue
             d.text((90, y), l, font=f, fill=col); y += 82
         y += 40
     zoom = lerp(1.0, 1.07, (T - 50) / 14); pw = int(860 * zoom)
@@ -255,7 +256,7 @@ def scene_vote_rule(T):
         col, row = i % 2, i // 2; x0 = 50 + col * 500; y0 = 440 + row * 150 + (1 - a) * 40
         pill(d, (x0, y0, x0 + 480, y0 + 134), (26, 24, 28), (80, 78, 84), 24, 3)
         fl = flag_img(k, 180, 122).convert('RGBA'); m = Image.new('L', fl.size, 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, 179, 121), 16, fill=255); im.paste(fl, (int(x0 + 14), int(y0 + 6)), m)
-        text_c(d, (x0 + 230, y0 + 67), NAMES[k], font(34 if len(NAMES[k]) > 9 else 40, 'Bold'), (230, 230, 226), 0, anchor='lm')
+        text_c(d, (x0 + 230, y0 + 67), NAMES[k], font(38 if len(NAMES[k]) > 9 else 46, 'Bold'), (230, 230, 226), 0, anchor='lm')
     if T >= 24.9:
         for j, (nm, let) in enumerate([('Chile', 'B'), ('Perú', 'A'), ('México', 'C')]):
             a = ease((T - 25.2 - j * .45) / .3)
@@ -316,10 +317,10 @@ def scene_options(T):
             w_ = O['wall'].resize((350, 250)); im.paste(w_, (250, y0 + 40)); ax = O['axe'].resize((330, 172)).rotate(25, expand=True, resample=Image.BICUBIC); im.paste(ax, (255, y0 + 70), ax)
         else:
             o = O['candles'].resize((350, 249)); im.paste(o, (250, y0 + 45), o)
-        f = font(46, 'ExtraBold'); ls = wrap(t1, f, 380)
-        yy = y0 + 160 - (len(ls) + (1 if t2 else 0) - 1) * 30
+        f = font(48, 'ExtraBold'); ls = wrap(t1, f, 400)
+        yy = y0 + 150 - (len(ls) + (1 if t2 else 0) - 1) * 30
         for l in ls: d.text((630, yy), l, font=f, fill=(240, 240, 235), anchor='lm'); yy += 60
-        if t2: d.text((630, yy), t2, font=font(40, 'Medium'), fill=(170, 170, 176), anchor='lm')
+        if t2: d.text((630, yy), t2, font=font(42, 'Medium'), fill=(170, 170, 176), anchor='lm')
     return np.array(im, np.float32)
 
 def scene_cta(T):

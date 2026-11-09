@@ -198,16 +198,16 @@ def obj_map():
     text_c(d, (410, 70), 'CABAÑA', serif(54), ink); d.line((200, 118, 620, 118), fill=ink, width=4)
     d.rectangle((110, 190, 710, 720), outline=ink, width=8)
     d.rectangle((112, 192, 708, 226), fill=(190, 168, 124)); hatch(d, (112, 192, 708, 226), 12, ink, 2)  # muro norte piedra
-    d.rectangle((130, 226, 300, 350), outline=ink, width=6); hatch(d, (132, 228, 298, 348), 18, ink, 2); text_c(d, (215, 392), 'CHIMENEA', font(32, 'Bold'), ink)
+    d.rectangle((130, 226, 300, 350), outline=ink, width=6); hatch(d, (132, 228, 298, 348), 18, ink, 2); text_c(d, (215, 392), 'CHIMENEA', font(40, 'Bold'), ink)
     xc, yc = 352, 262
     d.line((xc - 24, yc - 24, xc + 24, yc + 24), fill=(165, 22, 22), width=11); d.line((xc - 24, yc + 24, xc + 24, yc - 24), fill=(165, 22, 22), width=11)
-    d.rectangle((300, 715, 520, 726), fill=(214, 192, 146)); text_c(d, (410, 760), 'PUERTA', font(30, 'Bold'), ink)
-    d.rectangle((706, 380, 714, 540), fill=(110, 140, 170)); text_c(d, (640, 430), 'VENTANA', font(26, 'Bold'), ink)
-    d.rectangle((400, 560, 580, 660), outline=ink, width=5); text_c(d, (490, 610), 'MESA', font(28, 'Bold'), ink)
+    d.rectangle((300, 715, 520, 726), fill=(214, 192, 146)); text_c(d, (410, 760), 'PUERTA', font(38, 'Bold'), ink)
+    d.rectangle((706, 380, 714, 540), fill=(110, 140, 170)); text_c(d, (640, 430), 'VENTANA', font(34, 'Bold'), ink)
+    d.rectangle((400, 560, 580, 660), outline=ink, width=5); text_c(d, (490, 610), 'MESA', font(36, 'Bold'), ink)
     d.polygon([(660, 100), (640, 150), (680, 150)], fill=ink); text_c(d, (660, 170), 'N', font(30, 'Bold'), ink)
     d.rectangle((90, 850, 730, 1060), outline=ink, width=5)
-    d.rectangle((120, 885, 190, 925), fill=(190, 168, 124), outline=ink, width=3); hatch(d, (121, 886, 189, 924), 12, ink, 2); text_c(d, (210, 905), 'PIEDRA · 40 cm', font(34, 'Bold'), ink, anchor='lm')
-    d.rectangle((120, 955, 190, 995), fill=(150, 112, 70), outline=ink, width=3); text_c(d, (210, 975), 'MADERA · 5 cm', font(34, 'Bold'), ink, anchor='lm')
+    d.rectangle((120, 885, 190, 925), fill=(190, 168, 124), outline=ink, width=3); hatch(d, (121, 886, 189, 924), 12, ink, 2); text_c(d, (210, 905), 'PIEDRA · 40 cm', font(40, 'Bold'), ink, anchor='lm')
+    d.rectangle((120, 955, 190, 995), fill=(150, 112, 70), outline=ink, width=3); text_c(d, (210, 975), 'MADERA · 5 cm', font(40, 'Bold'), ink, anchor='lm')
     d.line((120, 1030, 700, 1030), fill=ink, width=2)
     return P
 
