@@ -1,0 +1,150 @@
+{
+ "hechos": {
+  "Nacimiento 1937": "VERIFICADO",
+  "The Electric Company 1971-1976": "VERIFICADO",
+  "Nominación Street Smart 1988": "VERIFICADO",
+  "Nominación Driving Miss Daisy 1990": "VERIFICADO",
+  "Nominación Shawshank Redemption 1995": "VERIFICADO",
+  "Óscar Million Dollar Baby 2005": "VERIFICADO"
+ },
+ "lines": [
+  {
+   "t": "Hasta *Morgan Freeman* tuvo que esperar décadas.",
+   "tts": "Hasta Morgan Fríman tuvo que esperar décadas.",
+   "emo": "bold"
+  },
+  {
+   "t": "Pasó años trabajando en teatro y televisión.",
+   "tts": "Pasó años trabajando en teatro y televisión.",
+   "emo": "softly"
+  },
+  {
+   "t": "De 1971 a 1976 fue parte de The Electric Company.",
+   "tts": "De mil novecientos setenta y uno a mil novecientos setenta y seis fue parte de Di Eléctric Cómpani.",
+   "emo": "softly"
+  },
+  {
+   "t": "La fama no llegó al ritmo que él deseaba.",
+   "tts": "La fama no llegó al ritmo que él deseaba.",
+   "emo": "sad"
+  },
+  {
+   "t": "Recibió su primera nominación al Óscar a los 50 años.",
+   "tts": "Recibió su primera nominación al Óscar a los cincuenta años.",
+   "emo": "hopeful"
+  },
+  {
+   "t": "Llegaron nominaciones por Driving Miss Daisy y The Shawshank Redemption.",
+   "tts": "Llegaron nominaciones por Dráivin Mis Déisi y De Shóshanc Redémpshon.",
+   "emo": "hopeful"
+  },
+  {
+   "t": "Finalmente, ganó el Óscar a los 67 años.",
+   "tts": "Finalmente, ganó el Óscar a los sesenta y siete años.",
+   "emo": "excited"
+  },
+  {
+   "t": "El éxito a veces requiere una *larga espera*.",
+   "tts": "El éxito a veces requiere una larga espera.",
+   "emo": "warmly"
+  },
+  {
+   "t": "¿Qué estás dispuesto a esperar para lograrlo?",
+   "tts": "¿Qué estás dispuesto a esperar para lograrlo?",
+   "emo": "warmly"
+  }
+ ],
+ "cast": {
+  "young": {
+   "skin": [
+    210,
+    160,
+    130
+   ],
+   "hair": [
+    0,
+    0,
+    0
+   ],
+   "style": "short",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    210,
+    160,
+    130
+   ],
+   "hair": [
+    240,
+    240,
+    240
+   ],
+   "style": "short",
+   "outfit": "blazer",
+   "beard": true,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_hook",
+   "line": 0
+  },
+  {
+   "kit": "e_write",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 2
+  },
+  {
+   "kit": "e_flop",
+   "line": 3
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "e_oscar",
+   "line": 6
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 4,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "ESPERA REAL",
+   "l2": "MORGAN FREEMAN"
+  }
+ ],
+ "titulo_short": "El éxito llega para quien sabe esperar 🎬",
+ "resumen": "Morgan Freeman alcanzó su primera nominación al Óscar a los 50 años. Consiguió ganar la estatuilla a los 67 años tras décadas de trabajo.",
+ "pregunta": "¿Qué estás dispuesto a esperar para lograrlo?",
+ "hashtag": "#TuConfIA",
+ "riesgos": [],
+ "fonetica": {
+  "Morgan Freeman": "Morgan Fríman",
+  "The Electric Company": "Di Eléctric Cómpani",
+  "Street Smart": "Strít Smárt",
+  "Driving Miss Daisy": "Dráivin Mis Déisi",
+  "The Shawshank Redemption": "De Shóshanc Redémpshon",
+  "Million Dollar Baby": "Mílion Dólar Béibi"
+ }
+}

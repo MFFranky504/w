@@ -1,0 +1,82 @@
+{
+ "cast": {
+  "young": {
+   "skin": [
+    122,
+    84,
+    62
+   ],
+   "hair": [
+    0,
+    0,
+    0
+   ],
+   "style": "short",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    122,
+    84,
+    62
+   ],
+   "hair": [
+    240,
+    240,
+    240
+   ],
+   "style": "short",
+   "outfit": "blazer",
+   "beard": true,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_hook",
+   "line": 0
+  },
+  {
+   "kit": "e_write",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 2
+  },
+  {
+   "kit": "e_flop",
+   "line": 3
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "e_oscar",
+   "line": 6
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 4,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "¡ESPERÓ",
+   "l2": "DÉCADAS!"
+  }
+ ]
+}

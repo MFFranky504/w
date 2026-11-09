@@ -18,6 +18,7 @@ FPS, VW, VH = 30, 1080, 1920
 LOOP_D = 0.9      # disolvencia final hacia el primer fotograma (bucle)
 SR = 44100
 STORY = os.environ['STORY']
+DYN = os.path.exists(f'{os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}/story_{STORY}.json')
 SC = json.load(open(f'{ROOT}/script_{STORY}_short.json'))
 LINES = SC['lines']
 clean = lambda t: t.replace('*', '')
@@ -118,27 +119,43 @@ lid = lambda p: next(l['id'] for l in LINES if clean(l['t']).startswith(p))
 PS = S2.portrait_scene
 Z0 = [(0, 80, 146, 1.0), (1, 80, 150, 1.1)]
 cutc = lambda u: [(0, 80, 146, 1.0), (u, 80, 146, 1.0), (u + .0001, 80, 175, 1.25), (1, 80, 175, 1.25)]
-CFG = {
- 'johnson': dict(turn='dad', pre='seven', late='star',
-   sc=[('field', 'Hasta Dwayne', 'j_field'), ('nobody', 'Soñaba', 'j_nobody'), ('cut', 'Firmó', 'j_cut'), ('seven', 'Según ha', 'j_seven'), ('dad', 'Su padre', 'j_dad'), ('debut', 'En mil', 'j_debut'), ('star', 'Y el que fue', 'j_star'), ('cierre', 'Ser cortado', 'close')],
-   hooks=[('field', .15, 1.4, '¡LO CORTARON!', '', 520), ('cut', .3, 2.8, '¡CORTADO EN', 'DOS MESES!', 520), ('seven', .3, 2.8, '¡SOLO 7', 'DÓLARES!', 520), ('dad', .3, 2.8, '¡UN NUEVO', 'CAMINO!', 520), ('star', .3, 3.0, '¡SE VOLVIÓ', 'UNA ESTRELLA!', 520), ('cierre', 4.0, 6.6, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
- 'brady': dict(turn='injury', pre='bench', late='win',
-   sc=[('draft', 'Hasta Tom', 'b_draft'), ('passed', 'Ciento noventa', 'b_passed'), ('bench', 'Empezó', 'b_bench'), ('injury', 'Hasta que', 'b_injury'), ('win', 'Ganó ese', 'b_win'), ('grind', 'Según ha', 'b_grind'), ('cierre', 'No eligieron', 'close')],
-   hooks=[('draft', .15, 2.6, '¡EL NÚMERO', '199!', 700), ('passed', .3, 2.9, '¡198 ANTES', 'QUE ÉL!', 700), ('injury', .3, 2.9, '¡LE LLEGÓ', 'SU TURNO!', 520), ('win', .3, 3.0, '¡7 SÚPER', 'BOWLS!', 520), ('cierre', 3.6, 6.2, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
- 'gaga': dict(turn='sign', pre='write', late='one',
-   sc=[('hook', 'Hasta Lady', 'g_hook'), ('label', 'En dos mil', 'g_label'), ('diner', 'Según ha', 'g_diner'), ('write', 'Pero no', 'g_write'), ('sign', 'Hasta que', 'g_sign'), ('one', 'Y su primer', 'g_one'), ('cierre', 'A veces', 'close')],
-   hooks=[('hook', .15, 1.9, '¡LA', 'DESPIDIERON!', 520), ('label', .3, 3.0, '¡A LOS POCOS', 'MESES!', 520), ('diner', .3, 2.0, '¡DE MESERA!', '', 520), ('sign', .2, 2.0, '¡OTRA', 'OPORTUNIDAD!', 520), ('one', .3, 3.4, '¡NÚMERO UNO', 'EN EL MUNDO!', 520), ('cierre', 5.8, 8.4, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
- 'eminem': dict(turn='dre', pre='write', late='oscar',
-   sc=[('hook', 'Hasta Éminem', 'e_hook'), ('flop', 'En mil novecientos noventa y seis', 'e_flop'), ('fired', 'Después', 'e_fired'), ('write', 'Pero siguió', 'e_write'), ('dre', 'En mil novecientos noventa y ocho', 'e_sign'), ('album', 'Un año', 'e_one'), ('oscar', 'Luego', 'e_oscar'), ('cierre', 'Su fracaso', 'close')],
-   hooks=[('hook', .15, 2.0, '¡FRACASÓ CON', 'SU 1ER DISCO!', 520), ('fired', .3, 2.6, '¡LO', 'DESPIDIERON!', 520), ('dre', .2, 2.0, '¡UNA NUEVA', 'OPORTUNIDAD!', 520), ('album', .3, 2.6, '¡Y TODO', 'CAMBIÓ!', 520), ('oscar', .3, 2.8, '¡GANÓ UN', 'ÓSCAR!', 520), ('cierre', 5.2, 7.8, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
- 'jordan': dict(turn='shot', pre='train', late='win',
-   sc=[('hook', 'Hasta Michael', 'm_hook'), ('jv', 'En su preparatoria', 'm_jv'), ('train', 'Según ha', 'm_train'), ('shot', 'En mil novecientos ochenta y dos', 'm_shot'), ('draft', 'En mil novecientos ochenta y cuatro', 'm_draft'), ('win', 'Y con ellos', 'm_win'), ('cierre', 'Lo cortaron', 'close')],
-   hooks=[('hook', .15, 2.0, '¡FUE', 'CORTADO!', 520), ('jv', .3, 2.8, '¡AL EQUIPO', 'JUVENIL!', 520), ('train', .3, 2.8, '¡ENTRENÓ', 'MÁS QUE NADIE!', 520), ('shot', .3, 2.8, '¡EL TIRO', 'GANADOR!', 520), ('win', .3, 2.8, '¡6 TÍTULOS', 'DE LA NBA!', 520)]),
-}[STORY]
-SCENES = []
-for n_, p_, f_ in CFG['sc']:
-    cam_ = Z0 if n_ in ('nobody', 'passed') else cutc(.5)
-    SCENES.append(dict(n=n_, a=lid(p_), b=lid(p_), fn=(lambda f: (lambda t, u: getattr(S13, f)(t, u)))(f_), cam=cam_))
+if DYN:
+    import cast as _cast
+    _D = json.load(open(f'{ROOT}/story_{STORY}.json'))
+    for _k, _c in _D['cast'].items():
+        _cast.CAST[f'x_{STORY}_{_k}'] = dict(style=_c.get('style', 'short'), skin=tuple(_c['skin']), hair=_cast.ramp(tuple(_c['hair'])), iris=(70, 70, 90), outfit=_c.get('outfit', 'grey'), strong=bool(_c.get('strong')), stubble=bool(_c.get('beard')), glasses=bool(_c.get('glasses')))
+    _MAP = {n: f'x_{STORY}_adult' for n in ('em', 'mj', 'johnson', 'brady', 'gaga')}
+    _MAP.update({n: f'x_{STORY}_young' for n in ('mj_y', 'johnson_y', 'brady_y', 'emw', 'gagaw')})
+    _r, _b = S13.rpg, S13.bat
+    S13.rpg = lambda w, *a, **k: _r(_MAP.get(w, w), *a, **k)
+    S13.bat = lambda w, *a, **k: _b(_MAP.get(w, w), *a, **k)
+    _sc = _D['scenes']
+    CFG = dict(turn=f"s{_D['turn']}", pre=f"s{_D['turn'] - 1}", late=f"s{len(_sc) - 2}",
+               sc=[(f's{i}' if i < len(_sc) - 1 else 'cierre', LINES[x['line']]['id'], x['kit']) for i, x in enumerate(_sc)],
+               hooks=[(f"s{h['scene']}" if h['scene'] < len(_sc) - 1 else 'cierre', h['start'], h['end'], h['l1'], h['l2'], 520) for h in _D['hooks']])
+    SCENES = [dict(n=n_, a=i_, b=i_, fn=(lambda f: (lambda t, u: getattr(S13, f)(t, u)))(f_), cam=cutc(.5)) for n_, i_, f_ in CFG['sc']]
+else:
+    CFG = {
+     'johnson': dict(turn='dad', pre='seven', late='star',
+       sc=[('field', 'Hasta Dwayne', 'j_field'), ('nobody', 'Soñaba', 'j_nobody'), ('cut', 'Firmó', 'j_cut'), ('seven', 'Según ha', 'j_seven'), ('dad', 'Su padre', 'j_dad'), ('debut', 'En mil', 'j_debut'), ('star', 'Y el que fue', 'j_star'), ('cierre', 'Ser cortado', 'close')],
+       hooks=[('field', .15, 1.4, '¡LO CORTARON!', '', 520), ('cut', .3, 2.8, '¡CORTADO EN', 'DOS MESES!', 520), ('seven', .3, 2.8, '¡SOLO 7', 'DÓLARES!', 520), ('dad', .3, 2.8, '¡UN NUEVO', 'CAMINO!', 520), ('star', .3, 3.0, '¡SE VOLVIÓ', 'UNA ESTRELLA!', 520), ('cierre', 4.0, 6.6, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
+     'brady': dict(turn='injury', pre='bench', late='win',
+       sc=[('draft', 'Hasta Tom', 'b_draft'), ('passed', 'Ciento noventa', 'b_passed'), ('bench', 'Empezó', 'b_bench'), ('injury', 'Hasta que', 'b_injury'), ('win', 'Ganó ese', 'b_win'), ('grind', 'Según ha', 'b_grind'), ('cierre', 'No eligieron', 'close')],
+       hooks=[('draft', .15, 2.6, '¡EL NÚMERO', '199!', 700), ('passed', .3, 2.9, '¡198 ANTES', 'QUE ÉL!', 700), ('injury', .3, 2.9, '¡LE LLEGÓ', 'SU TURNO!', 520), ('win', .3, 3.0, '¡7 SÚPER', 'BOWLS!', 520), ('cierre', 3.6, 6.2, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
+     'gaga': dict(turn='sign', pre='write', late='one',
+       sc=[('hook', 'Hasta Lady', 'g_hook'), ('label', 'En dos mil', 'g_label'), ('diner', 'Según ha', 'g_diner'), ('write', 'Pero no', 'g_write'), ('sign', 'Hasta que', 'g_sign'), ('one', 'Y su primer', 'g_one'), ('cierre', 'A veces', 'close')],
+       hooks=[('hook', .15, 1.9, '¡LA', 'DESPIDIERON!', 520), ('label', .3, 3.0, '¡A LOS POCOS', 'MESES!', 520), ('diner', .3, 2.0, '¡DE MESERA!', '', 520), ('sign', .2, 2.0, '¡OTRA', 'OPORTUNIDAD!', 520), ('one', .3, 3.4, '¡NÚMERO UNO', 'EN EL MUNDO!', 520), ('cierre', 5.8, 8.4, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
+     'eminem': dict(turn='dre', pre='write', late='oscar',
+       sc=[('hook', 'Hasta Éminem', 'e_hook'), ('flop', 'En mil novecientos noventa y seis', 'e_flop'), ('fired', 'Después', 'e_fired'), ('write', 'Pero siguió', 'e_write'), ('dre', 'En mil novecientos noventa y ocho', 'e_sign'), ('album', 'Un año', 'e_one'), ('oscar', 'Luego', 'e_oscar'), ('cierre', 'Su fracaso', 'close')],
+       hooks=[('hook', .15, 2.0, '¡FRACASÓ CON', 'SU 1ER DISCO!', 520), ('fired', .3, 2.6, '¡LO', 'DESPIDIERON!', 520), ('dre', .2, 2.0, '¡UNA NUEVA', 'OPORTUNIDAD!', 520), ('album', .3, 2.6, '¡Y TODO', 'CAMBIÓ!', 520), ('oscar', .3, 2.8, '¡GANÓ UN', 'ÓSCAR!', 520), ('cierre', 5.2, 7.8, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
+     'jordan': dict(turn='shot', pre='train', late='win',
+       sc=[('hook', 'Hasta Michael', 'm_hook'), ('jv', 'En su preparatoria', 'm_jv'), ('train', 'Según ha', 'm_train'), ('shot', 'En mil novecientos ochenta y dos', 'm_shot'), ('draft', 'En mil novecientos ochenta y cuatro', 'm_draft'), ('win', 'Y con ellos', 'm_win'), ('cierre', 'Lo cortaron', 'close')],
+       hooks=[('hook', .15, 2.0, '¡FUE', 'CORTADO!', 520), ('jv', .3, 2.8, '¡AL EQUIPO', 'JUVENIL!', 520), ('train', .3, 2.8, '¡ENTRENÓ', 'MÁS QUE NADIE!', 520), ('shot', .3, 2.8, '¡EL TIRO', 'GANADOR!', 520), ('win', .3, 2.8, '¡6 TÍTULOS', 'DE LA NBA!', 520)]),
+    }[STORY]
+    SCENES = []
+    for n_, p_, f_ in CFG['sc']:
+        cam_ = Z0 if n_ in ('nobody', 'passed') else cutc(.5)
+        SCENES.append(dict(n=n_, a=lid(p_), b=lid(p_), fn=(lambda f: (lambda t, u: getattr(S13, f)(t, u)))(f_), cam=cam_))
 for i, s in enumerate(SCENES):
     s['t0'] = 0.0 if i == 0 else (LEND[SCENES[i - 1]['b']] + LSTART[s['a']]) / 2 if False else (LSTART[s['a']] if i else 0.0)
     s['t1'] = TOTAL if i == len(SCENES) - 1 else LSTART[SCENES[i + 1]['a']]

@@ -1,0 +1,167 @@
+{
+ "hechos": {
+  "Taylor Swift tenía 29 años en 2019": "VERIFICADO",
+  "Scooter Braun compró Big Machine": "VERIFICADO",
+  "Regrabación de 6 discos como Taylor's Version": "VERIFICADO",
+  "Fearless, Red y 1989 alcanzaron el número uno": "VERIFICADO",
+  "Compra de másters el 30 de mayo de 2025": "VERIFICADO"
+ },
+ "lines": [
+  {
+   "t": "Taylor Swift podía dejar sus canciones... pero se *negó*.",
+   "tts": "Téilor Suift podía dejar sus canciones... pero se negó.",
+   "emo": "bold"
+  },
+  {
+   "t": "En 2019, con 29 años, perdió el control de sus primeros seis álbumes.",
+   "tts": "En dos mil diecinueve, con veintinueve años, perdió el control de sus primeros seis álbumes.",
+   "emo": "sad"
+  },
+  {
+   "t": "Un ejecutivo compró la discográfica y ella quedó *fuera* de sus propias creaciones.",
+   "tts": "Un ejecutivo compró la discográfica y ella quedó fuera de sus propias creaciones.",
+   "emo": "sad"
+  },
+  {
+   "t": "Pudo rendirse, pero tomó una decisión que cambiaría la *industria* para siempre.",
+   "tts": "Pudo rendirse, pero tomó una decisión que cambiaría la industria para siempre.",
+   "emo": "hopeful"
+  },
+  {
+   "t": "Comenzó a regrabar sus discos bajo el nombre de Taylor's Version.",
+   "tts": "Comenzó a regrabar sus discos bajo el nombre de Téilors Vérshon.",
+   "emo": "excited"
+  },
+  {
+   "t": "Fearless llegó al número uno en 2021, al igual que Red y 1989.",
+   "tts": "Fíerles llegó al número uno en dos mil veintiuno, al igual que Red y mil novecientos ochenta y nueve.",
+   "emo": "excited"
+  },
+  {
+   "t": "El 30 de mayo de 2025, logró comprar sus másters originales.",
+   "tts": "El treinta de mayo de dos mil veinticinco, logró comprar sus másters originales.",
+   "emo": "warmly"
+  },
+  {
+   "t": "La *perseverancia* es la diferencia entre ser una víctima y ser dueña de tu historia.",
+   "tts": "La perseverancia es la diferencia entre ser una víctima y ser dueña de tu historia.",
+   "emo": "warmly"
+  },
+  {
+   "t": "¿Qué estás dispuesto a reclamar hoy a pesar de los obstáculos?",
+   "tts": "¿Qué estás dispuesto a reclamar hoy a pesar de los obstáculos?",
+   "emo": "softly"
+  }
+ ],
+ "cast": {
+  "young": {
+   "skin": [
+    240,
+    220,
+    200
+   ],
+   "hair": [
+    210,
+    180,
+    140
+   ],
+   "style": "short",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    240,
+    220,
+    200
+   ],
+   "hair": [
+    210,
+    180,
+    140
+   ],
+   "style": "short",
+   "outfit": "blazer",
+   "beard": false,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_hook",
+   "line": 0
+  },
+  {
+   "kit": "e_fired",
+   "line": 1
+  },
+  {
+   "kit": "e_flop",
+   "line": 2
+  },
+  {
+   "kit": "e_write",
+   "line": 3
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 8
+  }
+ ],
+ "turn": 4,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "ELLA PUDO",
+   "l2": "PERDER TODO"
+  },
+  {
+   "scene": 1,
+   "start": 0.5,
+   "end": 2.5,
+   "l1": "NO LA",
+   "l2": "DEJARON"
+  },
+  {
+   "scene": 2,
+   "start": 0.5,
+   "end": 2.5,
+   "l1": "QUEDÓ FUERA",
+   "l2": "DE SU OBRA"
+  },
+  {
+   "scene": 4,
+   "start": 0.5,
+   "end": 2.5,
+   "l1": "DECIDIÓ",
+   "l2": "REGRABAR"
+  }
+ ],
+ "titulo_short": "El día que Taylor Swift recuperó su voz 🎤",
+ "resumen": "A los 29 años, Taylor Swift perdió sus másters tras una compra corporativa. En 2025 logró recuperar sus derechos mediante la estrategia de regrabaciones.",
+ "pregunta": "¿Qué estás dispuesto a reclamar hoy a pesar de los obstáculos?",
+ "hashtag": "#TaylorSwift",
+ "riesgos": [],
+ "fonetica": {
+  "Taylor Swift": "Téilor Suift",
+  "Scooter Braun": "Scúter Braun",
+  "Big Machine": "Big Mashín",
+  "Taylor's Version": "Téilors Vérshon",
+  "Fearless": "Fíerles",
+  "Red": "Red",
+  "1989": "mil novecientos ochenta y nueve"
+ }
+}

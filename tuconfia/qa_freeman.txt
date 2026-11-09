@@ -1,0 +1,13 @@
+Como Abogado del Diablo, mi trabajo es destruir la complacencia. Este QA no es una revisión, es un inventario de negligencias técnicas y narrativas. Aquí tienes los errores reales que invalidan la calidad profesional del producto:
+
+1.  **Falta de consistencia visual del personaje (Error crítico):** En el fotograma 6 (30s) y 7 (35s), el diseño del personaje cambia drásticamente. El cabello pasa de ser canoso/blanco a azul oscuro y el vestuario se vuelve un uniforme deportivo genérico. **Morgan Freeman no es un adolescente de anime.** Es un error de coherencia visual imperdonable.
+2.  **Ortografía (Error garrafal):** En el fotograma 4 (15s), el subtítulo dice "RITHO QUE ÉL". La palabra correcta es **RITMO** (con 'M'). Dejar un error ortográfico en una tipografía de gran tamaño es un suicidio de autoridad.
+3.  **Sprites "flotando" y anclaje pobre:** 
+    *   En el fotograma 1 (1s), el sprite de Morgan Freeman no está bien alineado con el pie de micro, parece estar levitando sobre la base.
+    *   En el fotograma 2 (5s), la mesa carece de profundidad respecto al personaje; la perspectiva del plano es plana y el personaje no parece estar sentado o apoyado correctamente, dando sensación de despegue.
+4.  **Desproporción en el encuadre:** En el fotograma 5 (25s), el documento (nominación) está fuera de foco y desproporcionado respecto al tamaño de las manos del sprite. Parece un objeto pegado por encima, no integrado en el entorno pixel-art.
+5.  **Contradicción escena-narrativa:** En el fotograma 6 (30s), la narración dice "Finalmente, ganó el Óscar a los 67 años". La escena muestra al personaje en un escenario con una cinta amarilla de seguridad de "escena del crimen" o "prohibido el paso" que no tiene relación con el evento de una gala de premios o el logro de un hito profesional.
+6.  **Uso de zona fija (Layout):** El texto en el fotograma 7 (35s) está **físicamente cortado** por la tarjeta final. La frase "¿Qué estás dispuesto a esperar para lograrlo?" queda tapada por el logo de "SÍGUEME", rompiendo la legibilidad y el CTA (Call to Action).
+7.  **Calidad de assets:** Hay un contraste visual inconsistente entre los fondos (que parecen tener filtros de desenfoque o gradientes suaves) y los sprites (que son pixel-art definido). La mezcla visual es sucia y denota falta de un estilo artístico unificado.
+
+**Sentencia:** El proyecto no puede publicarse en este estado. Si el objetivo es transmitir "Confianza" (como dice tu logo), este nivel de descuido genera exactamente lo contrario. **Corregir o archivar.**

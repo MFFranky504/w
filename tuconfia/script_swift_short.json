@@ -1,0 +1,89 @@
+{
+ "titulo": "swift",
+ "meta": {
+  "famoso": "Taylor Swift"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Taylor Swift podía dejar sus canciones... pero se *negó*.",
+   "tts": "Téilor Suift podía dejar sus canciones... pero se negó.",
+   "gen": "[bold] Téilor Suift podía dejar sus canciones... pero se negó.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "En 2019, con 29 años, perdió el control de sus primeros seis álbumes.",
+   "tts": "En dos mil diecinueve, con veintinueve años, perdió el control de sus primeros seis álbumes.",
+   "gen": "[sad] En dos mil diecinueve, con veintinueve años, perdió el control de sus primeros seis álbumes.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "Un ejecutivo compró la discográfica y ella quedó *fuera* de sus propias creaciones.",
+   "tts": "Un ejecutivo compró la discográfica y ella quedó fuera de sus propias creaciones.",
+   "gen": "[sad] Un ejecutivo compró la discográfica y ella quedó fuera de sus propias creaciones.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "Pudo rendirse, pero tomó una decisión que cambiaría la *industria* para siempre.",
+   "tts": "Pudo rendirse, pero tomó una decisión que cambiaría la industria para siempre.",
+   "gen": "[hopeful] Pudo rendirse, pero tomó una decisión que cambiaría la industria para siempre.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Comenzó a regrabar sus discos bajo el nombre de Taylor's Version.",
+   "tts": "Comenzó a regrabar sus discos bajo el nombre de Téilors Vérshon.",
+   "gen": "[excited] Comenzó a regrabar sus discos bajo el nombre de Téilors Vérshon.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Fearless llegó al número uno en 2021, al igual que Red y 1989.",
+   "tts": "Fíerles llegó al número uno en dos mil veintiuno, al igual que Red y mil novecientos ochenta y nueve.",
+   "gen": "[excited] Fíerles llegó al número uno en dos mil veintiuno, al igual que Red y mil novecientos ochenta y nueve.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "El 30 de mayo de 2025, logró comprar sus másters originales.",
+   "tts": "El treinta de mayo de dos mil veinticinco, logró comprar sus másters originales.",
+   "gen": "[warmly] El treinta de mayo de dos mil veinticinco, logró comprar sus másters originales.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "La *perseverancia* es la diferencia entre ser una víctima y ser dueña de tu historia.",
+   "tts": "La perseverancia es la diferencia entre ser una víctima y ser dueña de tu historia.",
+   "gen": "[warmly] La perseverancia es la diferencia entre ser una víctima y ser dueña de tu historia.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "",
+   "t": "¿Qué estás dispuesto a reclamar hoy a pesar de los obstáculos?",
+   "tts": "¿Qué estás dispuesto a reclamar hoy a pesar de los obstáculos?",
+   "gen": "[softly] ¿Qué estás dispuesto a reclamar hoy a pesar de los obstáculos?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

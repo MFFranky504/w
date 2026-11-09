@@ -1,0 +1,89 @@
+{
+ "titulo": "freeman",
+ "meta": {
+  "famoso": "Morgan Freeman"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Hasta *Morgan Freeman* tuvo que esperar décadas.",
+   "tts": "Hasta Morgan Fríman tuvo que esperar décadas.",
+   "gen": "[bold] Hasta Morgan Fríman tuvo que esperar décadas.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "Pasó años trabajando en teatro y televisión.",
+   "tts": "Pasó años trabajando en teatro y televisión.",
+   "gen": "[softly] Pasó años trabajando en teatro y televisión.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "De 1971 a 1976 fue parte de The Electric Company.",
+   "tts": "De mil novecientos setenta y uno a mil novecientos setenta y seis fue parte de Di Eléctric Cómpani.",
+   "gen": "[softly] De mil novecientos setenta y uno a mil novecientos setenta y seis fue parte de Di Eléctric Cómpani.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "La fama no llegó al ritmo que él deseaba.",
+   "tts": "La fama no llegó al ritmo que él deseaba.",
+   "gen": "[sad] La fama no llegó al ritmo que él deseaba.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Recibió su primera nominación al Óscar a los 50 años.",
+   "tts": "Recibió su primera nominación al Óscar a los cincuenta años.",
+   "gen": "[hopeful] Recibió su primera nominación al Óscar a los cincuenta años.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Llegaron nominaciones por Driving Miss Daisy y The Shawshank Redemption.",
+   "tts": "Llegaron nominaciones por Dráivin Mis Déisi y De Shóshanc Redémpshon.",
+   "gen": "[hopeful] Llegaron nominaciones por Dráivin Mis Déisi y De Shóshanc Redémpshon.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Finalmente, ganó el Óscar a los 67 años.",
+   "tts": "Finalmente, ganó el Óscar a los sesenta y siete años.",
+   "gen": "[excited] Finalmente, ganó el Óscar a los sesenta y siete años.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "El éxito a veces requiere una *larga espera*.",
+   "tts": "El éxito a veces requiere una larga espera.",
+   "gen": "[warmly] El éxito a veces requiere una larga espera.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "",
+   "t": "¿Qué estás dispuesto a esperar para lograrlo?",
+   "tts": "¿Qué estás dispuesto a esperar para lograrlo?",
+   "gen": "[warmly] ¿Qué estás dispuesto a esperar para lograrlo?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}
