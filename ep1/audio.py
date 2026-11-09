@@ -12,9 +12,18 @@ def wr(f,x):
 t=np.arange(N)/SR
 # voice
 v=np.zeros(N,np.float32)
-put(v,load('audio/n1.mp3',True),.3); put(v,load('audio/n2.mp3',True),8.0)
-put(v,load('audio/d1.mp3'),9.8,.8); put(v,load('audio/d2.mp3'),12.1,.8); put(v,load('audio/d3.mp3'),14.1,.7)
-put(v,load('audio/vo.mp3',True),17.0)
+import json
+prev=0
+TR="silenceremove=start_periods=1:start_threshold=-42dB,areverse,silenceremove=start_periods=1:start_threshold=-42dB,areverse"
+def ld(p,extra=""):
+    return np.frombuffer(subprocess.run(['ffmpeg','-v','error','-i',p,'-af',TR+extra,'-f','f32le','-ac','1','-ar',str(SR),'-'],capture_output=True).stdout,np.float32)
+for p,t0,d,slot in json.load(open('v2/plan.json')):
+    d=len(ld(p))/SR
+    tempo=min(1.15,d/(slot-0.08)) if d>slot-0.08 else 1.0
+    x=ld(p,f",atempo={tempo:.3f}") if tempo!=1.0 else ld(p)
+    st=max(t0,prev+0.08); put(v,x,st); prev=st+len(x)/SR
+    if st-t0>.15: print('shift',p,round(st-t0,2))
+put(v,load('v2/d1.mp3'),9.8,.85); put(v,load('v2/d2.mp3'),12.1,.85); put(v,load('v2/d3.mp3'),14.1,.8)
 wr('voice_raw.wav',v)
 subprocess.run(['ffmpeg','-y','-v','error','-i','voice_raw.wav','-af','highpass=f=60,equalizer=f=110:t=q:w=1:g=5,equalizer=f=3500:t=q:w=1:g=-2,acompressor=threshold=0.1:ratio=3,aecho=0.8:0.55:70|140:0.25|0.12,alimiter=limit=0.9','voice_fx.wav'])
 vf=np.array(wave.open('voice_fx.wav').readframes(10**9) and np.frombuffer(wave.open('voice_fx.wav').readframes(10**9),np.int16),np.float32)/32768
