@@ -42,3 +42,7 @@ build/v8.ok
 ep8/qa/
 __pycache__/
 build/_tts.py
+ep9/test.log
+ep9/tpl_*.js
+build/t9/
+scene9.html
