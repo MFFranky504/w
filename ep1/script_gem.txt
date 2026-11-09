@@ -1,0 +1,33 @@
+{
+  "hook_texto": "Diez naciones. Una cabaña. ¿Quién sobrevive?",
+  "lineas": [
+    {
+      "seg": "hook",
+      "t": "Diez banderas, un destino helado. ¿Quién de ustedes saldrá vivo de este infierno blanco?"
+    },
+    {
+      "seg": "intro",
+      "t": "La muerte respira en el ventanal. Yo sí."
+    },
+    {
+      "seg": "reglas",
+      "t": "Una decisión por país. Ustedes mandan. Resistencia inicial: 100. El frío baja tres grados cada hora. Cero eliminados por ahora, pero la escarcha no perdona a los indecisos."
+    },
+    {
+      "seg": "objetos",
+      "t": "Hacha, encendedor, cuchillo, mapa, cinco velas, troncos húmedos y tres leños secos. Todo cuenta."
+    },
+    {
+      "seg": "nota",
+      "t": ""
+    },
+    {
+      "seg": "opciones",
+      "t": "A: Chimenea con leños secos. B: Romper muro con hacha. C: Encender las cinco velas. Elijan."
+    },
+    {
+      "seg": "cta",
+      "t": "Comenten su PAÍS y la LETRA. Tienen 24 horas. No habrá marcha atrás. ¿Cuál de sus naciones caerá primero ante la nieve? El tiempo vuela."
+    }
+  ]
+}
