@@ -640,3 +640,113 @@ def e_flop_b(t, u):
 
 
 e_flop = phased(e_flop_a, e_flop_b, cuts=(.5,))
+
+
+# ======================================================== JORDAN
+def _court(c, t, night=False):
+    c.im.paste(Image.fromarray(vgrad([(0, '#1a2040'), (1, '#2a2a50')]).astype('uint8')), (0, 0))
+    bg.crowd(c, 118, t, seed=9, cols=((30, 24, 56), (40, 30, 70), (22, 18, 44)))
+    c.R(0, 150, WW, 60, (26, 22, 50))
+    c.R(104, 70, 40, 28, (240, 240, 250)); c.R(104, 70, 40, 2, (120, 120, 150)); c.R(118, 84, 12, 8, (230, 70, 50)); c.R(112, 98, 24, 2, (255, 120, 50))
+    bg.planks(c, 0, FLR, WW, 90, (176, 120, 70), seed=45, pw=11); c.R(0, FLR - 2, WW, 3, (240, 230, 210))
+    c.d.arc([40, FLR - 30, 120, FLR + 30], 180, 360, fill=(240, 230, 210))
+
+
+def _ball(c, x, y): c.d.ellipse([x, y, x + 7, y + 7], fill=(230, 110, 40), outline=(90, 40, 20)); c.R(x + 3, y, 1, 8, (90, 40, 20))
+
+
+def m_hook_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _court(c, t)
+    place(c, rpg('mj_y', int(t * 3) % 2), 60, FW + 4); _ball(c, 74, 212 + int(abs(math.sin(t * 6)) * 14)); c.amb = (.94, .96, 1.06); c.vig = .65
+    return c.render()
+
+
+def m_hook_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _court(c, t)
+    place(c, bat('mj_y', 'stand'), 80, FM + math.sin(t * 2)); c.amb = (.94, .96, 1.06); c.vig = .65
+    return c.render()
+
+
+m_hook = phased(m_hook_a, m_hook_b, cuts=(.5,))
+
+
+def m_jv_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _locker(c, t)
+    c.R(100, 70, 40, 56, (250, 248, 236)); c.R(100, 70, 40, 3, (200, 60, 60))
+    for y in range(80, 120, 7): c.R(106, y, 26, 2, (120, 120, 140))
+    place(c, rpg('coachj', 0), 120, FW); place(c, rpg('mj_y', 0), 50, FW); c.amb = (.9, .92, 1.0); c.vig = .75
+    return c.render()
+
+
+def m_jv_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _locker(c, t)
+    place(c, bat('mj_y', 'hold'), 80, FM); c.amb = (.8, .84, .98); c.vig = .9
+    return c.render()
+
+
+m_jv = phased(m_jv_a, m_jv_b, cuts=(.5,))
+
+
+def m_train_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _court(c, t)
+    c.R(0, 0, WW, 290, (0, 0, 0, 0)) if False else None
+    place(c, rpg('mj_y', int(t * 4) % 2), 40 + 80 * ((t * .7) % 1), FW + 4); c.amb = (.7, .76, .98); c.vig = .85
+    return c.render()
+
+
+def m_train_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _court(c, t)
+    place(c, bat('mj_y', 'stand'), 80, FM + math.sin(t * 5) * 2); c.amb = (.7, .76, .98); c.vig = .85
+    return c.render()
+
+
+m_train = phased(m_train_a, m_train_b, cuts=(.5,))
+
+
+def m_shot_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _court(c, t)
+    place(c, rpg('mj', 0), 70, FW + 4); _ball(c, 100 - int(u * 8), 180 - int(math.sin(u * 3.14) * 70) - int(u * 60)); c.light(124, 90, 80, 60, (255, 240, 200), .4); c.amb = (1.02, .98, 1.04); c.vig = .6
+    return c.render()
+
+
+def m_shot_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _court(c, t)
+    place(c, bat('mj', 'hold'), 80, FM + 2); c.light(80, 190, 90, 90, (255, 240, 200), .3)
+    for i in range(20): c.R((i * 37 + t * 20) % WW, (t * 50 + i * 29) % 230, 2, 3, [(255, 90, 120), (255, 220, 100), (110, 190, 255)][i % 3])
+    c.amb = (1.02, .98, 1.04); c.vig = .6
+    return c.render()
+
+
+m_shot = phased(m_shot_a, m_shot_b, cuts=(.5,))
+
+
+def m_draft_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _office(c, t)
+    place(c, rpg('execg', 0), 124, 172, sh=False); PR.keep(c, PR.contract(), 84, 140)
+    c.R(70, 170, 80, 6, (130, 84, 54)); c.R(70, 170, 80, 2, (200, 150, 100)); place(c, rpg('mj', 0), 40, FW + 4); c.amb = (1.0, .98, 1.0); c.vig = .65
+    return c.render()
+
+
+def m_draft_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _office(c, t)
+    place(c, bat('mj', 'hold'), 80, FM); PR.keep(c, PR.contract(), 98, 150); c.light(80, 190, 90, 90, (255, 230, 150), .4)
+    c.amb = (1.0, .98, 1.0); c.vig = .65
+    return c.render()
+
+
+m_draft = phased(m_draft_a, m_draft_b, cuts=(.5,))
+
+
+def m_win_a(t, u):
+    c = cv((0, BLK), (1, BLK)); _podium(c, t)
+    place(c, rpg('mj', 0), 70, FW + 4); PR.keep(c, PR.statuette(30), 96, 196); c.amb = (1.04, 1.0, 1.04); c.vig = .55
+    return c.render()
+
+
+def m_win_b(t, u):
+    c = cv((0, BLK), (1, BLK)); _podium(c, t)
+    place(c, bat('mj', 'hold'), 70, FM + 2); PR.keep(c, PR.statuette(34), 104, 196); c.amb = (1.04, 1.0, 1.04); c.vig = .55
+    return c.render()
+
+
+m_win = phased(m_win_a, m_win_b, cuts=(.5,))

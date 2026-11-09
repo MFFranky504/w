@@ -1,0 +1,91 @@
+{
+ "titulo": "jordan_short",
+ "meta": {
+  "famoso": "Michael Jordan",
+  "persona_hashtag": "#MichaelJordan",
+  "pregunta": "¿Qué rechazo vas a usar como combustible hoy?"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "gancho",
+   "t": "Hasta *Michael Jordan* fue cortado.",
+   "tts": "Hasta Máicol Yórdan fue cortado.",
+   "gen": "[bold] Hasta Máicol Yórdan fue cortado.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "fracaso",
+   "t": "En su preparatoria, lo mandaron al equipo *juvenil*... y no al principal.",
+   "tts": "En su preparatoria, lo mandaron al equipo juvenil... y no al principal.",
+   "gen": "[sad] En su preparatoria, lo mandaron al equipo juvenil... y no al principal.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "giro",
+   "t": "Según ha contado, ese rechazo lo hizo entrenar *más* que nadie.",
+   "tts": "Según ha contado, ese rechazo lo hizo entrenar más que nadie.",
+   "gen": "[hopeful] Según ha contado, ese rechazo lo hizo entrenar más que nadie.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "giro",
+   "t": "En mil novecientos ochenta y dos, metió el tiro *ganador* de la final universitaria.",
+   "tts": "En mil novecientos ochenta y dos, metió el tiro ganador de la final universitaria.",
+   "gen": "[excited] En mil novecientos ochenta y dos, metió el tiro ganador de la final universitaria.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "giro",
+   "t": "En mil novecientos ochenta y cuatro, los Bulls lo eligieron en el puesto *tres*.",
+   "tts": "En mil novecientos ochenta y cuatro, los Buls lo eligieron en el puesto tres.",
+   "gen": "[bold] En mil novecientos ochenta y cuatro, los Buls lo eligieron en el puesto tres.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "giro",
+   "t": "Y con ellos ganó *seis* títulos de la NBA.",
+   "tts": "Y con ellos ganó seis títulos de la NBA.",
+   "gen": "[excited] Y con ellos ganó seis títulos de la NBA.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "frase",
+   "t": "Lo cortaron del equipo. Pero no de su *sueño*.",
+   "tts": "Lo cortaron del equipo. Pero no de su sueño.",
+   "gen": "[warmly] Lo cortaron del equipo. Pero no de su sueño.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "frase",
+   "t": "No eligió olvidar el rechazo. Eligió *usarlo*.",
+   "tts": "No eligió olvidar el rechazo. Eligió usarlo.",
+   "gen": "[warmly] No eligió olvidar el rechazo. Eligió usarlo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "pregunta",
+   "t": "Y tú... ¿qué *rechazo* vas a usar... como *combustible* hoy?",
+   "tts": "Y tú... ¿qué rechazo vas a usar... como combustible hoy?",
+   "gen": "[softly] Y tú... ¿qué rechazo vas a usar... como combustible hoy?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

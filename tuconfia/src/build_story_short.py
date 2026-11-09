@@ -131,6 +131,9 @@ CFG = {
  'eminem': dict(turn='dre', pre='write', late='oscar',
    sc=[('hook', 'Hasta Éminem', 'e_hook'), ('flop', 'En mil novecientos noventa y seis', 'e_flop'), ('fired', 'Después', 'e_fired'), ('write', 'Pero siguió', 'e_write'), ('dre', 'En mil novecientos noventa y ocho', 'e_sign'), ('album', 'Un año', 'e_one'), ('oscar', 'Luego', 'e_oscar'), ('cierre', 'Su fracaso', 'close')],
    hooks=[('hook', .15, 2.0, '¡FRACASÓ CON', 'SU 1ER DISCO!', 520), ('fired', .3, 2.6, '¡LO', 'DESPIDIERON!', 520), ('dre', .2, 2.0, '¡UNA NUEVA', 'OPORTUNIDAD!', 520), ('album', .3, 2.6, '¡Y TODO', 'CAMBIÓ!', 520), ('oscar', .3, 2.8, '¡GANÓ UN', 'ÓSCAR!', 520), ('cierre', 5.2, 7.8, '¿Y TÚ', 'QUÉ HARÁS?', 520)]),
+ 'jordan': dict(turn='shot', pre='train', late='win',
+   sc=[('hook', 'Hasta Michael', 'm_hook'), ('jv', 'En su preparatoria', 'm_jv'), ('train', 'Según ha', 'm_train'), ('shot', 'En mil novecientos ochenta y dos', 'm_shot'), ('draft', 'En mil novecientos ochenta y cuatro', 'm_draft'), ('win', 'Y con ellos', 'm_win'), ('cierre', 'Lo cortaron', 'close')],
+   hooks=[('hook', .15, 2.0, '¡FUE', 'CORTADO!', 520), ('jv', .3, 2.8, '¡AL EQUIPO', 'JUVENIL!', 520), ('train', .3, 2.8, '¡ENTRENÓ', 'MÁS QUE NADIE!', 520), ('shot', .3, 2.8, '¡EL TIRO', 'GANADOR!', 520), ('win', .3, 2.8, '¡6 TÍTULOS', 'DE LA NBA!', 520)]),
 }[STORY]
 SCENES = []
 for n_, p_, f_ in CFG['sc']:

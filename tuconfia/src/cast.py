@@ -71,7 +71,8 @@ CAST = {
  'gagaw':  dict(style='tab', skin=(250, 214, 184), hair=ramp((238, 214, 140)), iris=(90, 110, 150), outfit='tee_red'),
  'execg':  dict(style='short', skin=(236, 192, 156), hair=ramp((34, 30, 32)), iris=(60, 44, 36), outfit='tux'), 'em':   dict(style='short', skin=(246, 212, 184), hair=ramp((236, 218, 150)), iris=(80, 110, 160), outfit='grey', stubble=True),
  'emw':  dict(style='short', skin=(246, 212, 184), hair=ramp((236, 218, 150)), iris=(80, 110, 160), outfit='polo', stubble=True),
- 'dre':  dict(style='short', skin=(150, 104, 76), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='tux', stubble=True),
+ 'dre':  dict(style='short', skin=(150, 104, 76), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='tux', stubble=True), 'mj_y': dict(style='short', skin=(176, 124, 90), hair=ramp((20, 16, 16)), iris=(50, 36, 30), outfit='tee_red', strong=True),
+ 'mj':   dict(style='short', skin=(176, 124, 90), hair=ramp((14, 12, 12)), iris=(50, 36, 30), outfit='tee_red', strong=True),
 }
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False)

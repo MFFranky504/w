@@ -51,3 +51,9 @@ Título YouTube Shorts: «Hasta Eminem fracasó con su primer disco... y años d
 Comentario fijado sugerido: «¿Qué estás trabajando en silencio hoy? Cuéntamelo 👇».
 Revisión: Gemini verificó los hechos y actuó como abogado del diablo sobre el guion y los fotogramas. Se corrigió: ventas de Infinite narradas como «según se ha reportado», un solo Óscar, sin «leyenda más grande de la historia». Se descartaron sus avisos de «HATA» (era un subtítulo a medias) y del cabello azul (es la mascota del cierre).
 Confirmar antes de publicar: ventas de Infinite (cifra reportada), despido del restaurante.
+
+## Short Michael Jordan
+Archivo: out/TU_CONFIA_jordan_SHORT_Vertical_yt.mp4 (vertical, 40 s). Textos: caption_jordan_short_*.txt.
+Título YouTube Shorts: «Hasta Michael Jordan fue cortado... y terminó con 6 títulos de la NBA 🏀».
+Trabajo repartido: Gemini verificó los hechos, escribió el primer borrador y revisó los fotogramas (script src/gemini_qa.py). Claude reescribió el guion porque el de Gemini traía clichés y un error («campeonatos mundiales»), y quitó el gancho final duplicado.
+Confirmar antes de publicar: que lo enviaron al equipo juvenil en 1978 (muchos medios dicen «cortado del equipo principal»). Los subtítulos tapan parte del personaje en planos anchos, igual que en los otros Shorts.
