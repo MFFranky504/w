@@ -41,7 +41,7 @@ def _sort_rows(raw):
 
 EPISODES = {
     # ------------------------------------------------------------------ Parte 11: Daft Punk
-    "p11": dict(
+    "p11_dp": dict(
         part=11, artist="Daft Punk", genre="electrónica", music="house", hook="b", next_part=12,
         hook_len=2.0, reveal=2.6, hook_scene="hook_sunset", outro_scene="paris", outro_sign=None,
         prev=dict(sprite="tyler", scene="travel", part=9, lines=("TYLER,", "THE CREATOR"), sub="LOS ÁNGELES, CALIFORNIA",
@@ -57,6 +57,21 @@ EPISODES = {
                  text="En *2006* tocaron en *Coachella* dentro de una pirámide de pantallas y luces LED."),
             dict(n=5, diff="FÁCIL", pts=1, chip="GRAMMY", scene="grammy",
                  text="En *2014* ganaron el Grammy a *Álbum del Año*, con un disco que incluía «*Get Lucky*» junto a *Pharrell*."),
+        ]),
+    # ------------------------------------------------------------------ Parte 11: Queen (rock) — respuesta de ayer: Tyler, The Creator
+    "p11": dict(
+        part=11, artist="Queen", genre="rock", music="rock", hook="b", next_part=12,
+        hook_len=2.0, reveal=2.6, hook_scene="hook_sunset", outro_scene="grammy", outro_sign=None, diff_nb=5,
+        prev=dict(sprite="tyler", scene="travel", part=10, lines=("TYLER,", "THE CREATOR"), sub="LOS ÁNGELES, CALIFORNIA", winners=[], winners_part=None, special={}),
+        clues=[
+            dict(n=1, diff="ULTRA DIFÍCIL", pts=4, chip="1963", scene="workshop",
+                 text="Su guitarrista construyó su guitarra con su papá, a partir de *1963*, usando madera de una *repisa de chimenea* vieja."),
+            dict(n=2, diff="MUY DIFÍCIL", pts=3, chip="ZANZÍBAR", scene="garden",
+                 text="Su cantante nació en *Zanzíbar* y se llamaba *Farrokh Bulsara*. Entró en la banda *Smile* en *1970*."),
+            dict(n=3, diff="DIFÍCIL", pts=2, chip="1985", scene="wembley",
+                 text="En *1985* tocaron unos *20 minutos* en el estadio de *Wembley* en el *Live Aid*, y muchos dicen que robaron el show."),
+            dict(n=4, diff="MEDIA", pts=1, chip="1975", scene="grammy",
+                 text="Su álbum de *1975*, «*A Night at the Opera*», incluye «*Bohemian Rhapsody*»."),
         ]),
     # ------------------------------------------------------------------ Parte 10: MEGA DIFÍCIL (Tyler, The Creator)
     "p10": dict(

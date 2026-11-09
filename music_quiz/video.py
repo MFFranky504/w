@@ -1444,13 +1444,58 @@ def dyn_airport(im, t, ts, tag):
         s = 1 + max(0, (1.8 - q)) * 4; d.rectangle((229 - 17 * s, 162 - 6 * s, 229 + 17 * s, 174 + 6 * s), outline=(220, 30, 40), width=2); d.text((229, 168), "DENEGADO", font=F(6), fill=(220, 30, 40), anchor="mm")
     else: hy = 130 + q * 20; d.rectangle((222, hy, 236, hy + 8), fill=(120, 80, 50)); d.rectangle((226, hy - 10, 232, hy), fill=(90, 60, 40))
 
+# ======================= v11: Queen episode scenes (workshop 1963, Live Aid 1985) =======================
+def base_workshop():
+    im = _gradient_bg((60, 40, 28), (110, 74, 48), 8, 266, (74, 50, 34)); d = ImageDraw.Draw(im)
+    d.rectangle((12, 130, 130, 200), fill=(150, 108, 70), outline=(70, 46, 30), width=2)                                         # pegboard with tools
+    for k in range(7): x = 20 + k * 15; d.line([(x, 140), (x, 156 + (k % 3) * 6)], fill=(200, 200, 214), width=2); d.rectangle((x - 2, 136, x + 2, 142), fill=(120, 70, 40))
+    d.rectangle((20, 172, 120, 175), fill=(110, 110, 124)); d.polygon([(30, 176), (50, 176), (40, 192)], fill=(190, 190, 204)); d.ellipse((64, 177, 80, 193), outline=(190, 190, 204), width=2)
+    d.rectangle((0, 214, W, 266), fill=(120, 80, 48)); d.rectangle((0, 210, W, 216), fill=(170, 122, 78))                    # workbench
+    d.rectangle((190, 120, 262, 134), fill=(150, 96, 58), outline=(90, 56, 30)); d.rectangle((194, 134, 258, 210), fill=(60, 44, 40), outline=(90, 56, 30))   # old fireplace mantel
+    d.rectangle((200, 150, 252, 210), fill=(24, 18, 18))
+    d.polygon([(40, 200), (92, 190), (100, 206), (70, 214), (44, 212)], fill=(190, 40, 40), outline=(100, 20, 20)); d.line([(96, 198), (150, 196)], fill=(150, 96, 58), width=5)   # half-built red guitar
+    d.rectangle((10, 196, 30, 214), fill=(90, 90, 104), outline=(50, 50, 60)); d.rectangle((14, 186, 26, 198), fill=(120, 120, 134))                                         # vise
+    for y in range(272, H, 14): d.line([(0, y), (W, y)], fill=(90, 62, 40))
+    return dim_top(im, 120)
+WORKSHOP = base_workshop()
+def dyn_workshop(im, t, ts, tag):
+    d = ImageDraw.Draw(im); arr = np.array(im); sw = 6 * math.sin(t * 1.4)
+    glow(arr, 150 + sw, 70, 80, (255, 210, 130), .5); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    d.line([(150, 0), (150 + sw, 60)], fill=(60, 50, 40)); d.polygon([(142 + sw, 60), (158 + sw, 60), (162 + sw, 70), (138 + sw, 70)], fill=(255, 224, 140))                     # swinging bare-bulb lamp
+    for k in range(18): x = 60 + (k * 11 + 3 * math.sin(t + k)) % 90; y = 150 + ((t * 24 + k * 13) % 62); d.point((x, y), fill=(236, 210, 160))                                  # sawdust
+    for k in range(4): c = ((t * 3 + k * .25) % 1.0); d.arc((90 + k * 10, 178 - c * 10, 100 + k * 10, 192 - c * 10), 200, 340, fill=(214, 170, 110))                                 # wood curls
+    d.rectangle((222, 70, 252, 100), fill=(240, 232, 214), outline=(70, 50, 40)); a = t * .5; d.line([(237, 85), (237 + 8 * math.cos(a), 85 + 8 * math.sin(a))], fill=(30, 20, 20)); d.line([(237, 85), (237 + 6 * math.cos(a * 12), 85 + 6 * math.sin(a * 12))], fill=(200, 40, 40))   # wall clock
+    ax = (t * 12) % (W + 40) - 20; d.rectangle((ax, 252, ax + 14, 260), fill=(220, 220, 230)); d.polygon([(ax + 14, 252), (ax + 22, 256), (ax + 14, 260)], fill=(150, 150, 164))       # runaway hand saw
+    d.fontmode = "1"; d.text((262, 60), "1963", font=F(7), fill=(255, 224, 140), anchor="rm")
+def base_wembley():
+    a = np.zeros((H, W, 3), np.uint8); a[:266] = dgrad(W, 266, (30, 30, 90), (230, 110, 120), 11); a[266:] = (30, 70, 40)
+    im = Image.fromarray(a); d = ImageDraw.Draw(im)
+    for k in range(5): d.rectangle((0, 150 + k * 20, W, 168 + k * 20), fill=(28 + k * 4, 30 + k * 4, 70 + k * 4))                                  # stands
+    for (x0, x1) in ((0, 22), (248, 270)): d.rectangle((x0, 60, x1, 266), fill=(50, 50, 80))
+    d.polygon([(70, 160), (200, 160), (190, 120), (80, 120)], fill=(40, 36, 70), outline=(200, 200, 230)); d.rectangle((92, 128, 178, 156), fill=(20, 20, 40))   # stage + big screen
+    for y in range(268, H, 12): d.line([(0, y), (W, y)], fill=(40, 90, 54))
+    return dim_top(im, 120)
+WEMBLEY = base_wembley()
+def dyn_wembley(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for k in range(180):                                                                                      # crowd doing "la ola" + camera flashes
+        x = (k * 17) % W; y = 152 + (k * 29) % 108; up = math.sin(t * 3 - x * .05) > .6
+        d.rectangle((x, y - (3 if up else 0), x + 1, y + 1), fill=[(255, 220, 160), (255, 120, 140), (160, 200, 255)][k % 3])
+    d.fontmode = "1"; d.text((135, 142), "?", font=F(20), fill=(255, 224, 120) if int(t * 2) % 2 else WHITE, anchor="mm")
+    hx = (t * 26) % (W + 120) - 60; hy = 54 + 4 * math.sin(t * 2)                                             # helicopter towing a "?" banner
+    d.rectangle((hx - 12, hy, hx + 10, hy + 7), fill=(40, 44, 60)); d.line([(hx - 16, hy - 4), (hx + 16, hy - 4)], fill=(200, 200, 220), width=1); d.line([(hx - 12, hy + 2), (hx - 22, hy)], fill=(40, 44, 60), width=2)
+    d.rectangle((hx - 52, hy + 4, hx - 26, hy + 14), fill=WHITE, outline=(40, 40, 70)); d.text((hx - 39, hy + 9), "?", font=F(9), fill=(220, 40, 60), anchor="mm")
+    arr = np.array(im)
+    for k, bx in enumerate((30, 135, 240)): beam(arr, bx, 135 + 80 * math.sin(t * 1.2 + k * 2), 40, 260, 5, 70, (255, 240, 200), .16)
+    im.paste(Image.fromarray(arr))
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
        "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
        "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook)),
        "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards),
-       "cafe": (CAFE, dyn_cafe), "school": (SCHOOL, dyn_school), "airport": (AIRPORT, dyn_airport)}
+       "workshop": (WORKSHOP, dyn_workshop), "wembley": (WEMBLEY, dyn_wembley), "cafe": (CAFE, dyn_cafe), "school": (SCHOOL, dyn_school), "airport": (AIRPORT, dyn_airport)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
 _hook = REG[EP.get("hook_scene", "brook")]
 _pb, _pd = REG[PREV["scene"]]

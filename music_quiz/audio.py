@@ -102,6 +102,31 @@ elif STYLE == "trap":                                  # 140 BPM half-time dark 
         add(horn(nfq(CH[c][2] + 12), nfq(CH[c][2] + 10), BAR * .9), t0, .45, pan=.1, bus=stems["horn"])
         add(string_pad([nfq(x - 12) for x in CH[c][:3]], BAR + .3), t0, .55, bus=stems["strings"])
     PUMP = None
+elif STYLE == "rock":                                  # 138 BPM stadium rock in E (original): distorted power chords, driving drums, crash accents
+    BPM = 138; BEAT = 60 / BPM; BAR = 4 * BEAT
+    nfq = lambda s, base=82.41: base * 2 ** (s / 12)
+    PROG = [0, 0, 5, 7, 0, 0, 5, 3]; MEL = [12, 15, 14, 12, 10, 12, 7, 10]
+    def power(root, d):
+        t = tt(d); x = sum(sum(np.sin(2*np.pi*f*k*t + .3 * k) / k for k in range(1, 8)) for f in (root, root * 1.4983, root * 2))
+        return lp(np.tanh(4.5 * x / 3), 3) * np.minimum(t / .006, 1) * np.exp(-t * 3) * np.minimum((d - t) / .03, 1) * .55
+    def crash():
+        t = tt(1.4); return hp(noise(1.4), 2) * np.exp(-t * 2.8) * .55
+    def tom(f):
+        t = tt(.3); return np.sin(2*np.pi*(f + 60 * np.exp(-t * 14)) * t) * np.exp(-t * 10) * .8
+    for b in range(int(END / BAR) + 2):
+        t0 = b * BAR; r_ = PROG[b % 8]
+        for i in range(8):                                                       # palm-muted eighths with accents
+            add(power(nfq(r_ + 12), BEAT * (.42 if i % 4 else .9)), t0 + i * BEAT / 2, .8 if i % 4 == 0 else .55, pan=-.35, bus=stems["keys"])
+            add(power(nfq(r_ + 12), BEAT * (.42 if i % 4 else .9)), t0 + i * BEAT / 2, .5, pan=.35, bus=stems["strings"])
+            add(bass(nfq(r_, 41.2) * 2, BEAT * .45), t0 + i * BEAT / 2, .8, bus=stems["bass"])
+        for kb in (0, 1.5, 2, 3.5 if b % 2 else 2.5): add(kick(), t0 + kb * BEAT, 1.0, bus=stems["kick"])
+        for sb in (1, 3): add(snare(), t0 + sb * BEAT, 1.0, bus=stems["snare"])
+        for i in range(8): add(hat(i % 4 == 3), t0 + i * BEAT / 2, .9 if i % 2 == 0 else .5, pan=.25, bus=stems["hat"])
+        if b % 4 == 0: add(crash(), t0, .7, bus=stems["hat"])
+        if b % 4 == 3:
+            for j, f in enumerate((180, 140, 110, 90)): add(tom(f), t0 + 3 * BEAT + j * BEAT / 4, .8, bus=stems["snare"])
+        add(horn(nfq(MEL[b % 8] + 12, 82.41 * 2) / 2, nfq(MEL[(b + 1) % 8] + 12, 82.41 * 2) / 2, BAR * .9), t0, .4, pan=.1, bus=stems["horn"])
+    PUMP = None
 elif STYLE == "tyler":                                 # 88 BPM neo-soul / synth-funk in the Igor-Flower Boy mood (original): Dbmaj9 | Cm9 | Fm9 | Bbm9
     BPM = 88; BEAT = 60 / BPM; BAR = 4 * BEAT; SW = BEAT * .07
     nfq = lambda s, base=130.81: base * 2 ** (s / 12)
@@ -268,6 +293,7 @@ for ci, c in enumerate(CLUES):
     if sc == "block": S(lp(noise(d), 40) * .12 + crackle_bed(d, 12, .3), t0, 1.0)
     elif sc == "jazz": S(lp(noise(d), 90) * .08, t0, 1.0); S(boom(.6) * .4, t0 + .3, .8)
     elif sc in ("set", "tv", "store", "bedroom", "cafe", "school", "airport"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
+    elif sc in ("workshop", "wembley"): S(lp(noise(d), 25) * .1, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc == "awards":
         S(lp(noise(d), 10) * (.08 + .05 * np.sin(2*np.pi*.4*tt(d))), t0, 1.0)
         for tp in (1.0, 3.5): S(cymbal(.9), t0 + tp, .5)
