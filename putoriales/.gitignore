@@ -50,3 +50,10 @@ build/frames9/
 build/mix9.wav
 build/r9_*.log
 build/v9.ok
+build/frames10/
+build/mix10.wav
+build/r10_*.log
+build/v10.ok
+build/chk_*.jpg
+ep10/s.log
+ep10/v.log
