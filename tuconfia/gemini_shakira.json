@@ -1,0 +1,154 @@
+{
+ "hechos": {
+  "Shakira nació en Barranquilla": "VERIFICADO",
+  "Maestra le dijo que su voz no servía para el coro": "VERIFICADO",
+  "Empezó a grabar a los 13 años": "VERIFICADO",
+  "Ganó Grammy": "VERIFICADO",
+  "Laundry Service es éxito internacional": "VERIFICADO"
+ },
+ "lines": [
+  {
+   "t": "Hasta Shakira fue *rechazada*.",
+   "tts": "Hasta Shakira fue rechazada.",
+   "emo": "bold"
+  },
+  {
+   "t": "En Barranquilla, su maestra le dijo que su voz *no servía* para el coro.",
+   "tts": "En Barranquilla, su maestra le dijo que su voz no servía para el coro.",
+   "emo": "sad"
+  },
+  {
+   "t": "Le dijeron que desafinaba y que mejor se mantuviera *alejada*.",
+   "tts": "Le dijeron que desafinaba y que mejor se mantuviera alejada.",
+   "emo": "sad"
+  },
+  {
+   "t": "Pero Shakira, a los 13 años, decidió *empezar* a grabar.",
+   "tts": "Pero Shakira, a los trece años, decidió empezar a grabar.",
+   "emo": "hopeful"
+  },
+  {
+   "t": "Años después, su álbum Laundry Service alcanzó la *cima* internacional.",
+   "tts": "Años después, su álbum Laundry Service alcanzó la cima internacional.",
+   "emo": "excited"
+  },
+  {
+   "t": "Ganó un Grammy y se convirtió en una de las artistas *más vendidas*.",
+   "tts": "Ganó un Grammy y se convirtió en una de las artistas más vendidas.",
+   "emo": "excited"
+  },
+  {
+   "t": "El rechazo fue solo el *impulso* que necesitaba.",
+   "tts": "El rechazo fue solo el impulso que necesitaba.",
+   "emo": "warmly"
+  },
+  {
+   "t": "¿Qué voz interna te está limitando hoy?",
+   "tts": "¿Qué voz interna te está limitando hoy?",
+   "emo": "softly"
+  }
+ ],
+ "cast": {
+  "young": {
+   "skin": [
+    210,
+    180,
+    140
+   ],
+   "hair": [
+    50,
+    20,
+    0
+   ],
+   "style": "short",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    210,
+    180,
+    140
+   ],
+   "hair": [
+    50,
+    20,
+    0
+   ],
+   "style": "king",
+   "outfit": "blazer",
+   "beard": false,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_hook",
+   "line": 0
+  },
+  {
+   "kit": "e_fired",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 3
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "NO SERVÍAS",
+   "l2": "PARA CANTAR"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "EL RECHAZO",
+   "l2": "EN EL CORO"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "EMPEZÓ A",
+   "l2": "GRABAR A LOS 13"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "ÉXITO GLOBAL",
+   "l2": "LAUNDRY SERVICE"
+  }
+ ],
+ "titulo_short": "Shakira: De ser rechazada a la cima mundial 🎤",
+ "resumen": "A Shakira le dijeron que su voz no servía en la escuela. A los 13 años grabó y triunfó mundialmente con su disco Laundry Service.",
+ "pregunta": "¿Qué voz interna te está limitando hoy?",
+ "hashtag": "#Shakira",
+ "riesgos": [],
+ "fonetica": {
+  "Shakira": "Shakira",
+  "Laundry Service": "Londri Sórvis",
+  "Grammy": "Grámi"
+ }
+}

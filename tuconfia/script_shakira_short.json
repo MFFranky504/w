@@ -1,0 +1,80 @@
+{
+ "titulo": "shakira",
+ "meta": {
+  "famoso": "Shakira"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Hasta Shakira fue *rechazada*.",
+   "tts": "Hasta Shakira fue rechazada.",
+   "gen": "[bold] Hasta Shakira fue rechazada.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "En Barranquilla, su maestra le dijo que su voz *no servía* para el coro.",
+   "tts": "En Barranquilla, su maestra le dijo que su voz no servía para el coro.",
+   "gen": "[sad] En Barranquilla, su maestra le dijo que su voz no servía para el coro.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "Según ha contado, le dijeron que no servía para cantar y que mejor se apartara.",
+   "tts": "Según ha contado, le dijeron que no servía para cantar y que mejor se apartara.",
+   "gen": "[sad] Según ha contado, le dijeron que no servía para cantar y que mejor se apartara.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "Pero Shakira, a los 13 años, decidió *empezar* a grabar.",
+   "tts": "Pero Shakira, a los trece años, decidió empezar a grabar.",
+   "gen": "[hopeful] Pero Shakira, a los trece años, decidió empezar a grabar.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Años después, su álbum Laundry Service alcanzó la *cima* internacional.",
+   "tts": "Años después, su álbum Laundry Service alcanzó la cima internacional.",
+   "gen": "[excited] Años después, su álbum Laundry Service alcanzó la cima internacional.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Ganó un Grammy y se convirtió en una de las artistas *más vendidas*.",
+   "tts": "Ganó un Grammy y se convirtió en una de las artistas más vendidas.",
+   "gen": "[excited] Ganó un Grammy y se convirtió en una de las artistas más vendidas.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "El rechazo fue solo el *impulso* que necesitaba.",
+   "tts": "El rechazo fue solo el impulso que necesitaba.",
+   "gen": "[warmly] El rechazo fue solo el impulso que necesitaba.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "¿Qué voz interna te está limitando hoy?",
+   "tts": "¿Qué voz interna te está limitando hoy?",
+   "gen": "[softly] ¿Qué voz interna te está limitando hoy?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

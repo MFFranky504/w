@@ -1,0 +1,22 @@
+Como tu abogado del diablo en QA, aquí tienes la auditoría técnica de los errores que comprometen la calidad profesional del contenido:
+
+**1. Errores de Narrativa y Concordancia (Contradicciones):**
+*   **Frame 1:** El texto dice "SHAKIRA FUE", pero el sprite es un personaje masculino con corte de pelo corto y rasgos andróginos que no representan a Shakira.
+*   **Frame 2:** El texto dice "LE DIJO QUE", pero muestra dos personajes masculinos frente a un papel. No hay contexto visual de "maestra" o "coro".
+*   **Frame 5:** El texto dice "GANÓ UN", pero el sprite tiene los ojos con un brillo/destello que parece un fallo de renderizado o daño ocular, no una expresión de triunfo.
+
+**2. Errores de Diseño y Composición (Sprites/Elementos):**
+*   **Frame 1 (Flotación):** El personaje y el pie de micrófono tienen sombras inconsistentes; el micrófono parece estar "clavado" en el aire a un nivel distinto que los pies del personaje.
+*   **Frame 3 (Desproporción):** El personaje (que se supone es Shakira) cambió de tamaño, estilo de ropa y rostro respecto al Frame 1. No hay continuidad de diseño de personaje (Character Sheet).
+*   **Frame 4 (Sprites flotando):** El papel que sostiene el personaje de abajo está superpuesto de forma que parece estar flotando delante de su pecho sin contacto físico real con las manos.
+*   **Frame 6 (Corte visual):** Las partículas/confeti cortan abruptamente el rostro del personaje, dando una sensación de *glitch* gráfico en lugar de efecto estético.
+
+**3. Errores de Texto y Legibilidad:**
+*   **Frame 2:** El texto "EL RECHAZO EN EL CORO" está superpuesto sobre una línea horizontal blanca que divide la pantalla, dificultando la lectura.
+*   **Frame 3:** La palabra "MANTUVIERA" está mal justificada y muy cerca del borde inferior del área de seguridad, arriesgando ser tapada por los elementos de la interfaz de la plataforma.
+*   **Frame 7 (Tarjeta final):** El texto "HOY?" está posicionado de forma errática debajo de la tarjeta. La jerarquía visual es confusa: la pregunta parece un residuo del texto anterior y no parte de la CTA (Llamada a la acción).
+
+**4. Errores Técnicos de Renderizado:**
+*   **Frame 4 (Tramado/Moiré):** Se observa un patrón de puntos (dithering) extremadamente agresivo y poco profesional sobre toda la escena del escritorio, haciendo que el arte pixel-art pierda su definición y parezca un error de exportación.
+
+**Resumen de QA:** El video carece de coherencia visual (el personaje cambia en cada corte) y la narrativa visual (el sprite) contradice frontalmente el sujeto de la historia (Shakira). **No apto para publicación.**

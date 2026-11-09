@@ -1,0 +1,95 @@
+{
+ "cast": {
+  "young": {
+   "skin": [
+    214,
+    170,
+    130
+   ],
+   "hair": [
+    40,
+    28,
+    22
+   ],
+   "style": "tab",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    214,
+    170,
+    130
+   ],
+   "hair": [
+    40,
+    28,
+    22
+   ],
+   "style": "tab",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_hook",
+   "line": 0
+  },
+  {
+   "kit": "e_fired",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 3
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "NO SERVÍAS",
+   "l2": "PARA CANTAR"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "EL RECHAZO",
+   "l2": "EN EL CORO"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "EMPEZÓ A",
+   "l2": "GRABAR A LOS 13"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "ÉXITO GLOBAL",
+   "l2": "LAUNDRY SERVICE"
+  }
+ ]
+}

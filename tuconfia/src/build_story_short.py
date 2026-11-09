@@ -485,11 +485,11 @@ def synth_audio():
         if kd == 'whip': add(noise(.3, 1500) * np.sin(np.pi * np.clip(tt(.3) / .3, 0, 1)) * .6, T_ - .15, .6)
     sfx = L.copy()
     # ---- música: "Every Living Breathing Moment" (piano), al volumen único de la serie (rms medido sobre el tramo que suena)
-    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', f'{ROOT}/audio/every_moment.m4a', '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', f'{ROOT}/audio/' + os.environ.get('MUSIC', 'every_moment') + '.m4a', '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
     song = np.frombuffer(raw, np.float32).reshape(-1, 2)
     S0, XF = 4.0, 1.8
     seg = song[int(S0 * SR):int(S0 * SR) + N].copy()
-    sf = .105 / (np.sqrt((seg ** 2).mean()) + 1e-9); seg *= sf
+    sf = float(os.environ.get('MUS_RMS', .105)) / (np.sqrt((seg ** 2).mean()) + 1e-9); seg *= sf
     pre = song[int((S0 - XF) * SR):int(S0 * SR)].copy() * sf
     v = np.arange(len(seg)) / SR
     dip = np.where((v > G - SIL - .05) & (v < G - .012), np.clip(1 - (v - (G - SIL - .05)) / .12, 0, 1), 1.0)
