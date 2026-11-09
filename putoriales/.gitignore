@@ -34,3 +34,9 @@ build/mix7.wav
 build/r7_*.log
 build/enc7.log
 build/v7.ok
+build/frames8/
+build/mix8.wav
+build/r8_*.log
+build/enc8.log
+build/v8.ok
+ep8/qa/

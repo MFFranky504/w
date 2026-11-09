@@ -1,0 +1,4 @@
+Redacta textos de publicación para un Short de humor absurdo con groserías (PUTOR.IALES #8 "Cómo abrir una puerta": un tipo cubierto de moho en un sofá aprende a abrir una puerta; el brazo se le estira y se le arranca, la perilla grita, llueven teclados y una mano gigante le cierra la puerta en la cara).
+Límites VERIFICADOS (no los excedas): YouTube Shorts título ≤100 caracteres, descripción ≤5000, hashtags ≤60; TikTok descripción ≤2200; Instagram Reels descripción ≤2200 y MÁXIMO 5 hashtags.
+Entrega JSON: {"youtube":{"titulo":"","descripcion":""},"tiktok":{"descripcion":""},"instagram":{"descripcion":""}}.
+Reglas: el gancho (primera frase) debe verse completo antes del "ver más"; Instagram descripción larga (~900-1300 caracteres) con CTA a comentar, exactamente 5 hashtags; YouTube con #Shorts; TikTok ~250 caracteres con 4 hashtags; incluye aviso de groserías. Español latinoamericano.
