@@ -8,9 +8,10 @@ const light = new THREE.PointLight(0xffcc88, 150, 25);
 light.position.set(0, 8, 2); scene.add(light);
 
 // Gags 3D Props
-const phone = mk(new THREE.BoxGeometry(0.8, 1.6, 0.1), mat(0x222), 0, 0.8, 2);
-// Registro explícito para evitar error en el cálculo de T_HOOKEND
+// Aseguramos que 'phone' esté definido globalmente o accesible para no romper el render
+window.phone = mk(new THREE.BoxGeometry(0.8, 1.6, 0.1), mat(0x222), 0, 0.8, 2);
 window.K = window.K || ((key) => key === 'telefono' ? 2.0 : null); 
+
 const outlet = mk(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial(), 5, 4, -9.8);
 outlet.material.map = canvasTex(256, 256, (ctx) => {
     ctx.fillStyle = "#fff"; ctx.fillRect(0,0,256,256);
@@ -24,7 +25,8 @@ const battery = mk(new THREE.BoxGeometry(1, 1, 1), mat(0x00ff00), 0, 1, 2);
 const tentacle = mk(new THREE.CylinderGeometry(0.1, 0.02, 2), mat(0xff6666), 5, 4, -9);
 
 // ---------- timeline
-const T_HOOKEND = (typeof K !== 'undefined' && K('telefono') ? K('telefono') : 2.0) - 0.3;
+const getPhoneTime = () => (typeof K !== 'undefined' && K('telefono') ? K('telefono') : 2.0);
+const T_HOOKEND = getPhoneTime() - 0.3;
 const SW = new Set(['pinche', 'pendejo', 'culero', 'chingada', 'verga', 'mamada', 'puta', 'mediocre']);
 const isSW = w => SW.has(norm(w));
 const swT = words.filter(w => isSW(w[0])).map(w => w[1]);
@@ -43,12 +45,14 @@ function applyHero(t) {
 }
 
 function applyProps(t) {
-    if(t > 10.6 && t < 11.3) phone.scale.set(1 + Math.sin(t * 50)*0.1, 1, 1);
-    else phone.scale.set(1, 1, 1);
+    if (typeof phone !== 'undefined') {
+        if(t > 10.6 && t < 11.3) phone.scale.set(1 + Math.sin(t * 50)*0.1, 1, 1);
+        else phone.scale.set(1, 1, 1);
+        
+        if(t > 21.0) phone.position.y += (t - 21.0) * 0.1;
+    }
     
     if(t > 13.7 && t < 16.7) battery.scale.set(1 + (t-13), 1 + (t-13), 1);
-    
-    if(t > 21.0) phone.position.y += (t - 21.0) * 0.1;
     tentacle.rotation.z = Math.sin(t * 10);
 }
 
