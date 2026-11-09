@@ -1,0 +1,89 @@
+{
+ "cast": {
+  "adult": {
+   "skin": [
+    240,
+    220,
+    200
+   ],
+   "hair": [
+    80,
+    50,
+    20
+   ],
+   "style": "short",
+   "outfit": "tee_red",
+   "beard": true,
+   "strong": true
+  },
+  "young": {
+   "skin": [
+    240,
+    220,
+    200
+   ],
+   "hair": [
+    80,
+    50,
+    20
+   ],
+   "style": "short",
+   "outfit": "tee_red",
+   "beard": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_write",
+   "line": 2
+  },
+  {
+   "kit": "e_sign",
+   "line": 3
+  },
+  {
+   "kit": "e_one",
+   "line": 6
+  },
+  {
+   "kit": "close",
+   "line": 8
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "RECHAZADO",
+   "l2": "POR LA INDUSTRIA"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "CARPINTERO",
+   "l2": "DE PROFESIÓN"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "SU GRAN",
+   "l2": "OPORTUNIDAD"
+  },
+  {
+   "scene": 3,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "LEYENDA",
+   "l2": "DEL CINE"
+  }
+ ]
+}

@@ -24,15 +24,21 @@ Responde SOLO JSON con claves: hechos, lines (lista de objetos {{t,tts,emo}}), c
 
 
 def gemini(prompt, model="gemini-3.1-flash-lite"):
-    req = urllib.request.Request("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-        json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": 8000}).encode(),
+    """Gemini directo, o NVIDIA NIM si el modelo empieza por 'nvidia/' (MiniMax razona: max_tokens alto)."""
+    if model.startswith("nvidia/"):
+        url, model, mt = "https://integrate.api.nvidia.com/v1/chat/completions", model[7:], 1500
+    else:
+        url, mt = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", 8000
+    req = urllib.request.Request(url, json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": mt}).encode(),
         {"Authorization": "Bearer proxy-injected", "content-type": "application/json"})
-    return json.load(urllib.request.urlopen(req, timeout=170))["choices"][0]["message"]["content"]
+    m = json.load(urllib.request.urlopen(req, timeout=170))["choices"][0]["message"]
+    return m.get("content") or m.get("reasoning_content") or ""
 
 
-for attempt in range(3):
+import time
+for attempt in range(5):
     try:
-        d = json.loads(re.search(r'\{.*\}', gemini(PROMPT), re.S).group(0))
+        d = json.loads(re.search(r'\{.*\}', gemini(PROMPT, os.environ.get('SCRIPT_MODEL', 'gemini-3.1-flash-lite')), re.S).group(0))
         sc, ls = d['scenes'], d['lines']
         assert all(isinstance(l, dict) and l.get('t') and l.get('tts') for l in ls), 'lines debe ser lista de objetos t/tts/emo'
         for l in ls: l.setdefault('emo', 'warmly')
@@ -41,14 +47,30 @@ for attempt in range(3):
         assert all(0 <= x['line'] < len(ls) for x in sc) and all(h['scene'] < len(sc) - 1 for h in d['hooks'])
         break
     except Exception as e:
-        print('Gemini devolvió algo inválido, reintento:', repr(e)[:120]); d = None
+        print('Modelo de guion falló, reintento:', repr(e)[:120]); d = None; time.sleep(30)
 if not d: sys.exit('sin guion válido')
 from num2words import num2words
 def hablado(t):
     t = t.replace('*', '')
     for real, ph in sorted((d.get('fonetica') or {}).items(), key=lambda x: -len(x[0])): t = t.replace(real, ph)
     return re.sub(r'\d+', lambda m: num2words(int(m.group()), lang='es'), t)
-for l in ls: l['tts'] = hablado(l['t'])
+EN = {'Harrison Ford': 'Járison Ford', 'Star Wars': 'Star Uars', 'Indiana Jones': 'Índiana Yons', 'American Graffiti': 'Américan Grafiti',
+      'Michael Jordan': 'Máicol Yórdan', 'Taylor Swift': 'Téilor Suift', 'Morgan Freeman': 'Mórgan Fríman', 'Eminem': 'Éminem',
+      'Lady Gaga': 'Léidi Gágá', 'Dwayne Johnson': 'Duéin Yónson', 'Tom Brady': 'Tom Bréidi', 'Million Dollar Baby': 'Míllion Dólar Béibi',
+      'Lose Yourself': 'Lus Yorself', 'The Shawshank Redemption': 'The Shóshank Ridénshon', 'Driving Miss Daisy': 'Dráiving Mis Deisi'}
+def hablado_en(t):
+    t = t.replace('*', '')
+    for k, v in sorted(EN.items(), key=lambda x: -len(x[0])): t = t.replace(k, v)
+    return re.sub(r'\d+', lambda m: num2words(int(m.group()), lang='es'), t)
+for l in ls: l['tts'] = hablado_en(l['t'])
+# reparto: normalizar a {young, adult} con valores numéricos
+def _col(v):
+    if isinstance(v, str): v = [int(x) for x in re.findall(r'\d+', v)]
+    return list(v)
+_c = d['cast']
+if 'adult' not in _c:
+    _c = {'adult': _c, 'young': dict(_c, outfit='tee_red', beard=False)}
+d['cast'] = {k: dict(v, skin=_col(v.get('skin', [240, 200, 170])), hair=_col(v.get('hair', [60, 40, 30]))) for k, v in _c.items()}
 lines = [dict(id=f"L{i + 1}", rol='', t=l['t'], tts=l['tts'], gen=f"[{l['emo']}] {l['tts']}", p=.4, tag='') for i, l in enumerate(ls)]
 json.dump(dict(titulo=name, meta=dict(famoso=who), lines=lines), open(f'{ROOT}/script_{name}_short.json', 'w'), ensure_ascii=False, indent=1)
 json.dump(dict(cast=d['cast'], scenes=sc, turn=d['turn'], hooks=d['hooks']), open(f'{ROOT}/story_{name}.json', 'w'), ensure_ascii=False, indent=1)

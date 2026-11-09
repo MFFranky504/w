@@ -1,0 +1,129 @@
+{
+ "hechos": {
+  "Harrison Ford trabajó como carpintero mientras esperaba papeles de actor": "VERIFICADO",
+  "Apareció en American Graffiti (1973) con un papel pequeño": "VERIFICADO",
+  "Fue Han Solo en Star Wars (1977) y Indiana Jones en En busca del arca perdida (1981)": "VERIFICADO"
+ },
+ "lines": [
+  {
+   "t": "Hasta Harrison Ford fue rechazado.",
+   "tts": "Hasta Járison Ford fue rechazado.",
+   "emo": "bold"
+  },
+  {
+   "t": "Antes de la fama, trabajaba como *carpintero*.",
+   "tts": "Antes de la fama, trabajaba como carpintero.",
+   "emo": "sad"
+  },
+  {
+   "t": "Pasaba sus días esperando una oportunidad en el cine.",
+   "tts": "Pasaba sus días esperando una oportunidad en el cine.",
+   "emo": "sad"
+  },
+  {
+   "t": "En 1973, logró apenas un *papel pequeño*.",
+   "tts": "En mil novecientos setenta y tres, logró apenas un papel pequeño.",
+   "emo": "warmly"
+  },
+  {
+   "t": "Su camino en American Graffiti no fue sencillo.",
+   "tts": "Su camino en Americán Grafiti no fue sencillo.",
+   "emo": "warmly"
+  },
+  {
+   "t": "Pero siguió adelante sin rendirse.",
+   "tts": "Pero siguió adelante sin rendirse.",
+   "emo": "hopeful"
+  },
+  {
+   "t": "En 1977, fue Han Solo en Star Wars.",
+   "tts": "En mil novecientos setenta y siete, fue Jan Solo en Star Uars.",
+   "emo": "excited"
+  },
+  {
+   "t": "Y en 1981, fue Indiana Jones en En busca del arca perdida.",
+   "tts": "Y en mil novecientos ochenta y uno, fue Indiana Yons en En busca del arca perdida.",
+   "emo": "excited"
+  },
+  {
+   "t": "¿Qué gran meta estás construyendo en silencio hoy?",
+   "tts": "¿Qué gran meta estás construyendo en silencio hoy?",
+   "emo": "softly"
+  }
+ ],
+ "cast": {
+  "skin": "[240, 220, 200]",
+  "hair": "[80, 50, 20]",
+  "style": "short",
+  "outfit": "tee_red",
+  "beard": true,
+  "glasses": false,
+  "strong": true
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_write",
+   "line": 2
+  },
+  {
+   "kit": "e_sign",
+   "line": 3
+  },
+  {
+   "kit": "e_one",
+   "line": 6
+  },
+  {
+   "kit": "close",
+   "line": 8
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "RECHAZADO",
+   "l2": "POR LA INDUSTRIA"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "CARPINTERO",
+   "l2": "DE PROFESIÓN"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "SU GRAN",
+   "l2": "OPORTUNIDAD"
+  },
+  {
+   "scene": 3,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "LEYENDA",
+   "l2": "DEL CINE"
+  }
+ ],
+ "titulo_short": "Harrison Ford: De la madera al estrellato 🪵",
+ "resumen": "Harrison Ford trabajó como carpintero antes de su éxito. En 1977 alcanzó la fama mundial con Star Wars.",
+ "pregunta": "¿Qué gran meta estás construyendo en silencio hoy?",
+ "hashtag": "#HarrisonFord",
+ "riesgos": [],
+ "fonetica": {
+  "Harrison Ford": "Járison Ford",
+  "American Graffiti": "Americán Grafiti",
+  "Han Solo": "Jan Solo",
+  "Star Wars": "Star Uars",
+  "Indiana Jones": "Indiana Yons",
+  "En busca del arca perdida": "En busca del arca perdida"
+ }
+}

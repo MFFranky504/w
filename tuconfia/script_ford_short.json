@@ -1,0 +1,89 @@
+{
+ "titulo": "ford",
+ "meta": {
+  "famoso": "Harrison Ford"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Hasta Harrison Ford fue rechazado.",
+   "tts": "Hasta Járison Ford fue rechazado.",
+   "gen": "[bold] Hasta Járison Ford fue rechazado.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "Antes de la fama, trabajaba como *carpintero*.",
+   "tts": "Antes de la fama, trabajaba como carpintero.",
+   "gen": "[sad] Antes de la fama, trabajaba como carpintero.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "Pasaba sus días esperando una oportunidad en el cine.",
+   "tts": "Pasaba sus días esperando una oportunidad en el cine.",
+   "gen": "[sad] Pasaba sus días esperando una oportunidad en el cine.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "En 1973, logró apenas un *papel pequeño*.",
+   "tts": "En mil novecientos setenta y tres, logró apenas un papel pequeño.",
+   "gen": "[warmly] En mil novecientos setenta y tres, logró apenas un papel pequeño.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Su camino en American Graffiti no fue sencillo.",
+   "tts": "Su camino en Américan Grafiti no fue sencillo.",
+   "gen": "[warmly] Su camino en Américan Grafiti no fue sencillo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Pero siguió adelante sin rendirse.",
+   "tts": "Pero siguió adelante sin rendirse.",
+   "gen": "[hopeful] Pero siguió adelante sin rendirse.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "En 1977, fue Han Solo en Star Wars.",
+   "tts": "En mil novecientos setenta y siete, fue Han Solo en Star Uars.",
+   "gen": "[excited] En mil novecientos setenta y siete, fue Han Solo en Star Uars.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "Y en 1981, fue Indiana Jones en En busca del arca perdida.",
+   "tts": "Y en mil novecientos ochenta y uno, fue Índiana Yons en En busca del arca perdida.",
+   "gen": "[excited] Y en mil novecientos ochenta y uno, fue Índiana Yons en En busca del arca perdida.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "",
+   "t": "¿Qué gran meta estás construyendo en silencio hoy?",
+   "tts": "¿Qué gran meta estás construyendo en silencio hoy?",
+   "gen": "[softly] ¿Qué gran meta estás construyendo en silencio hoy?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

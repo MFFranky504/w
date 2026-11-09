@@ -57,3 +57,9 @@ Archivo: out/TU_CONFIA_jordan_SHORT_Vertical_yt.mp4 (vertical, 40 s). Textos: ca
 Título YouTube Shorts: «Hasta Michael Jordan fue cortado... y terminó con 6 títulos de la NBA 🏀».
 Trabajo repartido: Gemini verificó los hechos, escribió el primer borrador y revisó los fotogramas (script src/gemini_qa.py). Claude reescribió el guion porque el de Gemini traía clichés y un error («campeonatos mundiales»), y quitó el gancho final duplicado.
 Confirmar antes de publicar: que lo enviaron al equipo juvenil en 1978 (muchos medios dicen «cortado del equipo principal»). Los subtítulos tapan parte del personaje en planos anchos, igual que en los otros Shorts.
+
+## Short Harrison Ford (Gemini + NVIDIA)
+Archivo: out/TU_CONFIA_ford_SHORT_Vertical_yt.mp4 (vertical, 35 s). Textos: caption_ford_short_*.txt.
+Reparto de IAs: Gemini escribió hechos, guion, reparto, escenas y ganchos. MiniMax (NVIDIA) no entregó la revisión: con guiones largos da 502/429 y con la revisión corta devolvió su razonamiento sin la lista. Gemini revisó los fotogramas; sus avisos eran subtítulos en posición normal, ya descartados en otros Shorts.
+Confirmar antes de publicar: que el rechazo de la industria («Hasta Harrison Ford fue rechazado») se sostiene con una fuente; la frase de 1973 (papel pequeño en American Graffiti) es la que aparece en el guion.
+Arreglos hechos a mano: pronunciación de nombres en inglés (el modelo la escribió mal) y reparto joven/adulto (Gemini lo dio plano).
