@@ -10,6 +10,7 @@ import scenes3 as S3
 import scenes5 as S5
 import scenes6 as S6
 import scenes13 as S13
+import scenes14 as S14
 from cta import draw_cta
 from lib import WW, WH, BAY, ease
 
@@ -129,13 +130,14 @@ if DYN:
     _cast.CAST[f'x_{STORY}_extra'] = dict(style='short', skin=(200, 150, 120), hair=_cast.ramp((50, 40, 30)), iris=(60, 44, 36), outfit='polo', stubble=False)
     _MAP.update({n: f'x_{STORY}_extra' for n in ('coachj', 'execg', 'qb2', 'dre', 'prod1', 'prod2')})
     _r, _b = S13.rpg, S13.bat
-    S13.rpg = lambda w, *a, **k: _r(_MAP.get(w, w), *a, **k)
-    S13.bat = lambda w, *a, **k: _b(_MAP.get(w, w), *a, **k)
+    for _m in (S13, S14):
+        _m.rpg = lambda w, *a, _r=_r, **k: _r(_MAP.get(w, w), *a, **k)
+        _m.bat = lambda w, *a, _b=_b, **k: _b(_MAP.get(w, w), *a, **k)
     _sc = _D['scenes']
     CFG = dict(turn=f"s{_D['turn']}", pre=f"s{_D['turn'] - 1}", late=f"s{len(_sc) - 2}",
                sc=[(f's{i}' if i < len(_sc) - 1 else 'cierre', LINES[x['line']]['id'], x['kit']) for i, x in enumerate(_sc)],
                hooks=[(f"s{h['scene']}" if h['scene'] < len(_sc) - 1 else 'cierre', h['start'], h['end'], h['l1'], h['l2'], 520) for h in _D['hooks']])
-    SCENES = [dict(n=n_, a=i_, b=i_, fn=(lambda f: (lambda t, u: getattr(S13, f)(t, u)))(f_), cam=cutc(.5)) for n_, i_, f_ in CFG['sc']]
+    SCENES = [dict(n=n_, a=i_, b=i_, fn=(lambda f: (lambda t, u: getattr(S14 if hasattr(S14, f) else S13, f)(t, u)))(f_), cam=cutc(.5)) for n_, i_, f_ in CFG['sc']]
 else:
     CFG = {
      'johnson': dict(turn='dad', pre='seven', late='star',

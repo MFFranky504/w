@@ -37,35 +37,27 @@
  },
  "scenes": [
   {
-   "kit": "e_hook",
+   "kit": "hosp",
    "line": 0
   },
   {
-   "kit": "e_flop",
-   "line": 1
-  },
-  {
-   "kit": "e_flop",
-   "line": 2
-  },
-  {
-   "kit": "e_write",
+   "kit": "room",
    "line": 3
   },
   {
-   "kit": "e_write",
-   "line": 4
+   "kit": "studio",
+   "line": 5
   },
   {
-   "kit": "e_sign",
+   "kit": "wedding",
    "line": 6
   },
   {
    "kit": "close",
-   "line": 8
+   "line": 7
   }
  ],
- "turn": 4,
+ "turn": 1,
  "hooks": [
   {
    "scene": 0,
@@ -78,22 +70,15 @@
    "scene": 1,
    "start": 0.3,
    "end": 2.6,
-   "l1": "DOLOR A LOS 6",
-   "l2": "PASÓ POLIO"
+   "l1": "¡PINTABA",
+   "l2": "DESDE LA CAMA!"
   },
   {
-   "scene": 2,
+   "scene": 3,
    "start": 0.3,
    "end": 2.6,
-   "l1": "ACCIDENTE",
-   "l2": "A LOS 18"
-  },
-  {
-   "scene": 4,
-   "start": 0.3,
-   "end": 2.6,
-   "l1": "EL GIRO",
-   "l2": "USÓ UN ESPEJO"
+   "l1": "¡SE CASÓ CON",
+   "l2": "DIEGO RIVERA!"
   }
  ]
 }
