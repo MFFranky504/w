@@ -1,0 +1,159 @@
+{
+ "hechos": {
+  "Albert Einstein no aprobó examen ETH 1895": "VERIFICADO",
+  "Malas notas en letras y ciencias naturales": "VERIFICADO",
+  "Terminó preparatoria en Aarau 1896": "VERIFICADO",
+  "Premio Nobel de Física 1921 efecto fotoeléctrico": "VERIFICADO"
+ },
+ "lines": [
+  {
+   "t": "Hasta *Albert Einstein* fue rechazado.",
+   "tts": "Hasta Álbert Áinstain fue rechazado.",
+   "emo": "bold"
+  },
+  {
+   "t": "En 1895, intentó entrar a la prestigiosa *ETH* de Zúrich.",
+   "tts": "En mil ochocientos noventa y cinco, intentó entrar a la prestigiosa ETH de Zúrich.",
+   "emo": "sad"
+  },
+  {
+   "t": "Fracasó al no aprobar el examen de ingreso.",
+   "tts": "Fracasó al no aprobar el examen de ingreso.",
+   "emo": "sad"
+  },
+  {
+   "t": "Sus notas en letras y ciencias naturales fueron *malas*.",
+   "tts": "Sus notas en letras y ciencias naturales fueron malas.",
+   "emo": "sad"
+  },
+  {
+   "t": "La *determinación* lo llevó a terminar la preparatoria en Aarau en 1896.",
+   "tts": "La determinación lo llevó a terminar la preparatoria en Aarau en mil ochocientos noventa y seis.",
+   "emo": "hopeful"
+  },
+  {
+   "t": "Años después, su mente cambió la física para *siempre*.",
+   "tts": "Años después, su mente cambió la física para siempre.",
+   "emo": "excited"
+  },
+  {
+   "t": "Recibió el *Premio Nobel* en 1921 por el efecto fotoeléctrico.",
+   "tts": "Recibió el Premio Nóbel en mil novecientos veintiuno por el efecto fotoeléctrico.",
+   "emo": "excited"
+  },
+  {
+   "t": "Si el camino se cierra, ¿qué *puerta* abrirás tú?",
+   "tts": "Si el camino se cierra, ¿qué puerta abrirás tú?",
+   "emo": "warmly"
+  }
+ ],
+ "cast": {
+  "young": {
+   "skin": [
+    255,
+    230,
+    200
+   ],
+   "hair": [
+    100,
+    50,
+    0
+   ],
+   "style": "tab",
+   "outfit": "tee_blue",
+   "beard": false,
+   "glasses": true,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    255,
+    230,
+    200
+   ],
+   "hair": [
+    200,
+    200,
+    200
+   ],
+   "style": "king",
+   "outfit": "blazer",
+   "beard": true,
+   "glasses": true,
+   "strong": false
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_write",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 2
+  },
+  {
+   "kit": "e_write",
+   "line": 3
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_oscar",
+   "line": 6
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 4,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "RECHAZADO",
+   "l2": "EN ZÚRICH"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "MALAS NOTAS",
+   "l2": "SIN ENTRAR"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "EL GIRO",
+   "l2": "AARAU 1896"
+  },
+  {
+   "scene": 5,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "PREMIO NOBEL",
+   "l2": "1921"
+  }
+ ],
+ "titulo_short": "Albert Einstein fue rechazado 🧠",
+ "resumen": "Albert Einstein reprobó su ingreso a la ETH en 1895 a los 16 años. En 1921 ganó el Premio Nobel de Física.",
+ "pregunta": "Si el camino se cierra, ¿qué puerta abrirás tú?",
+ "hashtag": "#AlbertEinstein",
+ "riesgos": [],
+ "fonetica": {
+  "Albert Einstein": "Álbert Áinstain",
+  "ETH": "E-T-H",
+  "Zúrich": "Zúrich",
+  "Aarau": "Áarau",
+  "Nobel": "Nobel"
+ }
+}

@@ -126,6 +126,8 @@ if DYN:
         _cast.CAST[f'x_{STORY}_{_k}'] = dict(style=_c.get('style', 'short'), skin=tuple(_c['skin']), hair=_cast.ramp(tuple(_c['hair'])), iris=(70, 70, 90), outfit=_c.get('outfit', 'grey'), strong=bool(_c.get('strong')), stubble=bool(_c.get('beard')), glasses=bool(_c.get('glasses')))
     _MAP = {n: f'x_{STORY}_adult' for n in ('em', 'mj', 'johnson', 'brady', 'gaga')}
     _MAP.update({n: f'x_{STORY}_young' for n in ('mj_y', 'johnson_y', 'brady_y', 'emw', 'gagaw')})
+    _cast.CAST[f'x_{STORY}_extra'] = dict(style='short', skin=(200, 150, 120), hair=_cast.ramp((50, 40, 30)), iris=(60, 44, 36), outfit='polo', stubble=False)
+    _MAP.update({n: f'x_{STORY}_extra' for n in ('coachj', 'execg', 'qb2', 'dre', 'prod1', 'prod2')})
     _r, _b = S13.rpg, S13.bat
     S13.rpg = lambda w, *a, **k: _r(_MAP.get(w, w), *a, **k)
     S13.bat = lambda w, *a, **k: _b(_MAP.get(w, w), *a, **k)

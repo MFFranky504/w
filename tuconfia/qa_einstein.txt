@@ -1,0 +1,11 @@
+Escucha bien, porque no voy a repetir esto. El control de calidad no es una sugerencia, es el filtro que evita que el contenido parezca basura generada sin criterio. Aquí tienes los errores que hacen que este vídeo sea un desastre de producción:
+
+1.  **Inconsistencia de Personaje (Sprites):** El protagonista cambia de diseño, vestimenta, peinado y color de pelo de forma errática entre fotogramas. Einstein es reconocible incluso en pixel-art; no puedes tener a un tipo con pelo castaño, luego uno con pelo blanco y gafas, y terminar con un joven azulado. Es un fallo de continuidad imperdonable.
+2.  **Oclusión de Texto (Legibilidad):** En el fotograma 25s, el texto "PREMIO NOBEL" se superpone directamente sobre la cabeza del personaje. Las reglas de diseño dictan que el texto debe ser legible; aquí, el sprite lo vuelve un ruido visual ilegible.
+3.  **Error de Narrativa/Contradicción:** En el primer fotograma, aparece una chica junto a Einstein ("EINSTEIN FUE..."). Einstein no fue "una chica y un chico", ni aparece nadie más en la historia narrada. Es un recurso visual que no aporta y confunde al espectador sobre quién es el sujeto.
+4.  **Flotación de Objetos:** En el último fotograma, el sello rojo (que parece una tarta o una insignia suelta) está "flotando" bajo los pies del personaje, sin estar anclado a ninguna lógica espacial o física del escenario.
+5.  **Desproporción en el Layout:** En el fotograma de 1s, el texto "RECHAZADO EN ZÚRICH" está peligrosamente cerca del logo "TU CONF.IA", saturando la zona superior. El espacio negativo es inexistente.
+6.  **Calidad de Activos:** En el último fotograma, hay un evidente error de renderizado/compresión que crea un efecto de "tramado" o *dithering* extraño sobre todo el sprite central, diferenciándolo negativamente del resto del estilo del video. Parece un asset pegado de otra resolución distinta.
+7.  **Sincronización y cortes:** El texto en pantalla ("EL EXAMEN DE", "1896", "SE CIERRA") no siempre sigue una jerarquía visual clara ni un tiempo de lectura natural; en varios casos, el texto se corta o aparece de forma abrupta sin estar centrado correctamente respecto al cuerpo del personaje.
+
+Arregla esto o vuelve a empezar. **No se publica nada hasta que la consistencia visual sea total.**

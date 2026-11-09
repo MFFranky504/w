@@ -1,0 +1,80 @@
+{
+ "titulo": "einstein",
+ "meta": {
+  "famoso": "Albert Einstein"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Hasta *Albert Einstein* fue rechazado.",
+   "tts": "Hasta Álbert Áinstain fue rechazado.",
+   "gen": "[bold] Hasta Álbert Áinstain fue rechazado.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "En 1895, intentó entrar a la prestigiosa *ETH* de Zúrich.",
+   "tts": "En mil ochocientos noventa y cinco, intentó entrar a la prestigiosa ETH de Zúrich.",
+   "gen": "[sad] En mil ochocientos noventa y cinco, intentó entrar a la prestigiosa ETH de Zúrich.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "Fracasó al no aprobar el examen de ingreso.",
+   "tts": "Fracasó al no aprobar el examen de ingreso.",
+   "gen": "[sad] Fracasó al no aprobar el examen de ingreso.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "Sus notas en letras y ciencias naturales fueron *malas*.",
+   "tts": "Sus notas en letras y ciencias naturales fueron malas.",
+   "gen": "[sad] Sus notas en letras y ciencias naturales fueron malas.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "La *determinación* lo llevó a terminar la preparatoria en Aarau en 1896.",
+   "tts": "La determinación lo llevó a terminar la preparatoria en Aarau en mil ochocientos noventa y seis.",
+   "gen": "[hopeful] La determinación lo llevó a terminar la preparatoria en Aarau en mil ochocientos noventa y seis.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Años después, su mente cambió la física para *siempre*.",
+   "tts": "Años después, su mente cambió la física para siempre.",
+   "gen": "[excited] Años después, su mente cambió la física para siempre.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Recibió el *Premio Nobel* en 1921 por el efecto fotoeléctrico.",
+   "tts": "Recibió el Premio Nóbel en mil novecientos veintiuno por el efecto fotoeléctrico.",
+   "gen": "[excited] Recibió el Premio Nóbel en mil novecientos veintiuno por el efecto fotoeléctrico.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "Si el camino se cierra, ¿qué *puerta* abrirás tú?",
+   "tts": "Si el camino se cierra, ¿qué puerta abrirás tú?",
+   "gen": "[warmly] Si el camino se cierra, ¿qué puerta abrirás tú?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

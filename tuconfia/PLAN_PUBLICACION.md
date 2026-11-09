@@ -63,3 +63,8 @@ Archivo: out/TU_CONFIA_ford_SHORT_Vertical_yt.mp4 (vertical, 35 s). Textos: capt
 Reparto de IAs: Gemini escribió hechos, guion, reparto, escenas y ganchos. MiniMax (NVIDIA) no entregó la revisión: con guiones largos da 502/429 y con la revisión corta devolvió su razonamiento sin la lista. Gemini revisó los fotogramas; sus avisos eran subtítulos en posición normal, ya descartados en otros Shorts.
 Confirmar antes de publicar: que el rechazo de la industria («Hasta Harrison Ford fue rechazado») se sostiene con una fuente; la frase de 1973 (papel pequeño en American Graffiti) es la que aparece en el guion.
 Arreglos hechos a mano: pronunciación de nombres en inglés (el modelo la escribió mal) y reparto joven/adulto (Gemini lo dio plano).
+
+## Short Albert Einstein (Gemini + NVIDIA)
+Archivo: out/TU_CONFIA_einstein_SHORT_Vertical_yt.mp4 (vertical, 35 s). Textos: caption_einstein_short_*.txt (escritos con Gemini).
+NVIDIA (MiniMax) no entregó textos: 502 con prompts largos y con max_tokens de 400 a 1000; cuando responde devuelve el razonamiento, no el texto. Los textos de NVIDIA quedan pendientes; reintentar más tarde.
+Hechos a confirmar: rechazo en el examen de ETH Zúrich en 1895 a los 16 años, preparatoria en Aarau, Nobel de 1921 por el efecto fotoeléctrico.

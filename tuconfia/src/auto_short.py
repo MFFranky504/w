@@ -26,7 +26,7 @@ Responde SOLO JSON con claves: hechos, lines (lista de objetos {{t,tts,emo}}), c
 def gemini(prompt, model="gemini-3.1-flash-lite"):
     """Gemini directo, o NVIDIA NIM si el modelo empieza por 'nvidia/' (MiniMax razona: max_tokens alto)."""
     if model.startswith("nvidia/"):
-        url, model, mt = "https://integrate.api.nvidia.com/v1/chat/completions", model[7:], 1500
+        url, model, mt = "https://integrate.api.nvidia.com/v1/chat/completions", model[7:], 400
     else:
         url, mt = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", 8000
     req = urllib.request.Request(url, json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": mt}).encode(),
@@ -56,7 +56,7 @@ def hablado(t):
     return re.sub(r'\d+', lambda m: num2words(int(m.group()), lang='es'), t)
 EN = {'Harrison Ford': 'Járison Ford', 'Star Wars': 'Star Uars', 'Indiana Jones': 'Índiana Yons', 'American Graffiti': 'Américan Grafiti',
       'Michael Jordan': 'Máicol Yórdan', 'Taylor Swift': 'Téilor Suift', 'Morgan Freeman': 'Mórgan Fríman', 'Eminem': 'Éminem',
-      'Lady Gaga': 'Léidi Gágá', 'Dwayne Johnson': 'Duéin Yónson', 'Tom Brady': 'Tom Bréidi', 'Million Dollar Baby': 'Míllion Dólar Béibi',
+      'Lady Gaga': 'Léidi Gágá', 'Albert Einstein': 'Álbert Áinstain', 'ETH Zurich': 'E T H Súrij', 'Nobel': 'Nóbel', 'Dwayne Johnson': 'Duéin Yónson', 'Tom Brady': 'Tom Bréidi', 'Million Dollar Baby': 'Míllion Dólar Béibi',
       'Lose Yourself': 'Lus Yorself', 'The Shawshank Redemption': 'The Shóshank Ridénshon', 'Driving Miss Daisy': 'Dráiving Mis Deisi'}
 def hablado_en(t):
     t = t.replace('*', '')

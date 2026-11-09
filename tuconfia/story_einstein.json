@@ -1,0 +1,99 @@
+{
+ "cast": {
+  "young": {
+   "skin": [
+    255,
+    230,
+    200
+   ],
+   "hair": [
+    100,
+    50,
+    0
+   ],
+   "style": "tab",
+   "outfit": "tee_blue",
+   "beard": false,
+   "glasses": true,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    255,
+    230,
+    200
+   ],
+   "hair": [
+    200,
+    200,
+    200
+   ],
+   "style": "king",
+   "outfit": "blazer",
+   "beard": true,
+   "glasses": true,
+   "strong": false
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_write",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 2
+  },
+  {
+   "kit": "e_write",
+   "line": 3
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_oscar",
+   "line": 6
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 4,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "RECHAZADO",
+   "l2": "EN ZÚRICH"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "MALAS NOTAS",
+   "l2": "SIN ENTRAR"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "EL GIRO",
+   "l2": "AARAU 1896"
+  },
+  {
+   "scene": 5,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "PREMIO NOBEL",
+   "l2": "1921"
+  }
+ ]
+}
