@@ -31,6 +31,13 @@ for s in on_screen:
 words = [{"text": t, "start": i * 0.3, "end": i * 0.3 + 0.25} for i, t in enumerate("Uno dos tres cuatro, cinco seis.".split())]
 pages = engine.caption_pages(words)
 assert [len(p) for p in pages] == [3, 1, 2], [len(p) for p in pages]
+assert all(len(" ".join(w["text"] for w in p)) <= 16 for p in pages)
+from PIL import Image
+im = Image.new("RGBA", (1080, 1920))
+long_page = [[{"text": "novecientos", "start": 0, "end": 1}, {"text": "cincuenta", "start": 1, "end": 2}]]
+engine.draw_captions(im, long_page, 1.5)
+xs = np.nonzero(np.array(im)[..., 3].any(0))[0]
+assert xs.min() >= 1080 * 0.1 - 1 and xs.max() <= 1080 * 0.9 + 1, (xs.min(), xs.max())
 assert [w["text"] for p in pages for w in p] == [w["text"] for w in words]
 
 # 4. Interpolation and easing.

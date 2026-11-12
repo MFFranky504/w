@@ -336,10 +336,12 @@ def overlay(frame, shot, scale=S):
     return frame
 
 
-def caption_pages(words, max_words=3, gap=0.35):
+def caption_pages(words, max_words=3, gap=0.35, max_chars=16):
     pages, cur = [], []
     for w in words:
-        if cur and (len(cur) == max_words or w["start"] - cur[-1]["end"] > gap or cur[-1]["text"][-1:] in ".,?"):
+        chars = len(" ".join(x["text"] for x in cur + [w]))
+        if cur and (len(cur) == max_words or chars > max_chars or w["start"] - cur[-1]["end"] > gap
+                    or cur[-1]["text"][-1:] in ".,?"):
             pages.append(cur)
             cur = []
         cur.append(w)
@@ -347,18 +349,21 @@ def caption_pages(words, max_words=3, gap=0.35):
 
 
 def draw_captions(frame, pages, t, scale=9, y=1180):
-    """Word-timed caption: current page, active word in lamp yellow, pop on entry."""
+    """Word-timed caption: current page, one active word in lamp yellow, pop on entry.
+    Scale shrinks so the page fits 80% of the frame width (9:16 side safe area)."""
     page = next((p for p in pages if p[0]["start"] - 0.05 <= t < p[-1]["end"] + 0.25), None)
     if not page:
         return
     words = [w["text"].upper() for w in page]
     full = " ".join(words)
+    scale = min(scale, int(frame.width * 0.8) // text_width(full, 1, bold=True))
     total_w = text_width(full, scale, bold=True)
     x = (frame.width - total_w) // 2
     for i, w in enumerate(page):
         if t < w["start"] - 0.05:
             break
-        active = w["start"] - 0.05 <= t < w["end"] + 0.05
+        nxt = page[i + 1]["start"] if i + 1 < len(page) else w["end"] + 0.25
+        active = w["start"] - 0.05 <= t < nxt - 0.05
         pop = min(1.0, (t - w["start"] + 0.05) / 0.12)
         sc = scale if pop >= 1 else max(scale - 2, int(scale * (0.75 + 0.25 * pop)))
         wx = x + text_width(" ".join(words[:i]) + (" " if i else ""), scale, bold=True) + (1 if i else 0) * 0
