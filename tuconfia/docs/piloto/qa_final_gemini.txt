@@ -1,0 +1,9 @@
+Como abogado del diablo, estos son los errores críticos detectados tras analizar los fotogramas:
+
+1. **Segundo 08s y 10s (Hipotecó su):** El sprite del personaje está incrustado en el borde inferior del edificio; los pies desaparecen bajo la línea de suelo/pavimento. **Gravedad: Alta.**
+2. **Segundo 256s (Pero el):** El sprite del personaje está desalineado horizontalmente respecto a los cortes anteriores; hay un salto de eje visual abrupto al cambiar de fondo. **Gravedad: Media.**
+3. **Segundo 186s (Contratar a):** La línea de subtítulos ("CONTRATAR A") está excesivamente baja, casi tocando el borde inferior de la pantalla, lo que arriesga el "safe area" en televisores. **Gravedad: Media.**
+4. **Segundo 330s (Filmar):** El subtítulo está descentrado hacia la izquierda respecto al bloque de texto inferior, rompiendo la alineación mantenida en el resto del metraje. **Gravedad: Baja.**
+5. **Segundo 360s (Suscripción):** El botón de "Suscríbete" está mal integrado; la parte superior del cuadro de texto sobresale por encima del borde superior del marco de video (clipping). **Gravedad: Alta.**
+
+El resto de los fotogramas presentan una coherencia técnica aceptable. Corregir estos puntos es vital para evitar una impresión de edición descuidada.

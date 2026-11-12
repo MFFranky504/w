@@ -1,6 +1,6 @@
 # Estado del proyecto Longform Engine 3.0
 
-Directiva: docs/LONGFORM_ENGINE_3.0.md. Fase actual: **3 (tema y apertura elegidos); falta el visto bueno del usuario para escribir el guion**. Decisiones del usuario: piloto de 10 min, investiga Gemini, tema a elección del director, voz gratis (se usa lo que queda de ElevenLabs: edge-tts y Piper están bloqueados por la red).
+Directiva: docs/LONGFORM_ENGINE_3.0.md. Fase actual: **8 terminada para el piloto (vídeo entregado); falta la Fase 9 con las métricas del usuario**.
 
 ## Auditoría (hechos medidos el 12-nov-2026)
 - Motor: Python + PIL, procedural; 15.937 líneas en src/. Mundo 320x180 a escala 6 (1920x1080) o 160x284 a escala 8 (vertical).
@@ -30,3 +30,11 @@ Ninguna IA externa tiene acceso a internet. Llamadas: src/ia.py.
 
 ## Próximo paso exacto
 Con las respuestas: Fase 1 (tema) y, en paralelo, las dos primeras mejoras del motor probadas en un clip de 20-30 s (plano de apertura con expresión y luz; escenas descritas por datos).
+
+## Piloto: Guillermo del Toro (12-nov-2026)
+- Entregado: out/TU_CONFIA_Guillermo_del_Toro_Documental_Piloto_yt.mp4 (1920x1080, 6:35, 87 MB). Publicación: publicacion_deltoro.md. Miniatura: out/miniatura_deltoro.png.
+- Duración: 6:35 en vez de 10 min. La voz de ElevenLabs gratis alcanzó para 4.894 caracteres de guion; quedan 3.318 este mes.
+- Control: sin fotogramas negros, sin silencios de más de 1,5 s, -14,3 LUFS, uniones entre las 4 partes del render comprobadas.
+- Gemini revisó 27 fotogramas: sus dos avisos graves eran falsos (comprobados a resolución completa); el resto, posiciones de diseño o segundos inexistentes.
+- Render: 4 procesos en paralelo, unos 45 min. Comando: build_deltoro.py --audio y --part i 4, y luego concat de ffmpeg con la mezcla.
+- Pendiente de mejora: contador de Cannes no coincide con el momento en que se dice «22 minutos»; el letrero «RODAJE» del capítulo 6 se lee mal; el voto de las otras IAs fue débil (Cloudflare agotó su cuota diaria a media sesión).
