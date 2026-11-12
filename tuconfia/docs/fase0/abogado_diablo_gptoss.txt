@@ -1,0 +1,16 @@
+**Riesgos críticos (ordenados de mayor a menor gravedad)**  
+
+| # | Riesgo | Por qué puede hundir el plan | Mitigación más barata |
+|---|--------|-----------------------------|-----------------------|
+| 1 | **Sobrecarga de producción** – Un documental de 30‑40 min requiere ≈ 150 escenas (15 × 10). Con el motor procedural actual (15 escenas → 3 min) el tiempo de creación pasaría de ≈ 1 mes a ≈ 10 meses, agotando recursos humanos y financieros antes de lanzar el primer episodio. | **Plantilla modular**: diseñar “chunks” reutilizables (fondos, animaciones de cámara, efectos). Cada chunk se guarda como script independiente y se reutiliza en futuros videos, reduciendo la carga de creación a ≈ 30 nuevas escenas por documental. |
+| 2 | **Coste de voz** – La cuota de ElevenLabs (10 000 caracteres ≈ 3 min) es insuficiente; un guion de 35 min necesita ~30 000 caracteres, lo que implica ≈ 3 veces la cuota y un gasto mensual de ≈ US$150 por video. | **Narrador híbrido**: combinar IA (para introducción y cierre) con locutor freelance barato (≈ US$30 por 5 min) para el cuerpo del guion. Reducción de coste a < US$80 por video. |
+| 3 | **Rendimiento de render** – 14 fps en 1 núcleo implica ≈ 2 h por minuto de video; 35 min → ≈ 70 h de CPU. Con 4 núcleos, el tiempo real de render supera 18 h por episodio, retrasando la publicación y generando cuellos de botella. | **Render distribuido low‑cost**: usar máquinas virtuales spot de AWS/Google por $0.02/h cada una (4 instancias) y paralelizar frames. Coste ≈ US$3‑4 por episodio, tiempo de render < 5 h. |
+| 4 | **Falta de validación de contenido** – La investigación “rigurosa” se delega al director sin acceso a IA de búsqueda. Un error factual en un documental largo daña la credibilidad del canal y provoca bajas de suscriptores. | **Checklist de 5 pasos**: (1) fuentes primarias, (2) doble verificación en Wikipedia/Google, (3) revisión por un experto (pago único $15), (4) citation generator, (5) test de 3‑min “teaser” con feedback de 5 seguidores. Coste < $30 por video. |
+| 5 | **Desconexión de la audiencia** – El público actual está habituado a contenidos de 3 min y Shorts; un salto a 30 min puede generar alta tasa de abandono (bounce) y reducir el algoritmo de recomendación. | **Prueba A/B de “mini‑documental”**: lanzar versiones de 8‑12 min a la misma audiencia y medir retención > 45 % (meta). Si se cumple, escalar. El experimento cuesta solo tiempo de edición extra (≈ 2 h). |
+| 6 | **Problemas de derechos** – Usar imágenes, música o clips de marcas (Disney, etc.) sin licencias en un formato largo aumenta el riesgo de DMCA y bloqueo de videos, lo que elimina ingresos y reputación. | **Banco de assets libres**: suscripción a un repositorio de recursos libres de regalías ($5/mes) y crear “sound‑alike” con IA. Evita reclamaciones sin gasto significativo. |
+
+**Paso intermedio recomendado**  
+- **Formato “corto‑documental” de 8‑12 min**.  
+- **Criterio medible para escalar:** alcanzar **retención media ≥ 45 %** y **CTR de mini‑thumbnail ≥ 6 %** en al menos **3 videos consecutivos**. Estos indicadores demuestran que la audiencia está dispuesta a consumir contenido más largo y que el algoritmo favorece la exposición.
+
+Con este enfoque se controla la complejidad, el coste y la aceptación antes de comprometer recursos en producciones de 30‑40 min.

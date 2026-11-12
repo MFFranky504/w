@@ -1,0 +1,14 @@
+Veredicto: **No.** El arranque es estático, carece de tensión dramática y el texto obstruye la visibilidad, matando la curiosidad necesaria para retener al espectador en los primeros 3 segundos.
+
+### Los 3 problemas visuales graves:
+1. **Composición inerte:** La disposición es demasiado simétrica y plana. El sujeto está en un rincón mirando a la nada, el documento es solo un cuadrado blanco y el fondo no transmite ninguna historia. Parece un menú de selección de personaje en un juego antiguo, no un documental.
+2. **Jerarquía visual fallida:** El texto aparece encima de los personajes, compitiendo con ellos. La fuente, aunque estética, se siente genérica y no ayuda a enfatizar la importancia histórica del momento.
+3. **Falta de expresividad:** El personaje tiene una expresión neutra (casi sonriente). Si el tema es un momento crucial y dramático de la vida de Disney (negarse a un trato), el lenguaje corporal debe reflejar conflicto o determinación, no indiferencia.
+
+### 3 cambios concretos y baratos:
+1. **Zoom dramático:** Empieza con un *close-up* (o plano medio) al rostro de Disney. Que sus ojos reflejen duda o firmeza. Que el fondo y la mesa sean secundarios.
+2. **Iluminación narrativa:** La luz actual es uniforme. Apaga las luces de la sala y deja solo el haz sobre el documento y el rostro. El contraste genera instantáneamente interés visual.
+3. **Acción inmediata:** En lugar de poner el texto, haz que el personaje empuje el documento fuera de la mesa o mire hacia la ventana con frustración. **Muestra, no escribas.**
+
+### Qué conservar:
+* **La paleta de colores:** La combinación de tonos nocturnos (azules, púrpuras) con el amarillo cálido de las lámparas es acertada y da un tono "retro-serio" muy agradable para el género documental. Mantén ese aura visual, solo mejora el enfoque.
