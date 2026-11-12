@@ -245,7 +245,16 @@ def plan(sb, cache):
         for w in words:
             words_all.append({"text": w[0], "start": t + w[1], "end": t + w[2]})
         line_end = t + len(a) / SR + line.get("pause_after", 0.35)
-        cuts = [t] + [t + words[s["at_word"]][1] - 0.05 for s in line["shots"][1:]]
+        norm = lambda w: "".join(c for c in w.lower() if c.isalnum())
+        cuts, k = [t], 0
+        for s in line["shots"][1:]:  # a shot starts at word index `at_word` or at the next word matching `at`
+            if "at" in s:
+                target = norm(s["at"])
+                k = next((j for j in range(k + 1, len(words)) if norm(words[j][0]) == target), None)
+                assert k is not None, f"word {s['at']!r} not found after previous cut in: {line['text']}"
+            else:
+                k = s["at_word"]
+            cuts.append(t + words[k][1] - 0.05)
         for s, a0, a1 in zip(line["shots"], cuts, cuts[1:] + [line_end]):
             shots.append(dict(s, start=a0, end=a1))
         t = line_end
@@ -256,38 +265,141 @@ def plan(sb, cache):
     return t, voice_parts, shots, words_all
 
 
-def mix_audio(total, voice_parts, shots, out):
+def smooth(env, seconds):
+    """Moving average via cumulative sum (O(n); fine for long episodes)."""
+    k = max(1, int(seconds * SR))
+    c = np.cumsum(np.pad(env, (k // 2, k - k // 2)), dtype=np.float64)
+    return ((c[k:] - c[:-k]) / k)[: len(env)].astype(np.float32)
+
+
+def envelope(n, shots, get):
+    """Per-sample level from shots; `get(shot)` returns a level, [from, to] or None."""
+    env = np.zeros(n, np.float32)
+    for s in shots:
+        v = get(s)
+        if v is None:
+            continue
+        a, b = int(s["start"] * SR), min(n, int(s["end"] * SR))
+        env[a:b] = np.linspace(v[0], v[1], b - a, dtype=np.float32) if isinstance(v, list) else v
+    return env
+
+
+# ------------------------------------------------------------------- music
+# Original score, synthesised: A-minor pads (Am F Dm E, 8 s per chord), sparse piano,
+# heartbeat pulse for tension, high shimmer for reveals. No third-party audio.
+CHORDS = [[45, 48, 52], [41, 45, 48], [38, 41, 45], [40, 44, 47]]
+MOODS = {
+    "calm": dict(pad=0.45, piano=0.3, pulse=0, shimmer=0, dis=0),
+    "mystery": dict(pad=0.6, piano=0.55, pulse=0, shimmer=0, dis=0),
+    "tension": dict(pad=0.7, piano=0.15, pulse=0.9, shimmer=0, dis=1),
+    "reveal": dict(pad=0.55, piano=0.6, pulse=0, shimmer=0.7, dis=0),
+}
+hz = lambda m: 440.0 * 2 ** ((m - 69) / 12)
+
+
+def music_level(s):
+    m = s.get("music")
+    return None if not m else (m.get("level", 1.0) if isinstance(m, dict) else 1.0)
+
+
+def synth_music(total, shots, seed=914):
+    n = int(total * SR) + 1
+    comp = {}
+    for k in ("pad", "piano", "pulse", "shimmer", "dis"):
+        def get(s, k=k):
+            m = s.get("music")
+            if not m:
+                return None
+            mood, lvl = (m["mood"], m.get("level", 1.0)) if isinstance(m, dict) else (m, 1.0)
+            return MOODS[mood][k] * lvl
+        comp[k] = smooth(envelope(n, shots, get), 2.0)
+    out = np.zeros(n, np.float32)
+    seg, tail = 8.0, 2.0
+    r = np.random.RandomState(seed)
+    for i in range(int(total // seg) + 1):
+        a = int(i * seg * SR)
+        L = min(n - a, int((seg + tail) * SR))
+        if L <= 0:
+            break
+        t = np.arange(L, dtype=np.float32) / SR
+        chord = CHORDS[i % 4]
+        fade = np.minimum(1, np.minimum(t / 1.5, (seg + tail - t) / 1.5)).astype(np.float32)
+        pad = np.zeros(L, np.float32)
+        for note in chord + [chord[0] + 12]:
+            for det in (-0.0012, 0.0012):  # two detuned voices, 5 harmonics each (soft saw)
+                f = hz(note) * (1 + det)
+                for h in range(1, 6):
+                    pad += np.sin(2 * np.pi * f * h * t + h * note) / (h * 1.6)
+        pad *= (0.75 + 0.25 * np.sin(2 * np.pi * 0.07 * (t + i * seg))) * fade * 0.05
+        dis = np.sin(2 * np.pi * hz(chord[0] + 1) * t).astype(np.float32) * fade * 0.06
+        shim = (np.sin(2 * np.pi * hz(chord[0] + 36) * t) + 0.6 * np.sin(2 * np.pi * hz(chord[2] + 36) * t)) \
+            * (0.6 + 0.4 * np.sin(2 * np.pi * 5.0 * t)) * fade * 0.03
+        sl = slice(a, a + L)
+        out[sl] += pad * comp["pad"][sl] + dis * comp["dis"][sl] + shim.astype(np.float32) * comp["shimmer"][sl]
+    # piano: sparse notes from the current chord, two octaves up
+    tp = 0.4
+    while tp < total:
+        a = int(tp * SR)
+        chord = CHORDS[int(tp // seg) % 4]
+        note = chord[r.randint(3)] + 24 + (12 if r.rand() < 0.2 else 0)
+        L = min(n - a, int(3.5 * SR))
+        t = np.arange(L, dtype=np.float32) / SR
+        f = hz(note)
+        tone = sum(np.sin(2 * np.pi * f * h * t) * (0.5 ** (h - 1)) for h in (1, 2, 3, 4))
+        env = np.minimum(1, t / 0.006) * np.exp(-t / 1.1)
+        out[a:a + L] += (tone * env * 0.05).astype(np.float32) * comp["piano"][a]
+        tp += 1.6 + r.rand() * 2.4
+    # heartbeat pulse, 60 bpm
+    beat = np.arange(int(0.4 * SR), dtype=np.float32) / SR
+    thump = (np.sin(2 * np.pi * (52 - 25 * beat) * beat) * np.exp(-beat / 0.11)).astype(np.float32)
+    for k in range(int(total)):
+        a = k * SR
+        if comp["pulse"][min(a, n - 1)] < 0.02:
+            continue
+        for off, g in ((0, 0.22), (0.27, 0.14)):
+            b = a + int(off * SR)
+            L = min(len(thump), n - b)
+            if L > 0:
+                out[b:b + L] += thump[:L] * g * comp["pulse"][b]
+    return out
+
+
+def music_from_file(path, total, shots):
+    """A user-supplied track (e.g. YouTube Audio Library), looped, following the shots' music levels."""
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-stream_loop", "-1", "-i", path, "-t", f"{total + 0.1:.3f}",
+                          "-ac", "1", "-ar", str(SR), "-f", "s16le", "-"], capture_output=True, check=True).stdout
+    a = np.frombuffer(raw, np.int16).astype(np.float32) / 32768
+    n = int(total * SR) + 1
+    a = np.pad(a, (0, max(0, n - len(a))))[:n]
+    return a * smooth(envelope(n, shots, music_level), 2.0) * 0.5
+
+
+def mix_audio(total, voice_parts, shots, out, music_file=None):
     n = int(total * SR) + 1
     voice = np.zeros(n, np.float32)
     for t0, a in voice_parts:
         i = int(t0 * SR)
         voice[i:i + len(a)] += a[: n - i]
     bed = np.zeros(n, np.float32)
-    names = {k for s in shots for k in s.get("sfx", {})}
-    tt = np.arange(n) / SR
-    for name in names:
+    for name in sorted({k for s in shots for k in s.get("sfx", {})}):
         src, flt = SFX[name]
         track = pcm(src, total + 0.1, lavfi=True, filters=flt)[:n]
-        env = np.zeros(n, np.float32)
-        for s in shots:
-            v = s.get("sfx", {}).get(name)
-            if v is None:
-                continue
-            m = (tt >= s["start"]) & (tt < s["end"])
-            u = (tt[m] - s["start"]) / max(1e-6, s["end"] - s["start"])
-            env[m] = (v[0] + (v[1] - v[0]) * u) if isinstance(v, list) else v
-        k = int(0.25 * SR)  # 250 ms crossfade between shots
-        env = np.convolve(env, np.ones(k) / k, mode="same")
-        bed += track * env
+        bed += track * smooth(envelope(n, shots, lambda s: s.get("sfx", {}).get(name)), 0.25)
+    music = music_from_file(music_file, total, shots) if music_file else synth_music(total, shots)
     write_wav(out + ".voice.wav", voice)
     write_wav(out + ".bed.wav", bed * 0.5)
-    # voice ducks the bed; loudness to YouTube target
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", out + ".voice.wav", "-i", out + ".bed.wav", "-filter_complex",
-                    "[0:a]highpass=f=70,acompressor=threshold=-20dB:ratio=3,asplit[v][sc];"
+    write_wav(out + ".music.wav", music)
+    # voice ducks the effects hard and the music gently; reverb on the music; loudness to YouTube target
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", out + ".voice.wav", "-i", out + ".bed.wav",
+                    "-i", out + ".music.wav", "-filter_complex",
+                    "[0:a]highpass=f=70,acompressor=threshold=-20dB:ratio=3,asplit=3[v][sc][sc2];"
                     "[1:a][sc]sidechaincompress=threshold=0.03:ratio=4:release=400[b];"
-                    "[v][b]amix=2:normalize=0,loudnorm=I=-16:TP=-1.5,aresample=48000[a]",
+                    "[2:a]highpass=f=35,lowpass=f=4000,aecho=0.8:0.85:70|190|420:0.35|0.25|0.18[mr];"
+                    "[mr][sc2]sidechaincompress=threshold=0.05:ratio=2.5:release=900[m];"
+                    "[v][b][m]amix=3:normalize=0,loudnorm=I=-16:TP=-1.5,aresample=48000[a]",
                     "-map", "[a]", "-ac", "2", out], check=True)
-    os.remove(out + ".voice.wav"), os.remove(out + ".bed.wav")
+    for x in ("voice", "bed", "music"):
+        os.remove(f"{out}.{x}.wav")
 
 
 class Frames:
@@ -371,18 +483,41 @@ def draw_captions(frame, pages, t, scale=9, y=1180):
                   outline="black")
 
 
-def encode(path, size, n_frames, frame_fn, audio):
+_JOB = {}  # set before forking workers; holds the frame function (closures cannot be pickled)
+
+
+def _encode_part(args):
+    path, size, a, b = args
     p = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{size[0]}x{size[1]}",
-                          "-r", str(FPS), "-i", "-", "-i", audio, "-map", "0:v", "-map", "1:a", "-c:v", "libx264",
-                          "-preset", "medium", "-crf", "18", "-tune", "animation", "-pix_fmt", "yuv420p",
-                          "-c:a", "aac", "-b:a", "192k", "-shortest", path], stdin=subprocess.PIPE)
-    for f in range(n_frames):
-        p.stdin.write(frame_fn(f).convert("RGB").tobytes())
-        if f % (FPS * 5) == 0:
-            print(f"  {path.split('/')[-1]}: {f / FPS:.0f}s", flush=True)
+                          "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "18",
+                          "-tune", "animation", "-pix_fmt", "yuv420p", path], stdin=subprocess.PIPE)
+    for f in range(a, b):
+        p.stdin.write(_JOB["fn"](f).convert("RGB").tobytes())
     p.stdin.close()
     if p.wait():
-        raise SystemExit("ffmpeg failed")
+        raise RuntimeError(f"ffmpeg failed on frames {a}-{b}")
+    return path
+
+
+def encode(path, size, n_frames, frame_fn, audio, jobs=None):
+    """Render frames in parallel chunks (one ffmpeg per worker), then join and add the audio."""
+    import multiprocessing as mp
+    jobs = jobs or max(1, min(4, os.cpu_count() or 1))
+    chunk = math.ceil(n_frames / jobs)
+    parts = [(f"{path}.part{i}.mp4", size, i * chunk, min(n_frames, (i + 1) * chunk)) for i in range(jobs)
+             if i * chunk < n_frames]
+    _JOB["fn"] = frame_fn
+    print(f"  {path.split('/')[-1]}: {n_frames} frames on {len(parts)} workers", flush=True)
+    with mp.get_context("fork").Pool(len(parts)) as pool:
+        pool.map(_encode_part, parts)
+    lst = path + ".parts.txt"
+    open(lst, "w").write("".join(f"file '{os.path.abspath(p[0])}'\n" for p in parts))
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-i", audio,
+                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", path],
+                   check=True)
+    for p in parts:
+        os.remove(p[0])
+    os.remove(lst)
 
 
 def main():
@@ -423,7 +558,8 @@ def main():
 
     audio = f"{ep}/edit/{name}_{ver}.m4a.wav"
     os.makedirs(f"{ep}/edit", exist_ok=True)
-    mix_audio(total, voice_parts, shots, audio)
+    mf = sb.get("music_file")
+    mix_audio(total, voice_parts, shots, audio, os.path.join(ep, mf) if mf else None)
     n = int(total * FPS)
     encode(f"{ep}/export/{name}_{ver}.mp4", (OW, OH), n,
            lambda f: overlay(fr.render(shot_at(f / FPS), f / FPS), shot_at(f / FPS)), audio)
