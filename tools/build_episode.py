@@ -67,20 +67,22 @@ def tts(text, out):
 
 def image(prompt, out):
     if os.path.exists(out) and os.path.getsize(out):
-        return
+        return True
     body = json.dumps({"prompt": f"{prompt} {STYLE}", "steps": 6})
     for attempt in range(5):
         r = subprocess.run(["curl", "-s", "-m", "120", FLUX, "-H", "Authorization: Bearer proxy-injected",
                             "-H", "content-type: application/json", "-d", body], capture_output=True, text=True)
         try:
             open(out, "wb").write(base64.b64decode(json.loads(r.stdout)["result"]["image"]))
-            return
+            return True
         except Exception:
+            if "daily free allocation" in r.stdout:
+                return False
             time.sleep(10 * (attempt + 1))
     sys.exit(f"Image failed: {out}\n{r.stdout[:300]}")
 
 
-def clip(img, aud, pad, label, out, w, h, i):
+def clip(img, aud, pad, label, out, w, h, i, flip=False):
     """Slow Ken Burns move over the square image, cropped to w x h, with the scene audio."""
     if os.path.exists(out):
         return
@@ -90,7 +92,7 @@ def clip(img, aud, pad, label, out, w, h, i):
     x = f"(iw-iw/zoom)*{(i % 3) / 2}"
     badge = (f",drawtext=fontfile={FONT}:text='{label}':fontcolor=white@0.75:fontsize={h // 45}"
              f":x={h // 27}:y={h // 27}:box=1:boxcolor=black@0.45:boxborderw=10") if label else ""
-    vf = (f"scale={big}:{big}:flags=lanczos,crop={big * w // max(w, h)}:{big * h // max(w, h)},"
+    vf = ("hflip," if flip else "") + (f"scale={big}:{big}:flags=lanczos,crop={big * w // max(w, h)}:{big * h // max(w, h)},"
           f"zoompan=z='{zoom}':x='{x}':y='(ih-ih/zoom)/2':d={frames}:s={w}x{h}:fps={FPS},{GRADE}{badge}")
     run("ffmpeg", "-y", "-loop", "1", "-i", img, "-i", aud, "-vf", vf, "-af", f"apad=pad_dur={pad}",
         "-frames:v", str(frames), "-c:v", "libx264", "-preset", "fast", "-crf", "20", "-pix_fmt", "yuv420p",
@@ -124,8 +126,13 @@ for i, s in enumerate(scenes, 1):
     s["aud"], s["img"] = f"{A}/aud/EP{NUM}_{i:03d}_v01.mp3", f"{A}/img/EP{NUM}_{i:03d}_v01.jpg"
     s["vid"] = f"{A}/vid/EP{NUM}_{i:03d}_v01.mp4"
     tts(s["text"], s["aud"])
-    image(s["prompt"], s["img"])
-    clip(s["img"], s["aud"], s["pad"], s["label"], s["vid"], 1920, 1080, i)
+    s["flip"] = not image(s["prompt"], s["img"])
+    if s["flip"]:
+        # shortcut: image quota spent, so this scene reuses an earlier image mirrored (clip marked v00);
+        # rerun the build next day to generate the real image and a v01 clip.
+        s["img"], s["vid"] = scenes[(i - 1) % 15 * 2]["img"], s["vid"].replace("_v01", "_v00")
+        print(f"scene {s['id']} PLACEHOLDER image", flush=True)
+    clip(s["img"], s["aud"], s["pad"], s["label"], s["vid"], 1920, 1080, i, s["flip"])
     print(f"scene {s['id']} ok", flush=True)
 
 join([s["vid"] for s in scenes], f"{EP}/export/final_v01.mp4")
@@ -139,7 +146,7 @@ for k, ids in enumerate(shorts, 1):
     for j, sid in enumerate(ids + ["cta"]):
         s = by_id.get(sid) or dict(by_id[ids[-1]], aud=cta_aud, label="", n="cta")
         out = f"{A}/vid/EP{NUM}_short{k}_{s['n']}_v01.mp4"
-        clip(s["img"], s["aud"], 0.4, s["label"], out, 1080, 1920, j)
+        clip(s["img"], s["aud"], 0.4, s["label"], out, 1080, 1920, j, s.get("flip", False))
         parts.append(out)
     join(parts, f"{EP}/export/short_{k:02d}_v01.mp4")
     print(f"short {k}:", round(duration(f"{EP}/export/short_{k:02d}_v01.mp4")), "s")
