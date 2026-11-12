@@ -1,0 +1,18 @@
+### Auditoría por Capítulos
+
+*   **Cold open:** La curiosidad sobre cómo un cineasta pasa del fracaso absoluto al éxito masivo. **Fuga:** L5 (demasiado vago, falta el "gancho" emocional inmediato).
+*   **El niño de las pesadillas:** Entender el origen orgánico de su estética visual. **Fuga:** L14 (es una transición lenta hacia el siguiente bloque).
+*   **Cronos:** La tensión del riesgo financiero total ("todo o nada"). **Fuga:** L23 (el espectador ya intuye que Hollywood será difícil).
+*   **Mimic:** Descubrir qué hace que un director pierda su identidad creativa. **Fuga:** L30 (redundante tras L27).
+*   **La llamada:** El impacto humano de una tragedia externa al cine. **Fuga:** L40 (corta el ritmo narrativo de la tensión del secuestro).
+*   **El laberinto:** La redención a través de la persistencia artística. **Fuga:** L48 (es un detalle anecdótico innecesario que alarga el bloque).
+*   **Las puertas cerradas:** La lucha contra la industria por mantener la integridad. **Fuga:** L57 (demasiado técnica sobre problemas financieros).
+*   **El Óscar:** El cierre circular que valida toda su trayectoria. **Fuga:** L70 (resumen innecesario que ralentiza el clímax).
+
+### 5 Correcciones de Impacto
+
+1.  **L5:** "Y todavía le faltaba perder dos proyectos colosales y vivir el secuestro de su propio padre." (Genera mayor urgencia).
+2.  **L15:** "Pero para sobrevivir en la industria, el maquillador tenía que dejar de hacer monstruos para otros... y empezar a dirigirlos él mismo." (Convierte la pregunta en un reto).
+3.  **L23:** "Cronos fue un triunfo, pero el éxito fue su sentencia: Hollywood lo quería, pero quería devorarlo." (Crea una amenaza clara).
+4.  **L32:** "Pero el teléfono sonó de nuevo, no para una película, sino para la peor pesadilla de su vida: el secuestro de su padre." (Conecta el tema de los monstruos con la realidad).
+5.  **L63:** "Dos universos creativos borrados del mapa. Del Toro estaba solo, sin estudios que lo respaldaran y con la reputación de ser alguien que no sabe doblegarse." (Enfatiza la soledad y la apuesta final).

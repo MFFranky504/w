@@ -1,0 +1,44 @@
+{
+ "n": 4,
+ "titulo": "La llamada",
+ "ia": "gemini",
+ "car": 1000,
+ "hechos": "A finales de los noventa (no des año exacto) secuestran a su padre, Federico del Toro, en Guadalajara. El secuestro dura 72 días. Su amigo, el director James Cameron, le da dinero para contratar a un negociador profesional. El rescate lo paga la familia; después le devuelven el dinero a Cameron. Su padre vuelve con vida. Varios responsables fueron detenidos; otros no. Tras el secuestro, Del Toro se va de México con su familia. No inventes diálogos ni cifras del rescate. Cierra abriendo: lejos de México y decidido a no repetir Mimic, ¿dónde iba a hacer sus películas?",
+ "beats": [
+  {
+   "narracion": "A finales de los 90, en Guadalajara, la vida de Guillermo del Toro se quiebra. Secuestran a su padre, Federico del Toro.",
+   "pantalla": "Plano general de una calle oscura en Guadalajara, estilo pixel art con luces de neón parpadeantes, lluvia constante.",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "El encierro se prolonga por 72 días. El silencio es absoluto. La incertidumbre consume cada hora.",
+   "pantalla": "Primer plano de un calendario de pared tachado con una cruz roja, luz cenital fría, ambiente claustrofóbico.",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "James Cameron, su amigo, interviene. Según ha contado, le entrega dinero para contratar a un negociador profesional.",
+   "pantalla": "Plano medio, dos figuras pixeladas frente a un teléfono de disco, iluminación dramática de claroscuro.",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "La familia paga el rescate. Federico regresa con vida. Luego, devuelven cada centavo a Cameron.",
+   "pantalla": "Plano general, una puerta abriéndose en la oscuridad, una figura abraza a otra. Luz cálida de interior.",
+   "emocion": "hopeful"
+  },
+  {
+   "narracion": "Las autoridades detienen a varios responsables, aunque otros escapan. El trauma es irreversible.",
+   "pantalla": "Plano general de patrullas policiales con luces rojas y azules reflejadas en charcos de asfalto.",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "Tras el secuestro, Del Toro abandona México junto a su familia. Deja atrás su hogar para siempre.",
+   "pantalla": "Plano general de un avión despegando bajo nubes densas, estilo pixel art, vista desde la ventana.",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "Lejos de México y decidido a no repetir Mimic, ¿dónde iba a hacer sus películas?",
+   "pantalla": "Primer plano de un mapa del mundo desenfocado, Guillermo mirando hacia el horizonte a través de un cristal.",
+   "emocion": "tense"
+  }
+ ]
+}

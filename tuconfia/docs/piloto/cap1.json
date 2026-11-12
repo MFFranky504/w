@@ -1,0 +1,49 @@
+{
+ "n": 1,
+ "titulo": "El niño de las pesadillas",
+ "ia": "llama",
+ "car": 800,
+ "hechos": "Nace en Guadalajara, México, en 1964. Crece en un hogar católico estricto y pasa mucho tiempo con su abuela, muy devota. Se ha descrito como un niño solitario con pesadillas muy vívidas. De joven trabaja diseñando maquillaje de efectos especiales y funda en Guadalajara su propia empresa de efectos, Necropia. Cierra abriendo la pregunta: ¿podía un maquillador de monstruos de Guadalajara dirigir su propia película?",
+ "beats": [
+  {
+   "narracion": "Guillermo del Toro nace en Guadalajara, México, en 1964.",
+   "pantalla": "Plano general de la ciudad de Guadalajara, con una cámara que se acerca a una casa, luz natural",
+   "emocion": "softly"
+  },
+  {
+   "narracion": "Creció en un hogar católico estricto.",
+   "pantalla": "Primer plano de una cruz o un símbolo católico, con una luz tenue",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "Pasaba mucho tiempo con su abuela, muy devota.",
+   "pantalla": "Medio plano de un niño jugando con su abuela, en un ambiente hogareño, luz cálida",
+   "emocion": "warmly"
+  },
+  {
+   "narracion": "Se ha descrito como un niño solitario con pesadillas muy vívidas.",
+   "pantalla": "Primer plano del rostro de un niño dormido, con sombras oscuras, luz baja",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "Según ha contado, estas pesadillas influyeron en su obra.",
+   "pantalla": "Plano general de un cuarto de dibujo, con bocetos de criaturas y monstruos, luz natural",
+   "emocion": "excited"
+  },
+  {
+   "narracion": "De joven, trabajó diseñando maquillaje de efectos especiales.",
+   "pantalla": "Medio plano de un joven trabajando en un taller de maquillaje, con herramientas y materiales, luz intensa",
+   "emocion": "bold"
+  },
+  {
+   "narracion": "Fundó en Guadalajara su propia empresa de efectos, Necropia.",
+   "pantalla": "Primer plano de un logotipo o un cartel con el nombre de la empresa, luz oscura",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "¿Podía un maquillador de monstruos de Guadalajara dirigir su propia película?",
+   "pantalla": "Plano general de un plató de cine, con una cámara y un director, luz natural",
+   "emocion": "hopeful"
+  }
+ ]
+}

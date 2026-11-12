@@ -1,0 +1,49 @@
+{
+ "n": 3,
+ "titulo": "Mimic",
+ "ia": "llama",
+ "car": 800,
+ "hechos": "En 1997 dirige Mimic, su primera película en Hollywood, producida por los hermanos Weinstein. Del Toro ha dicho que fue su peor experiencia haciendo cine, por el conflicto con los productores por el control de la película. Después decidió que no volvería a intentar sus historias más oscuras y personales dentro de Hollywood. Él mismo ha dicho que esa experiencia fue peor que lo que vino después. Cierra conectando con el teléfono del principio: entonces sonó el teléfono.",
+ "beats": [
+  {
+   "narracion": "En 1997, Guillermo del Toro dirige Mimic, su primera película en Hollywood.",
+   "pantalla": "Plano general de un plató de cine en Hollywood, con equipo técnico y actores, luz artificial",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "Producida por los hermanos Weinstein.",
+   "pantalla": "Primer plano de un productor en una oficina, revisando papeles, luz de escritorio",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "Según ha contado, fue su peor experiencia haciendo cine.",
+   "pantalla": "Plano medio de Guillermo del Toro en una entrevista, hablando con seriedad, luz suave",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "Conflicto con los productores por el control de la película.",
+   "pantalla": "Plano general de una reunión tensa en una sala de conferencias, luces fluorescentes",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "Decidió no volver a intentar sus historias más oscuras y personales dentro de Hollywood.",
+   "pantalla": "Primer plano de una puerta cerrándose, simbolizando el fin de una etapa, luz oscura",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "Esa experiencia fue peor que lo que vino después.",
+   "pantalla": "Plano general de Guillermo del Toro caminando solo en un pasillo oscuro, luz tenue",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "¿Qué pasó después?",
+   "pantalla": "Primer plano de un teléfono sonando en una mesa, luz de fondo",
+   "emocion": "excited"
+  },
+  {
+   "narracion": "Entonces sonó el teléfono.",
+   "pantalla": "Plano general de una habitación en silencio, con el teléfono sonando, luz espera",
+   "emocion": "tense"
+  }
+ ]
+}

@@ -1,0 +1,200 @@
+{
+  "titulo": "El arquitecto de pesadillas: Guillermo del Toro",
+  "capitulos": [
+    {
+      "titulo": "El inicio",
+      "beats": [
+        {
+          "narracion": "Los monstruos de verdad no estaban en sus películas.",
+          "pantalla": "Primer plano: Guillermo del Toro dibuja un boceto detallado de un monstruo bajo una lámpara tenue en un escritorio desordenado.",
+          "emocion": "tense"
+        },
+        {
+          "narracion": "El teléfono suena. Guillermo levanta la vista, su rostro se ilumina con el brillo del aparato.",
+          "pantalla": "Plano medio: El teléfono vibra sobre la mesa. La luz de la pantalla rompe la oscuridad del estudio.",
+          "emocion": "tense"
+        },
+        {
+          "narracion": "Nacido en 1964 en Guadalajara, Del Toro creció rodeado de las sombras que luego habitarían sus obras.",
+          "pantalla": "General: Un niño pequeño rodeado de juguetes mecánicos y figuras de acción en una habitación de los años 70.",
+          "emocion": "warmly"
+        },
+        {
+          "narracion": "En 1993, debutó con 'Cronos', una obra que demostró que el terror podía ser humano, aunque financieramente precario.",
+          "pantalla": "Medio: Un reloj antiguo se desarma solo, mostrando engranajes brillantes en pixel art.",
+          "emocion": "softly"
+        },
+        {
+          "narracion": "¿Cómo pasó de la precariedad mexicana a la cima de Hollywood?",
+          "pantalla": "General: El título del documental aparece sobre una silueta de Guadalajara.",
+          "emocion": "bold"
+        }
+      ]
+    },
+    {
+      "titulo": "La pesadilla real",
+      "beats": [
+        {
+          "narracion": "En 1997, su primer paso en Hollywood fue una pesadilla fuera de cámara.",
+          "pantalla": "Medio: Del Toro frente a una mesa grande, hombres con trajes oscuros le señalan con el dedo.",
+          "emocion": "tense"
+        },
+        {
+          "narracion": "En la producción de 'Mimic', sufrió el acoso directo de Harvey Weinstein.",
+          "pantalla": "Medio: Sombras alargadas cubren el rostro de Del Toro mientras intenta ajustar una toma de cámara.",
+          "emocion": "tense"
+        },
+        {
+          "narracion": "Según ha contado, intentaron despedirlo y controlar su visión creativa por completo.",
+          "pantalla": "Primer plano: Los ojos de Del Toro, reflejando frustración y determinación.",
+          "emocion": "tense"
+        },
+        {
+          "narracion": "Pero el verdadero horror llegaría poco después, a finales de los noventa.",
+          "pantalla": "General: Una calle de Guadalajara de noche, vacía y fría.",
+          "emocion": "tense"
+        }
+      ]
+    },
+    {
+      "titulo": "El rescate",
+      "beats": [
+        {
+          "narracion": "Su padre, Federico del Toro, fue secuestrado en su ciudad natal.",
+          "pantalla": "Medio: Una silueta siendo llevada hacia un coche oscuro. El sonido de un motor alejándose.",
+          "emocion": "sad"
+        },
+        {
+          "narracion": "El cautiverio duró 72 días de incertidumbre absoluta.",
+          "pantalla": "General: Un calendario pixelado donde los días se tachan con color rojo intenso.",
+          "emocion": "sad"
+        },
+        {
+          "narracion": "James Cameron, su amigo, intervino dándole el dinero necesario para contratar a un negociador experto.",
+          "pantalla": "Medio: Dos figuras hablando por teléfono, uno en Los Ángeles y otro en México.",
+          "emocion": "hopeful"
+        },
+        {
+          "narracion": "La familia logró pagar el rescate y recuperar a su padre sano y salvo.",
+          "pantalla": "Medio: Un abrazo entre un hombre mayor y un hombre más joven, bajo una luz cálida.",
+          "emocion": "warmly"
+        },
+        {
+          "narracion": "Tras el evento, Guillermo y su familia abandonaron México por seguridad.",
+          "pantalla": "General: Un coche saliendo de la ciudad, dejando atrás un horizonte de edificios pixelados.",
+          "emocion": "sad"
+        },
+        {
+          "narracion": "¿Se puede crear belleza después de haber sido roto por la violencia?",
+          "pantalla": "Primer plano: Guillermo frente a una ventana, mirando hacia el exterior.",
+          "emocion": "softly"
+        }
+      ]
+    },
+    {
+      "titulo": "La forja del estilo",
+      "beats": [
+        {
+          "narracion": "En 2001, 'El espinazo del diablo' consolidó su estética gótica y melancólica.",
+          "pantalla": "Medio: Una bomba sin explotar en medio de un patio escolar, rodeada de polvo.",
+          "emocion": "softly"
+        },
+        {
+          "narracion": "En 2006, 'El laberinto del fauno' se convirtió en un éxito mundial.",
+          "pantalla": "Medio: El fauno parado frente a una niña en un bosque oscuro.",
+          "emocion": "excited"
+        },
+        {
+          "narracion": "Existe una historia sobre cómo olvidó la libreta donde tenía los conceptos clave de la película en un taxi.",
+          "pantalla": "Medio: Un asiento de taxi vacío con un cuaderno de cuero sobre él.",
+          "emocion": "tense"
+        },
+        {
+          "narracion": "El conductor, de forma inesperada, lo localizó y le devolvió su tesoro creativo.",
+          "pantalla": "Medio: El conductor entregando el cuaderno a un Guillermo visiblemente aliviado.",
+          "emocion": "warmly"
+        },
+        {
+          "narracion": "Parecía que el destino protegía sus visiones más oscuras.",
+          "pantalla": "General: Dibujos del cuaderno flotando en el aire, transformándose en criaturas vivas.",
+          "emocion": "excited"
+        }
+      ]
+    },
+    {
+      "titulo": "Las puertas cerradas",
+      "beats": [
+        {
+          "narracion": "No todo fue éxito. En 2010, abandonó la dirección de 'El Hobbit' por los constantes retrasos financieros de MGM.",
+          "pantalla": "Medio: Del Toro caminando lejos de un set de rodaje inmenso y vacío.",
+          "emocion": "sad"
+        },
+        {
+          "narracion": "Poco después, Universal canceló su adaptación de 'En las montañas de la locura'.",
+          "pantalla": "General: Una montaña de nieve gigante con una criatura colosal oculta bajo el hielo.",
+          "emocion": "tense"
+        },
+        {
+          "narracion": "El estudio exigió cambios que él se negó a aceptar, como rebajar el nivel de violencia y alterar el final.",
+          "pantalla": "Medio: Del Toro negando con la cabeza frente a un ejecutivo que sostiene un documento.",
+          "emocion": "bold"
+        },
+        {
+          "narracion": "Su negativa a negociar su visión lo dejó fuera del proyecto.",
+          "pantalla": "Medio: Un estudio de grabación que se apaga luz tras luz.",
+          "emocion": "sad"
+        }
+      ]
+    },
+    {
+      "titulo": "El reconocimiento",
+      "beats": [
+        {
+          "narracion": "En 2018, la Academia finalmente se rindió ante su narrativa.",
+          "pantalla": "General: La alfombra roja de los Óscar con destellos de cámaras.",
+          "emocion": "excited"
+        },
+        {
+          "narracion": "'La forma del agua' ganó como Mejor Película y Mejor Director.",
+          "pantalla": "Medio: Una criatura anfibia y una mujer bailando bajo el agua, un efecto de luces azules.",
+          "emocion": "warmly"
+        },
+        {
+          "narracion": "En 2023, su 'Pinocho' fue reconocida como la mejor película de animación.",
+          "pantalla": "Medio: Pinocho tallado en madera, con sus cuerdas de titiritero siendo cortadas.",
+          "emocion": "excited"
+        },
+        {
+          "narracion": "Del Toro logró validar su visión sin renunciar a sus monstruos.",
+          "pantalla": "Primer plano: Guillermo del Toro sosteniendo una estatuilla dorada, sonriendo.",
+          "emocion": "warmly"
+        }
+      ]
+    },
+    {
+      "titulo": "Cierre",
+      "beats": [
+        {
+          "narracion": "Guillermo del Toro no cambió sus historias para encajar en Hollywood.",
+          "pantalla": "Medio: El director trabajando en su 'Cabinet of Curiosities', rodeado de objetos extraños.",
+          "emocion": "bold"
+        },
+        {
+          "narracion": "Su legitimación llegó cuando la industria finalmente aceptó que el trauma y la fantasía eran herramientas válidas.",
+          "pantalla": "General: Un collage de todas sus criaturas, desde 'Cronos' hasta 'Pinocho'.",
+          "emocion": "warmly"
+        },
+        {
+          "narracion": "Del Toro sobrevivió a la violencia real para darnos monstruos que nos enseñan a ser mejores humanos.",
+          "pantalla": "Primer plano: Sus ojos detrás de las gafas, mirando directamente al espectador.",
+          "emocion": "softly"
+        },
+        {
+          "narracion": "Suscríbete si quieres más historias sobre quienes convirtieron su dolor en arte.",
+          "pantalla": "General: Pantalla negra con el botón de suscripción parpadeando en pixel art.",
+          "emocion": "bold"
+        }
+      ]
+    }
+  ]
+}

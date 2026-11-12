@@ -1,0 +1,782 @@
+{
+ "titulo": "deltoro",
+ "meta": {
+  "famoso": "Guillermo del Toro"
+ },
+ "capitulos": [
+  {
+   "titulo": "Cold open",
+   "desde": 1
+  },
+  {
+   "titulo": "El niño de las pesadillas",
+   "desde": 8
+  },
+  {
+   "titulo": "Cronos",
+   "desde": 16
+  },
+  {
+   "titulo": "Mimic",
+   "desde": 24
+  },
+  {
+   "titulo": "La llamada",
+   "desde": 32
+  },
+  {
+   "titulo": "El laberinto",
+   "desde": 43
+  },
+  {
+   "titulo": "Las puertas cerradas",
+   "desde": 55
+  },
+  {
+   "titulo": "El Óscar",
+   "desde": 64
+  }
+ ],
+ "lines": [
+  {
+   "id": "L1",
+   "cap": 0,
+   "rol": "",
+   "t": "Los monstruos de verdad no estaban en sus películas.",
+   "tts": "Los monstruos de verdad no estaban en sus películas.",
+   "gen": "[bold] Los monstruos de verdad no estaban en sus películas.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "cap": 0,
+   "rol": "",
+   "t": "Guillermo del Toro llevaba años dibujándolos. Vampiros, insectos, fantasmas. Con esos sabía qué hacer.",
+   "tts": "Guillermo del Toro llevaba años dibujándolos. Vampiros, insectos, fantasmas. Con esos sabía qué hacer.",
+   "gen": "[softly] Guillermo del Toro llevaba años dibujándolos. Vampiros, insectos, fantasmas. Con esos sabía qué hacer.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "cap": 0,
+   "rol": "",
+   "t": "Pero a finales de los noventa sonó el teléfono. Era una llamada desde Guadalajara.",
+   "tts": "Pero a finales de los noventa sonó el teléfono. Era una llamada desde Guadalajara.",
+   "gen": "[tense] Pero a finales de los noventa sonó el teléfono. Era una llamada desde Guadalajara.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "cap": 0,
+   "rol": "",
+   "t": "Para entonces ya había pasado por lo que él mismo llama su peor experiencia haciendo cine.",
+   "tts": "Para entonces ya había pasado por lo que él mismo llama su peor experiencia haciendo cine.",
+   "gen": "[tense] Para entonces ya había pasado por lo que él mismo llama su peor experiencia haciendo cine.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "cap": 0,
+   "rol": "",
+   "t": "Y todavía le faltaba quedarse sin dos de los proyectos más grandes de su carrera.",
+   "tts": "Y todavía le faltaba quedarse sin dos de los proyectos más grandes de su carrera.",
+   "gen": "[tense] Y todavía le faltaba quedarse sin dos de los proyectos más grandes de su carrera.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "cap": 0,
+   "rol": "",
+   "t": "Aun así, años después, subió al escenario de los Óscar.",
+   "tts": "Aun así, años después, subió al escenario de los Óscar.",
+   "gen": "[hopeful] Aun así, años después, subió al escenario de los Óscar.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "cap": 0,
+   "rol": "",
+   "t": "Esta es la historia de cómo se llega de esa llamada... a ese escenario.",
+   "tts": "Esta es la historia de cómo se llega de esa llamada... a ese escenario.",
+   "gen": "[bold] Esta es la historia de cómo se llega de esa llamada... a ese escenario.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "cap": 1,
+   "rol": "",
+   "t": "Guadalajara, México, 1964. Ahí nace Guillermo del Toro.",
+   "tts": "Guadalajara, México, mil novecientos sesenta y cuatro. Ahí nace Guillermo del Toro.",
+   "gen": "[warmly] Guadalajara, México, mil novecientos sesenta y cuatro. Ahí nace Guillermo del Toro.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "cap": 1,
+   "rol": "",
+   "t": "Crece en un hogar católico estricto. Y pasa mucho tiempo con su abuela, una mujer muy devota.",
+   "tts": "Crece en un hogar católico estricto. Y pasa mucho tiempo con su abuela, una mujer muy devota.",
+   "gen": "[softly] Crece en un hogar católico estricto. Y pasa mucho tiempo con su abuela, una mujer muy devota.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L10",
+   "cap": 1,
+   "rol": "",
+   "t": "Él mismo se ha descrito como un niño solitario... con pesadillas muy vívidas.",
+   "tts": "Él mismo se ha descrito como un niño solitario... con pesadillas muy vívidas.",
+   "gen": "[softly] Él mismo se ha descrito como un niño solitario... con pesadillas muy vívidas.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L11",
+   "cap": 1,
+   "rol": "",
+   "t": "Con los años, esos monstruos se vuelven su oficio.",
+   "tts": "Con los años, esos monstruos se vuelven su oficio.",
+   "gen": "[hopeful] Con los años, esos monstruos se vuelven su oficio.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L12",
+   "cap": 1,
+   "rol": "",
+   "t": "De joven aprende maquillaje de efectos especiales. Látex, pintura, prótesis.",
+   "tts": "De joven aprende maquillaje de efectos especiales. Látex, pintura, prótesis.",
+   "gen": "[warmly] De joven aprende maquillaje de efectos especiales. Látex, pintura, prótesis.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L13",
+   "cap": 1,
+   "rol": "",
+   "t": "Y en su propia ciudad funda una empresa de efectos: Necropia.",
+   "tts": "Y en su propia ciudad funda una empresa de efectos: Necropia.",
+   "gen": "[bold] Y en su propia ciudad funda una empresa de efectos: Necropia.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L14",
+   "cap": 1,
+   "rol": "",
+   "t": "Hasta ahí, los monstruos eran para las películas de otros.",
+   "tts": "Hasta ahí, los monstruos eran para las películas de otros.",
+   "gen": "[softly] Hasta ahí, los monstruos eran para las películas de otros.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L15",
+   "cap": 1,
+   "rol": "",
+   "t": "La pregunta era simple: ¿podía un maquillador de Guadalajara dirigir su propia película?",
+   "tts": "La pregunta era simple: ¿podía un maquillador de Guadalajara dirigir su propia película?",
+   "gen": "[tense] La pregunta era simple: ¿podía un maquillador de Guadalajara dirigir su propia película?",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L16",
+   "cap": 2,
+   "rol": "",
+   "t": "La respuesta se llama Cronos.",
+   "tts": "La respuesta se llama Cronos.",
+   "gen": "[bold] La respuesta se llama Cronos.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L17",
+   "cap": 2,
+   "rol": "",
+   "t": "Una historia de vampiros tan extraña que casi nadie quería financiarla.",
+   "tts": "Una historia de vampiros tan extraña que casi nadie quería financiarla.",
+   "gen": "[softly] Una historia de vampiros tan extraña que casi nadie quería financiarla.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L18",
+   "cap": 2,
+   "rol": "",
+   "t": "Costaba unos 2 millones de dólares. Y él era un director sin experiencia.",
+   "tts": "Costaba unos dos millones de dólares. Y él era un director sin experiencia.",
+   "gen": "[tense] Costaba unos dos millones de dólares. Y él era un director sin experiencia.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L19",
+   "cap": 2,
+   "rol": "",
+   "t": "El dinero no alcanzaba. Según ha contado, hipotecó su casa... y vendió su coche.",
+   "tts": "El dinero no alcanzaba. Según ha contado, hipotecó su casa... y vendió su coche.",
+   "gen": "[sad] El dinero no alcanzaba. Según ha contado, hipotecó su casa... y vendió su coche.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L20",
+   "cap": 2,
+   "rol": "",
+   "t": "Lo apostó todo a una sola película.",
+   "tts": "Lo apostó todo a una sola película.",
+   "gen": "[tense] Lo apostó todo a una sola película.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L21",
+   "cap": 2,
+   "rol": "",
+   "t": "En 1993, Cronos se estrena. Y la crítica la celebra.",
+   "tts": "En mil novecientos noventa y tres, Cronos se estrena. Y la crítica la celebra.",
+   "gen": "[excited] En mil novecientos noventa y tres, Cronos se estrena. Y la crítica la celebra.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L22",
+   "cap": 2,
+   "rol": "",
+   "t": "De pronto, el maquillador de Guadalajara es un director al que hay que seguir.",
+   "tts": "De pronto, el maquillador de Guadalajara es un director al que hay que seguir.",
+   "gen": "[hopeful] De pronto, el maquillador de Guadalajara es un director al que hay que seguir.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L23",
+   "cap": 2,
+   "rol": "",
+   "t": "Y entonces llama Hollywood. Ahí empieza el problema.",
+   "tts": "Y entonces llama Jólivud. Ahí empieza el problema.",
+   "gen": "[tense] Y entonces llama Jólivud. Ahí empieza el problema.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L24",
+   "cap": 3,
+   "rol": "",
+   "t": "1997. Su primera película en Hollywood se llama Mimic.",
+   "tts": "mil novecientos noventa y siete. Su primera película en Jólivud se llama Mímic.",
+   "gen": "[bold] mil novecientos noventa y siete. Su primera película en Jólivud se llama Mímic.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L25",
+   "cap": 3,
+   "rol": "",
+   "t": "Más dinero, más equipo, más gente opinando. La producen los hermanos Weinstein.",
+   "tts": "Más dinero, más equipo, más gente opinando. La producen los hermanos Uáinstin.",
+   "gen": "[softly] Más dinero, más equipo, más gente opinando. La producen los hermanos Uáinstin.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L26",
+   "cap": 3,
+   "rol": "",
+   "t": "Y muy pronto empieza la pelea: quién decide cómo es la película.",
+   "tts": "Y muy pronto empieza la pelea: quién decide cómo es la película.",
+   "gen": "[tense] Y muy pronto empieza la pelea: quién decide cómo es la película.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L27",
+   "cap": 3,
+   "rol": "",
+   "t": "Del Toro ha dicho que fue su peor experiencia haciendo cine.",
+   "tts": "Del Toro ha dicho que fue su peor experiencia haciendo cine.",
+   "gen": "[sad] Del Toro ha dicho que fue su peor experiencia haciendo cine.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L28",
+   "cap": 3,
+   "rol": "",
+   "t": "Tan mala, que tomó una decisión. Sus historias más oscuras y personales... no volvería a intentarlas dentro de Hollywood.",
+   "tts": "Tan mala, que tomó una decisión. Sus historias más oscuras y personales... no volvería a intentarlas dentro de Jólivud.",
+   "gen": "[tense] Tan mala, que tomó una decisión. Sus historias más oscuras y personales... no volvería a intentarlas dentro de Jólivud.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L29",
+   "cap": 3,
+   "rol": "",
+   "t": "Había llegado a donde quería. Y ahí no podía hacer lo que quería.",
+   "tts": "Había llegado a donde quería. Y ahí no podía hacer lo que quería.",
+   "gen": "[sad] Había llegado a donde quería. Y ahí no podía hacer lo que quería.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L30",
+   "cap": 3,
+   "rol": "",
+   "t": "Él mismo ha dicho que Mimic fue peor que lo que vino después.",
+   "tts": "Él mismo ha dicho que Mímic fue peor que lo que vino después.",
+   "gen": "[softly] Él mismo ha dicho que Mímic fue peor que lo que vino después.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L31",
+   "cap": 3,
+   "rol": "",
+   "t": "Y lo que vino después... fue el teléfono.",
+   "tts": "Y lo que vino después... fue el teléfono.",
+   "gen": "[tense] Y lo que vino después... fue el teléfono.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L32",
+   "cap": 4,
+   "rol": "",
+   "t": "La llamada llega desde Guadalajara. Han secuestrado a su padre, Federico del Toro.",
+   "tts": "La llamada llega desde Guadalajara. Han secuestrado a su padre, Federico del Toro.",
+   "gen": "[tense] La llamada llega desde Guadalajara. Han secuestrado a su padre, Federico del Toro.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L33",
+   "cap": 4,
+   "rol": "",
+   "t": "Aquí no hay guion. No hay maquillaje. No hay un monstruo que se apague al terminar el día.",
+   "tts": "Aquí no hay guion. No hay maquillaje. No hay un monstruo que se apague al terminar el día.",
+   "gen": "[sad] Aquí no hay guion. No hay maquillaje. No hay un monstruo que se apague al terminar el día.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L34",
+   "cap": 4,
+   "rol": "",
+   "t": "Pasa un día. Pasa una semana. Pasa un mes.",
+   "tts": "Pasa un día. Pasa una semana. Pasa un mes.",
+   "gen": "[tense] Pasa un día. Pasa una semana. Pasa un mes.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L35",
+   "cap": 4,
+   "rol": "",
+   "t": "En medio de eso aparece un amigo: el director James Cameron.",
+   "tts": "En medio de eso aparece un amigo: el director Yeims Cámeron.",
+   "gen": "[hopeful] En medio de eso aparece un amigo: el director Yeims Cámeron.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L36",
+   "cap": 4,
+   "rol": "",
+   "t": "Cameron le da dinero para contratar a un negociador profesional.",
+   "tts": "Cámeron le da dinero para contratar a un negociador profesional.",
+   "gen": "[warmly] Cámeron le da dinero para contratar a un negociador profesional.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L37",
+   "cap": 4,
+   "rol": "",
+   "t": "El rescate lo paga la familia. Y tiempo después, le devuelven a Cameron cada dólar.",
+   "tts": "El rescate lo paga la familia. Y tiempo después, le devuelven a Cámeron cada dólar.",
+   "gen": "[softly] El rescate lo paga la familia. Y tiempo después, le devuelven a Cámeron cada dólar.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L38",
+   "cap": 4,
+   "rol": "",
+   "t": "El secuestro dura 72 días.",
+   "tts": "El secuestro dura setenta y dos días.",
+   "gen": "[tense] El secuestro dura setenta y dos días.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L39",
+   "cap": 4,
+   "rol": "",
+   "t": "Y termina. Federico del Toro vuelve a casa. Con vida.",
+   "tts": "Y termina. Federico del Toro vuelve a casa. Con vida.",
+   "gen": "[warmly] Y termina. Federico del Toro vuelve a casa. Con vida.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L40",
+   "cap": 4,
+   "rol": "",
+   "t": "Varios de los responsables fueron detenidos. Otros, no.",
+   "tts": "Varios de los responsables fueron detenidos. Otros, no.",
+   "gen": "[softly] Varios de los responsables fueron detenidos. Otros, no.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L41",
+   "cap": 4,
+   "rol": "",
+   "t": "Después de eso, Del Toro toma otra decisión. Se va de México con su familia.",
+   "tts": "Después de eso, Del Toro toma otra decisión. Se va de México con su familia.",
+   "gen": "[sad] Después de eso, Del Toro toma otra decisión. Se va de México con su familia.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L42",
+   "cap": 4,
+   "rol": "",
+   "t": "Sin país. Y sin querer volver al Hollywood de Mimic. ¿Dónde iba a hacer sus películas?",
+   "tts": "Sin país. Y sin querer volver al Jólivud de Mímic. ¿Dónde iba a hacer sus películas?",
+   "gen": "[tense] Sin país. Y sin querer volver al Jólivud de Mímic. ¿Dónde iba a hacer sus películas?",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L43",
+   "cap": 5,
+   "rol": "",
+   "t": "La respuesta estaba al otro lado del océano. En España.",
+   "tts": "La respuesta estaba al otro lado del océano. En España.",
+   "gen": "[hopeful] La respuesta estaba al otro lado del océano. En España.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L44",
+   "cap": 5,
+   "rol": "",
+   "t": "En 2001 filma ahí El espinazo del diablo. En español. A su manera.",
+   "tts": "En dos mil uno filma ahí El espinazo del diablo. En español. A su manera.",
+   "gen": "[warmly] En dos mil uno filma ahí El espinazo del diablo. En español. A su manera.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L45",
+   "cap": 5,
+   "rol": "",
+   "t": "Y en 2006 vuelve con otra historia: El laberinto del fauno.",
+   "tts": "Y en dos mil seis vuelve con otra historia: El laberinto del fauno.",
+   "gen": "[bold] Y en dos mil seis vuelve con otra historia: El laberinto del fauno.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L46",
+   "cap": 5,
+   "rol": "",
+   "t": "Todo lo que es esa película vive en una libreta. Cuatro años de notas y de dibujos de personajes.",
+   "tts": "Todo lo que es esa película vive en una libreta. Cuatro años de notas y de dibujos de personajes.",
+   "gen": "[softly] Todo lo que es esa película vive en una libreta. Cuatro años de notas y de dibujos de personajes.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L47",
+   "cap": 5,
+   "rol": "",
+   "t": "Y un día, esa libreta se queda en el asiento de un taxi británico.",
+   "tts": "Y un día, esa libreta se queda en el asiento de un taxi británico.",
+   "gen": "[tense] Y un día, esa libreta se queda en el asiento de un taxi británico.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L48",
+   "cap": 5,
+   "rol": "",
+   "t": "Cuatro años de trabajo, alejándose por la calle.",
+   "tts": "Cuatro años de trabajo, alejándose por la calle.",
+   "gen": "[sad] Cuatro años de trabajo, alejándose por la calle.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L49",
+   "cap": 5,
+   "rol": "",
+   "t": "Según ha contado, la recuperó.",
+   "tts": "Según ha contado, la recuperó.",
+   "gen": "[warmly] Según ha contado, la recuperó.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L50",
+   "cap": 5,
+   "rol": "",
+   "t": "El rodaje tampoco fue fácil. Él lo llama su segunda peor experiencia. Solo detrás de Mimic.",
+   "tts": "El rodaje tampoco fue fácil. Él lo llama su segunda peor experiencia. Solo detrás de Mímic.",
+   "gen": "[softly] El rodaje tampoco fue fácil. Él lo llama su segunda peor experiencia. Solo detrás de Mímic.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L51",
+   "cap": 5,
+   "rol": "",
+   "t": "27 de mayo de 2006. Festival de Cannes. Se apagan las luces.",
+   "tts": "veintisiete de mayo de dos mil seis. Festival de Can. Se apagan las luces.",
+   "gen": "[tense] veintisiete de mayo de dos mil seis. Festival de Can. Se apagan las luces.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L52",
+   "cap": 5,
+   "rol": "",
+   "t": "Cuando termina la película, el público se pone de pie. Y aplaude.",
+   "tts": "Cuando termina la película, el público se pone de pie. Y aplaude.",
+   "gen": "[excited] Cuando termina la película, el público se pone de pie. Y aplaude.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L53",
+   "cap": 5,
+   "rol": "",
+   "t": "Aplaude durante unos 22 minutos. Una de las ovaciones más largas que se recuerdan en el festival.",
+   "tts": "Aplaude durante unos veintidós minutos. Una de las ovaciones más largas que se recuerdan en el festival.",
+   "gen": "[excited] Aplaude durante unos veintidós minutos. Una de las ovaciones más largas que se recuerdan en el festival.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L54",
+   "cap": 5,
+   "rol": "",
+   "t": "Después de eso, Hollywood vuelve a llamar. Esta vez, con proyectos gigantes.",
+   "tts": "Después de eso, Jólivud vuelve a llamar. Esta vez, con proyectos gigantes.",
+   "gen": "[tense] Después de eso, Jólivud vuelve a llamar. Esta vez, con proyectos gigantes.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L55",
+   "cap": 6,
+   "rol": "",
+   "t": "El primero: El Hobbit.",
+   "tts": "El primero: El Jóbit.",
+   "gen": "[bold] El primero: El Jóbit.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L56",
+   "cap": 6,
+   "rol": "",
+   "t": "Del Toro acepta. Y pasa casi dos años diseñando ese mundo. Criaturas, escenarios, cada detalle.",
+   "tts": "Del Toro acepta. Y pasa casi dos años diseñando ese mundo. Criaturas, escenarios, cada detalle.",
+   "gen": "[hopeful] Del Toro acepta. Y pasa casi dos años diseñando ese mundo. Criaturas, escenarios, cada detalle.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L57",
+   "cap": 6,
+   "rol": "",
+   "t": "Pero el rodaje no empieza. El estudio, MGM, tiene problemas financieros. La fecha se mueve. Y se vuelve a mover.",
+   "tts": "Pero el rodaje no empieza. El estudio, eme ge eme, tiene problemas financieros. La fecha se mueve. Y se vuelve a mover.",
+   "gen": "[tense] Pero el rodaje no empieza. El estudio, eme ge eme, tiene problemas financieros. La fecha se mueve. Y se vuelve a mover.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L58",
+   "cap": 6,
+   "rol": "",
+   "t": "En mayo de 2010, Del Toro deja El Hobbit.",
+   "tts": "En mayo de dos mil diez, Del Toro deja El Jóbit.",
+   "gen": "[sad] En mayo de dos mil diez, Del Toro deja El Jóbit.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L59",
+   "cap": 6,
+   "rol": "",
+   "t": "Entonces apuesta por otro sueño: En las montañas de la locura.",
+   "tts": "Entonces apuesta por otro sueño: En las montañas de la locura.",
+   "gen": "[hopeful] Entonces apuesta por otro sueño: En las montañas de la locura.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L60",
+   "cap": 6,
+   "rol": "",
+   "t": "Unos 150 millones de dólares. Clasificación para adultos. Un final duro. Sin historia de amor.",
+   "tts": "Unos ciento cincuenta millones de dólares. Clasificación para adultos. Un final duro. Sin historia de amor.",
+   "gen": "[tense] Unos ciento cincuenta millones de dólares. Clasificación para adultos. Un final duro. Sin historia de amor.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L61",
+   "cap": 6,
+   "rol": "",
+   "t": "El estudio dudó. Por el presupuesto. Y por la clasificación.",
+   "tts": "El estudio dudó. Por el presupuesto. Y por la clasificación.",
+   "gen": "[softly] El estudio dudó. Por el presupuesto. Y por la clasificación.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L62",
+   "cap": 6,
+   "rol": "",
+   "t": "Él no la suaviza. Y en 2011, el proyecto se archiva.",
+   "tts": "Él no la suaviza. Y en dos mil once, el proyecto se archiva.",
+   "gen": "[sad] Él no la suaviza. Y en dos mil once, el proyecto se archiva.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L63",
+   "cap": 6,
+   "rol": "",
+   "t": "Dos mundos enteros que no llegó a filmar. ¿Qué le quedaba?",
+   "tts": "Dos mundos enteros que no llegó a filmar. ¿Qué le quedaba?",
+   "gen": "[sad] Dos mundos enteros que no llegó a filmar. ¿Qué le quedaba?",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L64",
+   "cap": 7,
+   "rol": "",
+   "t": "Le quedaba lo de siempre. Una historia pequeña. Y un monstruo.",
+   "tts": "Le quedaba lo de siempre. Una historia pequeña. Y un monstruo.",
+   "gen": "[softly] Le quedaba lo de siempre. Una historia pequeña. Y un monstruo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L65",
+   "cap": 7,
+   "rol": "",
+   "t": "La forma del agua: una mujer... y una criatura.",
+   "tts": "La forma del agua: una mujer... y una criatura.",
+   "gen": "[warmly] La forma del agua: una mujer... y una criatura.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L66",
+   "cap": 7,
+   "rol": "",
+   "t": "Sin mundos gigantes. Solo eso.",
+   "tts": "Sin mundos gigantes. Solo eso.",
+   "gen": "[hopeful] Sin mundos gigantes. Solo eso.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L67",
+   "cap": 7,
+   "rol": "",
+   "t": "2018. La noche de los Óscar.",
+   "tts": "dos mil dieciocho. La noche de los Óscar.",
+   "gen": "[tense] dos mil dieciocho. La noche de los Óscar.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L68",
+   "cap": 7,
+   "rol": "",
+   "t": "Mejor director: Guillermo del Toro. Mejor película: La forma del agua.",
+   "tts": "Mejor director: Guillermo del Toro. Mejor película: La forma del agua.",
+   "gen": "[excited] Mejor director: Guillermo del Toro. Mejor película: La forma del agua.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L69",
+   "cap": 7,
+   "rol": "",
+   "t": "En el escenario, recordó que es un inmigrante.",
+   "tts": "En el escenario, recordó que es un inmigrante.",
+   "gen": "[warmly] En el escenario, recordó que es un inmigrante.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L70",
+   "cap": 7,
+   "rol": "",
+   "t": "Mira el camino. En Mimic peleó por el control. Dejó El Hobbit. Le archivaron las montañas de la locura.",
+   "tts": "Mira el camino. En Mímic peleó por el control. Dejó El Jóbit. Le archivaron las montañas de la locura.",
+   "gen": "[softly] Mira el camino. En Mímic peleó por el control. Dejó El Jóbit. Le archivaron las montañas de la locura.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L71",
+   "cap": 7,
+   "rol": "",
+   "t": "Y lo que le dio el Óscar fue una película hecha a su manera.",
+   "tts": "Y lo que le dio el Óscar fue una película hecha a su manera.",
+   "gen": "[bold] Y lo que le dio el Óscar fue una película hecha a su manera.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L72",
+   "cap": 7,
+   "rol": "",
+   "t": "No llegó ahí a pesar de sus monstruos. Llegó porque nunca los soltó.",
+   "tts": "No llegó ahí a pesar de sus monstruos. Llegó porque nunca los soltó.",
+   "gen": "[warmly] No llegó ahí a pesar de sus monstruos. Llegó porque nunca los soltó.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L73",
+   "cap": 7,
+   "rol": "",
+   "t": "Los monstruos de verdad no estaban en sus películas. Y él nunca dejó de filmar a los suyos.",
+   "tts": "Los monstruos de verdad no estaban en sus películas. Y él nunca dejó de filmar a los suyos.",
+   "gen": "[softly] Los monstruos de verdad no estaban en sus películas. Y él nunca dejó de filmar a los suyos.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L74",
+   "cap": 7,
+   "rol": "",
+   "t": "Si esta historia te sirvió, suscríbete. Hay más como esta.",
+   "tts": "Si esta historia te sirvió, suscríbete. Hay más como esta.",
+   "gen": "[warmly] Si esta historia te sirvió, suscríbete. Hay más como esta.",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

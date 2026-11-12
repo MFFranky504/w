@@ -1,0 +1,44 @@
+{
+ "n": 7,
+ "titulo": "El Óscar",
+ "ia": "gemini",
+ "car": 850,
+ "hechos": "Vuelve a una historia pequeña y personal: La forma del agua, sobre una mujer y una criatura. En 2018 gana el Óscar a mejor película y a mejor director. En su discurso recordó que es inmigrante (parafrasea, sin cita textual). Responde la pregunta central con hechos: no llegó al Óscar a pesar de sus monstruos, sino sin soltarlos; perdió el control en Mimic, perdió El Hobbit y Las montañas de la locura, y lo que ganó fue la película que hizo a su manera. Última idea memorable y breve, sin frases de coaching. Una sola petición final: suscribirse.",
+ "beats": [
+  {
+   "narracion": "Guillermo vuelve a una historia pequeña y personal: una mujer y su criatura. La forma del agua.",
+   "pantalla": "Primer plano: agua cristalina que cae sobre una escama, luz tenue, estilo pixel art.",
+   "emocion": "softly"
+  },
+  {
+   "narracion": "En 2018, gana el Óscar a mejor película y mejor director.",
+   "pantalla": "Plano general: silueta de Guillermo en pixel art subiendo a un podio dorado.",
+   "emocion": "excited"
+  },
+  {
+   "narracion": "En su discurso, según ha contado, reivindicó su origen como inmigrante.",
+   "pantalla": "Plano medio: Guillermo frente a un micrófono, luz de reflectores cálida.",
+   "emocion": "warmly"
+  },
+  {
+   "narracion": "No llegó al Óscar a pesar de sus monstruos. Llegó sin soltarlos.",
+   "pantalla": "Primer plano: rostros de criaturas icónicas superpuestos tras él.",
+   "emocion": "bold"
+  },
+  {
+   "narracion": "Antes, perdió el control en Mimic y proyectos como El Hobbit o Las montañas de la locura.",
+   "pantalla": "Plano general: Guillermo caminando bajo la lluvia, colores grisáceos.",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "¿Cómo triunfó? Ganó con la película que hizo a su manera.",
+   "pantalla": "Primer plano: Guillermo sosteniendo la estatuilla, luz dorada intensa.",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "La libertad cuesta todo lo que tienes. Suscríbete al canal.",
+   "pantalla": "Plano general: Guillermo alejándose hacia un horizonte de píxeles, pantalla oscura.",
+   "emocion": "bold"
+  }
+ ]
+}

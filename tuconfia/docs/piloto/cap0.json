@@ -1,0 +1,49 @@
+{
+ "n": 0,
+ "titulo": "Cold open",
+ "ia": "gemini",
+ "car": 550,
+ "hechos": "APERTURA FIJA, primera narración exacta: «Los monstruos de verdad no estaban en sus películas.» Después: Del Toro dibuja monstruos de noche; suena el teléfono. Adelanta sin resolver: a finales de los noventa una llamada desde Guadalajara cambió su vida; antes de eso ya había vivido lo que él llama su peor experiencia haciendo cine; años después subiría al escenario de los Óscar. No digas todavía qué decía la llamada. Termina con la pregunta central: cómo llegó de esa llamada al Óscar.",
+ "beats": [
+  {
+   "narracion": "Los monstruos de verdad no estaban en sus películas.",
+   "pantalla": "Primer plano de un cuaderno con bocetos de criaturas, luz tenue de una lámpara.",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "Guillermo del Toro dibuja en la noche. El silencio se rompe.",
+   "pantalla": "Plano medio del director dibujando, sombras alargadas sobre la pared, pixel art.",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "Suena el teléfono.",
+   "pantalla": "Primer plano de un teléfono antiguo sobre una mesa de madera oscura.",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "Según ha contado, a finales de los 90 una llamada desde Guadalajara cambió su vida.",
+   "pantalla": "Plano general de la habitación vacía, la luz de la calle entra por la ventana.",
+   "emocion": "tense"
+  },
+  {
+   "narracion": "Antes, vivió su peor experiencia haciendo cine.",
+   "pantalla": "Corte rápido a un set de rodaje desordenado, luces parpadeantes.",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "Le quitaron el control de su obra y secuestraron a su padre.",
+   "pantalla": "Primer plano de un carrete de película desenrollado sobre un suelo de concreto.",
+   "emocion": "sad"
+  },
+  {
+   "narracion": "Años después, subiría al escenario de los Óscar.",
+   "pantalla": "Plano general de un escenario dorado, silueta pequeña bajo un foco intenso.",
+   "emocion": "bold"
+  },
+  {
+   "narracion": "¿Cómo llegó de esa llamada al Óscar?",
+   "pantalla": "Pantalla a negro con el título del canal, letras blancas minimalistas.",
+   "emocion": "tense"
+  }
+ ]
+}

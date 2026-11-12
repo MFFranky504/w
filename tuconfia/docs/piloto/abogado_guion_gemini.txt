@@ -1,0 +1,10 @@
+Como abogado del diablo, señalo las imprecisiones o interpretaciones subjetivas del guion respecto a los hechos proporcionados:
+
+1. **L30**: Exagera. El guion afirma que Del Toro dijo que *Mimic* fue "peor que lo que vino después" (el secuestro). Los hechos dicen que él comparó ambas experiencias, pero equiparar una película con un secuestro es una interpretación dramática del narrador, no un hecho. **Corrección**: Eliminar la comparación directa con el secuestro.
+2. **L42**: Confusa. Sugiere que salió de México "sin querer volver al Hollywood de *Mimic*". Esto es una interpretación; los hechos solo indican que se fue de México tras el secuestro. **Corrección**: Eliminar la referencia a Hollywood en esta frase.
+3. **L49**: Imprecisa. Dice "la recuperó" sin especificar cómo; el hecho es que la olvidó en un taxi y la recuperó. **Corrección**: Especificar que fue encontrada tras ser olvidada en un taxi británico.
+4. **L50**: Exagera. Afirma que el rodaje de *El laberinto del fauno* fue su "segunda peor experiencia". Los hechos dicen que *Mimic* fue la peor, pero no clasifican jerárquicamente *El laberinto* como la segunda. **Corrección**: Indicar simplemente que fue una experiencia difícil.
+5. **L61**: Interpretación. Dice que "para el estudio era demasiado riesgo". Es una suposición lógica, pero no consta en los hechos proporcionados. **Corrección**: Indicar solo que el proyecto fue archivado en 2011.
+6. **L70**: Confusa/Interpretación. Afirma "perdió *El Hobbit*". Los hechos dicen que "lo deja en mayo de 2010". La palabra "perdió" implica una víctima, cuando fue una decisión propia. **Corrección**: Cambiar por "dejó *El Hobbit*".
+7. **L71**: Interpretación. Afirma que el Óscar lo ganó por una película que "nadie le pudo cambiar". Esto es una conclusión del autor, no un hecho comprobable. **Corrección**: Eliminar la afirmación sobre el control creativo del estudio en *La forma del agua*.
+8. **L73**: Interpretación. Sugiere que los monstruos eran "lo único que de verdad era suyo". Es una licencia poética subjetiva. **Corrección**: Eliminar esta valoración.
