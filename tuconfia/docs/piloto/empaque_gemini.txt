@@ -1,0 +1,34 @@
+```json
+{
+  "titulos": [
+    "Guillermo del Toro: El precio de ser un genio",
+    "La trágica historia tras el éxito de Guillermo del Toro",
+    "De perderlo todo a ganar el Óscar: Guillermo del Toro",
+    "El secuestro y la traición que forjaron a Del Toro",
+    "Guillermo del Toro: La oscuridad detrás de sus monstruos"
+  ],
+  "mejor_titulo": "Guillermo del Toro: La oscuridad detrás de sus monstruos",
+  "por_que": "Conecta emocionalmente con la audiencia al prometer revelar el contraste entre su estética de horror y su realidad personal traumática.",
+  "miniatura": [
+    {
+      "texto": "Secuestrado por el éxito",
+      "imagen": "Pixel art de Guillermo del Toro a contraluz, una silueta de un fauno al fondo y un teléfono rojo sonando en primer plano."
+    },
+    {
+      "texto": "Más que solo monstruos",
+      "imagen": "Primer plano de Del Toro dibujando en su libreta, estilo cinematográfico pixelado, luz cálida de lámpara sobre fondo azul oscuro."
+    },
+    {
+      "texto": "Un genio atormentado",
+      "imagen": "Del Toro sosteniendo su estatuilla del Óscar, con una sombra distorsionada y monstruosa proyectada en una pared de ladrillo."
+    }
+  ],
+  "descripcion": "Guillermo del Toro no solo crea monstruos; los entiende porque ha vivido sus propias pesadillas. En este documental exploramos cómo una vida marcada por la tragedia, el secuestro de su padre y la traición de la industria cinematográfica lo llevaron a convertirse en uno de los directores más aclamados del cine mundial.\n\nDesde hipotecar su casa para financiar 'Cronos' hasta el doloroso rodaje de 'Mimic' y el exilio forzado tras un secuestro que cambió su vida para siempre, analizamos la resiliencia de un hombre que transformó su dolor en arte.\n\nDescubre el camino del cineasta mexicano hacia la gloria del Óscar, una historia donde la realidad siempre superó a la ficción.\n\nCapítulos: 0:00 Cold open;0:37 El niño de las pesadillas;1:20 Cronos;1:57 Mimic;2:39 La llamada;3:36 El laberinto;4:43 Las puertas cerradas;5:31 El Óscar\n\n#GuillermoDelToro #Documental #HistoriasQueInspiran",
+  "comentario_fijado": "¿Qué película de Guillermo del Toro crees que mejor refleja sus propias vivencias personales?",
+  "short": {
+    "gancho": "Los monstruos de verdad no estaban en sus películas, estaban en su vida.",
+    "guion": "Guillermo del Toro es hoy un ícono mundial, pero antes de los premios, hubo una casa hipotecada por una idea loca, un rodaje que fue una pesadilla y una llamada telefónica que cambió su destino para siempre. Secuestraron a su padre durante 72 días y tuvo que huir de su propio país. ¿Cómo es posible que alguien que perdió tanto terminara conquistando la cima de Hollywood? Esta es la historia del hombre que encontró luz en la oscuridad. Mira nuestro documental completo en el canal.",
+    "titulo": "La pesadilla real de Del Toro"
+  }
+}
+```

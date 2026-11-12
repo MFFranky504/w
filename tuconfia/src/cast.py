@@ -73,6 +73,15 @@ CAST = {
  'emw':  dict(style='short', skin=(246, 212, 184), hair=ramp((236, 218, 150)), iris=(80, 110, 160), outfit='polo', stubble=True),
  'dre':  dict(style='short', skin=(150, 104, 76), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='tux', stubble=True), 'mj_y': dict(style='short', skin=(176, 124, 90), hair=ramp((20, 16, 16)), iris=(50, 36, 30), outfit='tee_red', strong=True),
  'mj':   dict(style='short', skin=(176, 124, 90), hair=ramp((14, 12, 12)), iris=(50, 36, 30), outfit='tee_red', strong=True),
+ # --- documental piloto: Guillermo del Toro
+ 'gdt':    dict(style='shag', skin=(234, 192, 160), hair=ramp((44, 36, 34)), iris=(70, 56, 44), outfit='turtle', glasses=True, stubble=True, strong=True),
+ 'gdt_y':  dict(style='shag', skin=(234, 192, 160), hair=ramp((40, 32, 30)), iris=(70, 56, 44), outfit='grey', glasses=True, stubble=True, strong=True),
+ 'gdt_k':  dict(style='shag', skin=(238, 198, 166), hair=ramp((40, 32, 30)), iris=(70, 56, 44), outfit='tee_blue', glasses=True, kid=True),
+ 'abuela': dict(style='tab', skin=(232, 196, 166), hair=ramp((206, 206, 212)), iris=(70, 56, 44), outfit='cardigan'),
+ 'papa_gdt': dict(style='short', skin=(226, 186, 154), hair=ramp((190, 190, 196)), iris=(70, 56, 44), outfit='polo', stubble=True),
+ 'amigo_dir': dict(style='short', skin=(240, 202, 172), hair=ramp((168, 158, 146)), iris=(80, 110, 150), outfit='blazer'),
+ 'productor': dict(style='short', skin=(236, 194, 160), hair=ramp((52, 42, 40)), iris=(60, 44, 36), outfit='tux', glasses=True),
+ 'elisa':  dict(style='tab', skin=(240, 206, 178), hair=ramp((112, 70, 52)), iris=(80, 110, 120), outfit='teacher'),
 }
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False)
