@@ -13,6 +13,7 @@ import base64, json, os, re, subprocess, sys, time
 EP = sys.argv[1].rstrip("/")
 LIMIT = int(sys.argv[2]) if len(sys.argv) > 2 else None
 NUM = re.search(r"EP-(\d+)", EP).group(1)
+VER = "v02"  # version of clips and exports (§6.4); bump after changing the look
 VOICE, RATE, FPS = "es-MX-JorgeNeural", "-8%", 30
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
 STYLE = ("cinematic dark photography, cold desaturated blue-grey palette, single hard side light, "
@@ -20,7 +21,7 @@ STYLE = ("cinematic dark photography, cold desaturated blue-grey palette, single
 FLUX = ("https://api.cloudflare.com/client/v4/accounts/0c44d0b72948bf2a54d96ce7046aad8d"
         "/ai/run/@cf/black-forest-labs/flux-1-schnell")
 # Cold grade + 35mm-style grain (Biblia §2.4).
-GRADE = "eq=saturation=0.3:contrast=1.12:brightness=-0.04,colorbalance=bs=0.10:bm=0.05:rs=-0.05,noise=alls=9:allf=t"
+GRADE = "eq=saturation=0.3:contrast=1.08:brightness=0.02:gamma=1.2,colorbalance=bs=0.10:bm=0.05:rs=-0.05,noise=alls=9:allf=t"
 
 
 def run(*cmd):
@@ -82,7 +83,7 @@ def image(prompt, out):
     sys.exit(f"Image failed: {out}\n{r.stdout[:300]}")
 
 
-def clip(img, aud, pad, label, out, w, h, i, flip=False):
+def clip(img, aud, pad, label, out, w, h, i):
     """Slow Ken Burns move over the square image, cropped to w x h, with the scene audio."""
     if os.path.exists(out):
         return
@@ -92,10 +93,10 @@ def clip(img, aud, pad, label, out, w, h, i, flip=False):
     x = f"(iw-iw/zoom)*{(i % 3) / 2}"
     badge = (f",drawtext=fontfile={FONT}:text='{label}':fontcolor=white@0.75:fontsize={h // 45}"
              f":x={h // 27}:y={h // 27}:box=1:boxcolor=black@0.45:boxborderw=10") if label else ""
-    vf = ("hflip," if flip else "") + (f"scale={big}:{big}:flags=lanczos,crop={big * w // max(w, h)}:{big * h // max(w, h)},"
+    vf = (f"scale={big}:{big}:flags=lanczos,crop={big * w // max(w, h)}:{big * h // max(w, h)},"
           f"zoompan=z='{zoom}':x='{x}':y='(ih-ih/zoom)/2':d={frames}:s={w}x{h}:fps={FPS},{GRADE}{badge}")
     run("ffmpeg", "-y", "-loop", "1", "-i", img, "-i", aud, "-vf", vf, "-af", f"apad=pad_dur={pad}",
-        "-frames:v", str(frames), "-c:v", "libx264", "-preset", "fast", "-crf", "20", "-pix_fmt", "yuv420p",
+        "-frames:v", str(frames), "-c:v", "libx264", "-preset", "fast", "-crf", "23", "-pix_fmt", "yuv420p",
         "-c:a", "aac", "-ar", "48000", "-ac", "2", "-shortest", out)
 
 
@@ -124,19 +125,19 @@ A = f"{EP}/assets"
 for i, s in enumerate(scenes, 1):
     s["n"] = i
     s["aud"], s["img"] = f"{A}/aud/EP{NUM}_{i:03d}_v01.mp3", f"{A}/img/EP{NUM}_{i:03d}_v01.jpg"
-    s["vid"] = f"{A}/vid/EP{NUM}_{i:03d}_v01.mp4"
+    s["vid"] = f"{A}/vid/EP{NUM}_{i:03d}_{VER}.mp4"
     tts(s["text"], s["aud"])
-    s["flip"] = not image(s["prompt"], s["img"])
-    if s["flip"]:
-        # shortcut: image quota spent, so this scene reuses an earlier image mirrored (clip marked v00);
-        # rerun the build next day to generate the real image and a v01 clip.
-        s["img"], s["vid"] = scenes[(i - 1) % 15 * 2]["img"], s["vid"].replace("_v01", "_v00")
+    s["placeholder"] = not image(s["prompt"], s["img"])
+    if s["placeholder"]:
+        # shortcut: image quota spent, so this scene reuses an earlier image (clip marked p00);
+        # rerun the build next day to generate the real image and the final clip.
+        s["img"], s["vid"] = scenes[(i - 1) % 15 * 2]["img"], s["vid"].replace(f"_{VER}", f"_{VER}p00")
         print(f"scene {s['id']} PLACEHOLDER image", flush=True)
-    clip(s["img"], s["aud"], s["pad"], s["label"], s["vid"], 1920, 1080, i, s["flip"])
+    clip(s["img"], s["aud"], s["pad"], s["label"], s["vid"], 1920, 1080, i)
     print(f"scene {s['id']} ok", flush=True)
 
-join([s["vid"] for s in scenes], f"{EP}/export/final_v01.mp4")
-print("long:", round(duration(f"{EP}/export/final_v01.mp4")), "s")
+join([s["vid"] for s in scenes], f"{EP}/export/final_{VER}.mp4")
+print("long:", round(duration(f"{EP}/export/final_{VER}.mp4")), "s")
 
 if shorts:
     cta_aud = f"{A}/aud/EP{NUM}_cta_v01.mp3"
@@ -145,8 +146,8 @@ for k, ids in enumerate(shorts, 1):
     parts = []
     for j, sid in enumerate(ids + ["cta"]):
         s = by_id.get(sid) or dict(by_id[ids[-1]], aud=cta_aud, label="", n="cta")
-        out = f"{A}/vid/EP{NUM}_short{k}_{s['n']}_v01.mp4"
-        clip(s["img"], s["aud"], 0.4, s["label"], out, 1080, 1920, j, s.get("flip", False))
+        out = f"{A}/vid/EP{NUM}_short{k}_{s['n']}_{VER}{'p00' if s.get('placeholder') else ''}.mp4"
+        clip(s["img"], s["aud"], 0.4, s["label"], out, 1080, 1920, j)
         parts.append(out)
-    join(parts, f"{EP}/export/short_{k:02d}_v01.mp4")
-    print(f"short {k}:", round(duration(f"{EP}/export/short_{k:02d}_v01.mp4")), "s")
+    join(parts, f"{EP}/export/short_{k:02d}_{VER}.mp4")
+    print(f"short {k}:", round(duration(f"{EP}/export/short_{k:02d}_{VER}.mp4")), "s")
