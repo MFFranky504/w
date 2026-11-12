@@ -493,13 +493,15 @@ def synth_audio():
     sfx = L.copy()
     # ---- música (video largo: solo piano, variada por secciones con "silencio suspensivo" entre ellas)
     def dec_(path):
+        if not os.path.exists(path): path = path[:-4] + '.wav'
         raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '2', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
         return np.frombuffer(raw, np.float32).reshape(-1, 2)
-    TR_ = {k: dec_(f'{ROOT}/audio/{k}.m4a') for k in ('heard_em_say', 'congratulations', 'mrs_magic')}
+    TR_ = {k: dec_(f'{ROOT}/audio/{k}.m4a') for k in ('piano_original', 'heard_em_say', 'congratulations', 'mrs_magic')}
     lvl = lambda x_, g_: x_ * (g_ / (np.sqrt((x_[:int(20 * SR)] ** 2).mean()) + 1e-9))
     MUS_RMS = .105                                                     # volumen único de la música (rms), igual en todas las secciones
     S0, XF = 4.0, 1.8                                                  # el video arranca dentro de la canción (4 s): hay música "anterior" para empalmar el final con el principio
-    SECT = [('mrs_magic', 0.0, sc_('cronos'), sc_('secuestro'), .10),   # 1. Cronos y Mimic (el inicio va sin música: el tema de piano tenía copyright)
+    SECT = [('piano_original', 0.0, 0.0, sc_('cronos'), .12),          # 1. el estudio y el niño: pieza de piano original (src/piano_original.py), sin copyright
+            ('mrs_magic', 0.0, sc_('cronos'), sc_('secuestro'), .10),   # 2. Cronos y Mimic
             ('heard_em_say', 2.0, sc_('secuestro'), sc_('hobbit'), .10), # 3. la llamada, el exilio y el laberinto
             ('congratulations', 0.0, sc_('hobbit'), TOTAL, .12)]       # 4. las puertas cerradas y el Óscar
     m = np.zeros((N, 2), np.float32); FD = .9
@@ -511,7 +513,7 @@ def synth_audio():
         print(f'música sección {k_ + 1} ({name_}): factor {sf_:.2f}', file=sys.stderr)
         v_ = np.arange(n_) / SR
         env_ = np.ones(n_, np.float32)
-        env_ *= np.clip(v_ / FD, 0, 1)                                 # entra con fundido
+        if k_ > 0: env_ *= np.clip(v_ / FD, 0, 1)                      # entra con fundido
         if k_ < len(SECT) - 1: env_ *= np.clip(((n_ / SR) - v_) / FD, 0, 1)   # sale con fundido (silencio breve entre secciones)
         if k_ == len(SECT) - 1:
             vt_ = v_ + a_
