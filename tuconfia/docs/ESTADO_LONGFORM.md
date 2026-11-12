@@ -1,6 +1,6 @@
 # Estado del proyecto Longform Engine 3.0
 
-Directiva: docs/LONGFORM_ENGINE_3.0.md. Fase actual: **0 (auditoría) terminada; esperando decisiones del usuario antes de la Fase 1**.
+Directiva: docs/LONGFORM_ENGINE_3.0.md. Fase actual: **3 (tema y apertura elegidos); falta el visto bueno del usuario para escribir el guion**. Decisiones del usuario: piloto de 10 min, investiga Gemini, tema a elección del director, voz gratis (se usa lo que queda de ElevenLabs: edge-tts y Piper están bloqueados por la red).
 
 ## Auditoría (hechos medidos el 12-nov-2026)
 - Motor: Python + PIL, procedural; 15.937 líneas en src/. Mundo 320x180 a escala 6 (1920x1080) o 160x284 a escala 8 (vertical).
