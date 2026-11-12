@@ -1,0 +1,113 @@
+# EP-001 cold open — pixel engine storyboard.
+# Render: python3 tools/pixel/engine.py episodes/EP-001-vuelo-914/cold_open.yaml [--stills] [--short]
+#
+# Each line is narrated with Edge TTS; its shots split the line at word indexes (`at_word`,
+# 0-based, from the TTS word list). Params given as [from, to] are eased across the shot.
+# camera.x / camera.y are native-pixel offsets (0..64 / 0..36). Depth parallax comes from the scene.
+# sfx levels are 0..1, or [from, to] across the shot. All sound is synthesised (tools/pixel/engine.py SFX).
+# Every shot here recreates the LEGEND: badge says so; nothing in frame is presented as evidence.
+
+name: cold_open_px
+version: v01
+voice: es-MX-JorgeNeural
+rate: "-8%"
+lead: 0.12
+short_title: "VUELO 914"
+
+lines:
+  - text: "Caracas, mil novecientos ochenta y cinco. La torre de Maiquetía recibe a un avión que no aparece en ningún plan de vuelo."
+    pause_after: 0.3
+    shots:
+      - scene: tower
+        purpose: Hook. Place, year and a person in frame 1; the scope light on his face.
+        camera: {x: [10, 34], y: 18}
+        params: {brows: 0.0, look: -0.6}
+        badge: "LEYENDA · RECREACIÓN"
+        caption: "MAIQUETÍA · 1985 · SEGÚN EL RELATO"
+        sfx: {rain_in: 0.5, hum: 0.45, drone: 0.25}
+        vfocus: 380
+      - scene: radar
+        at_word: 6          # "La torre..."
+        purpose: The unknown contact appears on the scope.
+        camera: {x: [40, 24], y: [24, 12]}
+        params: {blip_at: 0.55}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {hum: 0.6, drone: 0.3}
+        vfocus: 352
+        still_at: 0.9
+
+  - text: "El piloto pregunta dónde está. Dice que su vuelo salió de Nueva York rumbo a Miami, el dos de julio de mil novecientos cincuenta y cinco."
+    pause_after: 0.35
+    shots:
+      - scene: face
+        purpose: The radio voice reaches the controller; he listens.
+        camera: {x: [20, 30], y: 16}
+        params: {zoom: 1.0, brows: [0.0, 0.4], look: -0.8, talk: 0.0}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {static: 0.55, rain_in: 0.3, hum: 0.3, drone: 0.3}
+        vfocus: 300
+      - scene: runway
+        at_word: 5          # "Dice que su vuelo..."
+        purpose: Landing lights come out of the rain toward the runway.
+        camera: {x: 32, y: [10, 20]}
+        params: {plane: approach, prog: [0.0, 1.0]}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.6, engine: [0.1, 0.6], static: 0.25, drone: 0.35}
+        vfocus: 352
+      - scene: face
+        at_word: 17         # "el dos de julio..."
+        purpose: The date lands. Tight on the eyes; they widen.
+        camera: {x: 24, y: 18}
+        params: {zoom: 1.7, eye_x: 330, eye_y: 180, wide: [0.0, 1.0], brows: [0.4, 1.0], look: [-0.8, 0.2], blink: false}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {static: 0.35, hum: 0.3, drone: 0.45}
+        vfocus: 330
+
+  - text: "Cuando escucha la fecha de hoy, el avión vuelve a despegar. Y desaparece."
+    pause_after: 0.9
+    shots:
+      - scene: plane_side
+        purpose: The airliner rolls away on the wet apron.
+        camera: {x: 24, y: 24}
+        params: {x: [40, -420], props: 45}
+        still_at: 0.3
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.5, engine: [0.6, 0.9], drone: 0.35}
+        vfocus: 300
+      - scene: runway
+        at_word: 11         # "Y desaparece."
+        purpose: Its lights climb into the clouds and go out. Rain only; drone drops.
+        camera: {x: 32, y: [20, 4]}
+        params: {plane: depart, prog: [0.0, 1.0]}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.7, engine: [0.5, 0.0], drone: [0.35, 0.05]}
+        vfocus: 352
+
+  - text: "En la pista queda un calendario de bolsillo de mil novecientos cincuenta y cinco."
+    pause_after: 0.5
+    shots:
+      - scene: calendar
+        purpose: "The object. Only legible text in the cold open is 1955, set by the engine font."
+        camera: {x: [20, 40], y: [10, 20]}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.55, drone: 0.25}
+        vfocus: 365
+
+  - text: "Esta historia tiene un testigo, una fecha y una prueba. Hoy vamos a buscar las tres."
+    pause_after: 0.6
+    shots:
+      - scene: tower
+        purpose: The promise. The chair is empty; the scope keeps sweeping.
+        camera: {x: [40, 20], y: 18}
+        params: {person: false}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_in: 0.45, hum: 0.4, drone: 0.4}
+        vfocus: 400
+      - scene: title
+        at_word: 11         # "Hoy vamos a buscar las tres."
+        purpose: Episode title after the cold open (brand only here).
+        params: {text: "VUELO 914", sub: "ARCHIVO CERO"}
+        sfx: {rain_in: 0.4, drone: 0.5}
+        vfocus: 352
+
+tail: []
