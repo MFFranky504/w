@@ -1499,10 +1499,9 @@ def _sil_rgba(im):
     a = np.array(im)[..., 3] > 0; s = np.zeros(a.shape + (4,), np.uint8); s[a] = (14, 8, 34, 255)
     l = a & ~np.roll(a, 1, 1); r = a & ~np.roll(a, -1, 1); t_ = a & ~np.roll(a, 1, 0)
     s[l] = (70, 230, 255, 255); s[r] = (255, 70, 190, 255); s[t_ & ~l & ~r] = (255, 215, 90, 255); return Image.fromarray(s, "RGBA")
-G_BG = [_png(f"fondo_{i}.png", "RGB") for i in range(6)]
+G_BG = [_png(f"fondo_{i}.png", "RGB") for i in range(7)]
 G_ART = [_png(f"artista_{k}.png") for k in range(6)]; G_QUE = [_png(f"ayer_queen_{k}.png") for k in range(6)]
 G_ART_SIL = [_sil_rgba(G_ART[k]) for k in range(1, 5)] if G_ART[1] else []
-_gs = random.Random(5); G_STARS = [(_gs.randint(2, W - 2), _gs.randint(2, 230), _gs.random() * 6) for _ in range(46)]
 GY = 266 - 139                                            # sprite cell is 100x140, feet on its row 138 (+1 outline)
 def gba_sil(im, t):
     f = G_ART_SIL[int(t * 6) % 4]; bob = 1 if int(t * 2.2) % 2 else 0
@@ -1513,14 +1512,22 @@ def freddie_gba(im, t, ts):
     e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); f = G_QUE[1 + int(t * 5) % 4]
     im.paste(f, (85, GY + jump + bob), f)
 def dyn_g_hook(im, t, ts, tag):
+    arr = np.array(im)
+    for k, (x, col) in enumerate(((50, (255, 70, 90)), (100, (90, 230, 255)), (170, (255, 210, 90)), (220, (255, 80, 200)))):
+        beam(arr, x, x + 40 * math.sin(t * 1.3 + k * 1.7), 48, 266, 5, 46, col, .22)
+    glow(arr, 135, 262, 130, (255, 150, 90), .25); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    rs = random.Random(int(t * 12))
+    for _ in range(70): d.point((rs.randint(195, 227), rs.randint(153, 167)), fill=rs.choice([(236, 240, 244), (110, 120, 130), (28, 32, 38)]))   # TV static
+    for k in range(22): d.point(((k * 41 + t * 9) % W, 56 + (k * 53 + t * 14) % 200), fill=(255, 230, 200))                                       # haze / dust
+def dyn_g_outro(im, t, ts, tag):
     d = ImageDraw.Draw(im)
-    for (x, y, p) in G_STARS:
-        if math.sin(t * 3 + p) > .55:
-            d.point((x, y), fill=(255, 255, 255)); [d.point(q, fill=(190, 240, 255)) for q in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))]
-    s = (t * .5) % 4
-    if s < .7: x = 240 - s * 260; y = 20 + s * 120; d.line([(x, y), (x + 14, y - 8)], fill=(255, 250, 210), width=2); d.point((x, y), fill=WHITE)
+    for k in range(80): x = (k * 37 + t * 24) % W; y = (t * 160 + k * 53) % 262; d.line([(x, y), (x - 2, y + 6)], fill=(176, 196, 232))               # rain
+    if int(t * 1.5) % 2: d.ellipse((197, 85, 203, 91), fill=(255, 60, 60)); d.point((200, 88), fill=(255, 220, 220))                                  # Space Needle beacon
     for k in range(6):
-        if int(t * 2 + k) % 2: d.point((21 + k * 46, 237), fill=(255, 255, 200)); d.point((21 + k * 46, 236), fill=(255, 255, 255))
+        if int(t * 2 + k * 1.7) % 4 == 0: d.rectangle((8 + (k * 41) % 52, 150 + (k * 29) % 70, 12 + (k * 41) % 52, 156 + (k * 29) % 70), fill=(255, 236, 160))   # flickering windows
+    x = (t * 40) % (W + 60) - 30; d.rectangle((x, 256, x + 14, 262), fill=(20, 22, 40)); d.rectangle((x + 12, 257, x + 15, 259), fill=(255, 240, 180)); d.rectangle((x, 257, x + 2, 259), fill=(255, 80, 80))   # passing car
+    for px in (30, 160, 100):
+        for k in range(3): d.point((px + k * 6 + int(2 * math.sin(t * 3 + k)), 296 + (px // 30)), fill=(255, 224, 150))                                  # puddle glints
 def dyn_g_wembley(im, t, ts, tag):
     arr = np.array(im)
     if ts < REVEAL:
@@ -1571,7 +1578,7 @@ REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
        "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
        "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook)),
-       "g_hook": (G_BG[0], dyn_g_hook), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
+       "g_hook": (G_BG[0], dyn_g_hook), "g_outro": (G_BG[6], dyn_g_outro), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
        "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards),
        "workshop": (WORKSHOP, dyn_workshop), "wembley": (WEMBLEY, dyn_wembley), "cafe": (CAFE, dyn_cafe), "school": (SCHOOL, dyn_school), "airport": (AIRPORT, dyn_airport)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]

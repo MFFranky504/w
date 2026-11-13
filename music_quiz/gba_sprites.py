@@ -136,20 +136,66 @@ def star(d, cx, cy, r=6, col=(255, 230, 80), sh=(232, 150, 30)):
     d.polygon(pts, fill=col, outline=INK); d.polygon([pts[0], pts[1], (cx, cy), pts[9]], fill=(255, 250, 200)); d.polygon([(cx, cy), pts[4], pts[5], pts[6]], fill=sh)
 
 # ---------------------------------------------------------------- backgrounds (270x480, foreground at y 266)
-def bg_hook():
-    im = grad(W, H, [(20, 24, 80), (40, 40, 120), (70, 48, 140), (40, 30, 90)]).convert("RGB"); d = ImageDraw.Draw(im); d.fontmode = "1"
-    for _ in range(90): x, y = R.randint(0, W), R.randint(0, 250); d.point((x, y), fill=R.choice([(200, 240, 255), (120, 220, 220), (255, 255, 255)]))
-    for _ in range(10): x, y = R.randint(10, 260), R.randint(10, 240); d.line([(x - 2, y), (x + 2, y)], fill=(160, 250, 240)); d.line([(x, y - 2), (x, y + 2)], fill=(160, 250, 240))
-    d.ellipse((150, 50, 250, 150), fill=(255, 236, 150)); d.ellipse((128, 40, 228, 140), fill=(40, 40, 120))          # crescent moon
-    d.arc((150, 50, 250, 150), 20, 120, fill=(255, 252, 220), width=2)
-    for k in range(3): cloud(d, 10 + k * 90, 196 + (k % 2) * 10, 60, (110, 90, 170), (78, 62, 136), (170, 150, 220))
-    for x in range(0, W, 40):                                                                   # metal girders (ref: teal walkway)
-        d.rectangle((x + 16, 266, x + 24, H), fill=(54, 150, 160), outline=INK); d.rectangle((x + 17, 266, x + 18, H), fill=(140, 230, 230))
-    for y in range(290, H, 22): d.line([(0, y), (W, y + 10)], fill=(90, 70, 150)); d.line([(0, y + 10), (W, y)], fill=(90, 70, 150))   # chain-link mesh
-    for x in range(0, W, 16): tile_metal(x, 266, d)
-    d.line([(0, 265), (W, 265)], fill=INK)
-    for (x, y) in ((40, 330), (210, 360), (120, 410), (60, 440)): star(d, x, y, 5)
+def bg_stage():                                                        # HOOK: small grunge club stage (generic: no band name or logo)
+    im = Image.new("RGB", (W, H), (30, 22, 40)); d = ImageDraw.Draw(im)
+    for y in range(0, 266, 10):                                                                                        # dark brick back wall
+        for x in range(-((y // 10) % 2) * 10, W, 20): d.rectangle((x, y, x + 18, y + 8), fill=(58 + (x * 7 + y) % 9, 38, 56), outline=(36, 24, 42))
+    a = np.array(im).astype(float); a[:200] *= np.linspace(.4, 1, 200)[:, None, None]; im = Image.fromarray(a.astype(np.uint8)); d = ImageDraw.Draw(im); d.fontmode = "1"
+    for x0 in (0, 236):                                                                                                # velvet curtains with folds
+        for k in range(0, 34, 6): d.rectangle((x0 + k, 0, x0 + k + 5, 266), fill=(120, 26, 44) if (k // 6) % 2 else (88, 18, 34))
+        d.line([(x0 + (33 if x0 == 0 else 0), 0), (x0 + (33 if x0 == 0 else 0), 266)], fill=INK)
+    for x in range(0, W, 18): d.pieslice((x, -8, x + 18, 22), 0, 180, fill=(140, 30, 50), outline=INK)                 # valance
+    d.rectangle((28, 28, 244, 34), fill=(70, 70, 88), outline=INK)                                                     # lighting truss + par cans
+    for x in (50, 100, 170, 220): d.rectangle((x - 6, 34, x + 6, 46), fill=(40, 40, 54), outline=INK); d.ellipse((x - 4, 43, x + 4, 49), fill=(255, 240, 200), outline=INK)
+    for (x, y, c, t_) in ((40, 92, (255, 214, 80), "LIVE"), (212, 100, (120, 220, 255), "HOY")):                       # flyers on the wall
+        d.rectangle((x, y, x + 22, y + 24), fill=c, outline=INK); d.text((x + 11, y + 8), t_, font=F(7), fill=INK, anchor="mm"); d.line([(x + 3, y + 16), (x + 19, y + 16)], fill=INK); d.line([(x + 3, y + 19), (x + 14, y + 19)], fill=INK)
+    for (x0, x1) in ((38, 88), (186, 236)):                                                                            # amp stacks
+        for (y0, y1) in ((172, 218), (218, 266)):
+            d.rectangle((x0, y0, x1, y1), fill=(30, 28, 36), outline=INK); d.rectangle((x0 + 3, y0 + 8, x1 - 3, y1 - 3), fill=(52, 46, 56))
+            for yy in range(y0 + 9, y1 - 3, 4): d.line([(x0 + 4, yy), (x1 - 4, yy)], fill=(40, 36, 44))
+            d.rectangle((x0 + 2, y0 + 2, x1 - 2, y0 + 6), fill=(190, 190, 200)); [d.ellipse((x0 + 6 + k * 9, y0 + 3, x0 + 9 + k * 9, y0 + 6), fill=(240, 90, 70), outline=INK) for k in range(5)]
+            d.rectangle((x1 - 12, y0 + 1, x1 - 4, y0 + 3), fill=(255, 220, 90))
+    d.rectangle((190, 148, 232, 172), fill=(50, 50, 60), outline=INK); d.rectangle((194, 152, 228, 168), fill=(110, 120, 130), outline=INK)  # old TV on the right stack (static animated)
+    d.line([(204, 148), (198, 138)], fill=(190, 190, 200)); d.line([(218, 148), (226, 138)], fill=(190, 190, 200))
+    d.line([(158, 150), (158, 266)], fill=(180, 180, 192), width=3); d.line([(158, 150), (150, 140)], fill=(180, 180, 192), width=2); d.ellipse((144, 134, 152, 142), fill=(70, 70, 82), outline=INK)   # mic stand
+    d.polygon([(150, 160), (170, 160), (172, 192), (148, 192)], fill=(176, 40, 44), outline=INK)                       # plaid flannel draped on the stand
+    for k in range(4): d.line([(150 + k * 6, 160), (150 + k * 6, 192)], fill=(40, 24, 30)); d.line([(148, 164 + k * 8), (172, 164 + k * 8)], fill=(40, 24, 30))
+    d.rectangle((44, 224, 60, 236), fill=(240, 240, 232), outline=INK); d.rectangle((46, 226, 58, 230), fill=(40, 40, 50))   # sticker + cassette on the amp
+    ground(d, 266, "wood")
+    d.polygon([(14, 286), (60, 276), (66, 288), (24, 300)], fill=(214, 70, 40), outline=INK); d.polygon([(22, 288), (58, 280), (62, 286), (28, 296)], fill=(250, 140, 60))   # smashed guitar on the floor
+    d.polygon([(60, 278), (96, 262), (98, 268), (64, 286)], fill=(150, 98, 56), outline=INK); d.line([(66, 280), (96, 266)], fill=(220, 220, 230))
+    for k in range(5): d.line([(60 + k * 2, 284 - k), (70 + k * 4, 292 + k * 2)], fill=(236, 200, 140))             # splinters
+    for k in range(4): d.line([(40 + k * 4, 292), (44 + k * 6, 304)], fill=(230, 230, 240))                         # loose strings
     return im
+
+def bg_seattle():                                                       # OUTRO: rainy Seattle at night, Space Needle, coffee neon (Pacific Northwest)
+    im = Image.new("RGB", (W, H), (34, 34, 52)); im.paste(grad(W, 266, [(14, 22, 52), (52, 66, 108), (130, 108, 140), (220, 156, 150)]).convert("RGB"), (0, 0)); d = ImageDraw.Draw(im); d.fontmode = "1"
+    for k in range(6): cloud(d, -10 + k * 56, 24 + (k % 3) * 26, 56, (66, 76, 112), (44, 52, 88), (104, 114, 150))
+    x = 0
+    while x < W: w = R.randint(12, 24); h = R.randint(30, 80); d.rectangle((x, 236 - h, x + w, 236), fill=(70, 72, 112)); x += w + 1                    # far skyline
+    for _ in range(80): px, py = R.randint(0, W), R.randint(160, 232); d.point((px, py), fill=(255, 214, 140))
+    cx = 200                                                                                                               # Space Needle
+    d.line([(cx, 88), (cx, 128)], fill=(200, 206, 222), width=2)
+    d.polygon([(cx - 4, 142), (cx + 4, 142), (cx + 8, 190), (cx + 22, 236), (cx + 14, 236), (cx + 2, 196), (cx - 2, 196), (cx - 14, 236), (cx - 22, 236), (cx - 8, 190)], fill=(186, 194, 214), outline=INK)
+    d.rectangle((cx - 9, 187, cx + 9, 193), fill=(200, 206, 224), outline=INK)
+    d.ellipse((cx - 12, 120, cx + 12, 134), fill=(214, 220, 236), outline=INK); d.ellipse((cx - 22, 128, cx + 22, 144), fill=(226, 230, 242), outline=INK); d.rectangle((cx - 20, 134, cx + 20, 138), fill=(70, 100, 150))
+    for k in range(7): d.point((cx - 18 + k * 6, 136), fill=(255, 230, 150))
+    for (x0, x1, h) in ((0, 44, 150), (44, 76, 110), (232, 270, 160), (212, 238, 96)):                                    # near buildings
+        d.rectangle((x0, 266 - h, x1, 266), fill=(40, 44, 76), outline=INK); d.rectangle((x0, 266 - h, x1, 266 - h + 3), fill=(70, 78, 118))
+        for wy in range(266 - h + 10, 256, 12):
+            for wx in range(x0 + 5, x1 - 6, 10): d.rectangle((wx, wy, wx + 4, wy + 6), fill=(255, 214, 120) if R.random() < .5 else (26, 28, 52))
+    d.rectangle((6, 186, 66, 206), fill=(20, 12, 30), outline=(90, 230, 240), width=2); d.text((36, 196), "COFFEE", font=F(10), fill=(255, 120, 190), anchor="mm")   # neon coffee sign
+    d.rectangle((26, 207, 30, 216), fill=(90, 230, 240)); d.ellipse((20, 214, 36, 226), fill=(250, 250, 244), outline=INK); d.arc((34, 216, 42, 224), 270, 90, fill=(250, 250, 244), width=2)
+    d.line([(76, 176), (212, 168)], fill=(110, 90, 80)); d.polygon([(110, 170), (134, 169), (136, 196), (108, 197)], fill=(176, 40, 44), outline=INK)  # clothesline with a plaid flannel shirt
+    for k in range(4): d.line([(110 + k * 7, 170), (110 + k * 7, 196)], fill=(40, 24, 30)); d.line([(108, 176 + k * 7), (136, 176 + k * 7)], fill=(40, 24, 30))
+    for x in (92, 176):                                                                                                    # street lamps
+        d.line([(x, 266), (x, 214)], fill=(70, 70, 90), width=2); d.rectangle((x - 5, 210, x + 5, 216), fill=(255, 224, 140), outline=INK)
+    masonry(d, 0, 266, W, H, base=(78, 82, 112), sh=(52, 56, 84), li=(120, 126, 158), mortar=(34, 36, 58), seed=21)
+    d.line([(0, 265), (W, 265)], fill=INK)
+    for (px, py, pw) in ((20, 292, 40), (150, 306, 56), (90, 330, 36)):                                                    # puddles reflecting the lights
+        d.ellipse((px, py, px + pw, py + 8), fill=(70, 90, 140), outline=(40, 52, 90)); d.line([(px + 6, py + 3), (px + pw - 6, py + 3)], fill=(255, 220, 130))
+    return im
+
 
 def bg_wembley():                                                       # recap: Queen's Live Aid (1985) — stadium at sunset
     im = grad(W, H, [(80, 120, 200), (250, 170, 140), (250, 210, 150)]).convert("RGB"); d = ImageDraw.Draw(im); d.fontmode = "1"
@@ -270,18 +316,6 @@ def plant(d, x, y):
 def fish(d, x, y, c, flip=1):
     d.ellipse((x - 6, y - 3, x + 6, y + 3), fill=c, outline=INK); d.polygon([(x - 6 * flip, y), (x - 10 * flip, y - 4), (x - 10 * flip, y + 4)], fill=c, outline=INK); d.point((x + 3 * flip, y - 1), fill=INK)
 
-def more_hook(im):
-    im = glow(im, 200, 100, 120, (120, 90, 200), .5); d = ImageDraw.Draw(im); d.fontmode = "1"
-    for (cx, cy, r, c, ring) in ((60, 70, 14, (240, 130, 170), (255, 210, 230)), (230, 180, 6, (130, 230, 200), None)):   # planets
-        d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=c, outline=INK); d.ellipse((cx - r + 3, cy - r + 3, cx, cy), fill=tuple(min(255, v + 40) for v in c))
-        if ring: d.arc((cx - r - 8, cy - 5, cx + r + 8, cy + 6), 0, 180, fill=ring, width=2)
-    for k in range(5):                                                       # hanging stars on strings
-        x = 30 + k * 52; y = 140 + (k % 2) * 30; d.line([(x, 0), (x, y - 6)], fill=(110, 100, 170)); star(d, x, y, 7)
-    for _ in range(40):
-        x, y = R.randint(0, W), R.randint(0, 240); d.point((x, y), fill=R.choice([(255, 200, 240), (170, 250, 255)]))
-    for k in range(6): x = 18 + k * 46; d.rectangle((x, 240, x + 6, 251), fill=(255, 210, 90), outline=INK); d.point((x + 3, 238), fill=(255, 255, 200))   # walkway lamps
-    for x in range(0, W, 40): d.rectangle((x + 16, 340, x + 24, H), fill=(36, 96, 120))
-    return im
 def more_wembley(im):
     im = glow(im, 135, 150, 170, (255, 170, 110), .45)
     for k, x in enumerate((70, 135, 200)): im = beam(im, x, x + (k - 1) * 60, 170, 20, 4, 60, [(255, 120, 160), (255, 240, 180), (120, 200, 255)][k], .22)
@@ -505,12 +539,12 @@ def label(d, x, y, t, s=14, col=(255, 240, 200)): d.text((x, y), t, font=F(s), f
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    bgs = [("HOOK (noche estrellada)", more_hook(bg_hook())), ("AYER: QUEEN · Live Aid 1985", more_wembley(bg_wembley())), ("PISTA 1 · los nombres de antes", more_garage(bg_garage())),
-           ("PISTA 2 · el álbum de $606.17", more_studio(bg_studio())), ("PISTA 3 · 1987, pueblo maderero", more_aberdeen(bg_aberdeen())), ("PISTA 4 · la portada (anzuelo)", more_pool(bg_pool()))]
-    s = 2; cw, ch = W * s, H * s; sheet = Image.new("RGB", (3 * cw + 40, 2 * ch + 120), (16, 12, 30)); d = ImageDraw.Draw(sheet)
+    bgs = [("HOOK (escenario grunge)", bg_stage()), ("AYER: QUEEN · Live Aid 1985", more_wembley(bg_wembley())), ("PISTA 1 · los nombres de antes", more_garage(bg_garage())),
+           ("PISTA 2 · el álbum de $606.17", more_studio(bg_studio())), ("PISTA 3 · 1987, pueblo maderero", more_aberdeen(bg_aberdeen())), ("PISTA 4 · la portada (anzuelo)", more_pool(bg_pool())), ("CIERRE (Seattle de noche)", bg_seattle())]
+    s = 2; cw, ch = W * s, H * s; sheet = Image.new("RGB", (4 * cw + 50, 2 * ch + 120), (16, 12, 30)); d = ImageDraw.Draw(sheet)
     label(d, 10, 10, "PARTE 12 · FONDOS (270x480, ×2) · estilo GBA original", 22)
     for i, (t, im) in enumerate(bgs):
-        x, y = 10 + (i % 3) * (cw + 10), 50 + (i // 3) * (ch + 34); sheet.paste(im.resize((cw, ch), Image.NEAREST), (x, y)); label(d, x, y + ch + 4, t, 16)
+        x, y = 10 + (i % 4) * (cw + 10), 50 + (i // 4) * (ch + 34); sheet.paste(im.resize((cw, ch), Image.NEAREST), (x, y)); label(d, x, y + ch + 4, t, 16)
         im.save(os.path.join(OUT, f"fondo_{i}.png"))
     sheet.save(os.path.join(OUT, "parte12_fondos.png"))
     s = 4; K = [kurt(f) for f in range(4)]; Q = [freddie(f) for f in range(4)]

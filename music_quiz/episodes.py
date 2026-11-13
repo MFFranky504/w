@@ -148,7 +148,7 @@ EPISODES = {
     # ------------------------------------------------------------------ Parte 12: Nirvana (rock/grunge, estilo GBA) — respuesta de ayer: Queen
     "p12": dict(
         part=12, artist="Nirvana", genre="rock", music="rock", bpm=116, prog=[0, 3, 5, 3, 0, 3, 7, 5], hook="b", next_part=13, gba=True,
-        hook_len=2.0, reveal=2.8, hook_scene="g_hook", outro_scene="g_hook", outro_sign=None,
+        hook_len=2.0, reveal=2.8, hook_scene="g_hook", outro_scene="g_outro", outro_sign=None,
         prev=dict(sprite="freddie_gba", scene="g_wembley", part=11, lines=("QUEEN",), sub="LONDRES · REINO UNIDO", winners=[], winners_part=11, special=SPECIAL_P11),
         clues=[
             dict(n=1, diff="ULTRA DIFÍCIL", pts=4, chip="NOMBRES", scene="g_garage",
