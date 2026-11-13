@@ -50,4 +50,11 @@ assert engine.interp([0, 10], 0) == 0 and engine.interp([0, 10], 1) == 10 and en
 # 5. Music: moods with fixed and ramped levels synthesise without error and stay bounded.
 m = engine.synth_music(20.0, [dict(start=0, end=10, music="tension"), dict(start=10, end=20, music={"mood": "calm", "level": [0.9, 0.0]})])
 assert m.shape[0] == int(20 * engine.SR) + 1 and np.abs(m).max() < 1.0
+# 6. Vertical crop of a camera-less scene is centred on vfocus (title text fully inside the crop).
+fr = engine.Frames(scenes)
+shot = {"scene": "title", "start": 0.0, "end": 2.0, "params": {"text": "VUELO 914", "sub": "X"}}
+sq = np.array(fr.render(shot, 1.0, view=(1080, 1080), focus=352).convert("RGB"))
+paper = np.all(sq == engine.P["paper"], axis=-1)
+cols = np.nonzero(paper.any(0))[0]
+assert cols.min() > 30 and cols.max() < 1050, (cols.min(), cols.max())
 print("ok")

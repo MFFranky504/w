@@ -431,7 +431,8 @@ class Frames:
         u = lt / max(1e-6, shot["end"] - shot["start"])
         p = {k: interp(v, u) for k, v in shot.get("params", {}).items()}
         cam = shot.get("camera", {})
-        cx, cy = interp(cam.get("x", 32), u), interp(cam.get("y", 18), u)  # default: centred on the 704x396 world
+        # default camera centres the 704x396 world; a vertical crop centres on `focus` instead
+        cx, cy = interp(cam.get("x", 0 if focus is not None else 32), u), interp(cam.get("y", 18), u)
         if focus is not None:  # vertical crop: centre the camera on a scene x
             cx += focus - view[0] / S / 2
         frame = Image.new("RGBA", view, C("black"))
