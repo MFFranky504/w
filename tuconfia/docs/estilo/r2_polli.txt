@@ -1,0 +1,11 @@
+1. **Forma de cara**: Reduce la cabeza a un polígono base; que domine un rasgo real: cuadrado en Stallone, redondo en Disney, fino en Hawking. El peinado debe respetar ese silueta.
+
+2. **Cejas**: Son las que más identifican. Marca grosor, inclinación y separación. Las de Frida deben ser muy gruesas y casi unidas; las de Messi, finas y bajas.
+
+3. **Mandíbula**: Usa píxeles de contraste en el borde inferior. Define ángulo fuerte (Johnson), papada (Del Toro) o línea delicada (Parton). Un solo píxel de diferencia cambia la edad.
+
+4. **Nariz**: En chibis no se detalla; basta con un píxel más claro u oscuro. Si la persona tiene nariz ancha o prominente (Freeman, Del Toro), añade sombra lateral. No dibujes fosas.
+
+5. **Arrugas/edad**: Marca con 1-2 píxeles: entrecejo, surco nasogeniano, patas de gallo. En sprites pequeños, una línea de más al lado de la boca hace 10 años extra. No envejezcas a los jóvenes; déjalos limpios.
+
+6. **Expresión**: Copia su gesto base: sonrisa ligera de Elvis, seriedad de Jobs, energía de Gaga. Usa la dirección de la boca y párpados: dos píxeles curvos bastan para reconocer la actitud sin perder el estilo anime.

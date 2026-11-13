@@ -38,6 +38,5 @@ def frame(t, u, mood='day', shot='wide'):
     else:
         G.place(c, bat('gdt_y', 'hold'), WW * .3, FLY + 24 if LAND else FLY + 30)
         G.place(c, bat('you', 'stand'), WW * .7, FLY + 24 if LAND else FLY + 30, flip=True)
-    if LAND: G.pillar(c, 0, 14, (90, 70, 80)); G.pillar(c, WW - 14, 14, (90, 70, 80))
     c.amb = (1.0, 1.0, 1.0); c.vig = .35
     return G.grade(c.render(), mood)

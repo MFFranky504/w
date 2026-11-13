@@ -83,6 +83,46 @@ CAST = {
  'productor': dict(style='short', skin=(236, 194, 160), hair=ramp((52, 42, 40)), iris=(60, 44, 36), outfit='tux', glasses=True),
  'elisa':  dict(style='tab', skin=(240, 206, 178), hair=ramp((112, 70, 52)), iris=(80, 110, 120), outfit='teacher'),
 }
+
+# ---------------------------------------------------------------- parecido con los famosos (síntesis de las fichas de las IAs, corregidas)
+CAST.update({
+ 'gdt':    dict(style='shag', skin=(234, 192, 160), hair=ramp((44, 36, 34)), iris=(70, 56, 44), outfit='turtle', glasses=True, beard=True, mustache=True, build='heavy'),
+ 'gdt_y':  dict(style='shag', skin=(234, 192, 160), hair=ramp((40, 32, 30)), iris=(70, 56, 44), outfit='grey', glasses=True, beard=True, mustache=True, build='heavy'),
+ 'disney_y': dict(style='short', skin=(244, 204, 172), hair=ramp((58, 40, 32)), iris=(80, 60, 44), outfit='blazer', mustache=True, build='slim'),
+ 'disney':   dict(style='short', skin=(240, 200, 168), hair=ramp((88, 76, 70)), iris=(80, 60, 44), outfit='blazer', mustache=True),
+ 'hawking':  dict(style='short', skin=(240, 210, 186), hair=ramp((132, 118, 104)), iris=(90, 110, 140), outfit='blazer', glasses=True, build='slim', height='short'),
+ 'jobs':   dict(style='short', skin=(236, 196, 164), hair=ramp((52, 44, 40)), iris=(70, 52, 40), outfit='turtle', glasses=True, stubble=True, build='slim'),
+ 'messi':  dict(style='king', skin=(240, 196, 160), hair=ramp((100, 70, 46)), iris=(90, 60, 40), outfit='argentina', beard=True, height='short', build='athletic'),
+ 'stallone': dict(style='shag', skin=(224, 174, 132), hair=ramp((40, 30, 28)), iris=(66, 46, 36), outfit='grey', sleepy=True, strong=True, stubble=True, build='muscular'),
+ 'dolly':  dict(style='tab', skin=(250, 216, 190), hair=ramp((244, 226, 160)), iris=(80, 120, 180), outfit='tee_red', hair2='volume', height='short', build='slim'),
+ 'gaga':   dict(style='tab', skin=(250, 220, 196), hair=ramp((244, 236, 200)), iris=(90, 110, 150), outfit='tee_yellow', build='slim'),
+ 'gagaw':  dict(style='tab', skin=(250, 220, 196), hair=ramp((244, 236, 200)), iris=(90, 110, 150), outfit='tee_red', build='slim'),
+ 'em':     dict(style='short', skin=(246, 212, 184), hair=ramp((242, 228, 170)), iris=(80, 110, 160), outfit='grey', hair2='buzz', build='slim'),
+ 'emw':    dict(style='short', skin=(246, 212, 184), hair=ramp((242, 228, 170)), iris=(80, 110, 160), outfit='polo', hair2='buzz', build='slim'),
+ 'mj_y':   dict(style='short', skin=(124, 84, 62), hair=ramp((20, 16, 16)), iris=(50, 36, 30), outfit='tee_red', build='athletic', height='tall'),
+ 'mj':     dict(style='short', skin=(124, 84, 62), hair=ramp((20, 16, 16)), iris=(50, 36, 30), outfit='tee_red', hair2='bald', build='athletic', height='tall'),
+ 'johnson': dict(style='short', skin=(176, 120, 84), hair=ramp((24, 20, 20)), iris=(60, 44, 36), outfit='grey', hair2='bald', strong=True, build='muscular', height='tall'),
+ 'johnson_y': dict(style='short', skin=(176, 120, 84), hair=ramp((30, 24, 24)), iris=(60, 44, 36), outfit='tee_red', strong=True, build='athletic', height='tall'),
+ 'brady':  dict(style='short', skin=(238, 194, 158), hair=ramp((120, 92, 64)), iris=(80, 100, 130), outfit='blazer', build='athletic', height='tall'),
+ 'brady_y': dict(style='short', skin=(240, 196, 160), hair=ramp((108, 80, 56)), iris=(80, 100, 130), outfit='tee_blue', build='athletic', height='tall'),
+ 'elvis':  dict(style='shag', skin=(240, 204, 172), hair=ramp((24, 20, 26)), iris=(80, 100, 140), outfit='coat', hair2='pompadour'),
+ 'einstein': dict(style='short', skin=(236, 196, 166), hair=ramp((236, 236, 240)), iris=(90, 70, 50), outfit='blazer', hair2='wild', mustache=True),
+ 'frida':  dict(style='tab', skin=(214, 168, 126), hair=ramp((30, 22, 22)), iris=(60, 40, 30), outfit='tee_red', hair2='bun', unibrow=True, build='slim'),
+ 'freeman': dict(style='short', skin=(122, 84, 62), hair=ramp((200, 200, 204)), iris=(60, 44, 36), outfit='blazer', hair2='buzz', mustache=True, height='tall'),
+ 'shakira': dict(style='tab', skin=(232, 190, 150), hair=ramp((226, 190, 110)), iris=(110, 80, 50), outfit='tee_red', build='slim'),
+ 'swift':  dict(style='tab', skin=(250, 222, 200), hair=ramp((236, 212, 150)), iris=(90, 130, 180), outfit='coat', build='slim', height='tall'),
+ 'ford':   dict(style='short', skin=(236, 196, 160), hair=ramp((96, 72, 54)), iris=(80, 100, 120), outfit='coat', build='athletic', height='tall'),
+})
+CAST['gdt'].update(chin=True); CAST['gdt_y'].update(chin=True)
+CAST['stallone'].update(smirk=True); CAST['elvis'].update(smirk=True)
+CAST['brady'].update(strong=True); CAST['brady_y'].update(strong=True)
+CAST['einstein'].update(brows='thick', age=True)
+CAST['freeman'].update(beard=True, age=True)
+CAST['hawking'].update(age=True)
+CAST['mj'].update(skin=(92, 60, 44), earring=True); CAST['mj_y'].update(skin=(92, 60, 44))
+CAST['johnson'].update(raise_=True); CAST['johnson']['raise'] = True; CAST['johnson'].pop('raise_', None)
+
+
 def resolve(who):
-    c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False)
+    c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False); c.setdefault('hair2', None); c.setdefault('mustache', False); c.setdefault('unibrow', False); c.setdefault('build', 'average'); c.setdefault('height', 'average')
     return c

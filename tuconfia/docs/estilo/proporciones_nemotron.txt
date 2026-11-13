@@ -1,0 +1,15 @@
+**Chibi 46×70 px**  
+- Cabeza: 34 px alto, 20 px ancho.  
+- Hombros: 22 px ancho, 6 px bajo la barbilla.  
+- Brazos: 12 px de longitud, 2 px de grosor; manos a 2 px del borde lateral del cuerpo.  
+- Piernas: muslo 15 px, pierna 15 px (total 30 px); grosor muslo 3 px, pierna 2 px; pie 2 px de ancho.  
+- Complejidad (grosor): slim ‑1 px; average 0; athletic +1 px; heavy +2 px; very_muscular +3 px.  
+- Altura (short/tall): short ‑2 px total (cabeza 30 px); tall +2 px (cabeza 38 px); proporciones se mantienen.  
+
+**Cuerpo completo 84×124 px**  
+- Cabeza: 26 px alto, 18 px ancho.  
+- Hombros: 28 px ancho, 8 px bajo la barbilla.  
+- Brazos: 20 px de longitud, grosor 2 px (slim) a 4 px (very_muscular); manos a 3 px del borde lateral.  
+- Piernas: muslo 35 px, pierna 45 px (total 80 px); grosor muslo 3 px (slim) a 5 px (very_muscular); pierna 2 px (slim) a 4 px (very_muscular); pie 3 px de ancho.  
+- Complejidad (grosor): slim ‑1 px; average 0; athletic +1 px; heavy +2 px; very_muscular +3 px.  
+- Altura (short/tall): short ‑3 px total (cabeza 23 px); tall +3 px (cabeza 29 px); proporciones se conservan.

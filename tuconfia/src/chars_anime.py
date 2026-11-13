@@ -107,7 +107,9 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
 
     # ------------------------------------------------ pelo trasero
     back, bd = L()
-    if style == 'tab':
+    import rasgos as RG
+    if RG.back_p(bd, CS, cx, hb, hd): pass
+    elif style == 'tab':
         bd.polygon([(cx - 27, 30), (cx - 31, 98), (cx - 20, 104), (cx + 20, 104), (cx + 31, 98), (cx + 27, 30), (cx + 16, 12), (cx - 16, 12)], fill=hb)
         bd.polygon([(cx + 18, 40), (cx + 31, 98), (cx + 20, 104), (cx + 22, 60)], fill=hd)
         for x in (cx - 24, cx - 18, cx + 18, cx + 24): bd.line([(x, 70), (x + (2 if x > cx else -2), 100)], fill=hd)
@@ -221,6 +223,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
         d.line([(lb[0], by - 2), (lb[1], by - 3)], fill=br); d.line([(rb[0], by - 3), (rb[1], by - 2)], fill=br)
     else:
         d.line([(lb[0], by), (lb[0] + 3, by - 1), (lb[1], by - 1)], fill=br); d.line([(rb[0], by - 1), (rb[1] - 3, by - 1), (rb[1], by)], fill=br)
+    RG.face_p(d, CS, cx, hd, br, by, sk, hb)
     # nariz
     px[cx + 1, 56] = (*skdd, 255); px[cx, 57] = (*skd, 255)
     # boca
@@ -250,7 +253,8 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
 
     # ------------------------------------------------ pelo frontal
     hair, d = L()
-    if style == 'shag':
+    if RG.front_p(d, CS, cx, hb, hd, hl, sk): pass
+    elif style == 'shag':
         d.polygon([(cx - 24, 52), (cx - 27, 30), (cx - 23, 14), (cx - 13, 4), (cx, 0), (cx + 13, 3), (cx + 22, 10), (cx + 27, 26), (cx + 25, 52), (cx + 21, 42), (cx + 19, 36), (cx + 14, 29), (cx + 6, 26), (cx - 4, 25), (cx - 12, 27), (cx - 18, 31), (cx - 21, 40)], fill=hb)
         d.polygon([(cx + 12, 5), (cx + 22, 10), (cx + 27, 26), (cx + 25, 52), (cx + 21, 42), (cx + 19, 30)], fill=hd)
         for a_, b_ in [((cx - 20, 12), (cx - 6, 4)), ((cx - 4, 3), (cx + 12, 6)), ((cx - 16, 22), (cx - 8, 12)), ((cx + 2, 9), (cx + 14, 14))]: d.line([a_, b_], fill=hl)
@@ -291,6 +295,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     if CS['beard']:
         d.polygon([(cx - 17, 46), (cx - 16, 58), (cx - 9, 66), (cx, 70), (cx + 9, 66), (cx + 16, 58), (cx + 17, 46), (cx + 11, 54), (cx + 5, 58), (cx - 5, 58), (cx - 11, 54)], fill=hd)
     final.alpha_composite(outline(hair, ol_hair))
+    RG.fix_p(final, CS, cx, sk, ol_hair)
     return final
 
 

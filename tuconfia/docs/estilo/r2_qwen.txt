@@ -1,0 +1,6 @@
+Analicé las fichas buscando errores flagrantes en la representación cromática de la piel y el cabello. Hay dos incoherencias principales que delatan una confusión de identidad o datos incorrectos en los sprites:
+
+1.  **Eminem (1999):** El pelo está definido como `rgb(242, 228, 170)`, un rubio platino muy claro, casi blanco. Eminem es castaño oscuro. **Corrección:** `rgb(60, 50, 45)` aprox.
+2.  **Michael Jordan (1991):** La piel es `rgb(124, 84, 62)`, un tono marrón medio. Jordan tiene un tono oscuro/ebano profundo. **Corrección:** `rgb(60, 35, 25)` aprox.
+
+El resto de los valores (Del Toro, Hawking, Messi, Stallone, Dolly, Gaga, Johnson, Brady, Elvis, Einstein, Kahlo, Freeman, Disney, Jobs) son aceptables dentro del margen estilístico del pixel art para sus rasgos étnicos y de cabello de la época citada. No hay errores en pelo rubio para el rubio (Einstein, Eminem excepto el error citado), ni en tonos de piel mezclados (como confundi blanco/moreno). Solo esos dos requieren ajuste para no parecer otra persona.

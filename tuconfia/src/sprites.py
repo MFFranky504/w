@@ -285,8 +285,11 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     pants, boots = cl['pants'], cl['boots']
     mint = (126, 232, 196)
     lo = step
-    # ---------- pelo trasero (largo en Tabitha, mechón lateral en los demás)
-    if style == 'tab':
+    # ---------- pelo trasero (largo en Tabitha, mechón lateral en los demás) y volúmenes especiales
+    import rasgos as RG
+    RG.back_r(P, CS, cx, HR)
+    if CS.get('hair2') in ('volume', 'afro', 'wild', 'bun', 'bald', 'buzz', 'pompadour'): pass
+    elif style == 'tab':
         P.add(lambda d: d.polygon([(2, 14), (3, 6), (12, 1), (32, 1), (41, 6), (42, 14), (43, 40), (38, 46), (33, 44), (33, 30), (11, 30), (11, 44), (6, 46), (1, 40)], fill=255), HR['d'], edge_k=.4)
     elif style == 'you':
         P.add(lambda d: d.polygon([(3, 18), (4, 8), (12, 3), (32, 3), (40, 8), (41, 18), (40, 30), (34, 30), (11, 30), (5, 30)], fill=255), HR['dd'], edge_k=.4)
@@ -401,7 +404,9 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
             P.rect(ex + 1, 25, ex + 2, 25, (210, 232, 255))
         P.rect(cx - 4, 21, cx + 3, 21, (34, 30, 48))
     # ---------- pelo frontal (4 tonos)
-    if style == 'shag':
+    RG.face_r(P, CS, cx, HR, sk)
+    if RG.front_r(P, CS, cx, HR, sk): pass
+    elif style == 'shag':
         P.add(lambda d: d.polygon([(cx - 21, 32), (cx - 22, 12), (cx - 15, 3), (cx - 5, 0), (cx + 6, 0), (cx + 15, 3), (cx + 21, 11), (cx + 22, 32), (cx + 18, 24), (cx + 15, 15), (cx + 8, 11), (cx - 2, 11), (cx - 10, 12), (cx - 15, 16), (cx - 18, 22)], fill=255), HR['b'], edge_k=.45)
         P.add(lambda d: d.polygon([(cx - 14, 5), (cx - 6, 1), (cx + 6, 3), (cx + 14, 8), (cx + 4, 6), (cx - 6, 8)], fill=255), HR['l'], edge=False, sh=False, hi=False)
         P.line([(cx - 4, 2), (cx - 8, 10)], HR['d'])
@@ -420,9 +425,10 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     # sombra lateral derecha + brillos
     mh = P.mask(lambda d: d.polygon([(cx + 10, 4), (cx + 19, 9), (cx + 20, 22), (cx + 17, 15), (cx + 14, 8)], fill=255))
     P.a[mh & (P.a[..., 3] > 0) & (P.a[..., :3] == HR['b']).all(-1)] = (*HR['d'], 255)
-    for (x0, y0, x1, y1) in [(cx - 14, 6, cx - 8, 4), (cx - 6, 4, cx, 3), (cx - 16, 12, cx - 14, 9)]:
-        P.line([(x0, y0), (x1, y1)], HR['l'])
-    P.line([(cx - 12, 14), (cx - 9, 13)], HR['dd']); P.line([(cx + 2, 14), (cx + 5, 13)], HR['dd'])
+    if CS.get('hair2') is None:
+        for (x0, y0, x1, y1) in [(cx - 14, 6, cx - 8, 4), (cx - 6, 4, cx, 3), (cx - 16, 12, cx - 14, 9)]:
+            P.line([(x0, y0), (x1, y1)], HR['l'])
+        P.line([(cx - 12, 14), (cx - 9, 13)], HR['dd']); P.line([(cx + 2, 14), (cx + 5, 13)], HR['dd'])
     if style == 'tab' and outfit == 'uniform':
         P.add(lambda d: d.polygon([(cx - 19, 14), (cx - 15, 3), (cx, 0), (cx + 15, 3), (cx + 19, 14)], fill=255), cb, edge_k=.45)
         P.add(lambda d: d.polygon([(cx - 21, 14), (cx + 24, 14), (cx + 26, 18), (cx - 19, 18)], fill=255), cd, edge_k=.45)
@@ -432,7 +438,7 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.rect(cx - 3, 28, cx + 3, 28, (176, 72, 84))
     if who == 'king':   # lápiz tras la oreja
         P.rect(cx + 18, 20, cx + 19, 26, (255, 200, 70)); P.rect(cx + 18, 27, cx + 19, 27, (240, 150, 140)); P.px(cx + 18, 19, (60, 50, 60))
-    if style == 'tab':    # horquilla
+    if style == 'tab' and CS.get('hair2') is None:    # horquilla
         P.rect(cx - 17, 14, cx - 14, 15, (255, 240, 170)); P.px(cx - 15, 14, (255, 255, 255))
     return P.final()
 

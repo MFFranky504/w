@@ -1,0 +1,68 @@
+{
+  "personajes": [
+    {
+      "nombre": "Lionel Messi",
+      "era": 2022,
+      "hair_style": "messy_medium",
+      "hair_color": "#3b2f2f",
+      "skin": "#f1c27d",
+      "facial_hair": "full_beard",
+      "glasses": "none",
+      "build": "slim",
+      "height": "short",
+      "face_shape": "oval",
+      "eyebrows": "normal",
+      "outfit": "tee",
+      "outfit_color": "#ccd5e0",
+      "distinctive": "barba densa gris, cabello despeinado corto, nariz prominente"
+    },
+    {
+      "nombre": "Sylvester Stallone",
+      "era": 1976,
+      "hair_style": "short_side_part",
+      "hair_color": "#2c2c2c",
+      "skin": "#e5b4a1",
+      "facial_hair": "none",
+      "glasses": "none",
+      "build": "athletic",
+      "height": "average",
+      "face_shape": "square",
+      "eyebrows": "thick",
+      "outfit": "jacket",
+      "outfit_color": "#8b4513",
+      "distinctive": "mandíbula cuadrada, cejas gruesas peinadas, mirada intensa"
+    },
+    {
+      "nombre": "J.K. Rowling",
+      "era": 1997,
+      "hair_style": "shag",
+      "hair_color": "#b8860b",
+      "skin": "#ffdbac",
+      "facial_hair": "none",
+      "glasses": "round",
+      "build": "slim",
+      "height": "short",
+      "face_shape": "round",
+      "eyebrows": "normal",
+      "outfit": "shirt",
+      "outfit_color": "#f5f5dc",
+      "distinctive": "lentes redondos, cabello castaño ondulado, sonrisa amplia"
+    },
+    {
+      "nombre": "Jim Carrey",
+      "era": 1994,
+      "hair_style": "shag",
+      "hair_color": "#8b4513",
+      "skin": "#ffe0bd",
+      "facial_hair": "none",
+      "glasses": "none",
+      "build": "average",
+      "height": "average",
+      "face_shape": "long",
+      "eyebrows": "thick",
+      "outfit": "suit",
+      "outfit_color": "#1c1c1c",
+      "distinctive": "expresión excéntrica, cabello alborotado, cejas expresivas"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw
 from lib import shade
 from sprites import Paint, SKIN, BLUSH
 from cast import resolve
+import rasgos as RG
 
 def limb(d, p0, p1, r0, r1):
     (x0, y0), (x1, y1) = p0, p1
@@ -49,8 +50,10 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
     sk = CS['skin']; skd = shade(sk, .84); skdd = shade(sk, .68)
     hc = CS['hair']
     fem = style == 'tab'
-    lf = .78 if CS['kid'] else 1.0           # niños: piernas más cortas
-    sh_w, wa_w, hp_w = (9.5, 6.0, 8.6) if fem else (11.0, 7.4, 8.6)
+    lf = .78 if CS['kid'] else RG.HEIGHT[CS.get('height', 'average')]       # piernas: más cortas que antes (la cabeza gana peso) y según la altura
+    bs, bw, bt = RG.BUILD[CS.get('build', 'average')]                     # complexión: hombros, cintura, grosor de extremidades
+    sh_w, wa_w, hp_w = (9.5 * bs, 6.0 * bw, 8.6 * bw) if fem else (11.0 * bs, 7.4 * bw, 8.6 * max(1, bw * .95))
+    T = 1.12 * bt                                                         # extremidades algo más gruesas que antes
     top, pants, shoes = o['top'], o['pants'], o['shoes']
     # ---------------- esqueleto
     hipL, hipR = (cx - 4.5, 66), (cx + 4.5, 68)
@@ -75,12 +78,12 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
     lerp = lambda a, c, t: (a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t)
     if o.get('shorts'):
         for hp, kn, an in ((hipR, kneeR, ankR), (hipL, kneeL, ankL)):
-            P.add(lambda d, hp=hp, kn=kn, an=an: chain(d, [hp, kn, an], [6.0, 4.4, 3.2]), sk, edge_k=.45)
+            P.add(lambda d, hp=hp, kn=kn, an=an: chain(d, [hp, kn, an], [6.0 * T, 4.4 * T, 3.2 * T]), sk, edge_k=.45)
             P.add(lambda d, kn=kn, an=an: limb(d, lerp(kn, an, .3), (an[0], an[1] - 1), 4.2, 3.5), o['socks'], edge_k=.5)
-            P.add(lambda d, hp=hp, kn=kn: limb(d, hp, lerp(hp, kn, .72), 7.0, 6.4), pants, edge_k=.42)
+            P.add(lambda d, hp=hp, kn=kn: limb(d, hp, lerp(hp, kn, .72), 7.0 * T, 6.4 * T), pants, edge_k=.42)
     else:
-        P.add(lambda d: chain(d, [hipR, kneeR, ankR], [6.2, 4.6, 3.4]), pants, edge_k=.42)
-        P.add(lambda d: chain(d, [hipL, kneeL, ankL], [6.4, 4.8, 3.5]), pants, edge_k=.42)
+        P.add(lambda d: chain(d, [hipR, kneeR, ankR], [6.2 * T, 4.6 * T, 3.4 * T]), pants, edge_k=.42)
+        P.add(lambda d: chain(d, [hipL, kneeL, ankL], [6.4 * T, 4.8 * T, 3.5 * T]), pants, edge_k=.42)
     if outfit == 'plaid' or outfit == 'cardigan':   # costura / pliegue en la rodilla
         P.line([(int(kneeL[0]) - 1, int(kneeL[1]) - 4), (int(kneeL[0]) - 2, int(kneeL[1]) + 3)], shade(pants, .75))
     # ---------------- zapatos angulados
@@ -91,12 +94,13 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
     if outfit == 'hoodie':
         P.rect(int(ankL[0]) - 8, GY + 1, int(ankL[0]) + 2, GY + 1, (214, 60, 70)); P.rect(int(ankR[0]) - 2, GY + 1, int(ankR[0]) + 9, GY + 1, (214, 60, 70))
     # ---------------- brazo trasero (izquierda del dibujo) se dibuja antes del torso
-    P.add(lambda d: chain(d, [shL, elbL], [3.6, 3.1]), top, edge_k=.42)
-    P.add(lambda d: chain(d, [elbL, (hndL[0], hndL[1] - 3)], [3.1, 2.8]), top, edge_k=.42)
-    P.add(lambda d: d.ellipse([hndL[0] - 3, hndL[1] - 4, hndL[0] + 3, hndL[1] + 3], fill=255), sk, edge_k=.45)
+    P.add(lambda d: chain(d, [shL, elbL], [3.6 * T, 3.1 * T]), top, edge_k=.42)
+    P.add(lambda d: chain(d, [elbL, (hndL[0], hndL[1] - 3)], [3.1 * T, 2.8 * T]), top, edge_k=.42)
+    P.add(lambda d: d.ellipse([hndL[0] - 3.5, hndL[1] - 4.5, hndL[0] + 3.5, hndL[1] + 3.5], fill=255), sk, edge_k=.45)
     P.rect(int(hndL[0]) - 1, int(hndL[1]) + 2, int(hndL[0]) + 1, int(hndL[1]) + 4, sk)
-    # ---------------- pelo trasero (Tabitha)
-    if fem:
+    # ---------------- pelo trasero (Tabitha) y volúmenes especiales
+    RG.back_b(P, CS, cx, hc)
+    if fem and CS.get('hair2') is None:
         P.add(lambda d: d.polygon([(cx - 11, 14), (cx - 12, 8), (cx - 6, 3), (cx + 6, 3), (cx + 12, 8), (cx + 11, 14), (cx + 12, 36), (cx + 9, 52), (cx + 4, 50), (cx - 4, 50), (cx - 9, 52), (cx - 12, 36)], fill=255), hc['d'], edge_k=.4)
     # ---------------- torso con cintura
     def torso(d):
@@ -156,13 +160,13 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
             P.add(lambda d, sx=sx: d.ellipse([cx + sx * 10 - 3, 26, cx + sx * 10 + 3, 34], fill=255), (56, 56, 76))
             P.rect(cx + sx * 10 - 1, 28, cx + sx * 10 + 1, 32, (255, 170, 64))
     # ---------------- brazo delantero
-    P.add(lambda d: chain(d, [shR, elbR], [3.6, 3.1]), top, edge_k=.42)
-    P.add(lambda d: chain(d, [elbR, hndR], [3.1, 2.7]), top, edge_k=.42)
+    P.add(lambda d: chain(d, [shR, elbR], [3.6 * T, 3.1 * T]), top, edge_k=.42)
+    P.add(lambda d: chain(d, [elbR, hndR], [3.1 * T, 2.7 * T]), top, edge_k=.42)
     if outfit in ('plaid', 'cardigan', 'uniform'):
         for (a, b) in ((elbL, hndL), (elbR, hndR)):
             mx, my = a[0] * .15 + b[0] * .85, a[1] * .15 + b[1] * .85
             P.add(lambda d, mx=mx, my=my: d.ellipse([mx - 3, my - 1, mx + 3, my + 1.5], fill=255), (126, 232, 196) if outfit != 'uniform' else (255, 255, 255), edge=False, sh=False, hi=False)
-    P.add(lambda d: d.ellipse([hndR[0] - 3, hndR[1] - 3.5, hndR[0] + 3, hndR[1] + 3.5], fill=255), sk, edge_k=.45)
+    P.add(lambda d: d.ellipse([hndR[0] - 3.5, hndR[1] - 4, hndR[0] + 3.5, hndR[1] + 4], fill=255), sk, edge_k=.45)
     P.rect(int(hndR[0]) - 2, int(hndR[1]) + 3, int(hndR[0]) + 1, int(hndR[1]) + 4, sk)
     # objeto
     if pose == 'hold':
@@ -205,7 +209,9 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         for ex in (cx - 7, cx + 2): P.add(lambda d, ex=ex: d.rectangle([ex, 13, ex + 5, 19], outline=255), (36, 32, 50), edge=False, sh=False, hi=False)
         P.rect(cx - 1, 16, cx + 1, 16, (36, 32, 50)); P.px(cx - 6, 18, (210, 232, 255))
     # ---------------- pelo
-    if style == 'shag':
+    RG.face_b(P, CS, cx, hc, sk)
+    if RG.front_b(P, CS, cx, hc, sk): pass
+    elif style == 'shag':
         P.add(lambda d: d.polygon([(cx - 11, 25), (cx - 11.6, 8), (cx - 6.5, 2), (cx, 0), (cx + 6.5, 1), (cx + 11, 6), (cx + 11.6, 25), (cx + 9, 18), (cx + 8, 11), (cx + 3, 8), (cx - 3, 9), (cx - 8, 12), (cx - 9.5, 19)], fill=255), hc['b'], edge_k=.45)
         P.line([(cx - 7, 4), (cx, 2)], hc['l']); P.line([(cx + 1, 2), (cx + 7, 5)], hc['l'])
     elif style == 'short':
@@ -220,7 +226,7 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.add(lambda d: d.polygon([(cx - 1, 2), (cx + 3, -3 + 3), (cx + 5, 2)], fill=255), hc['b'], edge=False)
     mh = P.mask(lambda d: d.polygon([(cx + 5, 3), (cx + 11, 6), (cx + 11, 17), (cx + 8, 10)], fill=255))
     P.a[mh & (P.a[..., 3] > 0) & (P.a[..., :3] == hc['b']).all(-1)] = (*hc['d'], 255)
-    P.line([(cx - 7, 5), (cx - 3, 3)], hc['l']); P.line([(cx - 2, 3), (cx + 3, 2)], hc['l'])
+    if CS.get('hair2') is None: P.line([(cx - 7, 5), (cx - 3, 3)], hc['l']); P.line([(cx - 2, 3), (cx + 3, 2)], hc['l'])
     if fem and outfit == 'uniform':
         P.add(lambda d: d.polygon([(cx - 10, 9), (cx - 7, 2), (cx, 0), (cx + 7, 2), (cx + 10, 9)], fill=255), o['top'], edge_k=.45)
         P.add(lambda d: d.polygon([(cx - 12, 9), (cx + 14, 9), (cx + 16, 12), (cx - 10, 12)], fill=255), o['top2'], edge_k=.45)

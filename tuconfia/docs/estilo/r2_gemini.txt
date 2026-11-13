@@ -1,0 +1,33 @@
+Aquí el análisis de la evolución en tus diseños:
+
+**1. Puntuación de parecido**
+*   **Anterior:** 4/10. Los personajes eran demasiado genéricos y faltaban rasgos icónicos.
+*   **Nueva:** 7.5/10. La adición de elementos característicos (peinados, vello facial, accesorios) ha mejorado notablemente la identidad.
+
+**2. Análisis de personajes (Hoja nueva)**
+*   **Del Toro:** Sí; falta volumen en la barba.
+*   **Walt Disney:** Sí; falta el bigote más definido.
+*   **Hawking:** Sí; falta la silla de ruedas o marco de gafas más grueso.
+*   **Jobs:** Sí; falta el cuello de tortuga negro.
+*   **Messi:** Sí; falta color de piel más bronceado.
+*   **Stallone:** No; falta expresión más ruda/asimétrica.
+*   **Dolly Parton:** Sí; falta el volumen del cabello (peinado característico).
+*   **Lady Gaga:** Sí; falta algún accesorio extravagante.
+*   **Eminem:** Sí; falta la gorra o corte muy corto.
+*   **M. Jordan:** Sí; falta la ausencia de cabello (calvicie).
+*   **D. Johnson:** Sí; falta musculatura en hombros/brazos.
+*   **Tom Brady:** Sí; falta mentón más cuadrado.
+*   **Elvis:** Sí; falta el tupé exagerado.
+*   **Einstein:** Sí; falta cejas más pobladas.
+*   **Frida:** Sí; falta la uniceja pronunciada.
+*   **Morgan Freeman:** Sí; falta barba canosa.
+
+**3. Proporciones**
+Sí, siguen siendo algo rígidos. 
+*   **Chibi:** Cambiar la proporción a 1:1.5 (cabeza un poco más grande respecto al cuerpo) para potenciar el efecto "tierno/caricaturesco".
+*   **Cuerpo entero:** Reducir ligeramente el ancho de los hombros y ajustar el largo de las piernas (actualmente parecen piernas de adulto en torso de adolescente).
+
+**4. Tres arreglos de mayor impacto**
+1.  **Siluetas de cabello:** Diferenciar los peinados es lo que más aporta al reconocimiento inmediato.
+2.  **Vello facial:** La barba en Del Toro y Einstein da mucha personalidad.
+3.  **Color de piel:** Variar los tonos permite distinguir etnias y añade realismo al conjunto.

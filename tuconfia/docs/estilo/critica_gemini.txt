@@ -1,0 +1,30 @@
+Como director de arte, el objetivo es capturar la esencia con pocos píxeles. Actualmente, las proporciones son genéricas y carecen de personalidad.
+
+### 1. Problemas de Proporción
+*   **Chibis:** La cabeza ocupa el 60% del cuerpo. Debe ser 50% máximo. Las piernas son demasiado largas (2 píxeles de pie); deben ser bloques compactos de 1x1.
+*   **Trainers:** Torso demasiado cuadrado. Necesitamos estrechar los hombros (reducir 2 px de ancho) para que la silueta no parezca un bloque uniforme.
+*   **Cabeza vs Cuerpo:** En trainers, la cabeza es minúscula. Debes aumentarla un 15% para que sea el foco visual del "anime GBA".
+*   **Extremidades:** Los brazos son simples líneas de 1px. Dales articulación (hombro/codo) con 2px de grosor.
+*   **Manos/Pies:** Son inexistentes o invisibles. Deben definirse claramente como "muñones" (chibi) o pies con contraste de color (trainer) para evitar el efecto flotante.
+
+### 2. Ajustes de Identidad
+*   **Del Toro:** Falta su icónica barba cerrada y complexión robusta.
+*   **Disney:** Falta el bigote fino.
+*   **Hawking:** Necesita la silla de ruedas o una postura encorvada.
+*   **Jobs:** Falta el cuello alto negro (turtleneck).
+*   **Messi:** Es demasiado alto; necesita complexión baja y robusta.
+*   **Stallone:** Falta expresión de ojos caídos/boca tensa.
+*   **Rowling:** Carece de su peinado característico (añade volumen).
+*   **Carrey:** Necesita una sonrisa o gesto exagerado.
+*   **Parton:** Más volumen de cabello (rubio platino).
+*   **Gaga:** El look es muy sobrio; añade un accesorio distintivo.
+*   **Eminem:** Añade su mirada desafiante (ojos más cerrados).
+*   **Jordan:** Ajusta el tono de piel (más oscuro) y añade equipación deportiva.
+*   **Johnson:** Necesita hombros mucho más anchos y expresión de tipo duro.
+*   **Brady:** Falta estructura ósea más marcada en el retrato.
+*   **Elvis:** Imprescindible el tupé prominente.
+
+### 3. Lo que funciona
+*   **Paleta de colores:** La elección de tonos apagados respeta bien el estilo retro GBA.
+*   **Claridad en los ojos:** La estructura básica de los ojos es correcta para el estilo anime; mantén el brillo simple (el punto blanco).
+*   **Consistencia:** El orden de escalas (chibi/trainer/retrato) es impecable para un menú de juego. ¡No cambies ese formato!
