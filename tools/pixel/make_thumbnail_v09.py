@@ -23,9 +23,10 @@ def build(out, lines):
     th=Image.fromarray(a.clip(0,255).astype(np.uint8)).convert("RGBA")
     draw_text(th, 40, 40, "1955 - 1985", "night7", 6, bold=True, outline="black")
     bone=["paper_hi","white","paper","night7"]
-    for (x,y,s,sc,en,gp,seed) in lines:
-        fx_text.fx_text(th, x, y, s, sc, bone, ghost=("red2",None), extrude=("red1","red0"), extrude_n=en, wear=0.02, scan=0.9, ghost_px=gp, seed=seed, bold=False)
+    for (x,y,s,sc,en,gp,seed,tr) in lines:
+        fx_text.fx_text(th, x, y, s, sc, bone, ghost=("red2",None), extrude=("red1","red0"), extrude_n=en, wear=0.02, scan=0.88, ghost_px=gp, seed=seed, bold=True, tracking=tr)
     draw_text(th, 44, 612, "VUELO 914", "red2", 7, bold=True, outline="black")
     th.convert("RGB").save(out)
-build(os.path.join(os.path.dirname(__file__), "..", "..", "episodes", "EP-001-vuelo-914", "thumbnail_v08.png"), [(48,150,"30 AÑOS",14,6,6,3),(48,335,"TARDE",18,7,7,8)])
+build(os.path.join(os.path.dirname(__file__), "..", "..", "episodes", "EP-001-vuelo-914", "thumbnail_v09.png"),
+      [(44,150,"30 AÑOS",13,9,7,3,0),(44,335,"TARDE",15,10,8,8,26)])
 print("ok")

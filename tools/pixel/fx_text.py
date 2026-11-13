@@ -5,9 +5,11 @@ from PIL import Image, ImageFilter
 from engine import P, C, layer, draw_text, text_width, BAYER
 
 
-def _mask(size, x, y, s, scale, bold=True):
+def _mask(size, x, y, s, scale, bold=True, tracking=0):
+    """`tracking` = extra pixels between letters (keeps letters apart when the extrusion fills counters)."""
     lay = layer(*size)
-    draw_text(lay, x, y, s, "white", scale, bold=bold)
+    for i, ch in enumerate(s):
+        draw_text(lay, x + i * (6 * scale + tracking), y, ch, "white", scale, bold=bold)
     return np.array(lay)[..., 3] > 0
 
 
@@ -33,11 +35,11 @@ def _paint(a, m, color):
 
 
 def fx_text(img, x, y, s, scale, ramp, glow_ramp=("red0", "red1", "red2"), ghost=("red2", "green2"),
-            extrude=("red0", "red1"), seed=1, wear=0.07, extrude_n=None, scan=0.72, ghost_px=None, bold=True):
+            extrude=("red0", "red1"), seed=1, wear=0.07, extrude_n=None, scan=0.72, ghost_px=None, bold=True, tracking=0):
     """Draw `s` at (x, y) on RGBA `img` with the full treatment. Returns the text mask."""
     size = img.size
     w, h = size
-    m = _mask(size, x, y, s, scale, bold)
+    m = _mask(size, x, y, s, scale, bold, tracking)
     a = np.array(img)
     # 1. red halo (dithered, only brightens)
     blur = np.array(Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(scale * 2.6))) / 255.0
