@@ -47,4 +47,7 @@ assert [w["text"] for p in pages for w in p] == [w["text"] for w in words]
 
 # 4. Interpolation and easing.
 assert engine.interp([0, 10], 0) == 0 and engine.interp([0, 10], 1) == 10 and engine.interp("x", 0.5) == "x"
+# 5. Music: moods with fixed and ramped levels synthesise without error and stay bounded.
+m = engine.synth_music(20.0, [dict(start=0, end=10, music="tension"), dict(start=10, end=20, music={"mood": "calm", "level": [0.9, 0.0]})])
+assert m.shape[0] == int(20 * engine.SR) + 1 and np.abs(m).max() < 1.0
 print("ok")

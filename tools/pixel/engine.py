@@ -320,7 +320,8 @@ def synth_music(total, shots, seed=914):
             if not m:
                 return None
             mood, lvl = (m["mood"], m.get("level", 1.0)) if isinstance(m, dict) else (m, 1.0)
-            return MOODS[mood][k] * lvl
+            v = MOODS[mood][k]
+            return [v * lvl[0], v * lvl[1]] if isinstance(lvl, list) else v * lvl
         comp[k] = smooth(envelope(n, shots, get), 2.0)
     out = np.zeros(n, np.float32)
     seg, tail = 8.0, 2.0
