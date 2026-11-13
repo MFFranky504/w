@@ -217,75 +217,222 @@ def bg_pool():                                                          # clue 4
     return im
 WHITE = (250, 248, 244)
 
-# ---------------------------------------------------------------- characters (tall and slim, ~100x140 cell, feet at y=138)
+
+# ---------------------------------------------------------------- detail passes (more colour, light and props)
+def glow(im, cx, cy, r, col, k=.5):
+    a = np.array(im).astype(float); yy, xx = np.mgrid[0:im.height, 0:im.width]
+    m = np.clip(1 - np.hypot(xx - cx, yy - cy) / r, 0, 1) ** 2 * k; a = np.clip(a + m[..., None] * np.array(col), 0, 255)
+    return Image.fromarray(a.astype(np.uint8))
+def beam(im, x0, x1, y0, y1, w0, w1, col, k=.25):
+    a = np.array(im).astype(float)
+    for y in range(max(y0, 0), min(y1, im.height)):
+        f = (y - y0) / max(y1 - y0, 1); cx = x0 + (x1 - x0) * f; hw = (w0 + (w1 - w0) * f) / 2
+        xa, xb = max(int(cx - hw), 0), min(int(cx + hw), im.width)
+        if xa < xb: a[y, xa:xb] = np.clip(a[y, xa:xb] + np.array(col) * k * (1 - f * .6), 0, 255)
+    return Image.fromarray(a.astype(np.uint8))
+def noise(im, box, cols, n):
+    d = ImageDraw.Draw(im); x0, y0, x1, y1 = box
+    for _ in range(n): d.point((R.randint(x0, x1), R.randint(y0, y1)), fill=R.choice(cols))
+def string_lights(d, x0, x1, y, sag=10):
+    for k in range(int((x1 - x0) / 10) + 1):
+        x = x0 + k * 10; yy = y + sag * math.sin(math.pi * k * 10 / (x1 - x0)); d.point((x, yy - 1), fill=(60, 50, 60))
+        c = [(255, 90, 90), (255, 220, 80), (90, 230, 120), (90, 190, 255), (230, 120, 255)][k % 5]; d.rectangle((x - 1, yy, x + 1, yy + 3), fill=c, outline=INK)
+def plant(d, x, y):
+    d.polygon([(x - 7, y), (x + 7, y), (x + 5, y + 12), (x - 5, y + 12)], fill=(200, 100, 70), outline=INK); d.line([(x - 6, y + 2), (x + 6, y + 2)], fill=(236, 140, 100))
+    for a in (-60, -30, 0, 30, 60): r = math.radians(a - 90); d.line([(x, y), (x + 12 * math.cos(r), y + 12 * math.sin(r))], fill=(60, 160, 80), width=3)
+def fish(d, x, y, c, flip=1):
+    d.ellipse((x - 6, y - 3, x + 6, y + 3), fill=c, outline=INK); d.polygon([(x - 6 * flip, y), (x - 10 * flip, y - 4), (x - 10 * flip, y + 4)], fill=c, outline=INK); d.point((x + 3 * flip, y - 1), fill=INK)
+
+def more_hook(im):
+    im = glow(im, 200, 100, 120, (120, 90, 200), .5); d = ImageDraw.Draw(im); d.fontmode = "1"
+    for (cx, cy, r, c, ring) in ((60, 70, 14, (240, 130, 170), (255, 210, 230)), (230, 180, 6, (130, 230, 200), None)):   # planets
+        d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=c, outline=INK); d.ellipse((cx - r + 3, cy - r + 3, cx, cy), fill=tuple(min(255, v + 40) for v in c))
+        if ring: d.arc((cx - r - 8, cy - 5, cx + r + 8, cy + 6), 0, 180, fill=ring, width=2)
+    for k in range(5):                                                       # hanging stars on strings
+        x = 30 + k * 52; y = 140 + (k % 2) * 30; d.line([(x, 0), (x, y - 6)], fill=(110, 100, 170)); star(d, x, y, 7)
+    for _ in range(40):
+        x, y = R.randint(0, W), R.randint(0, 240); d.point((x, y), fill=R.choice([(255, 200, 240), (170, 250, 255)]))
+    for k in range(6): x = 18 + k * 46; d.rectangle((x, 240, x + 6, 251), fill=(255, 210, 90), outline=INK); d.point((x + 3, 238), fill=(255, 255, 200))   # walkway lamps
+    for x in range(0, W, 40): d.rectangle((x + 16, 340, x + 24, H), fill=(36, 96, 120))
+    return im
+def more_wembley(im):
+    im = glow(im, 135, 150, 170, (255, 170, 110), .45)
+    for k, x in enumerate((70, 135, 200)): im = beam(im, x, x + (k - 1) * 60, 170, 20, 4, 60, [(255, 120, 160), (255, 240, 180), (120, 200, 255)][k], .22)
+    d = ImageDraw.Draw(im); d.fontmode = "1"
+    for k in range(3): cloud(d, 20 + k * 90, 110 + (k % 2) * 8, 40, (255, 210, 200), (240, 170, 170), (255, 240, 236))
+    for k in range(9): x = 20 + k * 29; d.line([(x, 150), (x, 138)], fill=INK); d.polygon([(x, 138), (x + 9, 141), (x, 144)], fill=[(220, 40, 60), (250, 250, 250), (40, 80, 200)][k % 3], outline=INK)   # flags
+    d.rectangle((96, 120, 174, 150), fill=(30, 30, 50), outline=INK)                                                     # big screen
+    for y in range(122, 149, 2): d.line([(98, y), (172, y)], fill=[(255, 120, 160), (255, 200, 120), (140, 200, 255)][(y // 6) % 3])
+    d.text((135, 135), "LIVE", font=F(12), fill=(255, 255, 255), anchor="mm", stroke_width=1, stroke_fill=INK)
+    for _ in range(200): x, y = R.randint(0, W), R.randint(236, 264); d.point((x, y), fill=R.choice([(255, 220, 180), (250, 120, 140), (180, 210, 255), (255, 240, 120), (40, 30, 60)]))   # crowd on the pitch
+    for k in range(30): x = 4 + k * 9; d.line([(x, 250), (x + 2, 240 - (k % 3) * 2)], fill=(60, 40, 70), width=2)      # raised arms
+    return im
+def more_garage(im):
+    d = ImageDraw.Draw(im); d.fontmode = "1"
+    noise(im, (0, 0, 148, 180), [(150, 98, 66), (186, 128, 90), (140, 92, 62)], 600)
+    string_lights(d, 0, W, 8, 8)
+    d.rectangle((150, 40, 262, 170), fill=(140, 170, 210), outline=INK); [d.line([(151, y), (261, y)], fill=(170, 196, 226)) for y in range(44, 170, 9)]   # half-open door with rain outside
+    for _ in range(60): x, y = R.randint(152, 260), R.randint(44, 120); d.line([(x, y), (x - 2, y + 5)], fill=(200, 220, 250))
+    d.rectangle((150, 120, 262, 170), fill=(200, 200, 210), outline=INK); [d.line([(151, y), (261, y)], fill=(150, 150, 166)) for y in range(124, 170, 9)]
+    d.rectangle((10, 140, 140, 144), fill=(110, 70, 44), outline=INK)                                                     # shelf with paint cans + cassette
+    for k, c in enumerate([(220, 60, 60), (60, 140, 220), (240, 200, 60), (90, 190, 110)]): d.rectangle((14 + k * 14, 128, 24 + k * 14, 140), fill=c, outline=INK); d.line([(15 + k * 14, 130), (23 + k * 14, 130)], fill=(255, 255, 255))
+    d.rectangle((76, 132, 100, 140), fill=(40, 40, 50), outline=INK); d.ellipse((80, 134, 84, 138), fill=WHITE); d.ellipse((92, 134, 96, 138), fill=WHITE)
+    d.ellipse((104, 122, 134, 140), fill=(40, 40, 46), outline=INK); d.ellipse((112, 126, 126, 136), fill=(150, 108, 72))   # old tyre
+    d.rectangle((60, 236, 130, 266), fill=(150, 50, 70), outline=INK); [d.line([(62, y), (128, y)], fill=(190, 80, 100)) for y in range(240, 266, 6)]   # rug
+    d.rectangle((140, 222, 176, 252), fill=(70, 66, 80), outline=INK); d.rectangle((144, 226, 172, 244), fill=(40, 38, 50)); [d.ellipse((147 + k * 8, 246, 151 + k * 8, 250), fill=(220, 220, 220)) for k in range(3)]   # second amp
+    d.line([(54, 236), (100, 250), (140, 240)], fill=(30, 30, 36), width=2)                                               # cable
+    im = glow(im, 75, 160, 90, (255, 200, 120), .45)
+    return im
+def more_studio(im):
+    d = ImageDraw.Draw(im); d.fontmode = "1"
+    d.rectangle((90, 154, 188, 180), fill=(20, 16, 30))                                                                    # drop shadow of the tag (redrawn on top)
+    d.rectangle((86, 150, 184, 176), fill=(255, 230, 120), outline=INK); d.polygon([(86, 150), (74, 163), (86, 176)], fill=(255, 230, 120), outline=INK)
+    d.ellipse((80, 160, 85, 165), fill=(250, 250, 250), outline=INK); d.text((137, 163), "$606.17", font=F(13), fill=(170, 40, 40), anchor="mm")
+    for k in range(2):                                                                                                  # VU meters
+        x = 30 + k * 190; d.rectangle((x, 150, x + 30, 172), fill=(250, 240, 200), outline=INK); d.arc((x + 3, 156, x + 27, 180), 200, 340, fill=(200, 60, 60)); d.line([(x + 15, 170), (x + 22 - k * 10, 158)], fill=INK)
+    for k in range(10): d.rectangle((24 + k * 22, 252, 36 + k * 22, 256), fill=[(255, 60, 90), (255, 160, 60), (255, 230, 80), (90, 230, 120), (90, 190, 255)][k % 5])   # LED strip
+    plant(d, 248, 236); d.rectangle((6, 70, 40, 120), fill=(230, 90, 110), outline=INK); d.text((23, 84), "ON", font=F(10), fill=WHITE, anchor="mm"); d.text((23, 100), "AIR", font=F(10), fill=WHITE, anchor="mm")
+    im = glow(im, 23, 95, 50, (255, 80, 110), .5); im = glow(im, 135, 95, 90, (120, 180, 255), .3)
+    d = ImageDraw.Draw(im); d.line([(40, 250), (80, 262), (140, 252)], fill=(20, 20, 26), width=2)
+    return im
+def more_aberdeen(im):
+    d = ImageDraw.Draw(im); d.fontmode = "1"
+    for k in range(3): x = 30 + k * 30; d.rectangle((x, 176, x + 22, 194), fill=[(200, 90, 80), (90, 140, 190), (230, 200, 120)][k], outline=INK); d.polygon([(x - 2, 176), (x + 24, 176), (x + 11, 166)], fill=(90, 60, 50), outline=INK); d.rectangle((x + 4, 182, x + 9, 188), fill=(255, 230, 140), outline=INK)   # houses
+    d.rectangle((150, 150, 160, 194), fill=(150, 90, 70), outline=INK); d.rectangle((130, 172, 186, 194), fill=(120, 110, 100), outline=INK)   # sawmill + chimney smoke
+    for k in range(6): r = 4 + k * 2; d.ellipse((155 - r - k * 4, 140 - k * 10 - r, 155 + r - k * 4, 140 - k * 10 + r), fill=(220, 226, 236))
+    for _ in range(170): x, y = R.randint(0, W), R.randint(0, 262); d.line([(x, y), (x - 2, y + 6)], fill=(200, 220, 240))   # rain
+    for x in range(0, W, 14): d.line([(x, 226 + (x // 14) % 3 * 3), (x + 7, 226 + (x // 14) % 3 * 3)], fill=(230, 246, 250))   # water glints
+    d.rectangle((96, 236, 150, 250), fill=(200, 60, 50), outline=INK); d.rectangle((140, 230, 160, 250), fill=(200, 60, 50), outline=INK); d.rectangle((144, 233, 156, 240), fill=(150, 200, 230))   # log truck
+    for x in (104, 128, 152): d.ellipse((x - 5, 246, x + 5, 256), fill=(30, 30, 36), outline=INK)
+    for k in range(3): d.ellipse((98 + k * 12, 226, 112 + k * 12, 236), fill=(176, 120, 70), outline=INK)
+    for x in (40, 230): d.ellipse((x - 5, 258, x + 5, 264), fill=(230, 60, 60), outline=INK); d.rectangle((x - 1, 262, x + 1, 266), fill=WHITE); d.point((x - 2, 260), fill=WHITE)   # mushrooms
+    return im
+def more_pool(im):
+    for x in (70, 150, 220): im = beam(im, x, x + 30, 40, 266, 10, 40, (255, 255, 230), .18)
+    d = ImageDraw.Draw(im)
+    for k in range(-1, 18): x = k * 16; d.rectangle((x, 40, x + 7, 44), fill=(255, 70, 70) if k % 2 else WHITE, outline=INK)   # lane rope
+    fish(d, 60, 110, (255, 160, 60)); fish(d, 220, 210, (255, 120, 190), -1); fish(d, 100, 230, (120, 230, 200))
+    for _ in range(30):
+        x, y, r = R.randint(10, 260), R.randint(60, 250), R.randint(1, 3); d.ellipse((x - r, y - r, x + r, y + r), fill=(200, 245, 255), outline=(255, 255, 255))
+    for k in range(6): x = 40 + k * 38; d.ellipse((x, 258, x + 7, 263), fill=(255, 214, 80), outline=INK)                 # coins on the floor
+    for y in range(282, H, 32):                                                                                            # mosaic stripe on the floor tiles
+        for x in range(0, W, 16): ImageDraw.Draw(im).rectangle((x + 2, y + 2, x + 13, y + 13), fill=[(60, 140, 220), (90, 200, 230)][(x // 16) % 2])
+    return im
+
+# ---------------------------------------------------------------- characters (tall and slim, 100x140 cell, feet at y=138)
+# skeleton (≈5.3 heads): head y10-36 (20 wide) · neck 36-43 · shoulders y44 (30 wide, rounded) · waist y84 (22 wide)
+# legs y92-130 tapering 9->7 px · feet y130-138 · upper arm 22 px · forearm 20 px · elbow pixel + thumb on every hand
+def limb(d, p0, p1, w0, w1, col, sh, li=None):
+    """tapered limb with a shade side (right) and an optional light side (left)"""
+    dx, dy = p1[0] - p0[0], p1[1] - p0[1]; L = math.hypot(dx, dy) or 1; nx, ny = -dy / L, dx / L
+    q = [(p0[0] + nx * w0 / 2, p0[1] + ny * w0 / 2), (p1[0] + nx * w1 / 2, p1[1] + ny * w1 / 2), (p1[0] - nx * w1 / 2, p1[1] - ny * w1 / 2), (p0[0] - nx * w0 / 2, p0[1] - ny * w0 / 2)]
+    d.polygon(q, fill=col)
+    d.polygon([q[2], q[3], ((q[3][0] * 2 + q[0][0]) / 3, (q[3][1] * 2 + q[0][1]) / 3), ((q[2][0] * 2 + q[1][0]) / 3, (q[2][1] * 2 + q[1][1]) / 3)], fill=sh)
+    if li: d.line([((q[0][0] * 3 + q[3][0]) / 4, (q[0][1] * 3 + q[3][1]) / 4), ((q[1][0] * 3 + q[2][0]) / 4, (q[1][1] * 3 + q[2][1]) / 4)], fill=li)
+    d.ellipse((p1[0] - w1 / 2, p1[1] - w1 / 2, p1[0] + w1 / 2, p1[1] + w1 / 2), fill=col)
+def hand(d, c, col, sh, fist=False, flip=1):
+    x, y = c
+    if fist:
+        d.rounded_rectangle((x - 4, y - 4, x + 4, y + 4), 2, fill=col); d.line([(x - 3, y - 1), (x + 3, y - 1)], fill=sh); d.line([(x - 3, y + 2), (x + 3, y + 2)], fill=sh)
+        tx = x + 4 if flip > 0 else x - 5; d.rectangle((tx, y - 3, tx + 1, y + 1), fill=col)      # thumb
+    else:
+        d.ellipse((x - 3, y - 3, x + 3, y + 4), fill=col); d.line([(x - 2, y + 3), (x + 2, y + 3)], fill=sh); d.point((x - 3 * flip, y - 2), fill=col); d.point((x - 4 * flip, y - 2), fill=col)
+def shoe(d, x, y, col, toe, sole, flip=1):
+    d.rounded_rectangle((x - 5, y, x + 7, y + 7), 3, fill=col); d.rectangle((x + (2 if flip > 0 else -5), y + 3, x + (7 if flip > 0 else 0), y + 6), fill=toe)
+    d.rectangle((x - 5, y + 6, x + 7, y + 7), fill=sole)
+def texture(im, box, cols, n):
+    d = ImageDraw.Draw(im); x0, y0, x1, y1 = box
+    for _ in range(n):
+        x, y = R.randint(x0, x1), R.randint(y0, y1)
+        if 0 <= x < im.width and 0 <= y < im.height and im.getpixel((x, y))[3] > 0: d.point((x, y), fill=R.choice(cols))
+
 def kurt(frame=0):
-    """grunge singer-guitarist (original design): shaggy blond hair, white oval sunglasses, fuzzy olive cardigan,
-    striped tee, ripped jeans, worn sneakers, left-handed offset guitar. frame 0 idle, 1-3 strum cycle."""
-    im = Image.new("RGBA", (100, 140), (0, 0, 0, 0)); d = ImageDraw.Draw(im); d.fontmode = "1"
-    SK, SKS = (238, 196, 168), (206, 156, 128); HAIR, HAIRS, HAIRL = (226, 188, 96), (186, 146, 64), (250, 226, 150)
-    CARD, CARDS, CARDL = (120, 128, 70), (88, 94, 50), (152, 160, 92); JEANS, JS = (110, 140, 190), (82, 106, 150)
-    bob = [0, 1, 0, -1][frame]; strum = [0, 1, 2, 1][frame]
-    for x0 in (38, 52):                                                       # legs + ripped knees + sneakers
-        d.rectangle((x0, 94, x0 + 10, 132), fill=JEANS); d.rectangle((x0 + 7, 94, x0 + 10, 132), fill=JS)
-        d.rectangle((x0 + 1, 110, x0 + 8, 113), fill=SK); d.line([(x0 + 1, 110), (x0 + 8, 110)], fill=(240, 240, 250)); d.line([(x0 + 1, 113), (x0 + 8, 113)], fill=(240, 240, 250))
-        d.rounded_rectangle((x0 - 2, 130, x0 + 12, 138), 2, fill=(70, 66, 80)); d.rectangle((x0 - 2, 136, x0 + 12, 138), fill=(236, 232, 224))
-    d.rectangle((40, 60, 60, 96), fill=(236, 236, 240)); [d.rectangle((40, y, 60, y + 2), fill=(120, 40, 50)) for y in range(62, 96, 6)]   # striped tee
-    d.polygon([(34, 52 + bob), (44, 52 + bob), (42, 100), (32, 100)], fill=CARD); d.polygon([(56, 52 + bob), (66, 52 + bob), (68, 100), (58, 100)], fill=CARD)   # cardigan fronts
-    d.rectangle((32, 54 + bob, 36, 100), fill=CARDL); d.rectangle((64, 54 + bob, 68, 100), fill=CARDS)
-    for y in range(66, 98, 10): d.ellipse((42, y, 45, y + 3), fill=(60, 50, 40))
-    for k in range(40): x, y = R.randint(32, 68), R.randint(54, 99); px = im.getpixel((x, y))
-    d.polygon([(34, 54 + bob), (26, 62), (24, 96), (30, 98), (34, 70)], fill=CARD); d.rectangle((23, 94, 31, 102), fill=SK)                                   # right arm down
-    gx, gy = 50, 90                                                                                                       # left-handed guitar (body on the right)
-    d.polygon([(gx - 34, gy - 22), (gx - 30, gy - 26), (gx + 4, gy - 4), (gx, gy)], fill=(120, 80, 50))                   # neck (headstock to the left)
-    d.rectangle((gx - 38, gy - 30, gx - 30, gy - 22), fill=(60, 40, 30))
-    d.ellipse((gx - 2, gy - 12, gx + 22, gy + 10), fill=(60, 120, 200)); d.ellipse((gx + 6, gy - 4, gx + 30, gy + 16), fill=(60, 120, 200))
-    d.ellipse((gx + 2, gy - 8, gx + 16, gy + 4), fill=(240, 240, 236)); d.rectangle((gx + 8, gy - 2, gx + 18, gy + 1), fill=(40, 40, 50))
-    d.line([(gx - 30, gy - 24), (gx + 18, gy)], fill=(220, 220, 230))
-    hx, hy = 62 + strum * 2, 84 - strum * 3; d.polygon([(66, 54 + bob), (74, 60), (hx + 4, hy), (hx - 2, hy + 2), (68, 66)], fill=CARD); d.ellipse((hx - 4, hy - 4, hx + 4, hy + 4), fill=SK)   # strumming arm
-    d.rectangle((45, 42 + bob, 55, 54 + bob), fill=SKS)                                                                   # neck
-    d.ellipse((38, 14 + bob, 62, 48 + bob), fill=SK); d.ellipse((50, 18 + bob, 62, 46 + bob), fill=SKS)                  # face
-    d.rectangle((44, 41 + bob, 56, 46 + bob), fill=(200, 160, 110)); d.point((47, 43 + bob), fill=(150, 110, 70)); d.point((52, 44 + bob), fill=(150, 110, 70))   # stubble
-    d.line([(46, 38 + bob), (54, 38 + bob)], fill=(150, 80, 80))
-    for cx in (44, 56): d.ellipse((cx - 6, 26 + bob, cx + 6, 34 + bob), fill=(250, 250, 250), outline=(180, 180, 190)); d.ellipse((cx - 4, 27 + bob, cx + 4, 33 + bob), fill=(30, 30, 44)); d.point((cx - 2, 28 + bob), fill=(160, 170, 255))   # white oval sunglasses
-    d.line([(50, 30 + bob), (50, 30 + bob)], fill=(250, 250, 250))
-    d.ellipse((32, 6 + bob, 68, 34 + bob), fill=HAIR)                                                                    # shaggy hair, parted, over the ears
-    d.polygon([(32, 20 + bob), (40, 18 + bob), (42, 52 + bob), (34, 50 + bob)], fill=HAIR); d.polygon([(68, 20 + bob), (60, 18 + bob), (60, 52 + bob), (68, 48 + bob)], fill=HAIRS)
-    d.polygon([(40, 14 + bob), (48, 12 + bob), (46, 28 + bob), (40, 26 + bob)], fill=HAIR); d.polygon([(52, 12 + bob), (62, 16 + bob), (60, 28 + bob), (54, 26 + bob)], fill=HAIR)
-    for (x0, y0, x1, y1) in ((36, 10, 46, 16), (34, 24, 36, 40), (60, 22, 62, 34)): d.line([(x0, y0 + bob), (x1, y1 + bob)], fill=HAIRL)
-    for (x0, y0) in ((34, 50), (38, 52), (64, 48), (60, 52)): d.line([(x0, y0 + bob), (x0 + R.randint(-2, 2), y0 + 5 + bob)], fill=HAIRS, width=2)
+    """grunge singer-guitarist (original design, slim): shaggy blond hair to the jaw, white oval sunglasses, fuzzy olive cardigan,
+    red/white striped tee, ripped light jeans, black sneakers, LEFT-HANDED sunburst offset guitar (right hand frets the neck)."""
+    im = Image.new("RGBA", (100, 140), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    SK, SKS, SKL = (240, 200, 172), (206, 158, 130), (252, 222, 196); HAIR, HAIRS, HAIRL, HAIRD = (232, 196, 104), (190, 148, 66), (252, 232, 160), (150, 110, 46)
+    CARD, CARDS, CARDL = (128, 136, 74), (92, 98, 52), (164, 172, 100); JE, JS, JL = (120, 156, 206), (86, 114, 164), (166, 196, 232)
+    bob = [0, 1, 0, -1][frame]; st = [0, 6, 11, 6][frame]
+    for side, x0 in ((-1, 44), (1, 56)):                                                      # legs: tapered, slight gap
+        limb(d, (x0, 92), (x0 + side, 130), 10, 7, JE, JS, JL)
+        d.rectangle((x0 - 3 + side, 108, x0 + 2 + side, 111), fill=SK); d.line([(x0 - 4 + side, 107), (x0 + 3 + side, 107)], fill=(244, 246, 252)); d.line([(x0 - 4 + side, 112), (x0 + 3 + side, 112)], fill=(244, 246, 252))
+        shoe(d, x0 + side * 2 - 1, 130, (40, 36, 46), (236, 232, 222), (236, 232, 222), side)
+    d.polygon([(40, 84), (60, 84), (62, 94), (38, 94)], fill=JE); d.line([(50, 86), (50, 94)], fill=JS)          # hips
+    d.polygon([(41, 46 + bob), (59, 46 + bob), (60, 86), (40, 86)], fill=(240, 238, 242))                         # striped tee
+    for y in range(50, 86, 5): d.line([(41, y + bob // 2), (59, y + bob // 2)], fill=(176, 40, 56), width=2)
+    d.polygon([(35, 46 + bob), (43, 46 + bob), (44, 90), (34, 90)], fill=CARD); d.polygon([(57, 46 + bob), (65, 46 + bob), (66, 90), (56, 90)], fill=CARD)    # open cardigan
+    d.line([(36, 50 + bob), (35, 88)], fill=CARDL); d.line([(64, 50 + bob), (65, 88)], fill=CARDS, width=2); d.rectangle((34, 86, 44, 90), fill=CARDS); d.rectangle((56, 86, 66, 90), fill=CARDS)
+    for y in range(58, 86, 8): d.ellipse((42, y, 44, y + 2), fill=(70, 54, 40))
+    texture(im, (34, 46, 66, 90), [CARDL, CARDS], 60)
+    gx, gy = 58, 86                                                                           # guitar: neck to viewer's left (lefty)
+    hx, hy = 8, 62
+    d.polygon([(hx, hy - 3), (gx - 6, gy - 5), (gx - 4, gy), (hx + 2, hy + 2)], fill=(146, 98, 56)); d.line([(hx + 2, hy), (gx - 6, gy - 2)], fill=(206, 160, 104))
+    for k in range(1, 9): fx = hx + k * (gx - 6 - hx) / 9; fy = hy + k * (gy - 4 - hy) / 9; d.point((fx, fy - 1), fill=(230, 220, 200))
+    d.polygon([(hx - 6, hy - 6), (hx + 2, hy - 4), (hx + 2, hy + 3), (hx - 6, hy + 1)], fill=(60, 40, 30)); [d.point((hx - 4 + k * 2, hy - 5 + (k % 2)), fill=(220, 220, 230)) for k in range(4)]
+    body = [(gx - 8, gy - 10), (gx + 6, gy - 13), (gx + 18, gy - 6), (gx + 20, gy + 6), (gx + 10, gy + 14), (gx - 6, gy + 13), (gx - 12, gy + 4)]
+    d.polygon(body, fill=(214, 86, 34)); d.polygon([(gx - 4, gy - 6), (gx + 8, gy - 8), (gx + 14, gy), (gx + 10, gy + 8), (gx - 2, gy + 8), (gx - 6, gy + 2)], fill=(250, 170, 60))   # sunburst
+    d.ellipse((gx - 1, gy - 3, gx + 7, gy + 4), fill=(255, 214, 110)); d.polygon([(gx - 10, gy + 2), (gx + 2, gy + 10), (gx - 4, gy + 12)], fill=(250, 246, 236))       # pickguard
+    d.rectangle((gx + 2, gy - 3, gx + 12, gy - 1), fill=(40, 36, 40)); d.rectangle((gx + 4, gy + 3, gx + 14, gy + 5), fill=(40, 36, 40)); d.line([(gx - 6, gy - 2), (gx + 16, gy + 2)], fill=(232, 232, 240))
+    for k in range(3): d.ellipse((gx + 12 + k * 3, gy + 6 + k * 2, gx + 14 + k * 3, gy + 8 + k * 2), fill=(250, 246, 236))
+    sx, sy = 36, 48 + bob                                                                      # his right arm: elbow out, hand on the neck
+    limb(d, (sx, sy), (26, 64), 8, 7, CARD, CARDS, CARDL); limb(d, (26, 64), (18, 64), 7, 6, CARD, CARDS); d.rectangle((19, 60, 22, 67), fill=CARDS)
+    hand(d, (16, 63), SK, SKS, flip=-1)
+    ex, ey = 68, 66 + bob                                                                      # his left arm strums over the body
+    limb(d, (64, 48 + bob), (ex, ey), 8, 7, CARD, CARDS, CARDL); limb(d, (ex, ey), (60 + st // 3, 82 + st // 2), 7, 6, CARD, CARDS); hand(d, (59 + st // 3, 86 + st // 2), SK, SKS)
+    d.rectangle((46, 36 + bob, 54, 46 + bob), fill=SKS); d.line([(46, 44 + bob), (54, 44 + bob)], fill=(196, 146, 118))           # neck
+    d.ellipse((40, 12 + bob, 60, 40 + bob), fill=SK); d.ellipse((52, 16 + bob, 61, 38 + bob), fill=SKS); d.ellipse((42, 26 + bob, 47, 32 + bob), fill=SKL)   # face
+    d.ellipse((38, 24 + bob, 42, 32 + bob), fill=SK); d.ellipse((58, 24 + bob, 62, 32 + bob), fill=SKS)
+    for cx in (45, 55):                                                                        # white oval sunglasses with dark lenses
+        d.ellipse((cx - 5, 22 + bob, cx + 5, 29 + bob), fill=(250, 250, 250)); d.ellipse((cx - 3, 23 + bob, cx + 3, 28 + bob), fill=(28, 26, 44)); d.point((cx - 2, 24 + bob), fill=(170, 180, 255))
+    d.line([(50, 25 + bob), (50, 25 + bob)], fill=(250, 250, 250)); d.rectangle((49, 29 + bob, 51, 32 + bob), fill=SKS)
+    d.line([(46, 34 + bob), (54, 34 + bob)], fill=(176, 100, 96)); [d.point((44 + k * 2, 36 + bob + (k % 2)), fill=(196, 160, 100)) for k in range(7)]           # mouth + stubble
+    d.ellipse((36, 4 + bob, 64, 26 + bob), fill=HAIR)                                          # shaggy hair, centre part, falls to the jaw
+    d.polygon([(36, 16 + bob), (42, 14 + bob), (43, 42 + bob), (40, 44 + bob), (35, 38 + bob)], fill=HAIR); d.polygon([(64, 16 + bob), (58, 14 + bob), (58, 42 + bob), (61, 44 + bob), (65, 38 + bob)], fill=HAIRS)
+    d.polygon([(42, 8 + bob), (49, 7 + bob), (47, 21 + bob), (42, 19 + bob)], fill=HAIR); d.polygon([(51, 7 + bob), (59, 10 + bob), (58, 21 + bob), (53, 19 + bob)], fill=HAIRS)
+    d.line([(50, 6 + bob), (50, 12 + bob)], fill=HAIRD)
+    for (x0, y0, x1, y1, c) in ((39, 9, 46, 6, HAIRL), (37, 18, 38, 34, HAIRL), (44, 10, 45, 18, HAIRL), (60, 18, 61, 36, HAIRD), (55, 10, 56, 18, HAIRD)): d.line([(x0, y0 + bob), (x1, y1 + bob)], fill=c)
+    for (x0, y0) in ((36, 38), (39, 42), (62, 40), (59, 42), (42, 20), (57, 20)): d.line([(x0, y0 + bob), (x0 + R.choice((-1, 1)), y0 + 4 + bob)], fill=HAIRS)
     return outline(im)
 
 def freddie(frame=0):
-    """Live Aid 1985 look (original design): short black hair, moustache, white tank top, light-wash jeans, studded armband,
-    belt, white high-tops, half mic stand. frame 0 idle, 1 fist up, 2 lunge, 3 fist up (alt)."""
-    im = Image.new("RGBA", (100, 140), (0, 0, 0, 0)); d = ImageDraw.Draw(im); d.fontmode = "1"
-    SK, SKS, SKL = (196, 146, 110), (160, 112, 82), (220, 172, 136); TANK, TS = (248, 248, 250), (210, 214, 224); JE, JS = (150, 186, 220), (116, 150, 190)
-    up = frame in (1, 3); lunge = frame == 2; dy = 1 if lunge else 0
-    for k, x0 in enumerate((36, 54)):                                                         # legs (wider stance when lunging)
-        off = (-4 if k == 0 else 4) if lunge else 0
-        d.polygon([(x0 + 2, 92), (x0 + 12, 92), (x0 + 12 + off, 132), (x0 + 2 + off, 132)], fill=JE); d.line([(x0 + 10, 94), (x0 + 11 + off, 130)], fill=JS)
-        d.rounded_rectangle((x0 + off, 128, x0 + 14 + off, 138), 2, fill=WHITE); d.rectangle((x0 + off, 136, x0 + 14 + off, 138), fill=(190, 190, 200)); d.line([(x0 + 3 + off, 131), (x0 + 11 + off, 131)], fill=(60, 60, 70))
-    d.rectangle((36, 88 + dy, 68, 94 + dy), fill=(70, 50, 40)); d.rectangle((49, 88 + dy, 55, 94 + dy), fill=(230, 210, 120), outline=INK)          # belt + buckle
-    d.rounded_rectangle((38, 52 + dy, 66, 90 + dy), 4, fill=TANK); d.rectangle((60, 54 + dy, 66, 90 + dy), fill=TS)                                    # tank top
-    d.polygon([(42, 52 + dy), (48, 52 + dy), (52, 62 + dy), (56, 52 + dy), (62, 52 + dy), (60, 46 + dy), (44, 46 + dy)], fill=SK)                    # chest/neckline
-    d.rectangle((28, 54 + dy, 38, 60 + dy), fill=SK); d.rectangle((66, 54 + dy, 76, 60 + dy), fill=SK)                                                # shoulders
-    d.polygon([(28, 56 + dy), (22, 70 + dy), (24, 92 + dy), (30, 92 + dy), (32, 70 + dy), (36, 60 + dy)], fill=SK)                                    # left arm holds the half mic stand
-    d.rectangle((22, 66 + dy, 32, 70 + dy), fill=(30, 30, 36)); [d.point((24 + k * 2, 68 + dy), fill=(220, 220, 230)) for k in range(4)]             # studded armband
-    d.line([(26, 92 + dy), (16, 64 + dy)], fill=(180, 180, 190), width=3); d.ellipse((12, 56 + dy, 20, 66 + dy), fill=(60, 60, 70), outline=INK)      # half mic stand + mic
-    d.ellipse((22, 88 + dy, 30, 96 + dy), fill=SK)
-    if up:                                                                                     # right fist in the air
-        d.polygon([(70, 56), (78, 54), (84, 30), (78, 28)], fill=SK); d.polygon([(78, 28), (84, 30), (86, 12), (80, 10)], fill=SK); d.rectangle((77, 2, 89, 12), fill=SK); d.line([(79, 6), (87, 6)], fill=SKS)
+    """Live Aid 1985 look (original design, slim): short black hair, thick moustache, white ribbed tank top, light-wash jeans,
+    studded armband on the right bicep, belt with buckle, white high-tops, half mic stand. 0 idle · 1 fist up · 2 lunge · 3 fist up (sing)."""
+    im = Image.new("RGBA", (100, 140), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    SK, SKS, SKL = (200, 150, 112), (164, 116, 84), (224, 178, 140); T, TS, TL = (250, 250, 252), (206, 212, 226), (255, 255, 255)
+    JE, JS, JL = (156, 192, 226), (118, 152, 194), (196, 222, 244)
+    up = frame in (1, 3); lunge = frame == 2; dy = 2 if lunge else 0
+    for side, x0 in ((-1, 44), (1, 56)):
+        foot = x0 + (side * 7 if lunge else side)
+        limb(d, (x0, 92 + dy), ((x0 + foot) / 2, 112), 10, 9, JE, JS, JL); limb(d, ((x0 + foot) / 2, 112), (foot, 130), 9, 7, JE, JS, JL)
+        d.point(((x0 + foot) / 2 - 2, 114), fill=JL); d.point(((x0 + foot) / 2 + 1, 118), fill=JL)
+        d.rounded_rectangle((foot - 5, 126, foot + 6, 132), 2, fill=T); shoe(d, foot, 131, (248, 248, 250), (220, 224, 236), (176, 180, 196), side)
+        d.line([(foot - 3, 128), (foot + 3, 128)], fill=(40, 60, 140)); d.line([(foot - 3, 130), (foot + 3, 130)], fill=(40, 60, 140))
+    d.polygon([(40, 84 + dy), (60, 84 + dy), (62, 94 + dy), (38, 94 + dy)], fill=JE)
+    d.rectangle((39, 84 + dy, 61, 88 + dy), fill=(80, 56, 40)); d.rectangle((47, 83 + dy, 53, 89 + dy), fill=(236, 210, 120)); d.rectangle((49, 85 + dy, 51, 87 + dy), fill=(170, 130, 60))
+    d.polygon([(40, 46 + dy), (60, 46 + dy), (61, 85 + dy), (39, 85 + dy)], fill=T); d.polygon([(55, 48 + dy), (60, 46 + dy), (61, 85 + dy), (56, 85 + dy)], fill=TS)   # tank top
+    for y in range(52, 84, 3): d.line([(41, y + dy), (54, y + dy)], fill=(240, 242, 248))
+    d.polygon([(42, 44 + dy), (46, 44 + dy), (50, 56 + dy), (54, 44 + dy), (58, 44 + dy), (56, 40 + dy), (44, 40 + dy)], fill=SK); d.line([(48, 46 + dy), (50, 52 + dy)], fill=SKS)   # neckline + chest
+    d.ellipse((34, 42 + dy, 44, 52 + dy), fill=SK); d.ellipse((56, 42 + dy, 66, 52 + dy), fill=SKS)                      # rounded shoulders
+    limb(d, (38, 48 + dy), (32, 68 + dy), 9, 8, SK, SKS, SKL); limb(d, (32, 68 + dy), (28, 86 + dy), 8, 6, SK, SKS, SKL)  # his right arm holds the half stand
+    d.rectangle((30, 57 + dy, 38, 61 + dy), fill=(26, 24, 30)); [d.point((31 + k * 2, 59 + dy), fill=(230, 230, 240)) for k in range(4)]
+    d.line([(28, 90 + dy), (20, 60 + dy)], fill=(196, 196, 206), width=3); d.line([(27, 90 + dy), (19, 60 + dy)], fill=(240, 240, 248))
+    d.ellipse((15, 52 + dy, 23, 61 + dy), fill=(70, 70, 82)); [d.point((17 + k * 2, 55 + dy + (k % 2)), fill=(150, 150, 164)) for k in range(3)]
+    hand(d, (28, 88 + dy), SK, SKS, fist=True, flip=-1)
+    if up:                                                                                     # left fist in the air (elbow bent)
+        limb(d, (62, 48), (72, 32), 9, 8, SK, SKS, SKL); limb(d, (72, 32), (74, 14), 8, 7, SK, SKS, SKL); hand(d, (74, 10), SK, SKS, fist=True)
     else:
-        d.polygon([(68, 56 + dy), (76, 56 + dy), (80, 90 + dy), (72, 92 + dy)], fill=SK); d.ellipse((72, 88 + dy, 80, 96 + dy), fill=SK)
-    d.rectangle((46, 40 + dy, 56, 50 + dy), fill=SKS)                                                                       # neck
-    d.ellipse((38, 14 + dy, 64, 46 + dy), fill=SK); d.ellipse((54, 18 + dy, 64, 44 + dy), fill=SKS); d.ellipse((40, 30 + dy, 46, 40 + dy), fill=SKL)
-    d.ellipse((36, 26 + dy, 40, 36 + dy), fill=SK)
-    d.ellipse((38, 8 + dy, 64, 26 + dy), fill=(22, 18, 24)); d.rectangle((38, 16 + dy, 42, 28 + dy), fill=(22, 18, 24)); d.rectangle((60, 16 + dy, 64, 26 + dy), fill=(22, 18, 24))   # short black hair
-    d.line([(42, 12 + dy), (50, 10 + dy)], fill=(70, 66, 80))
-    for ex in (44, 54): d.rectangle((ex, 27 + dy, ex + 4, 29 + dy), fill=(240, 236, 230)); d.rectangle((ex + 2, 27 + dy, ex + 3, 29 + dy), fill=(30, 20, 18)); d.line([(ex - 1, 25 + dy), (ex + 5, 24 + dy)], fill=(22, 18, 24), width=2)
-    d.rectangle((49, 30 + dy, 52, 35 + dy), fill=SKS)
-    d.rectangle((44, 36 + dy, 58, 39 + dy), fill=(22, 18, 24))                                                              # moustache
-    d.rectangle((46, 40 + dy, 56, 43 + dy), fill=(250, 248, 240) if up or lunge else (150, 80, 80)); d.line([(46, 43 + dy), (56, 43 + dy)], fill=(120, 60, 60))   # open mouth when singing
+        limb(d, (62, 48 + dy), (68, 68 + dy), 9, 8, SK, SKS, SKL); limb(d, (68, 68 + dy), (70, 86 + dy), 8, 6, SK, SKS, SKL); hand(d, (70, 89 + dy), SK, SKS)
+    d.rectangle((46, 34 + dy, 54, 44 + dy), fill=SKS)                                                                         # neck
+    d.ellipse((40, 12 + dy, 60, 40 + dy), fill=SK); d.ellipse((52, 16 + dy, 61, 38 + dy), fill=SKS); d.ellipse((42, 24 + dy, 47, 32 + dy), fill=SKL)
+    d.ellipse((38, 22 + dy, 42, 30 + dy), fill=SK); d.ellipse((58, 22 + dy, 62, 30 + dy), fill=SKS)
+    d.ellipse((39, 6 + dy, 61, 22 + dy), fill=(26, 20, 26)); d.rectangle((39, 14 + dy, 42, 26 + dy), fill=(26, 20, 26)); d.rectangle((58, 14 + dy, 61, 24 + dy), fill=(26, 20, 26))   # short hair
+    d.line([(44, 9 + dy), (52, 8 + dy)], fill=(80, 74, 96)); d.point((56, 11 + dy), fill=(80, 74, 96))
+    for ex in (43, 52):
+        d.rectangle((ex, 24 + dy, ex + 4, 26 + dy), fill=(244, 240, 234)); d.rectangle((ex + 2, 24 + dy, ex + 3, 26 + dy), fill=(40, 26, 20)); d.line([(ex - 1, 22 + dy), (ex + 5, 21 + dy)], fill=(26, 20, 26), width=2)
+    d.rectangle((49, 27 + dy, 51, 31 + dy), fill=SKS)
+    d.rectangle((44, 32 + dy, 56, 34 + dy), fill=(26, 20, 26)); d.point((44, 35 + dy), fill=(26, 20, 26)); d.point((56, 35 + dy), fill=(26, 20, 26))     # moustache
+    if up or lunge: d.rectangle((46, 35 + dy, 54, 38 + dy), fill=(110, 40, 46)); d.line([(46, 35 + dy), (54, 35 + dy)], fill=(250, 248, 240))
+    else: d.line([(46, 36 + dy), (54, 36 + dy)], fill=(140, 76, 70))
     return outline(im)
 
 # ---------------------------------------------------------------- tiles + UI parts
@@ -329,8 +476,8 @@ def label(d, x, y, t, s=14, col=(255, 240, 200)): d.text((x, y), t, font=F(s), f
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    bgs = [("HOOK (noche estrellada)", bg_hook()), ("AYER: QUEEN · Live Aid 1985", bg_wembley()), ("PISTA 1 · los nombres de antes", bg_garage()),
-           ("PISTA 2 · el álbum de $606.17", bg_studio()), ("PISTA 3 · 1987, pueblo maderero", bg_aberdeen()), ("PISTA 4 · la portada (anzuelo)", bg_pool())]
+    bgs = [("HOOK (noche estrellada)", more_hook(bg_hook())), ("AYER: QUEEN · Live Aid 1985", more_wembley(bg_wembley())), ("PISTA 1 · los nombres de antes", more_garage(bg_garage())),
+           ("PISTA 2 · el álbum de $606.17", more_studio(bg_studio())), ("PISTA 3 · 1987, pueblo maderero", more_aberdeen(bg_aberdeen())), ("PISTA 4 · la portada (anzuelo)", more_pool(bg_pool()))]
     s = 2; cw, ch = W * s, H * s; sheet = Image.new("RGB", (3 * cw + 40, 2 * ch + 120), (16, 12, 30)); d = ImageDraw.Draw(sheet)
     label(d, 10, 10, "PARTE 12 · FONDOS (270x480, ×2) · estilo GBA original", 22)
     for i, (t, im) in enumerate(bgs):
