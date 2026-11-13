@@ -78,17 +78,22 @@ def gradient(img, box, ramp, axis="y", mask=None):
 
 
 def glow(img, cx, cy, r, ramp, strength=1.0, sy=1.0):
-    """Radial dithered light: inner pixels take the brightest ramp colours, edge keeps the pixel."""
-    ramp = [None] + list(ramp)
-    x0, y0 = int(cx - r), int((cy - r * sy))
-    ys, xs = np.mgrid[y0:int(cy + r * sy) + 1, x0:int(cx + r) + 1]
+    """Radial dithered light. Light only brightens: a pixel changes only if the ramp colour is lighter."""
+    x0, y0 = max(0, int(cx - r)), max(0, int(cy - r * sy))
+    x1, y1 = min(img.width, int(cx + r) + 1), min(img.height, int(cy + r * sy) + 1)
+    if x1 <= x0 or y1 <= y0:
+        return
+    ys, xs = np.mgrid[y0:y1, x0:x1]
     d = np.sqrt(((xs - cx) / r) ** 2 + ((ys - cy) / (r * sy)) ** 2)
     t = (1 - d) * strength
-    t[t <= 0.08] = -1
-    # clip to image
-    ox, oy = max(0, -x0), max(0, -y0)
-    t = t[oy:, ox:][: img.height - max(0, y0), : img.width - max(0, x0)]
-    ramp_fill(img, t, ramp, None, max(0, x0), max(0, y0))
+    idx = np.floor(t * len(ramp) + bayer(x1 - x0, y1 - y0, x0, y0)).astype(int)  # 0 = untouched
+    cols = np.array([(0, 0, 0)] + [P[c] for c in ramp], dtype=np.int32)[idx.clip(0, len(ramp))]
+    a = np.array(img)
+    view = a[y0:y1, x0:x1]
+    lum = lambda c: c[..., 0] * 3 + c[..., 1] * 6 + c[..., 2]
+    m = (idx > 0) & (t > 0) & (lum(cols) > lum(view[..., :3].astype(np.int32)))
+    view[..., :3][m] = cols[m].astype(np.uint8)
+    img.paste(Image.fromarray(a))
 
 
 def mask_of(size, draw_fn):
@@ -123,6 +128,10 @@ G = {
     "¿": "..#..|.....|..#..|.#...|#....|#...#|.###.", "!": "..#..|..#..|..#..|..#..|..#..|.....|..#..",
     "¡": "..#..|.....|..#..|..#..|..#..|..#..|..#..", " ": ".....|.....|.....|.....|.....|.....|.....",
     "'": "..#..|..#..|.....|.....|.....|.....|.....", '"': ".#.#.|.#.#.|.....|.....|.....|.....|.....",
+    "«": ".....|..#.#|.#.#.|#.#..|.#.#.|..#.#|.....", "»": ".....|#.#..|.#.#.|..#.#|.#.#.|#.#..|.....",
+    "+": ".....|..#..|..#..|#####|..#..|..#..|.....", "=": ".....|.....|#####|.....|#####|.....|.....",
+    "(": "...#.|..#..|.#...|.#...|.#...|..#..|...#.", ")": ".#...|..#..|...#.|...#.|...#.|..#..|.#...",
+    "/": "....#|....#|...#.|..#..|.#...|#....|#....", "%": "##..#|##..#|...#.|..#..|.#...|#..##|#..##",
 }
 ACCENT = {"Á": ("A", "...#.|..#.."), "É": ("E", "...#.|..#.."), "Í": ("I", "...#.|..#.."),
           "Ó": ("O", "...#.|..#.."), "Ú": ("U", "...#.|..#.."), "Ñ": ("N", ".##.#|#.##."), "Ü": ("U", ".....|.#.#.")}
@@ -421,7 +430,7 @@ class Frames:
         u = lt / max(1e-6, shot["end"] - shot["start"])
         p = {k: interp(v, u) for k, v in shot.get("params", {}).items()}
         cam = shot.get("camera", {})
-        cx, cy = interp(cam.get("x", 0), u), interp(cam.get("y", 0), u)
+        cx, cy = interp(cam.get("x", 32), u), interp(cam.get("y", 18), u)  # default: centred on the 704x396 world
         if focus is not None:  # vertical crop: centre the camera on a scene x
             cx += focus - view[0] / S / 2
         frame = Image.new("RGBA", view, C("black"))

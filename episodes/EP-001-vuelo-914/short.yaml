@@ -1,0 +1,99 @@
+# EP-001 Short (9:16, ~40 s): hook in the first 3 s, ends pointing to the full episode.
+# Render: python3 tools/pixel/engine.py episodes/EP-001-vuelo-914/short.yaml --short
+# Uses the same scenes and sources as episode.yaml. vfocus = scene x to centre in the vertical crop.
+name: vuelo914_short
+version: v01
+voice: es-MX-JorgeNeural
+rate: "-4%"
+lead: 0.05
+short_title: "VUELO 914"
+
+lines:
+  - text: "Este avión desapareció en mil novecientos cincuenta y cinco."
+    pause_after: 0.1
+    shots:
+      - scene: plane_side
+        camera: {x: 24, y: 24}
+        params: {x: [60, 20], props: 45}
+        badge: "LEYENDA"
+        sfx: {rain_out: 0.5, engine: 0.6}
+        music: tension
+        vfocus: 330
+  - text: "Y treinta años después, aterrizó en Caracas."
+    pause_after: 0.2
+    shots:
+      - scene: radar
+        camera: {x: [40, 26], y: [24, 14]}
+        params: {blip_at: 0.3}
+        badge: "LEYENDA"
+        sfx: {hum: 0.6, static: 0.2}
+        music: tension
+        vfocus: 352
+  - text: "El piloto preguntó dónde estaba. Al oír la fecha, despegó. Y nunca más se supo de él."
+    pause_after: 0.4
+    shots:
+      - scene: face
+        camera: {x: 24, y: 18}
+        params: {zoom: 1.7, eye_x: 330, eye_y: 180, wide: [0.0, 1.0], brows: [0.4, 1.0], look: [-0.8, 0.2], blink: false}
+        badge: "LEYENDA"
+        sfx: {static: 0.4, hum: 0.3}
+        music: tension
+        vfocus: 330
+      - scene: runway
+        at: "despegó"
+        camera: {x: 32, y: [20, 4]}
+        params: {plane: depart, prog: [0.0, 1.0]}
+        badge: "LEYENDA"
+        sfx: {rain_out: 0.7, engine: [0.5, 0.0]}
+        music: {mood: tension, level: [0.9, 0.2]}
+        vfocus: 352
+  - text: "Eso dice la historia. Pero cuando buscas su origen, aparece algo raro."
+    pause_after: 0.3
+    shots:
+      - scene: phone
+        camera: {x: [20, 30], y: 16}
+        params: {view: bed}
+        badge: "INVESTIGACIÓN"
+        music: mystery
+        vfocus: 200
+      - scene: archive
+        at: "pero"
+        camera: {x: 40, y: 10}
+        params: {close: true, search: [0.0, 1.0]}
+        badge: "INVESTIGACIÓN"
+        sfx: {hum: 0.3}
+        music: mystery
+        vfocus: 250
+  - text: "Nació en un tabloide que publicaba ficción. Y el testigo tiene dos caras."
+    pause_after: 0.4
+    shots:
+      - scene: newsstand
+        camera: {x: [30, 40], y: 18}
+        params: {close: true}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        sfx: {rain_out: 0.2}
+        music: reveal
+        vfocus: 300
+      - scene: portraits
+        at: "y"
+        params: {show: 1.0}
+        badge: "VERIFICADO · SNOPES"
+        caption: "ILUSTRACIÓN"
+        music: reveal
+        vfocus: 203
+      - scene: portraits
+        at: "dos"
+        params: {show: 1.0, question: 1.0}
+        badge: "VERIFICADO · SNOPES"
+        caption: "ILUSTRACIÓN"
+        music: reveal
+        vfocus: 501
+  - text: "La investigación completa está en el video relacionado."
+    pause_after: 0.8
+    shots:
+      - scene: title
+        params: {text: "VUELO 914", sub: "VIDEO COMPLETO"}
+        sfx: {rain_in: 0.4}
+        music: {mood: calm, level: [0.9, 0.3]}
+        vfocus: 352
+tail: []

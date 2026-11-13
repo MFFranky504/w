@@ -21,6 +21,9 @@ SKIN = ["skin0", "skin1", "skin2", "skin3", "skin4"]
 HAIR = ["hair", "night0", "night1", "night2"]
 SHIRT = ["night2", "night3", "night4", "night5", "night6"]
 RIM_GREEN = ["green1", "green2", "green3"]
+RIMS = {"green": RIM_GREEN, "blue": ["night6", "night7", "paper"], "lamp": ["lamp2", "lamp3", "lamp4"], "teal": ["teal1", "night7", "paper"]}
+SHIRTS = {"shirt": SHIRT, "red": ["red0", "red1", "red2", "night5"], "dark": ["night0", "night1", "night2", "night3"],
+          "teal": ["night1", "teal0", "teal1", "night6"]}
 
 
 # ------------------------------------------------------------------ helpers
@@ -112,28 +115,39 @@ def head(img, ox, oy, s, t, p):
     E = lambda cx, cy, rx, ry: mask_of(size, lambda d: d.ellipse([ox + (cx - rx) * s, oy + (cy - ry) * s,
                                                                  ox + (cx + rx) * s, oy + (cy + ry) * s], fill=1))
     rim_w = max(1, round(s / 40))
+    RIM = RIMS[p.get("rim", "green")]
+    SHIRT_R = SHIRTS[p.get("shirt", "shirt")]
 
     # neck and shirt (bust=False when a body is drawn separately)
     neck = M([(0.28, 0.80), (0.58, 0.80), (0.62, 1.14), (0.30, 1.14)])
-    shade(img, neck, SKIN, bias=-0.35, rim=RIM_GREEN, rim_w=rim_w)
+    shade(img, neck, SKIN, bias=-0.35, rim=RIM, rim_w=rim_w)
     shirt = np.zeros((size[1], size[0]), bool) if not p.get("bust", True) else M([(-0.15, 1.40), (-0.05, 1.12), (0.18, 1.02), (0.38, 1.12), (0.64, 1.00), (0.98, 1.10), (1.12, 1.40)])
-    shade(img, shirt, SHIRT, bias=0.05, rim=RIM_GREEN, rim_w=rim_w)
+    shade(img, shirt, SHIRT_R, bias=0.05, rim=RIM, rim_w=rim_w)
     collar = M([(0.18, 1.02), (0.34, 1.16), (0.40, 1.12), (0.30, 0.98)]) | M([(0.40, 1.12), (0.48, 1.18), (0.66, 1.02), (0.58, 0.96)])
     shade(img, collar, ["night5", "night6", "night7", "paper"], bias=0.1)
     tie = M([(0.38, 1.12), (0.46, 1.12), (0.48, 1.40), (0.34, 1.40)])
-    shade(img, tie, ["red0", "red1", "red2"], bias=-0.1)
+    if p.get("tie", True):
+        shade(img, tie, ["red0", "red1", "red2"], bias=-0.1)
 
     # face, ear, hair
     face = M([(0.14, 0.18), (0.10, 0.36), (0.09, 0.42), (0.03, 0.555), (0.09, 0.60), (0.11, 0.66), (0.10, 0.71),
               (0.15, 0.86), (0.26, 0.95), (0.48, 0.90), (0.66, 0.72), (0.68, 0.44), (0.62, 0.22), (0.38, 0.12)])
-    shade(img, face, SKIN, light=(-1.0, 0.1), bias=0.02, contrast=1.15, rim=RIM_GREEN, rim_w=rim_w)
+    shade(img, face, SKIN, light=(-1.0, 0.1), bias=0.02, contrast=1.15, rim=RIM, rim_w=rim_w)
     # jaw and under-chin shadow
     shade(img, M([(0.20, 0.90), (0.48, 0.86), (0.60, 0.76), (0.50, 0.92), (0.26, 0.97)]) & face, SKIN, bias=-0.45)
     ear = E(0.70, 0.50, 0.06, 0.09)
     shade(img, ear, SKIN, bias=-0.2)
-    hair = M([(0.11, 0.25), (0.17, 0.10), (0.34, 0.02), (0.56, 0.02), (0.75, 0.10), (0.85, 0.27), (0.84, 0.47),
+    style = p.get("hair", "short")
+    if style == "long":  # shoulder-length hair falling behind the ear
+        hair = M([(0.10, 0.26), (0.15, 0.09), (0.34, 0.00), (0.58, 0.00), (0.80, 0.10), (0.92, 0.30), (0.96, 0.70),
+                  (1.00, 1.08), (0.70, 1.10), (0.66, 0.80), (0.64, 0.40), (0.58, 0.24), (0.40, 0.17), (0.20, 0.22)])
+    elif style == "bald":
+        hair = M([(0.62, 0.30), (0.80, 0.26), (0.85, 0.40), (0.80, 0.58), (0.68, 0.60), (0.64, 0.42)])
+    else:
+        hair = None
+    hair = hair if hair is not None else M([(0.11, 0.25), (0.17, 0.10), (0.34, 0.02), (0.56, 0.02), (0.75, 0.10), (0.85, 0.27), (0.84, 0.47),
               (0.78, 0.63), (0.68, 0.62), (0.66, 0.40), (0.60, 0.26), (0.42, 0.18), (0.22, 0.21)])
-    shade(img, hair, HAIR, light=(-1.0, -0.6), bias=-0.05, rim=["green0", "green1", "green2"], rim_w=rim_w)
+    shade(img, hair, HAIR, light=(-1.0, -0.6), bias=-0.05, rim=RIM[:2] if p.get("rim", "green") != "green" else ["green0", "green1", "green2"], rim_w=rim_w)
 
     # cheek shadow beside the nose, nostril, tired under-eye
     shade(img, M([(0.11, 0.43), (0.18, 0.56), (0.13, 0.615), (0.10, 0.58)]) & face, SKIN, bias=-0.35)
@@ -166,13 +180,21 @@ def head(img, ox, oy, s, t, p):
         fill(img, M([(x0, y0b), (x1, y1b), (x1, y1b + 0.022), (x0, y0b + 0.026)]), "hair")
 
     # moustache and mouth
-    fill(img, M([(0.075, 0.625), (0.13, 0.612), (0.26, 0.632), (0.30, 0.668), (0.24, 0.676), (0.12, 0.664), (0.08, 0.66)]), "hair")
+    if p.get("mustache", True):
+        fill(img, M([(0.075, 0.625), (0.13, 0.612), (0.26, 0.632), (0.30, 0.668), (0.24, 0.676), (0.12, 0.664), (0.08, 0.66)]), "hair")
     talk = p.get("talk", 0.0) * (0.5 + 0.5 * math.sin(t * 17.0)) * (0.6 + 0.4 * math.sin(t * 5.3))
     if talk > 0.15:
         fill(img, E(0.165, 0.705, 0.06, 0.012 + 0.02 * talk), "skin0")
     else:
         fill(img, M([(0.11, 0.704), (0.24, 0.700), (0.24, 0.708), (0.11, 0.712)]), "skin0")
 
+    if p.get("glasses"):
+        d = ImageDraw.Draw(img)
+        w = max(1, round(s * 0.014))
+        d.rectangle(pts(ox, oy, s, [(0.29, 0.39), (0.45, 0.48)]), outline=C("night1"), width=w)
+        d.rectangle(pts(ox, oy, s, [(0.12, 0.395), (0.22, 0.475)]), outline=C("night1"), width=w)
+        d.line(pts(ox, oy, s, [(0.22, 0.42), (0.29, 0.42)]), fill=C("night1"), width=w)
+        d.line(pts(ox, oy, s, [(0.45, 0.42), (0.68, 0.45)]), fill=C("night1"), width=w)
     if p.get("headset", True):
         d = ImageDraw.Draw(img)
         w = max(1, round(s * 0.03))
@@ -608,3 +630,442 @@ def title(t, lt, u, p):
     ImageDraw.Draw(g).line([(WW // 2 - 60, 222), (WW // 2 + 60, 222)], fill=C("red1"))
     draw_text(g, (WW - text_width(sub, 2)) // 2, 232, sub, "night6", 2)
     return [(1.0, g), (1.2, rain(WW + 80, WH, t, n=120, speed=400, length=8, colors=("night2", "night3"), seed=10))]
+
+
+# ================================================================== full-episode scenes
+import json
+import os
+
+_DATA = os.path.join(os.path.dirname(__file__), "data")
+
+
+def _rain_window(im, box, t, seed=3):
+    """A rainy night window: dark glass, a far street light, sliding drops."""
+    x0, y0, x1, y1 = box
+    gradient(im, (x0, y0, x1, y1), ["night1", "night2", "night1"])
+    glow(im, x0 + (x1 - x0) * 0.7, y0 + (y1 - y0) * 0.35, (x1 - x0) * 0.35, ["night2", "lamp0", "lamp1"], strength=0.6)
+    d = ImageDraw.Draw(im)
+    r = rng(seed)
+    for i in range(40):
+        x = x0 + r.rand() * (x1 - x0)
+        y = y0 + (r.rand() * (y1 - y0) + t * (8 + 12 * r.rand())) % (y1 - y0)
+        d.line([(x, y), (x, y + 2)], fill=C("night5"))
+    d.rectangle([x0, y0, x1, y1], outline=C("black"), width=4)
+    d.line([((x0 + x1) // 2, y0), ((x0 + x1) // 2, y1)], fill=C("black"), width=3)
+
+
+def phone(t, lt, u, p):
+    """A person in bed at night, lit by a phone (view=bed), or the phone screen (view=screen).
+    p: screen_off, counter 0..1 (view counter on the screen)."""
+    if p.get("view") == "screen":
+        im = layer(WW, WH)
+        gradient(im, (0, 0, WW, WH), ["night0", "night1", "night0"])
+        d = ImageDraw.Draw(im)
+        # hands and phone
+        d.rounded_rectangle([196, 40, 508, 380], radius=22, fill=C("black"))
+        d.rounded_rectangle([206, 52, 498, 368], radius=14, fill=C("night0"))
+        sx0, sy0, sx1, sy1 = 216, 70, 488, 222  # video frame
+        gradient(im, (sx0, sy0, sx1, sy1), ["night1", "night2", "night3"])
+        n = noise(sx1 - sx0, sy1 - sy0, 20, 61)
+        ramp_fill(im, np.where(n > 0.5, (n - 0.5) * 2, -1), ["night3", "night4", "night5"], None, sx0, sy0)
+        plane, _ = _dc4(0.45)
+        im.alpha_composite(plane, (int(sx0 + 40 + 20 * math.sin(t * 0.4)), sy0 + 26))
+        d.polygon([(338, 132), (338, 162), (364, 147)], fill=C("paper"))  # play triangle
+        prog = (lt * 0.03) % 1
+        d.rectangle([sx0, sy1 - 4, sx1, sy1 - 2], fill=C("night4"))
+        d.rectangle([sx0, sy1 - 4, sx0 + (sx1 - sx0) * prog, sy1 - 2], fill=C("lamp3"))
+        for i in range(3):  # title lines and comments as unreadable bars
+            d.rectangle([sx0, 236 + i * 14, sx0 + [230, 180, 120][i], 242 + i * 14], fill=C(["night6", "night4", "night4"][i]))
+        views = int(5_000_000 * p.get("counter", 0.0))
+        if p.get("counter") is not None:
+            txt = ("+5.000.000" if p["counter"] >= 1 else f"{views:,}".replace(",", ".")) + " VISTAS"  # Snopes: "more than 5 million"
+            draw_text(im, sx0, 290, txt, "lamp4" if p["counter"] >= 1 else "paper", 2)
+        for i in range(3):
+            d.rectangle([sx0, 320 + i * 12, sx0 + [200, 240, 160][i], 324 + i * 12], fill=C("night3"))
+        glow(im, 352, 150, 260, ["night1", "night2"], strength=0.25)
+        d.polygon([(150, 396), (200, 300), (250, 330), (240, 396)], fill=C("skin1"))  # thumbs
+        d.polygon([(560, 396), (504, 290), (458, 330), (470, 396)], fill=C("skin1"))
+        return [(1.0, im)]
+    im = layer(WW, WH)
+    gradient(im, (0, 0, WW, WH), ["black", "night0", "night1"])
+    _rain_window(im, (430, 40, 620, 200), t)
+    d = ImageDraw.Draw(im)
+    # headboard, pillow, bed
+    d.rectangle([60, 120, 330, 300], fill=C("night1"))
+    pil = mask_of(im.size, lambda dd: dd.rounded_rectangle([90, 150, 320, 230], radius=30, fill=1))
+    on = not p.get("screen_off")
+    shade(im, pil, ["night1", "night2", "night3", "night4"], light=(-1, -0.6), bias=-0.1 if not on else 0.05)
+    s = 92
+    hx, hy = 150, 96
+    head(im, hx, hy, s, t, dict(p, headset=False, mustache=False, tie=False, hair="long", rim="blue" if on else "green",
+                               shirt="dark", look=-0.3, brows=p.get("brows", 0.2)))
+    # blanket over the body
+    bl = mask_of(im.size, lambda dd: dd.polygon([(40, 250), (200, 222), (380, 236), (600, 270), (704, 330), (704, 396), (0, 396), (0, 290)], fill=1))
+    shade(im, bl, ["black", "night0", "night1", "night2", "night3"], light=(-1, -1), bias=-0.05, contrast=1.2)
+    for k in range(5):
+        d.arc([60 + k * 110, 250 + k * 8, 220 + k * 110, 330 + k * 8], 200, 320, fill=C("night0"))
+    # hands holding the phone in front of the face
+    d.polygon([(60, 240), (92, 208), (112, 222), (84, 262)], fill=C("skin1"))
+    d.rounded_rectangle([70, 168, 104, 228], radius=4, fill=C("black"))
+    if on:
+        d.rectangle([74, 172, 100, 224], fill=C("night6"))
+        glow(im, 110, 190, 120, ["night2", "night4", "night6"], strength=0.55)
+        d.rounded_rectangle([70, 168, 104, 228], radius=4, outline=C("black"), width=2)
+        d.rectangle([74, 172, 100, 224], fill=C("night7"))
+    return [(1.0, im), (1.2, rain(WW + 80, WH, t, n=0))]
+
+
+def _topo():
+    d = json.load(open(os.path.join(_DATA, "countries-50m.json")))
+    (sx, sy), (tx, ty) = d["transform"]["scale"], d["transform"]["translate"]
+    arcs = []
+    for arc in d["arcs"]:
+        x = y = 0
+        pts_ = []
+        for dx, dy in arc:
+            x, y = x + dx, y + dy
+            pts_.append((x * sx + tx, y * sy + ty))
+        arcs.append(pts_)
+
+    def ring(ix):
+        out = []
+        for i in ix:
+            a = arcs[i] if i >= 0 else arcs[~i][::-1]
+            out += a[1:] if out else a
+        return out
+
+    polys = []
+    for g in d["objects"]["land"]["geometries"]:
+        for poly in ([g["arcs"]] if g["type"] == "Polygon" else g["arcs"]):
+            polys.append([ring(r) for r in poly])
+    return polys
+
+
+MAP_LAT0, MAP_LON0, MAP_K = 25.0, -74.0, 9.0
+CITIES = {"NUEVA YORK": (40.64, -73.78), "MIAMI": (25.79, -80.29), "CARACAS": (10.60, -66.99)}
+
+
+def proj(lat, lon):
+    return (WW / 2 + (lon - MAP_LON0) * MAP_K * math.cos(math.radians(MAP_LAT0)), WH / 2 - (lat - MAP_LAT0) * MAP_K)
+
+
+@lru_cache(maxsize=None)
+def _map_base():
+    """Real coastlines (Natural Earth 1:50m, public domain), equirectangular around 25N 74W."""
+    im = layer(WW, WH)
+    gradient(im, (0, 0, WW, WH), ["night0", "night1", "night0"])
+    d = ImageDraw.Draw(im)
+    for lat in range(0, 60, 10):  # graticule, dotted
+        y = proj(lat, MAP_LON0)[1]
+        for x in range(0, WW, 4):
+            d.point((x, y), fill=C("night2"))
+    for lon in range(-120, -20, 10):
+        x = proj(MAP_LAT0, lon)[0]
+        for y in range(0, WH, 4):
+            d.point((x, y), fill=C("night2"))
+    for poly in _topo():
+        outer = [proj(la, lo) for lo, la in poly[0]]
+        xs = [q[0] for q in outer]
+        if max(xs) < -50 or min(xs) > WW + 50:
+            continue
+        d.polygon(outer, fill=C("night3"))
+        for hole in poly[1:]:
+            d.polygon([proj(la, lo) for lo, la in hole], fill=C("night1"))
+    for poly in _topo():
+        outer = [proj(la, lo) for lo, la in poly[0]]
+        if max(q[0] for q in outer) < -50 or min(q[0] for q in outer) > WW + 50:
+            continue
+        d.line(outer + outer[:1], fill=C("night5"))
+    return im
+
+
+def _plane_icon(d, x, y, ang, col="paper"):
+    c, s = math.cos(ang), math.sin(ang)
+    P_ = lambda a, b: (x + a * c - b * s, y + a * s + b * c)
+    d.polygon([P_(5, 0), P_(-4, -1), P_(-4, 1)], fill=C(col))
+    d.line([P_(0, -4), P_(0, 4)], fill=C(col))
+    d.line([P_(-4, -2), P_(-4, 2)], fill=C(col))
+
+
+def map(t, lt, u, p):
+    """Route map. p: route 0..1 (NY->Miami), caracas 0..1 (Miami->Caracas, dashed), unknown 0..1."""
+    im = _map_base().copy()
+    d = ImageDraw.Draw(im)
+    ny, mia, ccs = (proj(*CITIES[k]) for k in ("NUEVA YORK", "MIAMI", "CARACAS"))
+    route, cc, unk = p.get("route", 0.0), p.get("caracas", 0.0), p.get("unknown", 0.0)
+    if route > 0:
+        ex, ey = ny[0] + (mia[0] - ny[0]) * route, ny[1] + (mia[1] - ny[1]) * route
+        d.line([ny, (ex, ey)], fill=C("lamp3"), width=2)
+        if route < 1:
+            _plane_icon(d, ex, ey, math.atan2(mia[1] - ny[1], mia[0] - ny[0]))
+    if cc > 0:
+        steps = 40
+        for i in range(int(steps * cc)):
+            if i % 2 == 0:
+                a, b = i / steps, (i + 1) / steps
+                d.line([(mia[0] + (ccs[0] - mia[0]) * a, mia[1] + (ccs[1] - mia[1]) * a),
+                        (mia[0] + (ccs[0] - mia[0]) * b, mia[1] + (ccs[1] - mia[1]) * b)], fill=C("red2"), width=2)
+        if cc >= 1:
+            mx, my = (mia[0] + ccs[0]) / 2, (mia[1] + ccs[1]) / 2
+            draw_text(im, int(mx + 8), int(my - 4), "2.193 KM", "red2", 1)
+    for name, (x, y) in (("NUEVA YORK", ny), ("MIAMI", mia), ("CARACAS", ccs)):
+        if name == "CARACAS" and cc <= 0:
+            continue
+        blink = name == "CARACAS" and cc >= 1 and (t % 0.8) < 0.4
+        d.ellipse([x - 3, y - 3, x + 3, y + 3], fill=C("red2" if blink else "lamp4"))
+        dx = 8 if name != "MIAMI" else -8 - text_width(name)
+        d.rectangle([x + dx - 2, y - 6, x + dx + text_width(name) + 1, y + 4], fill=C("night0"))
+        draw_text(im, int(x + dx), int(y - 4), name, "paper", 1)
+    if unk > 0:
+        draw_text(im, int(ny[0] + 8), int(ny[1] + 10), "1955", "lamp3", 1)
+        qx, qy = 440, 250
+        if (t % 1.0) < 0.75:
+            draw_text(im, qx, qy, "?", "lamp4", 6)
+        draw_text(im, qx - 40, qy + 50, "«UN AEROPUERTO»", "paper", 1)
+    return [(1.0, im)]
+
+
+def ocean(t, lt, u, p):
+    """Open sea at night in the rain. Nothing to find."""
+    sky = layer(WW, WH)
+    gradient(sky, (0, 0, WW, 170), ["black", "night0", "night1", "night2"])
+    n = noise(WW, 170, 40, 71)
+    ramp_fill(sky, np.where(n > 0.5, (n - 0.5) * 1.6, -1), ["night1", "night2"], None, 0, 0)
+    glow(sky, 520, 70, 60, ["night2", "night3"], strength=0.5)
+    sea = layer(WW, WH)
+    d = ImageDraw.Draw(sea)
+    gradient(sea, (0, 170, WW, WH), ["night2", "night1", "night0", "black"])
+    for row in range(0, 226, 3):  # wave crests, perspective-spaced, drifting
+        y = 170 + row
+        k = 0.2 + row / 226
+        ph = t * (0.6 + k) + row * 0.37
+        for x in range(0, WW, max(3, int(26 * k))):
+            if math.sin(x * 0.05 / k + ph) > 0.86 - 0.1 * k:
+                d.line([(x, y), (x + max(1, int(6 * k)), y)], fill=C("night4" if row < 60 else "night3"))
+    d.line([(0, 170), (WW, 170)], fill=C("night3"))
+    return [(0.4, sky), (1.0, sea), (1.3, rain(WW + 120, WH, t, n=220, speed=500, length=10, colors=("night4", "night5"), seed=12))]
+
+
+def card(t, lt, u, p):
+    """Text card. style=dark (typed on black) or doc (typed index card on a desk). reveal 0..1 types it out."""
+    lines = [str(x) for x in p.get("lines", [])]
+    style = p.get("style", "dark")
+    im = layer(WW, WH)
+    total = sum(len(x) for x in lines) or 1
+    shown = int(round(min(1.0, p.get("reveal", 1.0) / 0.55) * total))  # fully typed by 55% of the shot
+    if style == "doc":
+        gradient(im, (0, 0, WW, WH), ["night1", "night0", "black"])
+        glow(im, 200, 60, 300, ["night1", "lamp0", "lamp1"], strength=0.5)
+        sheet = mask_of(im.size, lambda dd: dd.rectangle([92, 50, 612, 346], fill=1))
+        shade(im, sheet, ["night5", "night6", "night7", "paper", "paper_hi"], light=(-0.8, -1), bias=0.15, contrast=0.8)
+        d = ImageDraw.Draw(im)
+        d.line([(92, 92), (612, 92)], fill=C("red1"))
+        for y in range(112, 340, 22):
+            d.line([(96, y), (608, y)], fill=C("night6"))
+        col, x0, y0, sc, lh = "night0", 118, 66, 2, 44
+    else:
+        gradient(im, (0, 0, WW, WH), ["black", "night0", "black"])
+        col, sc, lh = "paper", 3, 44
+        x0, y0 = None, WH // 2 - len(lines) * lh // 2 + 14
+    d = ImageDraw.Draw(im)
+    left = shown
+    for i, line in enumerate(lines):
+        if left <= 0:
+            break
+        part = line[:left]
+        left -= len(line)
+        last = i == len(lines) - 1
+        c = ("red2" if style == "dark" and last and len(lines) > 1 else col)
+        if style == "doc":
+            x, y = x0, y0 + i * lh
+            draw_text(im, x + 32, y + 20, part, c, sc)
+        else:
+            x = (WW - text_width(line, sc)) // 2
+            draw_text(im, x, y0 + i * lh, part, c, sc)
+        if left <= 0 and (t % 0.6) < 0.35:  # caret
+            cx = (x + 32 if style == "doc" else x) + text_width(part, sc) + sc * 2
+            cy = (y0 + i * lh + 20) if style == "doc" else (y0 + i * lh)
+            d.rectangle([cx, cy, cx + sc * 4, cy + sc * 7], fill=C(c))
+    return [(1.0, im)]
+
+
+def timeline(t, lt, u, p):
+    """Horizontal timeline. years/labels lists; active = float index (lights nodes up to it)."""
+    years, labels = [str(x) for x in p.get("years", [])], [str(x) for x in p.get("labels", [])]
+    act = p.get("active", 0.0)
+    im = layer(WW, WH)
+    gradient(im, (0, 0, WW, WH), ["black", "night0", "black"])
+    d = ImageDraw.Draw(im)
+    n = max(1, len(years))
+    xs = [96 + i * (WW - 192) / max(1, n - 1) for i in range(n)] if n > 1 else [WW / 2]
+    y = 200
+    d.line([(64, y), (WW - 64, y)], fill=C("night3"), width=3)
+    if n > 1:
+        xa = xs[0] + (xs[-1] - xs[0]) * min(1.0, act / (n - 1))
+        d.line([(xs[0], y), (xa, y)], fill=C("lamp3"), width=3)
+    for i, (x, yr) in enumerate(zip(xs, years)):
+        on = i <= act + 1e-6
+        cur = on and i > act - 1
+        r = 7 if cur else 5
+        d.ellipse([x - r, y - r, x + r, y + r], fill=C("lamp4" if cur else ("lamp2" if on else "night3")))
+        draw_text(im, int(x - text_width(yr, 3) / 2), y - 52, yr, "paper" if on else "night4", 3)
+        if i < len(labels):
+            lb = labels[i]
+            draw_text(im, int(x - text_width(lb, 1) / 2), y + 22, lb, "lamp4" if cur else ("night7" if on else "night4"), 1)
+    return [(1.0, im)]
+
+
+def _tabloid(d, x, y, w, h, seed, blank=False):
+    """A tabloid front page with NO legible text: masthead bar, headline blocks, a photo."""
+    r = rng(seed)
+    d.rectangle([x, y, x + w, y + h], fill=C("paper"))
+    if blank:
+        return
+    d.rectangle([x + 2, y + 2, x + w - 2, y + h * 0.16], fill=C(["red1", "night1", "red0"][seed % 3]))
+    for i in range(2):
+        d.rectangle([x + 3, y + h * (0.22 + i * 0.12), x + w * (0.6 + 0.35 * r.rand()), y + h * (0.31 + i * 0.12)], fill=C("black"))
+    d.rectangle([x + w * 0.45, y + h * 0.5, x + w - 3, y + h * 0.88], fill=C(["night4", "night5", "skin1"][r.randint(3)]))
+    for i in range(4):
+        d.line([(x + 3, y + h * (0.55 + i * 0.09)), (x + w * 0.38, y + h * (0.55 + i * 0.09))], fill=C("night5"))
+
+
+def newsstand(t, lt, u, p):
+    """1980s street newsstand at night under one bulb. p: close (rack only), empty (shutter down), vendor_look."""
+    bg = layer(WW, WH)
+    gradient(bg, (0, 0, WW, WH), ["black", "night0", "night1"])
+    d = ImageDraw.Draw(bg)
+    for i in range(9):  # far buildings with a few lit windows
+        x = i * 82 - 20
+        hgt = 120 + (i * 37) % 90
+        d.rectangle([x, 230 - hgt, x + 70, 300], fill=C("night1"))
+        r = rng(90 + i)
+        for _ in range(5):
+            wx, wy = x + 6 + r.randint(10) * 6, 240 - hgt + r.randint(12) * 10
+            d.rectangle([wx, wy, wx + 3, wy + 4], fill=C(["lamp2", "lamp3", "night3"][r.randint(3)]))
+    gradient(bg, (0, 300, WW, WH), ["night1", "night0", "black"])
+    out = [(0.5, bg)]
+    im = layer(WW, WH)
+    d = ImageDraw.Draw(im)
+    if p.get("close"):
+        d.rectangle([0, 0, WW, WH], fill=C("night1"))
+        for row in range(3):
+            for col in range(6):
+                _tabloid(d, 20 + col * 112, 20 + row * 124, 96, 116, row * 6 + col + 3)
+                d.line([(10, 140 + row * 124), (WW - 10, 140 + row * 124)], fill=C("night0"), width=4)
+        glow(im, 300, -20, 360, ["night1", "night3", "lamp1"], strength=0.5)
+        out.append((1.0, im))
+        return out
+    # kiosk
+    d.polygon([(150, 96), (560, 96), (590, 130), (120, 130)], fill=C("red1"))
+    for i in range(10):
+        d.polygon([(150 + i * 41, 96), (170 + i * 41, 96), (162 + i * 44, 130), (140 + i * 44, 130)], fill=C("paper" if i % 2 else "red1"))
+    d.rectangle([150, 130, 560, 330], fill=C("night1"))
+    if p.get("empty"):
+        for y in range(136, 326, 8):
+            d.line([(156, y), (554, y)], fill=C("night3"))
+        d.rectangle([156, 136, 554, 326], outline=C("night0"), width=2)
+    else:
+        d.rectangle([162, 140, 548, 320], fill=C("night0"))
+        for col in range(5):
+            _tabloid(d, 168 + col * 50, 150, 44, 64, col)
+            _tabloid(d, 168 + col * 50, 222, 44, 64, col + 7)
+        hx, hy, s = 440, 168, 54
+        head(im, hx, hy, s, t, dict(p, headset=False, tie=False, rim="lamp", shirt="red", hair="bald", glasses=True,
+                                   look=p.get("vendor_look", -0.5), mustache=True))
+    d.rectangle([140, 320, 570, 340], fill=C("night2"))
+    d.line([(355, 96), (355, 104)], fill=C("night3"))
+    bulb = 0.85 + 0.15 * math.sin(t * 23) * (1 if (t % 3.1) < 0.2 else 0)
+    glow(im, 355, 110, 210, ["night2", "lamp0", "lamp1", "lamp2"], strength=0.55 * bulb, sy=0.9)
+    d.ellipse([351, 104, 359, 112], fill=C("lamp4"))
+    splashes(im, t, (0, 340, WW, WH), n=40)
+    out.append((1.0, im))
+    out.append((1.3, rain(WW + 120, WH, t, n=180, speed=480, length=9, colors=("night4", "night5"), seed=21)))
+    return out
+
+
+def archive(t, lt, u, p):
+    """Archive room: shelves of boxes, a microfilm reader, a researcher lit by its screen.
+    p: close (tight on reader + face), search 0..1 (screen scrolls, then stops), lean 0..1."""
+    im = layer(WW, WH)
+    gradient(im, (0, 0, WW, WH), ["black", "night0", "night1"])
+    d = ImageDraw.Draw(im)
+    close = p.get("close", False)
+    sc = 1.6 if close else 1.0
+    ox = -260 if close else 0
+    for sx in range(0, WW + 200, 150):  # shelving with boxes
+        x = int((sx + ox * 0.6) * 1)
+        d.rectangle([x, 20, x + 130, 300], fill=C("night1"))
+        for row in range(5):
+            y = 30 + row * 54
+            d.line([(x, y + 46), (x + 130, y + 46)], fill=C("night0"), width=3)
+            r = rng(sx + row)
+            bx = x + 4
+            while bx < x + 120:
+                w = 18 + r.randint(10)
+                d.rectangle([bx, y + 10 + r.randint(6), bx + w, y + 45], fill=C(["night2", "night3", "lamp0"][r.randint(3)]))
+                bx += w + 2
+    gradient(im, (0, 300, WW, WH), ["night1", "night0", "black"])
+    # microfilm reader on the desk
+    mx, my = int(170 * sc + ox), int(150 - (sc - 1) * 120)
+    W_, H_ = int(170 * sc), int(130 * sc)
+    d.rectangle([mx - 10, my + H_, mx + W_ + 40, WH], fill=C("night2"))
+    d.rectangle([mx, my, mx + W_, my + H_], fill=C("night1"))
+    scr = (mx + 10, my + 10, mx + W_ - 10, my + H_ - 30)
+    gradient(im, scr, ["night6", "night7", "paper"])
+    srch = p.get("search", 0.0)
+    off = int((srch if srch < 1 else 1) * 900 + (0 if srch >= 1 else lt * 0))
+    for i in range(24):  # scrolling film: column blocks, no legible text
+        y = scr[1] + 6 + ((i * 11 - off) % (24 * 11))
+        if scr[1] + 2 < y < scr[3] - 6:
+            r = rng(500 + i)
+            d.rectangle([scr[0] + 8, y, scr[0] + 8 + int((scr[2] - scr[0] - 16) * (0.4 + 0.5 * r.rand())), y + 3], fill=C("night4"))
+    if srch >= 1 and (t % 0.8) < 0.5:
+        d.rectangle([scr[0] + 6, scr[1] + 4, scr[2] - 6, scr[3] - 4], outline=C("red2"), width=2)
+    glow(im, (scr[0] + scr[2]) / 2, (scr[1] + scr[3]) / 2, 160 * sc, ["night1", "night3", "night5"], strength=0.5)
+    s = int(88 * sc)
+    hx = mx + W_ + int(50 * sc) - int(p.get("lean", 0.0) * 14 * sc)
+    hy = my + int(10 * sc)
+    head(im, hx, hy, s, t, dict(p, headset=False, mustache=False, tie=False, hair="long", rim="teal", shirt="teal",
+                               look=-0.7, brows=p.get("brows", 0.3)))
+    d.rectangle([mx + W_ + 30, my + H_ + 10, WW, WH], fill=C("night1"))
+    return [(1.0, im)]
+
+
+@lru_cache(maxsize=None)
+def _portrait(variant):
+    """Newspaper-photo style head (halftone dither), two different invented men. Illustration only."""
+    w, h = 170, 210
+    tmp = layer(w, h)
+    gradient(tmp, (0, 0, w, h), ["night4", "night5", "night6"])
+    pv = dict(headset=False, tie=True, rim="blue", look=0.4, brows=0.1, blink=False)
+    pv.update({0: dict(mustache=True, hair="short", glasses=False), 1: dict(mustache=False, hair="bald", glasses=True)}[variant])
+    head(tmp, 46 + variant * 4, 30, 130, 0.0, pv)
+    a = np.array(tmp).astype(np.float32)
+    lum = (a[..., 0] * 0.3 + a[..., 1] * 0.59 + a[..., 2] * 0.11) / 255
+    out = layer(w, h)
+    ramp_fill(out, np.clip(lum * 1.3, 0, 1), ["black", "night2", "night5", "night7", "paper"], None, 0, 0)
+    return out
+
+
+def portraits(t, lt, u, p):
+    """Two clipped newspaper photos of 'the same witness'. p: show 0..1 (A then B), question 0..1."""
+    im = layer(WW, WH)
+    gradient(im, (0, 0, WW, WH), ["night1", "night0", "black"])
+    n = noise(WW, WH, 30, 81)
+    ramp_fill(im, np.where(n > 0.55, (n - 0.55) * 2, -1), ["night1", "night2"], None, 0, 0)
+    d = ImageDraw.Draw(im)
+    show, q = p.get("show", 1.0), p.get("question", 0.0)
+    for i, (x, lab) in enumerate(((118, "FOTO A"), (416, "FOTO B"))):
+        vis = show >= (0.0 if i == 0 else 0.5)
+        if not vis:
+            d.rectangle([x, 60, x + 170, 270], outline=C("night2"))
+            continue
+        d.rectangle([x - 10, 50, x + 180, 300], fill=C("paper"))
+        im.alpha_composite(_portrait(i), (x, 60))
+        d.rectangle([x, 60, x + 169, 269], outline=C("night3"))
+        draw_text(im, x, 280, lab, "night1", 1)
+        draw_text(im, x + 60, 280, "«JUAN DE LA CORTE»", "night2", 1)
+    if q > 0 and (t % 1.0) < 0.7:
+        draw_text(im, WW // 2 - 15, 140, "?", "red2", 6)
+    glow(im, 352, -40, 380, ["night0", "night1", "lamp0"], strength=0.4)
+    return [(1.0, im)]

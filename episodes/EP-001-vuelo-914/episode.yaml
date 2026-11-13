@@ -1,0 +1,793 @@
+# EP-001 — Vuelo 914 — full episode storyboard (pixel engine).
+# Render: python3 tools/pixel/engine.py episodes/EP-001-vuelo-914/episode.yaml [--stills]
+# Sources for every factual line: 01_INVESTIGACION.md §2 (row numbers in comments: [F1]..[F12]).
+# Badges: LEYENDA · RECREACIÓN = the legend, drawn; VERIFICADO = 2 independent N2 sources;
+#         SEGÚN <FUENTE> = one source, attributed; ANÁLISIS = our reading, not a fact.
+# Shot cuts: `at: "palabra"` = the shot starts on that word of the line.
+# music: calm | mystery | tension | reveal (original synthesised score); sfx: synthesised beds.
+# To use a track from the YouTube Audio Library instead: put the file in assets/aud/ and set
+#   music_file: assets/aud/<file>.mp3   (levels still follow each shot's music mood)
+
+name: vuelo914
+version: v01
+voice: es-MX-JorgeNeural
+rate: "-6%"
+lead: 0.05
+
+lines:
+  # ============ HOOK (0-3 s) + COLD OPEN — LEYENDA ============
+  - text: "Este avión despegó de Nueva York en mil novecientos cincuenta y cinco."
+    pause_after: 0.15
+    shots:
+      - scene: plane_side
+        purpose: "HOOK frame 1: the airliner itself, lit windows, rain. A specific object, not ambience."
+        camera: {x: 24, y: 24}
+        params: {x: [60, 20], props: 45}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.5, engine: 0.6}
+        music: {mood: tension, level: 0.7}
+        still_at: 0.1
+  - text: "Treinta años después, aterrizó en Caracas."
+    pause_after: 0.25
+    shots:
+      - scene: radar
+        purpose: "HOOK payoff by second 5: the impossible contact appears."
+        camera: {x: [40, 26], y: [24, 14]}
+        params: {blip_at: 0.35}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {hum: 0.6, static: 0.2}
+        music: tension
+        still_at: 0.8
+  - text: "Esa noche, la torre de Maiquetía recibe a un avión que no aparece en ningún plan de vuelo."
+    pause_after: 0.3
+    shots:
+      - scene: tower
+        camera: {x: [10, 32], y: 18}
+        params: {brows: 0.0, look: -0.6}
+        badge: "LEYENDA · RECREACIÓN"
+        caption: "MAIQUETÍA · SEGÚN EL RELATO"
+        sfx: {rain_in: 0.5, hum: 0.45}
+        music: tension
+      - scene: face
+        at: "un"
+        camera: {x: [20, 30], y: 16}
+        params: {zoom: 1.0, brows: [0.0, 0.4], look: -0.8}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {static: 0.5, rain_in: 0.3, hum: 0.3}
+        music: tension
+  - text: "El piloto pregunta dónde está. Dice que salió de Nueva York, rumbo a Miami, el dos de julio de mil novecientos cincuenta y cinco."
+    pause_after: 0.35
+    shots:
+      - scene: runway
+        camera: {x: 32, y: [10, 20]}
+        params: {plane: approach, prog: [0.0, 1.0]}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.6, engine: [0.1, 0.6], static: 0.25}
+        music: tension
+      - scene: face
+        at: "el"
+        camera: {x: 24, y: 18}
+        params: {zoom: 1.7, eye_x: 330, eye_y: 180, wide: [0.0, 1.0], brows: [0.4, 1.0], look: [-0.8, 0.2], blink: false}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {static: 0.35, hum: 0.3}
+        music: {mood: tension, level: 1.0}
+  - text: "Cuando escucha la fecha, el avión vuelve a despegar. Y desaparece."
+    pause_after: 0.9
+    shots:
+      - scene: plane_side
+        camera: {x: 24, y: 24}
+        params: {x: [40, -420], props: 45}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.5, engine: [0.6, 0.9]}
+        music: tension
+      - scene: runway
+        at: "y"
+        camera: {x: 32, y: [20, 4]}
+        params: {plane: depart, prog: [0.0, 1.0]}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.7, engine: [0.5, 0.0]}
+        music: {mood: tension, level: [0.8, 0.1]}
+  - text: "En la pista, dicen, quedó un calendario de bolsillo. De mil novecientos cincuenta y cinco."
+    pause_after: 0.5
+    shots:
+      - scene: calendar
+        camera: {x: [20, 40], y: [10, 20]}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.55}
+        music: {mood: mystery, level: 0.6}
+  - text: "Esta historia tiene un testigo, una fecha y una prueba. Hoy vamos a buscar las tres."
+    pause_after: 0.6
+    shots:
+      - scene: tower
+        camera: {x: [40, 20], y: 18}
+        params: {person: false}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_in: 0.45, hum: 0.4}
+        music: mystery
+      - scene: title
+        at: "hoy"
+        params: {text: "VUELO 914", sub: "ARCHIVO CERO"}
+        sfx: {rain_in: 0.4}
+        music: {mood: reveal, level: 0.8}
+    # cold open ends ~0:42
+
+  # ============ 1. LA LEYENDA COMPLETA — LEYENDA ============
+  - text: "La versión que circula hoy en internet casi siempre es la misma."
+    pause_after: 0.3
+    shots:
+      - scene: phone
+        purpose: "Where the legend lives now: someone in bed, lit by a phone."
+        camera: {x: [10, 30], y: 16}
+        params: {view: bed}
+        badge: "LEYENDA"
+        sfx: {hum: 0.15}
+        music: mystery
+  - text: "Un Douglas DC cuatro de la aerolínea Pan Am, con cincuenta y siete pasajeros. Una ruta corta por la costa este de Estados Unidos, de Nueva York a Miami."
+    pause_after: 0.3
+    shots:
+      - scene: plane_side
+        camera: {x: 24, y: 24}
+        params: {x: [80, 30], props: 0}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.3}
+        music: mystery
+      - scene: map
+        at: "una"
+        purpose: "Original graphic, real coastlines: the route NY to Miami draws itself."
+        camera: {x: 32, y: 18}
+        params: {route: [0.0, 1.0], caracas: 0.0}
+        badge: "LEYENDA · MAPA"
+        music: mystery
+  - text: "En algún punto del trayecto, el avión desaparece del radar. No hay llamada de auxilio. No hay restos."
+    pause_after: 0.5
+    shots:
+      - scene: radar
+        camera: {x: [30, 20], y: 16}
+        params: {}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {hum: 0.5}
+        music: tension
+      - scene: ocean
+        at: "no"
+        purpose: "Empty sea at night: nothing to find."
+        camera: {x: [10, 40], y: 18}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.5}
+        music: tension
+  - text: "Décadas después, reaparece sobre Caracas, a más de dos mil kilómetros de Miami."
+    pause_after: 0.4
+    shots:
+      - scene: map
+        camera: {x: 32, y: 18}
+        params: {route: 1.0, caracas: [0.0, 1.0]}
+        badge: "LEYENDA · MAPA"
+        music: mystery
+  - text: "El controlador de turno tiene nombre: Juan de la Corte. Es el único testigo con nombre propio en toda la historia."
+    pause_after: 0.4
+    shots:
+      - scene: tower
+        camera: {x: [30, 14], y: 18}
+        params: {look: -0.3}
+        badge: "LEYENDA · RECREACIÓN"
+        caption: "«JUAN DE LA CORTE» · SEGÚN EL RELATO"
+        sfx: {rain_in: 0.4, hum: 0.4}
+        music: mystery
+      - scene: face
+        at: "es"
+        camera: {x: [26, 20], y: 16}
+        params: {zoom: 1.2, eye_x: 310, eye_y: 175, look: 0.6, brows: 0.2}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {hum: 0.3}
+        music: mystery
+  - text: "En la versión más repetida, el piloto solo dice que tienen que llegar a Miami. Después, el avión se va."
+    pause_after: 0.6
+    shots:
+      - scene: face
+        camera: {x: 24, y: 16}
+        params: {zoom: 1.0, look: -0.9, brows: 0.6, talk: 0.0}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {static: 0.5, hum: 0.3}
+        music: tension
+      - scene: runway
+        at: "después"
+        camera: {x: 32, y: [16, 6]}
+        params: {plane: depart, prog: [0.2, 1.0]}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_out: 0.6, engine: [0.4, 0.0]}
+        music: {mood: tension, level: [0.9, 0.3]}
+  - text: "En los foros de internet, la explicación favorita es un agujero de gusano: un atajo en el tiempo."
+    pause_after: 0.5
+    shots:
+      - scene: phone
+        camera: {x: [20, 34], y: 16}
+        params: {view: bed}
+        badge: "LEYENDA"
+        music: mystery
+      - scene: card
+        at: "la"
+        params: {style: dark, lines: ["TEORÍA FAVORITA:", "UN AGUJERO DE GUSANO"], reveal: [0.0, 1.0]}
+        badge: "LEYENDA · SEGÚN WIKIPEDIA"
+        music: mystery
+
+  # ============ 2. EL NÚMERO QUE CAMBIA — re-hook ~1:45 ============
+  - text: "Pero hay un detalle que no encaja. Algunas versiones dicen que el avión volvió treinta años después. Otras dicen treinta y siete."
+    pause_after: 0.4
+    shots:
+      - scene: phone
+        camera: {x: [20, 30], y: 16}
+        params: {view: screen}
+        badge: "VERSIONES"
+        sfx: {hum: 0.1}
+        music: mystery
+      - scene: card
+        at: "algunas"
+        purpose: "Contradiction made visible: two numbers for one event."
+        params: {style: dark, lines: ["1955  +  30  =  1985", "1955  +  37  =  1992"], reveal: [0.0, 1.0]}
+        badge: "VERSIONES"
+        music: mystery
+  - text: "Si volvió en mil novecientos ochenta y cinco, pasaron treinta años. Si volvió en mil novecientos noventa y dos, treinta y siete. No pueden ser las dos cosas."
+    pause_after: 0.4
+    shots:
+      - scene: timeline
+        params: {years: ["1955", "1985", "1992"], labels: ["DESPEGUE", "VERSIÓN A", "VERSIÓN B"], active: [0.0, 1.0]}
+        badge: "VERSIONES"
+        music: mystery
+      - scene: timeline
+        at: "si"
+        params: {years: ["1955", "1985", "1992"], labels: ["DESPEGUE", "VERSIÓN A", "VERSIÓN B"], active: [1.0, 2.0]}
+        badge: "VERSIONES"
+        music: mystery
+      - scene: card
+        at: "no"
+        params: {style: dark, lines: ["UN SUCESO · DOS FECHAS"], reveal: 1.0}
+        badge: "VERSIONES"
+        music: {mood: reveal, level: 0.6}
+  - text: "Un suceso real tiene una fecha. Esta historia tiene varias. Y eso casi siempre significa lo mismo: que alguien la volvió a contar, y al contarla, la cambió."
+    pause_after: 0.6
+    shots:
+      - scene: archive
+        camera: {x: [10, 30], y: 18}
+        params: {}
+        badge: "ANÁLISIS"
+        sfx: {hum: 0.3}
+        music: calm
+      - scene: archive
+        at: "y"
+        camera: {x: 40, y: 10}
+        params: {close: true}
+        badge: "ANÁLISIS"
+        sfx: {hum: 0.3}
+        music: calm
+
+  # ============ 3. EL ORIGEN — VERIFICADO ============
+  - text: "Para encontrar la versión original hay que ir hacia atrás. Antes de los videos. Antes de internet."
+    pause_after: 0.4
+    shots:
+      - scene: phone
+        camera: {x: 30, y: 16}
+        params: {view: bed, screen_off: true}
+        badge: "INVESTIGACIÓN"
+        music: calm
+      - scene: archive
+        at: "antes"
+        camera: {x: [40, 20], y: 18}
+        badge: "INVESTIGACIÓN"
+        sfx: {hum: 0.3}
+        music: mystery
+  - text: "El rastro termina en un periódico estadounidense: Weekly World News."
+    pause_after: 0.4
+    shots:
+      - scene: newsstand
+        purpose: "1980s newsstand at night; tabloid covers with no legible text."
+        camera: {x: [10, 34], y: 18}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        caption: "WEEKLY WORLD NEWS · TABLOIDE · EE. UU."
+        sfx: {rain_out: 0.3}
+        music: reveal
+  - text: "Se vendía en los supermercados, entre mil novecientos setenta y nueve y dos mil siete. Sus portadas hablaban de ovnis, de un murciélago con cara humana y de un hombre al que le creció un cuerno."
+    pause_after: 0.3
+    shots:
+      - scene: newsstand
+        camera: {x: [34, 50], y: 18}
+        params: {close: true}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        caption: "1979 - 2007"
+        sfx: {rain_out: 0.25}
+        music: mystery
+      - scene: card
+        at: "sus"
+        params: {style: dark, lines: ["OVNIS", "UN MURCIÉLAGO CON CARA HUMANA", "UN HOMBRE CON UN CUERNO"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        music: mystery
+  - text: "Era ficción con formato de noticia. Y lo hacía a propósito."
+    pause_after: 0.4
+    shots:
+      - scene: newsstand
+        camera: {x: 20, y: 18}
+        params: {vendor_look: 1.0}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        sfx: {rain_out: 0.3}
+        music: mystery
+  - text: "El siete de mayo de mil novecientos ochenta y cinco publicó una nota firmada por Derek Clontz. En inglés se titulaba: el enigma del vuelo novecientos catorce."
+    pause_after: 0.5
+    shots:
+      - scene: card
+        params: {style: doc, lines: ["WEEKLY WORLD NEWS", "7 DE MAYO DE 1985", "", "«RIDDLE OF FLIGHT 914»", "DEREK CLONTZ"], reveal: [0.0, 1.0]}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        caption: "FICHA DE REFERENCIA · NO ES LA PORTADA ORIGINAL"
+        sfx: {hum: 0.2}
+        music: reveal
+      - scene: archive
+        at: "en"
+        camera: {x: 40, y: 10}
+        params: {close: true}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        sfx: {hum: 0.3}
+        music: reveal
+  - text: "La nota se presentaba como un informe exclusivo que iba a revelar el mayor misterio de la historia de la aviación."
+    pause_after: 0.4
+    shots:
+      - scene: newsstand
+        camera: {x: [30, 44], y: 18}
+        params: {close: true}
+        badge: "SEGÚN LEAD STORIES"
+        sfx: {rain_out: 0.2}
+        music: mystery
+      - scene: card
+        at: "que"
+        params: {style: doc, lines: ["«INFORME EXCLUSIVO»", "«EL MAYOR MISTERIO DE LA", "HISTORIA DE LA AVIACIÓN»"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        caption: "PALABRAS DE LA NOTA DE 1985, TRADUCIDAS"
+        music: mystery
+  - text: "Y aquí aparece la primera sorpresa. Según la verificación de Lead Stories, esa nota original no menciona a Pan Am."
+    pause_after: 0.5
+    shots:
+      - scene: archive
+        camera: {x: [20, 34], y: 14}
+        params: {close: true, lean: 1.0}
+        badge: "SEGÚN LEAD STORIES"
+        sfx: {hum: 0.3}
+        music: {mood: reveal, level: 0.7}
+      - scene: card
+        at: "esa"
+        params: {style: dark, lines: ["1985: SIN AEROLÍNEA", "PAN AM: NO APARECE"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        caption: "LEAD STORIES · 13 JUN 2024"
+        music: reveal
+  - text: "Habla de un vuelo chárter que salió de Nueva York en mil novecientos cincuenta y cinco, con cincuenta y siete pasajeros y tripulación, y que aterrizó en un aeropuerto internacional en marzo de ese mismo año, mil novecientos ochenta y cinco."
+    pause_after: 0.4
+    shots:
+      - scene: card
+        params: {style: doc, lines: ["«VUELO CHÁRTER»", "NUEVA YORK · 1955", "57 PASAJEROS Y TRIPULACIÓN", "«UN AEROPUERTO INTERNACIONAL»", "MARZO DE 1985"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        caption: "RESUMEN DE LA NOTA DE 1985 CITADA POR LEAD STORIES"
+        music: mystery
+      - scene: map
+        at: "aterrizó"
+        camera: {x: 32, y: 18}
+        params: {route: 0.0, caracas: 0.0, unknown: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        caption: "1985: EL AEROPUERTO NO TIENE NOMBRE EN LA CITA"
+        music: mystery
+  - text: "La nota decía tener grabaciones de la conversación entre el piloto y la torre. En ninguna de las fuentes que revisamos aparecen esas grabaciones."
+    pause_after: 0.5
+    shots:
+      - scene: tower
+        camera: {x: [20, 40], y: 18}
+        params: {person: false, reels: true}
+        badge: "SEGÚN LEAD STORIES"
+        sfx: {static: 0.3, hum: 0.4, rain_in: 0.3}
+        music: mystery
+      - scene: card
+        at: "en"
+        params: {style: dark, lines: ["GRABACIONES:", "NO APARECEN"], reveal: [0.0, 1.0]}
+        badge: "ANÁLISIS"
+        music: reveal
+  - text: "El nombre de Pan Am llega mucho después. Según la misma verificación, uno de los primeros relatos conocidos en precisar la aerolínea fue un video de YouTube, en dos mil diecinueve."
+    pause_after: 0.6
+    shots:
+      - scene: timeline
+        params: {years: ["1985", "1993", "1999", "2019"], labels: ["CHÁRTER", "REEDICIÓN", "REEDICIÓN", "«PAN AM»"], active: [0.0, 3.0]}
+        badge: "SEGÚN LEAD STORIES"
+        music: mystery
+      - scene: phone
+        at: "uno"
+        camera: {x: 24, y: 16}
+        params: {view: screen}
+        badge: "SEGÚN LEAD STORIES"
+        sfx: {hum: 0.1}
+        music: mystery
+
+  # ============ 4. EL TESTIGO — re-hook ~4:30 ============
+  - text: "Queda el testigo. Juan de la Corte, el controlador."
+    pause_after: 0.4
+    shots:
+      - scene: tower
+        camera: {x: [14, 30], y: 18}
+        params: {look: -0.6}
+        badge: "LEYENDA · RECREACIÓN"
+        sfx: {rain_in: 0.4, hum: 0.4}
+        music: tension
+  - text: "El periódico volvió a publicar la historia al menos dos veces más: en mil novecientos noventa y tres y en mil novecientos noventa y nueve."
+    pause_after: 0.4
+    shots:
+      - scene: timeline
+        params: {years: ["1985", "1993", "1999"], labels: ["ORIGINAL", "REEDICIÓN", "REEDICIÓN"], active: [0.0, 2.0]}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        music: mystery
+      - scene: newsstand
+        at: "en"
+        camera: {x: [40, 20], y: 18}
+        params: {close: true}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        sfx: {rain_out: 0.25}
+        music: mystery
+  - text: "En esas reediciones aparece su foto. El problema es que, según Snopes, el periódico usó fotografías de dos hombres distintos para el mismo testigo."
+    pause_after: 0.6
+    shots:
+      - scene: portraits
+        params: {show: [0.0, 0.5]}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        caption: "ILUSTRACIÓN · NO SON LAS FOTOS ORIGINALES"
+        music: tension
+      - scene: portraits
+        at: "el"
+        params: {show: [0.5, 1.0]}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        caption: "ILUSTRACIÓN · NO SON LAS FOTOS ORIGINALES"
+        music: {mood: reveal, level: 0.9}
+  - text: "Dos caras para un solo hombre. Y ninguna de las fuentes que revisamos confirma que ese controlador haya existido."
+    pause_after: 0.7
+    shots:
+      - scene: portraits
+        params: {show: 1.0, question: [0.0, 1.0]}
+        badge: "ANÁLISIS"
+        caption: "ILUSTRACIÓN"
+        music: tension
+      - scene: tower
+        at: "y"
+        camera: {x: [30, 20], y: 18}
+        params: {person: false}
+        badge: "ANÁLISIS"
+        sfx: {rain_in: 0.4, hum: 0.3}
+        music: {mood: tension, level: 0.6}
+  - text: "Snopes señala que el periódico tenía la costumbre de ilustrar sus historias con fotos que no tenían nada que ver."
+    pause_after: 0.4
+    shots:
+      - scene: newsstand
+        camera: {x: [44, 24], y: 18}
+        params: {close: true}
+        badge: "SEGÚN SNOPES"
+        sfx: {rain_out: 0.2}
+        music: mystery
+      - scene: portraits
+        at: "con"
+        params: {show: 1.0}
+        badge: "SEGÚN SNOPES"
+        caption: "ILUSTRACIÓN"
+        music: mystery
+  - text: "Con el avión pasa algo parecido. La foto que acompaña la historia en internet es una foto de archivo de un DC cuatro. No es el vuelo novecientos catorce."
+    pause_after: 0.5
+    shots:
+      - scene: plane_side
+        camera: {x: 24, y: 24}
+        params: {x: 30, props: 0}
+        badge: "VERIFICADO · SNOPES / WIKIPEDIA"
+        sfx: {rain_out: 0.2}
+        music: mystery
+      - scene: phone
+        at: "la"
+        params: {view: screen}
+        badge: "VERIFICADO · SNOPES / WIKIPEDIA"
+        music: mystery
+      - scene: card
+        at: "no"
+        params: {style: dark, lines: ["FOTO DE ARCHIVO", "NO ES EL VUELO 914"], reveal: [0.0, 1.0]}
+        badge: "VERIFICADO · SNOPES / WIKIPEDIA"
+        music: reveal
+
+  # ============ 5. LO QUE NO EXISTE — VERIFICADO ============
+  - text: "Si un avión con cincuenta y siete personas hubiera desaparecido en mil novecientos cincuenta y cinco, habría dejado rastro."
+    pause_after: 0.4
+    shots:
+      - scene: ocean
+        camera: {x: [40, 10], y: 18}
+        badge: "ANÁLISIS"
+        sfx: {rain_out: 0.4}
+        music: calm
+  - text: "Lead Stories buscó en los registros de la Junta de Aeronáutica Civil de Estados Unidos, en los Archivos Nacionales. No encontró nada."
+    pause_after: 0.4
+    shots:
+      - scene: archive
+        camera: {x: [10, 40], y: 18}
+        params: {search: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        caption: "CIVIL AERONAUTICS BOARD · NATIONAL ARCHIVES"
+        sfx: {hum: 0.3}
+        music: mystery
+      - scene: card
+        at: "no"
+        params: {style: dark, lines: ["RESULTADOS: 0"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        music: reveal
+  - text: "Esa agencia funcionó de mil novecientos treinta y ocho a mil novecientos ochenta y cuatro. En mil novecientos cincuenta y cinco, existía."
+    pause_after: 0.4
+    shots:
+      - scene: timeline
+        params: {years: ["1938", "1955", "1984"], labels: ["CREACIÓN DE LA CAB", "¿VUELO 914?", "CIERRE"], active: [0.0, 2.0]}
+        badge: "SEGÚN LEAD STORIES"
+        music: mystery
+      - scene: timeline
+        at: "en"
+        params: {years: ["1938", "1955", "1984"], labels: ["CREACIÓN DE LA CAB", "¿VUELO 914?", "CIERRE"], active: 1.0}
+        badge: "SEGÚN LEAD STORIES"
+        music: {mood: reveal, level: 0.6}
+  - text: "Tampoco aparece en la base de datos de la Aviation Safety Network, ni en la colección de Pan Am de la Universidad de Miami."
+    pause_after: 0.4
+    shots:
+      - scene: card
+        params: {style: doc, lines: ["AVIATION SAFETY NETWORK: 0", "COLECCIÓN PAN AM, U. DE MIAMI: 0", "GOOGLE NEWS ARCHIVE: 0"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        caption: "BÚSQUEDAS REPORTADAS POR LEAD STORIES"
+        music: mystery
+  - text: "Snopes revisó archivos de prensa. No encontró ninguna noticia creíble sobre la desaparición."
+    pause_after: 0.5
+    shots:
+      - scene: archive
+        camera: {x: 40, y: 10}
+        params: {close: true, search: [0.0, 1.0]}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        sfx: {hum: 0.3}
+        music: mystery
+  - text: "Un avión de pasajeros desaparece, y no queda una sola línea en ningún periódico de la época. Ese silencio también es un dato."
+    pause_after: 0.8
+    shots:
+      - scene: newsstand
+        camera: {x: [50, 20], y: 18}
+        params: {empty: true}
+        badge: "ANÁLISIS"
+        sfx: {rain_out: 0.4}
+        music: calm
+      - scene: calendar
+        at: "ese"
+        camera: {x: [30, 36], y: 14}
+        badge: "ANÁLISIS"
+        sfx: {rain_out: 0.5}
+        music: {mood: reveal, level: 0.6}
+
+  # ============ 6. POR QUÉ SOBREVIVE — ANÁLISIS ============
+  - text: "Entonces, ¿por qué seguimos escuchando esta historia?"
+    pause_after: 0.6
+    shots:
+      - scene: phone
+        camera: {x: [30, 20], y: 16}
+        params: {view: bed}
+        badge: "ANÁLISIS"
+        music: tension
+  - text: "En junio de dos mil diecinueve, un video del canal Bright Side la contó durante siete minutos antes de mencionar que podía ser ficción. Superó los cinco millones de vistas."
+    pause_after: 0.4
+    shots:
+      - scene: phone
+        camera: {x: 24, y: 16}
+        params: {view: screen, counter: [0.0, 0.6]}
+        badge: "SEGÚN SNOPES"
+        caption: "SNOPES · 1 JUL 2019"
+        music: mystery
+      - scene: card
+        at: "antes"
+        params: {style: dark, lines: ["MINUTOS 0 A 7: EL MISTERIO", "MINUTO 7: QUIZÁ ES FICCIÓN"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN SNOPES"
+        music: mystery
+      - scene: phone
+        at: "superó"
+        params: {view: screen, counter: [0.6, 1.0]}
+        badge: "SEGÚN SNOPES"
+        music: reveal
+  - text: "Fueron tantas las preguntas que recibió Snopes a finales de junio, que el uno de julio publicó su verificación."
+    pause_after: 0.4
+    shots:
+      - scene: phone
+        camera: {x: [30, 20], y: 16}
+        params: {view: bed}
+        badge: "SEGÚN SNOPES"
+        music: mystery
+      - scene: card
+        at: "el"
+        params: {style: doc, lines: ["SNOPES", "1 DE JULIO DE 2019", "", "CALIFICACIÓN: FALSO"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN SNOPES"
+        music: reveal
+  - text: "En dos mil veinticuatro volvió a circular en Facebook, en un video cuya voz, según el análisis de Lead Stories, fue generada por inteligencia artificial. Esta vez decía: treinta y siete años."
+    pause_after: 0.4
+    shots:
+      - scene: phone
+        camera: {x: [20, 30], y: 16}
+        params: {view: bed}
+        badge: "SEGÚN LEAD STORIES"
+        caption: "LEAD STORIES · 13 JUN 2024"
+        music: mystery
+      - scene: card
+        at: "según"
+        params: {style: dark, lines: ["VOZ GENERADA POR IA"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        music: mystery
+      - scene: card
+        at: "esta"
+        params: {style: dark, lines: ["«37 AÑOS»"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        music: reveal
+  - text: "Ese video tenía errores evidentes. Por ejemplo, decía que el avión iba de Florida a Miami. Pero Miami está en Florida."
+    pause_after: 0.5
+    shots:
+      - scene: phone
+        camera: {x: 24, y: 16}
+        params: {view: screen}
+        badge: "SEGÚN LEAD STORIES"
+        music: mystery
+      - scene: card
+        at: "por"
+        params: {style: dark, lines: ["«DE FLORIDA A MIAMI»"], reveal: [0.0, 1.0]}
+        badge: "SEGÚN LEAD STORIES"
+        music: mystery
+      - scene: map
+        at: "pero"
+        params: {route: 1.0, caracas: 0.0}
+        badge: "MAPA"
+        music: mystery
+  - text: "Cada versión agrega algo: una aerolínea, un calendario, más años de ausencia. Ninguna agrega una fuente."
+    pause_after: 0.8
+    shots:
+      - scene: card
+        params: {style: dark, lines: ["+ UNA AEROLÍNEA", "+ UN CALENDARIO", "+ 7 AÑOS"], reveal: [0.0, 1.0]}
+        badge: "ANÁLISIS"
+        music: mystery
+      - scene: card
+        at: "ninguna"
+        params: {style: dark, lines: ["+ 0 FUENTES"], reveal: [0.0, 1.0]}
+        badge: "ANÁLISIS"
+        music: {mood: reveal, level: 0.9}
+  - text: "Y se parece a algo que ya conocíamos. En mil novecientos sesenta y uno, la serie La dimensión desconocida emitió un episodio sobre un avión de pasajeros perdido en el tiempo."
+    pause_after: 0.4
+    shots:
+      - scene: phone
+        camera: {x: 30, y: 16}
+        params: {view: bed, screen_off: true}
+        badge: "ANÁLISIS · SNOPES"
+        music: calm
+      - scene: card
+        at: "en"
+        params: {style: dark, lines: ["1961", "LA DIMENSIÓN DESCONOCIDA"], reveal: [0.0, 1.0]}
+        badge: "ANÁLISIS · SNOPES"
+        music: mystery
+      - scene: card
+        at: "un"
+        params: {style: dark, lines: ["UN AVIÓN PERDIDO EN EL TIEMPO", "(FICCIÓN DE TELEVISIÓN)"], reveal: [0.0, 1.0]}
+        badge: "ANÁLISIS · SNOPES"
+        music: mystery
+  - text: "Quizá por eso funciona. No porque haya pruebas, sino porque ya la habíamos imaginado antes."
+    pause_after: 0.8
+    shots:
+      - scene: radar
+        camera: {x: 30, y: 16}
+        params: {}
+        badge: "ANÁLISIS"
+        sfx: {hum: 0.4}
+        music: calm
+
+  # ============ 6b. MÉTODO — tres preguntas ============
+  - text: "Si alguna vez te encuentras con una historia así, hay tres preguntas que sirven casi siempre."
+    pause_after: 0.4
+    shots:
+      - scene: phone
+        camera: {x: [34, 20], y: 16}
+        params: {view: bed}
+        badge: "MÉTODO"
+        music: calm
+      - scene: card
+        at: "hay"
+        params: {style: dark, lines: ["TRES PREGUNTAS"], reveal: [0.0, 1.0]}
+        badge: "MÉTODO"
+        music: calm
+  - text: "Primera: ¿quién la publicó primero? Si el rastro termina en un tabloide, ya sabes mucho."
+    pause_after: 0.4
+    shots:
+      - scene: card
+        params: {style: doc, lines: ["1. ¿QUIÉN LA PUBLICÓ PRIMERO?"], reveal: [0.0, 1.0]}
+        badge: "MÉTODO"
+        music: calm
+      - scene: newsstand
+        at: "si"
+        camera: {x: [20, 40], y: 18}
+        badge: "MÉTODO"
+        sfx: {rain_out: 0.25}
+        music: calm
+  - text: "Segunda: ¿los datos cambian de una versión a otra? Una fecha que se mueve es una señal de alarma."
+    pause_after: 0.4
+    shots:
+      - scene: card
+        params: {style: doc, lines: ["2. ¿CAMBIAN LOS DATOS?"], reveal: [0.0, 1.0]}
+        badge: "MÉTODO"
+        music: calm
+      - scene: timeline
+        at: "una"
+        params: {years: ["1955", "1985", "1992"], labels: ["DESPEGUE", "VERSIÓN A", "VERSIÓN B"], active: [1.0, 2.0]}
+        badge: "MÉTODO"
+        music: calm
+  - text: "Tercera: ¿existe algún registro de la época? Un avión desaparecido deja papeles, nombres y noticias."
+    pause_after: 0.6
+    shots:
+      - scene: card
+        params: {style: doc, lines: ["3. ¿HAY REGISTROS DE LA ÉPOCA?"], reveal: [0.0, 1.0]}
+        badge: "MÉTODO"
+        music: calm
+      - scene: archive
+        at: "un"
+        camera: {x: [10, 30], y: 18}
+        params: {search: [0.0, 1.0]}
+        badge: "MÉTODO"
+        sfx: {hum: 0.3}
+        music: calm
+
+  # ============ 7. DOBLE FINAL ============
+  - text: "Esto es lo que sabemos. La historia nació en un tabloide de ficción, en mayo de mil novecientos ochenta y cinco."
+    pause_after: 0.4
+    shots:
+      - scene: card
+        params: {style: dark, lines: ["LO QUE SABEMOS"], reveal: [0.0, 1.0]}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        music: calm
+      - scene: timeline
+        at: "la"
+        params: {years: ["1985", "1993", "1999", "2019", "2024"], labels: ["ORIGEN", "REEDICIÓN", "REEDICIÓN", "YOUTUBE", "FACEBOOK"], active: [0.0, 0.0]}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        music: calm
+  - text: "El periódico la reimprimió con fotos distintas del mismo testigo. La aerolínea y los treinta y siete años llegaron después."
+    pause_after: 0.4
+    shots:
+      - scene: portraits
+        params: {show: 1.0}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        caption: "ILUSTRACIÓN"
+        music: calm
+      - scene: timeline
+        at: "aerolínea"
+        params: {years: ["1985", "1993", "1999", "2019", "2024"], labels: ["ORIGEN", "REEDICIÓN", "REEDICIÓN", "YOUTUBE", "FACEBOOK"], active: [1.0, 4.0]}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        music: calm
+  - text: "Ningún registro oficial, y ningún periódico de mil novecientos cincuenta y cinco, habla de este avión."
+    pause_after: 0.6
+    shots:
+      - scene: archive
+        camera: {x: [30, 10], y: 18}
+        badge: "VERIFICADO · SNOPES / LEAD STORIES"
+        sfx: {hum: 0.3}
+        music: calm
+  - text: "Lo que no sabemos es quién era el hombre de las fotos. Ni por qué una historia inventada en la redacción de un tabloide sigue aterrizando, una y otra vez, en nuestras pantallas."
+    pause_after: 0.8
+    shots:
+      - scene: portraits
+        params: {show: 1.0, question: 1.0}
+        badge: "PREGUNTA ABIERTA"
+        caption: "ILUSTRACIÓN"
+        music: mystery
+      - scene: phone
+        at: "sigue"
+        camera: {x: [20, 34], y: 16}
+        params: {view: bed}
+        badge: "PREGUNTA ABIERTA"
+        music: mystery
+  - text: "El vuelo novecientos catorce nunca despegó. Pero todavía no ha terminado de aterrizar."
+    pause_after: 1.2
+    shots:
+      - scene: runway
+        camera: {x: 32, y: 14}
+        params: {plane: approach, prog: [0.0, 0.8]}
+        badge: "ARCHIVO CERO"
+        sfx: {rain_out: 0.6, engine: [0.0, 0.4]}
+        music: {mood: reveal, level: 1.0}
+
+tail:
+  - scene: title
+    dur: 4.0
+    params: {text: "ARCHIVO CERO", sub: "FUENTES EN LA DESCRIPCIÓN"}
+    sfx: {rain_in: [0.4, 0.0]}
+    music: {mood: calm, level: [0.8, 0.0]}

@@ -10,8 +10,11 @@ import scenes
 
 # 1. Every scene paints only palette colours (no blending leaks).
 pal = {tuple(c) for c in engine.PAL}
-for name in ("tower", "radar", "face", "runway", "plane_side", "calendar", "title"):
-    shot = {"scene": name, "start": 0.0, "end": 4.0, "params": {"plane": "approach", "blip_at": 0.2}}
+for name in ("tower", "radar", "face", "runway", "plane_side", "calendar", "title",
+             "phone", "map", "ocean", "card", "timeline", "newsstand", "archive", "portraits"):
+    shot = {"scene": name, "start": 0.0, "end": 4.0, "params": {"plane": "approach", "blip_at": 0.2, "route": 0.7, "caracas": 0.5,
+            "lines": ["1955 + 30 = 1985", "«PAN AM»"], "reveal": 0.8, "years": ["1985", "1993"], "labels": ["A", "B"], "active": 1.0,
+            "show": 1.0, "question": 0.5}}
     frame = engine.overlay(engine.Frames(scenes).render(shot, 2.5), dict(shot, badge="LEYENDA", caption="1985"))
     cols = {tuple(c) for c in np.array(frame.convert("RGB")).reshape(-1, 3)[::7]}
     bad = cols - pal
@@ -21,7 +24,9 @@ for name in ("tower", "radar", "face", "runway", "plane_side", "calendar", "titl
 sb_path = sys.argv[1] if len(sys.argv) > 1 else "episodes/EP-001-vuelo-914/cold_open.yaml"
 sb = yaml.safe_load(open(sb_path))
 on_screen = [sb.get("short_title", "")] + [s.get(k, "") for l in sb["lines"] for s in l["shots"] for k in ("badge", "caption")]
-on_screen += [str(v) for l in sb["lines"] for s in l["shots"] for k, v in s.get("params", {}).items() if k in ("text", "sub")]
+on_screen += [str(v) for l in sb["lines"] for s in l["shots"] + sb.get("tail", []) for k, v in s.get("params", {}).items() if k in ("text", "sub")]
+on_screen += [x for l in sb["lines"] for s in l["shots"] for x in s.get("params", {}).get("lines", []) + s.get("params", {}).get("labels", []) + s.get("params", {}).get("years", [])]
+on_screen += [s.get(k, "") for s in sb.get("tail", []) for k in ("badge", "caption")]
 on_screen += [w for l in sb["lines"] for w in l["text"].split()]  # Short captions use narration words
 for s in on_screen:
     for ch in s.upper():
