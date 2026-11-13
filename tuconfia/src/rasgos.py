@@ -1,7 +1,7 @@
 """Rasgos para parecido con famosos, comunes a los tres dibujantes (chibi «r», cuerpo entero «b», retrato «p»).
 Claves opcionales del reparto (cast.py):
   hair2: bald | buzz | pompadour | volume | wild | bun | afro   (sustituye al peinado frontal del estilo)
-  mustache: bool   unibrow: bool   brows: 'thick'   age: bool (arrugas)   smirk: bool (media sonrisa)   chin: bool (papada)
+  nose: bool (nariz ancha)   mustache: bool   unibrow: bool   brows: 'thick'   age: bool (arrugas)   smirk: bool (media sonrisa)   chin: bool (papada)
   build: slim | average | athletic | heavy | muscular   height: short | average | tall   (solo cuerpo entero)"""
 import numpy as np
 from PIL import Image
@@ -70,6 +70,7 @@ def face_b(P, CS, cx, hc, sk):
     if CS.get('age'): P.px(cx - 4, 22, shade(sk, .78)); P.px(cx + 5, 22, shade(sk, .78))
     if CS.get('chin'): P.rect(cx - 4, 27, cx + 4, 27, shade(sk, .8))
     if CS.get('smirk'): P.px(cx + 2, 22, (182, 78, 90))
+    if CS.get('nose'): P.px(cx - 2, 20, shade(sk, .72)); P.px(cx + 2, 20, shade(sk, .72))
     if CS.get('unibrow'): P.rect(cx - 6, 12, cx + 6, 12, hc['dd']); P.rect(cx - 6, 11, cx + 6, 11, hc['dd'])
     if CS.get('mustache'): P.rect(cx - 3, 22, cx + 3, 22, hc['d']); P.rect(cx - 2, 21, cx + 2, 21, hc['d'])
 
@@ -124,6 +125,7 @@ def face_r(P, CS, cx, HR, sk):
     if CS.get('earring'): P.rect(cx - 19, 26, cx - 18, 27, (250, 210, 70))
     if CS.get('chin'): P.rect(cx - 8, 32, cx + 8, 32, shade(sk, .8))
     if CS.get('smirk'): P.px(cx + 3, 27, (176, 72, 84))
+    if CS.get('nose'): P.rect(cx - 3, 24, cx - 2, 24, shade(sk, .72)); P.rect(cx + 2, 24, cx + 3, 24, shade(sk, .72))
     if CS.get('unibrow'): P.rect(cx - 11, 16, cx + 11, 17, HR['dd'])
     if CS.get('mustache'): P.rect(cx - 5, 27, cx + 5, 27, HR['d']); P.rect(cx - 4, 26, cx + 4, 26, HR['d'])
 
@@ -185,6 +187,8 @@ def face_p(d, CS, cx, hd, brow, by, sk=(230, 190, 160), hb=None):
         d.line([(cx - 8, 30), (cx + 6, 30)], fill=lc)                                                         # arruga de la frente
     if CS.get('chin'): d.line([(cx - 9, 70), (cx, 72), (cx + 9, 70)], fill=shade(sk, .76))                 # papada
     if CS.get('smirk'): d.line([(cx + 2, 61), (cx + 4, 60)], fill=(196, 88, 92))
+    if CS.get('nose'):                                                                                        # nariz ancha (aletas marcadas)
+        nc = shade(sk, .7); d.line([(cx - 6, 54), (cx - 3, 56)], fill=nc); d.line([(cx + 6, 54), (cx + 3, 56)], fill=nc); d.line([(cx - 2, 56), (cx + 2, 56)], fill=shade(sk, .82))
     if CS.get('unibrow'): d.line([(cx - 14, by), (cx + 14, by)], fill=brow); d.line([(cx - 13, by - 1), (cx + 13, by - 1)], fill=brow)
     if CS.get('mustache'): d.polygon([(cx - 9, 59), (cx + 9, 59), (cx + 7, 62), (cx + 2, 61), (cx - 2, 61), (cx - 7, 62)], fill=hd)
 

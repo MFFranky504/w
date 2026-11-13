@@ -34,6 +34,8 @@ OUTF = {
  'suit85': dict(top=(44, 46, 62), top2=(26, 28, 42), under=(250, 250, 252), pants=(44, 46, 62), shoes=(20, 20, 26), sole=(10, 10, 14)),
  'turtle': dict(top=(30, 30, 38), top2=(16, 16, 22), under=(30, 30, 38), pants=(70, 104, 168), shoes=(228, 228, 234), sole=(150, 150, 162)),
  'grey': dict(top=(156, 160, 172), top2=(112, 116, 132), under=(206, 210, 220), pants=(70, 78, 110), shoes=(110, 70, 52), sole=(236, 226, 204)),
+ 'kungfu': dict(top=(34, 34, 40), top2=(18, 18, 24), under=(34, 34, 40), pants=(30, 30, 36), shoes=(22, 22, 26), sole=(200, 196, 186)),
+ 'opera': dict(top=(244, 240, 228), top2=(200, 194, 178), under=(244, 240, 228), pants=(30, 30, 38), shoes=(24, 24, 30), sole=(200, 196, 186)),
  'hoodie':  dict(top=(86, 102, 212), top2=(56, 68, 156), under=(246, 246, 252), pants=(52, 58, 106), shoes=(248, 248, 252), sole=(150, 150, 172)),
 }
 HAIRC = {'king': dict(b=(52, 50, 78), d=(32, 30, 54), l=(110, 120, 176)),
@@ -146,6 +148,11 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.rect(cx + 2, 40, cx + 6, 43, (255, 255, 255)); P.rect(cx + 3, 42, cx + 5, 42, o['top2'])
     elif outfit in ('turtle', 'suit85'):
         pass                                               # sin detalles extra (jersey liso / traje)
+    elif outfit in ('kungfu', 'opera'):                   # chaqueta china: cuello mao, botones de lazo y fajín
+        P.add(lambda d: d.rounded_rectangle([cx - 5, 26, cx + 5, 31], radius=2, fill=255), o['top2'], edge_k=.5)
+        P.rect(cx, 31, cx, 56, o['top2'])
+        for yy in (36, 42, 48): P.rect(cx - 2, yy, cx + 2, yy, (210, 200, 170) if outfit == 'kungfu' else (60, 60, 70))
+        P.rect(int(cx - wa_w), 56, int(cx + wa_w), 59, (150, 40, 40) if outfit == 'kungfu' else (40, 40, 52))
     else:  # hoodie
         P.rect(cx - 3, 36, cx - 3, 49, o['under']); P.rect(cx + 3, 36, cx + 3, 47, o['under'])
         P.add(lambda d: d.polygon([(cx - 8, 58), (cx + 8, 58), (cx + 9.5, 68), (cx - 9.5, 68)], fill=255), (134, 154, 244), edge_k=.5)

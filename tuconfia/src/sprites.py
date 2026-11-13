@@ -280,6 +280,8 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
           'suit85': dict(b=(44, 46, 62), d=(26, 28, 42), l=(96, 100, 128), pants=(44, 46, 62), boots=(20, 20, 26)),
           'turtle': dict(b=(30, 30, 38), d=(16, 16, 22), l=(86, 86, 102), pants=(70, 104, 168), boots=(228, 228, 234)),
           'grey': dict(b=(156, 160, 172), d=(112, 116, 132), l=(206, 210, 220), pants=(70, 78, 110), boots=(110, 70, 52)),
+          'kungfu': dict(b=(34, 34, 40), d=(18, 18, 24), l=(84, 84, 98), pants=(30, 30, 36), boots=(22, 22, 26)),
+          'opera': dict(b=(244, 240, 228), d=(200, 194, 178), l=(255, 255, 250), pants=(30, 30, 38), boots=(24, 24, 30)),
           'hoodie': dict(b=(86, 102, 212), d=(56, 68, 156), l=(134, 154, 244), pants=(52, 58, 106), boots=(248, 248, 252))}[outfit]
     cb, cd, clt = cl['b'], cl['d'], cl['l']
     pants, boots = cl['pants'], cl['boots']
@@ -332,6 +334,10 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.rect(cx + 5, 38, cx + 10, 41, (255, 255, 255)); P.rect(cx + 6, 40, cx + 9, 40, cd)
     elif outfit in ('turtle', 'suit85'):
         pass                                               # sin detalles extra
+    elif outfit in ('kungfu', 'opera'):                   # chaqueta china: cuello mao y fajín
+        P.add(lambda d: d.rounded_rectangle([cx - 6, 30, cx + 6, 34], radius=2, fill=255), cd, edge_k=.5)
+        P.rect(cx, 34, cx, 50, cd)
+        P.rect(cx - 12, 49, cx + 12, 51, (150, 40, 40) if outfit == 'kungfu' else (40, 40, 52))
     else:  # hoodie
         P.rect(cx - 5, 38, cx - 5, 48, (246, 246, 252)); P.rect(cx + 5, 38, cx + 5, 46, (246, 246, 252))
         P.add(lambda d: d.polygon([(cx - 9, 44), (cx + 9, 44), (cx + 11, 51), (cx - 11, 51)], fill=255), clt, edge_k=.55)

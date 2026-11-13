@@ -122,6 +122,15 @@ CAST['hawking'].update(age=True)
 CAST['mj'].update(skin=(92, 60, 44), earring=True); CAST['mj_y'].update(skin=(92, 60, 44))
 CAST['johnson'].update(raise_=True); CAST['johnson']['raise'] = True; CAST['johnson'].pop('raise_', None)
 
+# --- short: Jackie Chan
+CAST.update({
+ 'jackie_k': dict(style='shag', skin=(240, 206, 168), hair=ramp((26, 22, 22)), iris=(54, 40, 32), outfit='opera', kid=True, nose=True, height='short'),
+ 'jackie_y': dict(style='short', skin=(236, 198, 158), hair=ramp((26, 22, 22)), iris=(54, 40, 32), outfit='opera', build='athletic', nose=True),
+ 'jackie':   dict(style='shag', skin=(232, 192, 150), hair=ramp((30, 26, 26)), iris=(54, 40, 32), outfit='grey', build='athletic', smirk=True, nose=True),
+ 'bruce':    dict(style='short', skin=(236, 198, 156), hair=ramp((18, 16, 18)), iris=(40, 30, 26), outfit='kungfu', build='athletic', strong=True, brows='thick'),
+ 'maestro':  dict(style='short', skin=(226, 186, 146), hair=ramp((186, 186, 190)), iris=(54, 40, 32), outfit='kungfu', hair2='bald', mustache=True, brows='thick', age=True),
+})
+
 
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False); c.setdefault('hair2', None); c.setdefault('mustache', False); c.setdefault('unibrow', False); c.setdefault('build', 'average'); c.setdefault('height', 'average')
