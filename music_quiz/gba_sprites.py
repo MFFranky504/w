@@ -82,22 +82,52 @@ def tile_wood(x, y, d, w=16):
     d.rectangle((x, y, x + w - 1, y + 7), fill=(196, 128, 70), outline=INK); d.line([(x + 1, y + 1), (x + w - 2, y + 1)], fill=(236, 176, 110))
     d.line([(x + 1, y + 6), (x + w - 2, y + 6)], fill=(140, 84, 44))
     for k in range(x + 7, x + w - 2, 8): d.line([(k, y + 2), (k, y + 5)], fill=(140, 84, 44))
+
+def masonry(d, x0, y0, x1, y1, base=(124, 132, 164), sh=(86, 92, 126), li=(176, 184, 214), mortar=(70, 72, 100), seed=3):
+    """continuous irregular stone wall: staggered stones of varying width, rounded, mortar lines (no per-tile outline)"""
+    r = random.Random(seed); d.rectangle((x0, y0, x1, y1), fill=mortar); y = y0; row = 0
+    while y <= y1:
+        h = r.randint(9, 13); x = x0 - r.randint(0, 14)
+        while x <= x1:
+            w = r.randint(14, 26); bx0, by0, bx1, by1 = x + 1, y + 1, min(x + w - 1, x1), min(y + h - 1, y1)
+            if bx1 > bx0 + 5 and by1 > by0 + 5:
+                c = tuple(max(0, min(255, v + r.randint(-8, 8))) for v in base)
+                d.rounded_rectangle((bx0, by0, bx1, by1), 3, fill=c)
+                d.line([(bx0 + 2, by0 + 1), (bx1 - 3, by0 + 1)], fill=li); d.line([(bx0 + 1, by0 + 2), (bx0 + 1, by1 - 3)], fill=li)
+                d.line([(bx0 + 3, by1), (bx1 - 1, by1)], fill=sh); d.line([(bx1, by0 + 3), (bx1, by1 - 1)], fill=sh)
+                for _ in range(r.randint(0, 3)): px, py = r.randint(bx0 + 2, bx1 - 2), r.randint(by0 + 2, by1 - 2); d.point((px, py), fill=sh)
+                if r.random() < .12: d.line([(bx0 + 3, by0 + 3), (bx0 + 6, by0 + 6), (bx0 + 5, by0 + 9)], fill=sh)        # crack
+            x += w
+        y += h; row += 1
+
+def pool_tiles(d, x0, y0, x1, y1, size=10, base=(206, 234, 246), grout=(150, 186, 206), li=(244, 252, 255), deep=(150, 200, 228)):
+    """continuous glazed tiles: thin grout grid, soft glaze highlight, colour deepening with depth (no black outlines)"""
+    for y in range(y0, y1 + 1, size):
+        f = min(1, (y - y0) / max(y1 - y0, 1)); c = tuple(int(base[k] + (deep[k] - base[k]) * f) for k in range(3))
+        for x in range(x0, x1 + 1, size):
+            d.rectangle((x, y, x + size - 1, y + size - 1), fill=c)
+            d.line([(x + 1, y + 1), (x + 4, y + 1)], fill=li); d.point((x + 1, y + 2), fill=li)
+        d.line([(x0, y), (x1, y)], fill=grout)
+    for x in range(x0, x1 + 1, size): d.line([(x, y0), (x, y1)], fill=grout)
+
 def ground(d, y0, kind="grass", x0=0, x1=W):
     for x in range(x0, x1, 16):
         for k, y in enumerate(range(y0, H, 16)):
             if kind == "grass": tile_grass(x, y, d, top=(k == 0))
             elif kind == "metal": (tile_metal if k == 0 else (lambda a, b, c: tile_rock(a, b, c, (60, 90, 130), (40, 60, 96), (90, 130, 170))))(x, y, d)
-            elif kind == "stone": tile_rock(x, y, d)
-            elif kind == "tile_pool": tile_rock(x, y, d, (220, 236, 244), (160, 186, 206), (255, 255, 255))
+            elif kind in ("stone", "tile_pool"): pass
             elif kind == "wood":
                 d.rectangle((x, y, x + 15, y + 15), fill=(150, 96, 56)); d.line([(x, y), (x + 15, y)], fill=INK)
                 d.line([(x, y + 1), (x + 15, y + 1)], fill=(210, 150, 90)); d.line([(x + 15, y), (x + 15, y + 15)], fill=(104, 64, 36))
+    if kind == "stone": masonry(d, x0, y0, x1, H, seed=y0)
+    if kind == "tile_pool": pool_tiles(d, x0, y0, x1, H)
     d.line([(x0, y0 - 1), (x1, y0 - 1)], fill=INK)
 def side_walls(d, kind="stone", top=180, w=32):
     for x0 in (0, W - w):
-        for x in range(x0, x0 + w, 16):
-            for y in range(top, 266, 16):
-                (tile_rock if kind == "stone" else (lambda a, b, c: tile_grass(a, b, c, top=(b == top))))(x, y, d)
+        if kind == "stone": masonry(d, x0, top, x0 + w - 1, 265, seed=x0 + top)
+        else:
+            for x in range(x0, x0 + w, 16):
+                for y in range(top, 266, 16): tile_grass(x, y, d, top=(y == top))
         d.line([(x0 + (w if x0 == 0 else -1), top), (x0 + (w if x0 == 0 else -1), 266)], fill=INK)
 def star(d, cx, cy, r=6, col=(255, 230, 80), sh=(232, 150, 30)):
     pts = []
@@ -210,10 +240,9 @@ def bg_pool():                                                          # clue 4
     d.rectangle((150, 160, 210, 186), fill=(150, 210, 140), outline=INK); d.rectangle((154, 164, 206, 182), outline=(80, 150, 90))   # the bill
     d.ellipse((172, 166, 188, 180), fill=(120, 190, 120), outline=(70, 130, 80)); d.text((158, 168), "1", font=F(7), fill=(40, 90, 50)); d.text((198, 176), "1", font=F(7), fill=(40, 90, 50))
     for _ in range(26): x, y, r = R.randint(10, 260), R.randint(60, 250), R.randint(2, 6); d.ellipse((x - r, y - r, x + r, y + r), outline=(220, 250, 255)); d.point((x - r // 2, y - r // 2), fill=WHITE)
-    d.rectangle((0, 120, 16, 266), fill=(220, 236, 244), outline=INK); d.rectangle((254, 120, W, 266), fill=(220, 236, 244), outline=INK)   # pool ladder rails
+    pool_tiles(d, 0, 120, 15, 265); pool_tiles(d, 254, 120, W, 265); d.line([(16, 120), (16, 266)], fill=INK); d.line([(253, 120), (253, 266)], fill=INK)   # tiled pool walls
     for y in range(140, 266, 24): d.rectangle((0, y, 16, y + 3), fill=(180, 190, 200), outline=INK); d.rectangle((254, y, W, y + 3), fill=(180, 190, 200), outline=INK)
     ground(d, 266, "tile_pool")
-    for x in range(0, W, 16): d.line([(x, 266), (x, H)], fill=(160, 186, 206))
     return im
 WHITE = (250, 248, 244)
 
@@ -315,8 +344,10 @@ def more_pool(im):
     for _ in range(30):
         x, y, r = R.randint(10, 260), R.randint(60, 250), R.randint(1, 3); d.ellipse((x - r, y - r, x + r, y + r), fill=(200, 245, 255), outline=(255, 255, 255))
     for k in range(6): x = 40 + k * 38; d.ellipse((x, 258, x + 7, 263), fill=(255, 214, 80), outline=INK)                 # coins on the floor
-    for y in range(282, H, 32):                                                                                            # mosaic stripe on the floor tiles
-        for x in range(0, W, 16): ImageDraw.Draw(im).rectangle((x + 2, y + 2, x + 13, y + 13), fill=[(60, 140, 220), (90, 200, 230)][(x // 16) % 2])
+    dd = ImageDraw.Draw(im)                                                                                                # blue lane-marker stripe inlaid in the tiles
+    for y in range(300, 311): dd.line([(0, y), (W, y)], fill=(70, 140, 214))
+    for x in range(0, W, 10): dd.line([(x, 300), (x, 310)], fill=(110, 170, 226))
+    dd.line([(0, 300), (W, 300)], fill=(110, 170, 226)); dd.line([(0, 310), (W, 310)], fill=(110, 170, 226))
     return im
 
 # ---------------------------------------------------------------- characters (tall and slim, 100x140 cell, feet at y=138)
@@ -440,10 +471,10 @@ def tiles_ui():
     im = Image.new("RGBA", (256, 168), (0, 0, 0, 0)); d = ImageDraw.Draw(im); d.fontmode = "1"; items = []
     def lab(x, y, t): items.append((x, y, t))
     tile_grass(4, 4, d); tile_grass(20, 4, d); tile_grass(4, 20, d, top=False); tile_grass(20, 20, d, top=False); lab(4, 38, "hierba")
-    tile_rock(44, 4, d); tile_rock(60, 4, d); tile_rock(44, 20, d); tile_rock(60, 20, d); lab(44, 38, "piedra")
+    masonry(d, 44, 4, 75, 35, seed=7); d.rectangle((44, 4, 75, 35), outline=INK); lab(44, 38, "piedra")
     tile_metal(84, 4, d); tile_metal(100, 4, d); lab(84, 38, "metal")
     tile_wood(84, 22, d, 32); lab(84, 32, "")
-    tile_rock(124, 4, d, (220, 236, 244), (160, 186, 206), (255, 255, 255)); tile_rock(140, 4, d, (220, 236, 244), (160, 186, 206), (255, 255, 255)); lab(124, 38, "azulejo")
+    pool_tiles(d, 124, 4, 155, 35); d.rectangle((124, 4, 155, 35), outline=INK); lab(124, 38, "azulejo")
     for k in range(4): star(d, 176 + k * 20, 16, [9, 8, 6, 8][k], [(255, 230, 80), (255, 240, 140), (255, 250, 200), (255, 240, 140)][k]); lab(164, 38, "estrella x4")
     for k in range(2):                                                               # "?" block (2 frames)
         x = 4 + k * 22; d.rectangle((x, 50, x + 17, 67), fill=(255, 170, 60) if k == 0 else (255, 200, 90), outline=INK); d.rectangle((x + 1, 51, x + 16, 53), fill=(255, 230, 150)); d.rectangle((x + 1, 64, x + 16, 66), fill=(200, 110, 30))
