@@ -39,3 +39,20 @@
 ## Fe de erratas
 
 Sin entradas.
+
+---
+
+## Versión pixel art (motor `tools/pixel`) — 2026-11-13
+
+| Comprobación | Resultado |
+| :--- | :--- |
+| Archivo | `export/vuelo914_v01.mp4`, 1920×1080, 24 fps, 8:01, 11.551 fotogramas |
+| Short | `export/vuelo914_short_short_v01.mp4`, 1080×1920, 30,7 s, más `.srt` |
+| Loudness | −16,3 LUFS (episodio), −16,7 LUFS (Short) |
+| Negros y silencios accidentales | 0 y 0 |
+| Gancho | Primer fotograma: el avión. Frase en los segundos 0 a 3: "Este avión despegó de Nueva York en 1955." |
+| Planos | 104, todos de 8 s o menos; los de menos de 2 s son golpes de ritmo intencionales |
+| Texto en pantalla | Todo compuesto por el motor. Cero texto generado por IA. Autoprueba de glifos y paleta superada |
+| Fuentes | Verificadas en Snopes, Lead Stories y Wikipedia (`01_INVESTIGACION.md` v2). Datos de una sola fuente, atribuidos en pantalla |
+| Música y efectos | Síntesis original del motor, sin audio de terceros. Gemini escuchó 20 s del Short: voz clara, música audible sin tapar la voz, sin distorsión |
+| Revisión | Un fotograma cada 6 s del episodio y un fotograma por plano en las stills. **No se vio ni escuchó el episodio completo de corrido** |
