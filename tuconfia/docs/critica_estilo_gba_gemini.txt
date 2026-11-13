@@ -1,0 +1,13 @@
+(1) **Puntuación: 4/10.** La base es correcta, pero el fondo se siente "vectorial/suave" frente al ruido y textura del GBA.
+
+(2) **Diferencias clave para el motor:**
+*   **Ruido/Dithering:** Los fondos de GBA usan tramas de puntos (*dithering*) para transiciones de color. Aplica un filtro de ruido sutil o un patrón de tramado a las gradaciones del cielo y montañas.
+*   **Paleta limitada:** Reduce el número de colores. El cielo actual tiene demasiados tonos suaves; limita la paleta a 16-32 colores indexados para lograr ese grano clásico.
+*   **Contornos (Outlines):** El estilo GBA define volúmenes con píxeles oscuros. Añade bordes de color oscuro en las cimas de las montañas y estructuras del suelo para separarlas del fondo.
+*   **Texturizado de bloques:** El suelo es muy plano. Añade pequeñas variaciones de píxeles (grietas, manchas) en cada baldosa para romper la repetición geométrica.
+*   **Profundidad (Capas):** Añade un plano intermedio con vegetación desenfocada o elementos atmosféricos para emular el *parallax* característico.
+
+(3) **Qué está bien:**
+*   **Proporciones:** El tamaño de los personajes frente al entorno es perfecto.
+*   **Perspectiva:** El ángulo de cámara es acertado.
+*   **Composición:** La distribución de elementos (cielo-montaña-suelo) es la adecuada.
