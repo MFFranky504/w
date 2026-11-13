@@ -146,8 +146,8 @@ def bg_hook():
     for x in range(0, W, 40):                                                                   # metal girders (ref: teal walkway)
         d.rectangle((x + 16, 266, x + 24, H), fill=(54, 150, 160), outline=INK); d.rectangle((x + 17, 266, x + 18, H), fill=(140, 230, 230))
     for y in range(290, H, 22): d.line([(0, y), (W, y + 10)], fill=(90, 70, 150)); d.line([(0, y + 10), (W, y)], fill=(90, 70, 150))   # chain-link mesh
-    for x in range(0, W, 16): tile_metal(x, 252, d)
-    d.line([(0, 251), (W, 251)], fill=INK)
+    for x in range(0, W, 16): tile_metal(x, 266, d)
+    d.line([(0, 265), (W, 265)], fill=INK)
     for (x, y) in ((40, 330), (210, 360), (120, 410), (60, 440)): star(d, x, y, 5)
     return im
 
@@ -178,7 +178,7 @@ def bg_garage():                                                        # clue 1
     d.rectangle((150, 160, 262, 170), fill=(120, 120, 136), outline=INK)
     names = ["SKID ROW", "PEN CAP CHEW", "BLISS", "TED ED FRED"]                                                          # flyers, all crossed out
     for k, n in enumerate(names):
-        x, y = 10 + (k % 2) * 66, 40 + (k // 2) * 50; c = [(255, 230, 120), (180, 230, 255), (255, 170, 200), (200, 255, 180)][k]
+        x, y = 8 + (k % 2) * 66, 68 + (k // 2) * 44; c = [(255, 230, 120), (180, 230, 255), (255, 170, 200), (200, 255, 180)][k]
         d.rectangle((x, y, x + 60, y + 38), fill=c, outline=INK); d.ellipse((x + 28, y - 2, x + 32, y + 2), fill=(220, 40, 50), outline=INK)
         d.text((x + 30, y + 16), n, font=F(7 if len(n) > 9 else 8), fill=INK, anchor="mm"); d.line([(x + 4, y + 26), (x + 56, y + 30)], fill=(210, 30, 40), width=2)
         d.text((x + 30, y + 33), "?", font=F(7), fill=(120, 80, 60), anchor="mm")
@@ -206,8 +206,6 @@ def bg_studio():                                                        # clue 2
     for k in range(18):
         x = 34 + k * 12; d.line([(x, 190), (x, 198)], fill=(30, 30, 40)); d.rectangle((x - 2, 190 + (k * 7) % 7, x + 2, 193 + (k * 7) % 7), fill=(240, 240, 240))
         d.ellipse((x - 2, 206, x + 2, 210), fill=[(255, 90, 90), (90, 220, 120), (255, 210, 80)][k % 3])
-    d.rectangle((86, 150, 184, 176), fill=(255, 230, 120), outline=INK); d.polygon([(86, 150), (74, 163), (86, 176)], fill=(255, 230, 120), outline=INK)   # price tag
-    d.ellipse((80, 160, 85, 165), fill=(250, 250, 250), outline=INK); d.text((137, 163), "$606.17", font=F(13), fill=(170, 40, 40), anchor="mm")
     side_walls(d, "stone", 170, 16)
     ground(d, 266, "stone")
     for (x, y) in ((24, 300), (240, 300)): star(d, x, y, 5)
@@ -303,10 +301,10 @@ def more_garage(im):
     d.rectangle((150, 40, 262, 170), fill=(140, 170, 210), outline=INK); [d.line([(151, y), (261, y)], fill=(170, 196, 226)) for y in range(44, 170, 9)]   # half-open door with rain outside
     for _ in range(60): x, y = R.randint(152, 260), R.randint(44, 120); d.line([(x, y), (x - 2, y + 5)], fill=(200, 220, 250))
     d.rectangle((150, 120, 262, 170), fill=(200, 200, 210), outline=INK); [d.line([(151, y), (261, y)], fill=(150, 150, 166)) for y in range(124, 170, 9)]
-    d.rectangle((10, 140, 140, 144), fill=(110, 70, 44), outline=INK)                                                     # shelf with paint cans + cassette
-    for k, c in enumerate([(220, 60, 60), (60, 140, 220), (240, 200, 60), (90, 190, 110)]): d.rectangle((14 + k * 14, 128, 24 + k * 14, 140), fill=c, outline=INK); d.line([(15 + k * 14, 130), (23 + k * 14, 130)], fill=(255, 255, 255))
-    d.rectangle((76, 132, 100, 140), fill=(40, 40, 50), outline=INK); d.ellipse((80, 134, 84, 138), fill=WHITE); d.ellipse((92, 134, 96, 138), fill=WHITE)
-    d.ellipse((104, 122, 134, 140), fill=(40, 40, 46), outline=INK); d.ellipse((112, 126, 126, 136), fill=(150, 108, 72))   # old tyre
+    d.rectangle((10, 178, 140, 182), fill=(110, 70, 44), outline=INK)                                                     # shelf with paint cans + cassette
+    for k, c in enumerate([(220, 60, 60), (60, 140, 220), (240, 200, 60), (90, 190, 110)]): d.rectangle((14 + k * 14, 166, 24 + k * 14, 178), fill=c, outline=INK); d.line([(15 + k * 14, 168), (23 + k * 14, 168)], fill=(255, 255, 255))
+    d.rectangle((76, 170, 100, 178), fill=(40, 40, 50), outline=INK); d.ellipse((80, 172, 84, 176), fill=WHITE); d.ellipse((92, 172, 96, 176), fill=WHITE)
+    d.ellipse((104, 160, 134, 178), fill=(40, 40, 46), outline=INK); d.ellipse((112, 164, 126, 174), fill=(150, 108, 72))   # old tyre
     d.rectangle((60, 236, 130, 266), fill=(150, 50, 70), outline=INK); [d.line([(62, y), (128, y)], fill=(190, 80, 100)) for y in range(240, 266, 6)]   # rug
     d.rectangle((140, 222, 176, 252), fill=(70, 66, 80), outline=INK); d.rectangle((144, 226, 172, 244), fill=(40, 38, 50)); [d.ellipse((147 + k * 8, 246, 151 + k * 8, 250), fill=(220, 220, 220)) for k in range(3)]   # second amp
     d.line([(54, 236), (100, 250), (140, 240)], fill=(30, 30, 36), width=2)                                               # cable
@@ -314,9 +312,9 @@ def more_garage(im):
     return im
 def more_studio(im):
     d = ImageDraw.Draw(im); d.fontmode = "1"
-    d.rectangle((90, 154, 188, 180), fill=(20, 16, 30))                                                                    # drop shadow of the tag (redrawn on top)
-    d.rectangle((86, 150, 184, 176), fill=(255, 230, 120), outline=INK); d.polygon([(86, 150), (74, 163), (86, 176)], fill=(255, 230, 120), outline=INK)
-    d.ellipse((80, 160, 85, 165), fill=(250, 250, 250), outline=INK); d.text((137, 163), "$606.17", font=F(13), fill=(170, 40, 40), anchor="mm")
+    d.rectangle((190, 124, 254, 146), fill=(20, 16, 30))                                                                   # drop shadow of the price tag
+    d.rectangle((188, 122, 252, 144), fill=(255, 230, 120), outline=INK); d.polygon([(188, 122), (178, 133), (188, 144)], fill=(255, 230, 120), outline=INK)
+    d.ellipse((183, 130, 187, 135), fill=(250, 250, 250), outline=INK); d.text((222, 133), "$606.17", font=F(11), fill=(170, 40, 40), anchor="mm")
     for k in range(2):                                                                                                  # VU meters
         x = 30 + k * 190; d.rectangle((x, 150, x + 30, 172), fill=(250, 240, 200), outline=INK); d.arc((x + 3, 156, x + 27, 180), 200, 340, fill=(200, 60, 60)); d.line([(x + 15, 170), (x + 22 - k * 10, 158)], fill=INK)
     for k in range(10): d.rectangle((24 + k * 22, 252, 36 + k * 22, 256), fill=[(255, 60, 90), (255, 160, 60), (255, 230, 80), (90, 230, 120), (90, 190, 255)][k % 5])   # LED strip

@@ -103,9 +103,9 @@ elif STYLE == "trap":                                  # 140 BPM half-time dark 
         add(string_pad([nfq(x - 12) for x in CH[c][:3]], BAR + .3), t0, .55, bus=stems["strings"])
     PUMP = None
 elif STYLE == "rock":                                  # 138 BPM stadium rock in E (original): distorted power chords, driving drums, crash accents
-    BPM = 138; BEAT = 60 / BPM; BAR = 4 * BEAT
+    BPM = EP.get("bpm", 138); BEAT = 60 / BPM; BAR = 4 * BEAT
     nfq = lambda s, base=82.41: base * 2 ** (s / 12)
-    PROG = [0, 0, 5, 7, 0, 0, 5, 3]; MEL = [12, 15, 14, 12, 10, 12, 7, 10]
+    PROG = EP.get("prog", [0, 0, 5, 7, 0, 0, 5, 3]); MEL = [12, 15, 14, 12, 10, 12, 7, 10]
     def power(root, d):
         t = tt(d); x = sum(sum(np.sin(2*np.pi*f*k*t + .3 * k) / k for k in range(1, 8)) for f in (root, root * 1.4983, root * 2))
         return lp(np.tanh(4.5 * x / 3), 3) * np.minimum(t / .006, 1) * np.exp(-t * 3) * np.minimum((d - t) / .03, 1) * .55
@@ -294,6 +294,11 @@ for ci, c in enumerate(CLUES):
     elif sc == "jazz": S(lp(noise(d), 90) * .08, t0, 1.0); S(boom(.6) * .4, t0 + .3, .8)
     elif sc in ("set", "tv", "store", "bedroom", "cafe", "school", "airport"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc in ("workshop", "wembley"): S(lp(noise(d), 25) * .1, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
+    elif sc in ("g_garage", "g_studio"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
+    elif sc == "g_aberdeen": S(hp(noise(d), 2) * .05, t0, 1.0)
+    elif sc == "g_pool":
+        S(lp(noise(d), 60) * .12, t0, 1.0)
+        for i in range(6): S(blip(500 + 80 * i, .05, False), t0 + .8 + i * .7, .4)
     elif sc == "awards":
         S(lp(noise(d), 10) * (.08 + .05 * np.sin(2*np.pi*.4*tt(d))), t0, 1.0)
         for tp in (1.0, 3.5): S(cymbal(.9), t0 + tp, .5)

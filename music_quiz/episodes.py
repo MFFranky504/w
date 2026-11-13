@@ -46,6 +46,81 @@ WINNERS_P10 = [
 ]
 SPECIAL_P10 = {"Osamu Dazai": "1ER COMENTARIO"}
 
+# ---- winners of Parte 11 (Queen): comments naming Queen or ANY member (Freddie, Mercury, Brian May...) — IG, TikTok, YouTube, 17-nov-2026; transcribed by Gemini, checked by hand ----
+WINNERS_P11 = [
+ ('armxxndo064_', 'IG', 1, 1, 96),
+ ('mati09084', 'IG', 1, 1, 96),
+ ('alejokirchheimer', 'IG', 1, 1, 96),
+ ('ikmat2813', 'IG', 1, 1, 96),
+ ('bolillotactico87', 'IG', 0, 1, 96),
+ ('ianmoya.4', 'IG', 2, 1, 96),
+ ('d3adcvp1d_zzz', 'IG', 1, 1, 96),
+ ('diego._glzz', 'IG', 2, 1, 96),
+ ('songomaro', 'IG', 1, 1, 24),
+ ('3milio.x', 'IG', 0, 1, 96),
+ ('gipsyy1414', 'IG', 1, 1, 96),
+ ('_jav_mendivil_', 'IG', 1, 1, 96),
+ ('personadelomasnormal2026', 'IG', 1, 1, 96),
+ ('jeff_the_land_shark124', 'IG', 2, 1, 96),
+ ('mosh.king2', 'IG', 1, 1, 96),
+ ('caleb01516', 'IG', 0, 1, 96),
+ ('gabrieljt2808', 'IG', 2, 1, 96),
+ ('astromartin__', 'IG', 0, 1, 96),
+ ('garzongodd', 'IG', 1, 2, 96),
+ ('whatsername_1829', 'IG', 1, 1, 96),
+ ('ricardox_c7', 'IG', 1, 1, 96),
+ ('nixx3_09', 'IG', 1, 1, 96),
+ ('m1435960', 'IG', 0, 1, 96),
+ ('alwex_cqm', 'IG', 0, 1, 96),
+ ('nake12312', 'IG', 1, 1, 96),
+ ('i_am_not_maureen', 'IG', 2, 1, 96),
+ ('zcx.bruh', 'IG', 1, 2, 96),
+ ('FranciscoAntonioCruzGarcia-o7s', 'YT', 0, 2, 72),
+ ('Betito.Santini', 'YT', 0, 1, 72),
+ ('eden.vazquezzz', 'YT', 2, 2, 72),
+ ('Osamu Dazai', 'TT', 0, 1, 72),
+ ('dyf_r3nt', 'IG', 1, 1, 96),
+ ('ernswt2', 'IG', 1, 1, 72),
+ ('4nim4lkan1val', 'IG', 1, 1, 72),
+ ('adalxx_gh', 'IG', 2, 1, 96),
+ ('angell.5x_', 'IG', 0, 1, 72),
+ ('luketa_paketa', 'IG', 0, 1, 96),
+ ('fan_cdeg', 'IG', 1, 3, 96),
+ ('r1ngo_mclennon', 'IG', 1, 1, 72),
+ ('gg.37553', 'IG', 1, 1, 72),
+ ('claudioandres_1710', 'IG', 0, 1, 72),
+ ('_.missael98', 'IG', 0, 1, 96),
+ ('im_andrezzzes', 'IG', 1, 1, 96),
+ ('nosequeponer3596', 'IG', 0, 1, 72),
+ ('bastian.reinaga.stratosg', 'IG', 1, 1, 72),
+ ('pollo_bskt', 'IG', 1, 1, 72),
+ ('movistar.707', 'IG', 1, 1, 72),
+ ('aloisgross193', 'IG', 1, 1, 72),
+ ('rom4n_drummer', 'IG', 2, 2, 72),
+ ('matytesmo', 'IG', 1, 1, 72),
+ ('pedrovs4614', 'IG', 1, 1, 72),
+ ('ivxn._dump', 'IG', 1, 1, 72),
+ ('richard.1034w', 'IG', 1, 1, 72),
+ ('nott_balam2806', 'IG', 1, 3, 72),
+ ('_saidens_', 'IG', 3, 1, 72),
+ ('platanito_trailero', 'IG', 1, 14, 96),
+ ('dylangabrielcruzcastano', 'IG', 1, 3, 96),
+ ('luluna.tica', 'IG', 1, 1, 72),
+ ('6._benjak_.10', 'IG', 1, 6, 96),
+ ('deadof.ros3s', 'IG', 1, 1, 96),
+ ('alexzgmx_', 'IG', 0, 1, 72),
+ ('_canonizad0.211', 'IG', 2, 1, 96),
+ ('justinvizcayaa', 'IG', 1, 1, 96),
+ ('fer.nando_adr', 'IG', 1, 1, 72),
+ ('compapada', 'IG', 4, 4, 96),
+ ('julerodeluz', 'IG', 4, 2, 96),
+ ('elbrotherx', 'IG', 1, 1, 96),
+ ('d3g_420', 'IG', 4, 1, 96),
+ ('nosoy._clark', 'IG', 1, 1, 72),
+ ('alejandroo_ykz', 'IG', 1, 1, 72),
+]
+SPECIAL_P11 = {"Osamu Dazai": "1ER COMENTARIO"}
+
 def _sort_rows(raw):
     """Order requested by the channel owner: pista (1,2,3, sin pista) -> más likes -> comentó antes (más horas)."""
     s = sorted(enumerate(raw), key=lambda e: ((e[1][2] if e[1][2] else 9), -e[1][3], -e[1][4], e[0]))
@@ -69,6 +144,21 @@ EPISODES = {
                  text="En *2006* tocaron en *Coachella* dentro de una pirámide de pantallas y luces LED."),
             dict(n=5, diff="FÁCIL", pts=1, chip="GRAMMY", scene="grammy",
                  text="En *2014* ganaron el Grammy a *Álbum del Año*, con un disco que incluía «*Get Lucky*» junto a *Pharrell*."),
+        ]),
+    # ------------------------------------------------------------------ Parte 12: Nirvana (rock/grunge, estilo GBA) — respuesta de ayer: Queen
+    "p12": dict(
+        part=12, artist="Nirvana", genre="rock", music="rock", bpm=116, prog=[0, 3, 5, 3, 0, 3, 7, 5], hook="b", next_part=13, gba=True,
+        hook_len=2.0, reveal=2.8, hook_scene="g_hook", outro_scene="g_hook", outro_sign=None,
+        prev=dict(sprite="freddie_gba", scene="g_wembley", part=11, lines=("QUEEN",), sub="LONDRES · REINO UNIDO", winners=[], winners_part=11, special=SPECIAL_P11),
+        clues=[
+            dict(n=1, diff="ULTRA DIFÍCIL", pts=4, chip="NOMBRES", scene="g_garage",
+                 text="Antes de su nombre definitivo se llamaron *Skid Row*, *Pen Cap Chew*, *Bliss* y *Ted Ed Fred*."),
+            dict(n=2, diff="MUY DIFÍCIL", pts=3, chip="$606.17", scene="g_studio",
+                 text="Su álbum debut, de *1989*, costó solo *606,17 dólares* y salió en el sello *Sub Pop*."),
+            dict(n=3, diff="DIFÍCIL", pts=2, chip="1987", scene="g_aberdeen",
+                 text="Se formaron en *1987* en *Aberdeen*, *Washington*."),
+            dict(n=4, diff="MEDIA", pts=1, chip="1992", scene="g_pool",
+                 text="En enero de *1992* su álbum con un *bebé nadando* en la portada sacó del #1 a *Dangerous* de Michael Jackson."),
         ]),
     # ------------------------------------------------------------------ Parte 11: Queen (rock) — respuesta de ayer: Tyler, The Creator
     "p11": dict(
@@ -123,6 +213,7 @@ EPISODES = {
 EPISODES["p9"]["prev"]["winners"] = _sort_rows(WINNERS_P8)
 EPISODES["p10"]["prev"]["winners"] = _sort_rows(WINNERS_P9)
 EPISODES["p11"]["prev"]["winners"] = _sort_rows(WINNERS_P10)
+EPISODES["p12"]["prev"]["winners"] = _sort_rows(WINNERS_P11)
 
 def current():
     ep = dict(EPISODES[os.environ.get("EPISODE", "p11")])

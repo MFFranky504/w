@@ -1,3 +1,4 @@
+import os
 import numpy as np, math, random, sys, subprocess
 from PIL import Image, ImageDraw, ImageFont
 from tl import *
@@ -526,6 +527,7 @@ def prev_draw(im, t, ts):
     """Sprite of the previous episode's artist (reveal = 'la respuesta de ayer')."""
     kind = PREV["sprite"]
     if kind == "tyler": return tyler_draw(im, t, ts)
+    if kind == "freddie_gba": return freddie_gba(im, t, ts)
     if kind == "mic": return mic_draw(im, t, ts)
     if kind == "nas2": return nas2_draw(im, t, ts)
     if kind == "snoop": snoop(im, t, mode="sil" if ts < REVEAL else "col"); (qmark(im, 140, 138 + int(3 * math.sin(t * 4)), 3) if ts < REVEAL else None); return
@@ -1489,11 +1491,87 @@ def dyn_wembley(im, t, ts, tag):
     for k, bx in enumerate((30, 135, 240)): beam(arr, bx, 135 + 80 * math.sin(t * 1.2 + k * 2), 40, 260, 5, 70, (255, 240, 200), .16)
     im.paste(Image.fromarray(arr))
 
+# ======================= v12: GBA-style scenes from the Parte 12 sprite sheets =======================
+SPR_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sprites", "parte12")
+def _png(name, mode="RGBA"):
+    p = os.path.join(SPR_DIR, name); return Image.open(p).convert(mode) if os.path.exists(p) else None
+def _sil_rgba(im):
+    a = np.array(im)[..., 3] > 0; s = np.zeros(a.shape + (4,), np.uint8); s[a] = (14, 8, 34, 255)
+    l = a & ~np.roll(a, 1, 1); r = a & ~np.roll(a, -1, 1); t_ = a & ~np.roll(a, 1, 0)
+    s[l] = (70, 230, 255, 255); s[r] = (255, 70, 190, 255); s[t_ & ~l & ~r] = (255, 215, 90, 255); return Image.fromarray(s, "RGBA")
+G_BG = [_png(f"fondo_{i}.png", "RGB") for i in range(6)]
+G_ART = [_png(f"artista_{k}.png") for k in range(6)]; G_QUE = [_png(f"ayer_queen_{k}.png") for k in range(6)]
+G_ART_SIL = [_sil_rgba(G_ART[k]) for k in range(1, 5)] if G_ART[1] else []
+_gs = random.Random(5); G_STARS = [(_gs.randint(2, W - 2), _gs.randint(2, 230), _gs.random() * 6) for _ in range(46)]
+GY = 266 - 139                                            # sprite cell is 100x140, feet on its row 138 (+1 outline)
+def gba_sil(im, t):
+    f = G_ART_SIL[int(t * 6) % 4]; bob = 1 if int(t * 2.2) % 2 else 0
+    im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 3)), 3)
+def freddie_gba(im, t, ts):
+    bob = 1 if int(t * 2.4) % 2 else 0
+    if ts < REVEAL: im.paste(G_QUE[0], (85, GY + bob), G_QUE[0]); qmark(im, 130, 98 + int(3 * math.sin(t * 4)), 3); return
+    e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); f = G_QUE[1 + int(t * 5) % 4]
+    im.paste(f, (85, GY + jump + bob), f)
+def dyn_g_hook(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for (x, y, p) in G_STARS:
+        if math.sin(t * 3 + p) > .55:
+            d.point((x, y), fill=(255, 255, 255)); [d.point(q, fill=(190, 240, 255)) for q in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))]
+    s = (t * .5) % 4
+    if s < .7: x = 240 - s * 260; y = 20 + s * 120; d.line([(x, y), (x + 14, y - 8)], fill=(255, 250, 210), width=2); d.point((x, y), fill=WHITE)
+    for k in range(6):
+        if int(t * 2 + k) % 2: d.point((21 + k * 46, 237), fill=(255, 255, 200)); d.point((21 + k * 46, 236), fill=(255, 255, 255))
+def dyn_g_wembley(im, t, ts, tag):
+    arr = np.array(im)
+    if ts < REVEAL:
+        k = min(1, ts / 2.2)
+        for kk, bx in enumerate((60, 210)): beam(arr, bx, 135 + math.sin(t * 3 + kk * 3) * 40, 0, 266, 4, 40, (255, 60, 120), .2 * k)
+        arr = (arr * (1 - .3 * k) + np.array([30, 10, 60]) * .3 * k).astype(np.uint8)
+    else:
+        beam(arr, 135, 135, 0, 266, 10, 90, (255, 230, 160), .3 * min(1, (ts - REVEAL) / .3)); glow(arr, 135, 200, 100, (255, 190, 120), .4)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for k in range(14):
+        if int(t * 6 + k * 3.7) % 9 == 0: x = 10 + (k * 53) % 250; y = 204 + (k * 29) % 50; d.point((x, y), fill=WHITE); d.point((x + 1, y), fill=(255, 240, 200)); d.point((x, y - 1), fill=(255, 240, 200))
+    if ts >= REVEAL:
+        e = ts - REVEAL
+        for (vx, vy, c) in CONF2:
+            px = 135 + vx * 1.6 * min(e, 1.6) ** .8; py = 190 + vy * 2.2 * min(e, 1.2) + 40 * e * e
+            if 0 <= px < W and 0 <= py < H: d.rectangle((px, py, px + 2, py + 2), fill=c)
+def dyn_g_garage(im, t, ts, tag):
+    arr = np.array(im); fl = .85 + .15 * math.sin(t * 13) * (1 if int(t * 3) % 7 == 0 else .3)
+    glow(arr, 75, 160, 70, (255, 210, 120), .3 * fl); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for k in range(30): x = 152 + (k * 19) % 106; y = 44 + (t * 90 + k * 23) % 76; d.line([(x, y), (x - 2, y + 4)], fill=(214, 230, 252))
+    if int(t * 8) % 5 == 0: d.line([(178, 194), (206, 194)], fill=WHITE)
+def dyn_g_studio(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for (cx, cy) in ((96, 92), (174, 92)):
+        d.ellipse((cx - 12, cy - 12, cx + 12, cy + 12), fill=(60, 60, 70)); d.ellipse((cx - 5, cy - 5, cx + 5, cy + 5), fill=(200, 200, 210))
+        for k in range(3): a = t * 4 + k * 2.1; d.line([(cx, cy), (cx + 12 * math.cos(a), cy + 12 * math.sin(a))], fill=(150, 150, 162))
+        d.ellipse((cx - 2, cy - 2, cx + 2, cy + 2), fill=(60, 60, 70))
+    for k in range(18):
+        x = 34 + k * 12; on = math.sin(t * 5 + k * 1.3) > -.3
+        d.ellipse((x - 2, 206, x + 2, 210), fill=[(255, 90, 90), (90, 220, 120), (255, 210, 80)][(k + int(t * 3)) % 3] if on else (60, 60, 70))
+        y = 190 + int(5 * abs(math.sin(t * 2 + k))); d.rectangle((x - 2, y, x + 2, y + 3), fill=(240, 240, 240))
+def dyn_g_aberdeen(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for k in range(70): x = (k * 37 + t * 20) % W; y = (t * 150 + k * 53) % 262; d.line([(x, y), (x - 2, y + 6)], fill=(206, 224, 244))
+    for k in range(6): x = (k * 47 + t * 14) % W; d.line([(x, 226 + (k % 3) * 3), (x + 8, 226 + (k % 3) * 3)], fill=(236, 248, 252))
+    if int(t * 2) % 5: d.rectangle((40, 182, 45, 188), fill=(255, 236, 150))
+def dyn_g_pool(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for k in range(18):
+        x = (k * 41 + math.sin(t * 2 + k) * 5) % W; y = 260 - ((t * 34 + k * 37) % 210); r = 1 + k % 3; d.ellipse((x - r, y - r, x + r, y + r), outline=(230, 250, 255))
+    for (c, fy, sp, fl) in (((255, 160, 60), 110, 12, 1), ((255, 120, 190), 210, 9, -1), ((120, 230, 200), 232, 7, 1)):
+        x = (t * sp * fl + fy * 3) % (W + 30) - 15; d.ellipse((x - 6, fy - 3, x + 6, fy + 3), fill=c, outline=DARK); d.polygon([(x - 6 * fl, fy), (x - 10 * fl, fy - 4), (x - 10 * fl, fy + 4)], fill=c, outline=DARK)
+    for k in range(5):
+        if int(t * 4 + k * 3) % 8 == 0: x = 20 + (k * 53) % 230; y = 262; d.point((x, y), fill=WHITE); d.point((x + 1, y), fill=(255, 240, 150))
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
        "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
        "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook)),
+       "g_hook": (G_BG[0], dyn_g_hook), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
        "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards),
        "workshop": (WORKSHOP, dyn_workshop), "wembley": (WEMBLEY, dyn_wembley), "cafe": (CAFE, dyn_cafe), "school": (SCHOOL, dyn_school), "airport": (AIRPORT, dyn_airport)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
@@ -1552,13 +1630,14 @@ def ui_low(seg, ts, t):
                 lt(d, (135, 46 + dy), lines[0], s0, LIGHTBG_TXT if LIGHT_RECAP else WHITE, shadow=(255, 255, 255) if LIGHT_RECAP else (255, 70, 190)); lt(d, (135, 90 + dy), lines[1], s1, GOLD, shadow=(120, 50, 0)); py = 120
             else:
                 lt(d, (135, 40 + dy), "LA RESPUESTA DE AYER", 11, (255, 200, 120)); lt(d, (135, 82 + dy), lines[0], 56, GOLD, shadow=(120, 50, 0), anchor="mm"); py = 120
-            if PREV["sprite"] in ("tyler", "nas2"): py = 109
+            if PREV["sprite"] in ("tyler", "nas2", "freddie_gba"): py = 109
             if e > .5: pill(d, 135, py, py + 16, 196, (14, 8, 34), GOLD); lt(d, (135, py + 8), PREV["sub"], 9, (255, 200, 120))
             if ts > RECAP_LEN - 2.6:
                 b = int(2 * math.sin(t * 10)); msg = "¡AHORA LOS GANADORES!" if WINNERS else "¡HOY: UN NUEVO ARTISTA!"
                 pill(d, 135, 284 + b, 306 + b, 214, GOLD); lt(d, (135, 295 + b), msg, 11, DARK, shadow=(255, 230, 140))
         return ui
     if seg == S_WIN:
+        if EP.get("gba"): d.rectangle((0, 10, 270, 72), fill=(14, 8, 34, 150))
         k = ease(ts / .35); dy = int((1 - k) * -26)
         lt(d, (135, 24 + dy), f"GANADORES · PARTE {PREV['winners_part']}", 20, GOLD, shadow=(110, 50, 0))
         lt(d, (135, 46 + dy), "ORDENADOS POR PISTA Y LIKES", 10, WHITE)
@@ -1581,20 +1660,32 @@ def ui_low(seg, ts, t):
         return ui
     c = CLUES[seg - S_C1]; n = c["n"]; seg_len = T[seg + 1] - T[seg]; last = seg == S_C1 + NCL - 1; NB = EP.get("diff_nb", NCL); col_ = diffc(n, NB)
     k = ease(ts / .3); dy = int((1 - k) * -30)
-    lt(d, (135, 46 + dy), f"PISTA {n} / {NCL}", 24, GOLD, shadow=(110, 50, 0))
-    bw = 26 if NCL >= 5 else 32; step = bw + 4; x0b = 135 - (NCL * step - 4) // 2
-    for i in range(NCL):
-        fill = diffc(i + 1, NB) if i < n and ts > .45 + i * .11 else (50, 36, 80)
-        d.rectangle((x0b + i * step, 66 + dy, x0b + i * step + bw, 70 + dy), fill=fill)
-    lt(d, (135, 80 + dy), f"DIFICULTAD: {c['diff']}", 11, col_)
-    lt(d, (135, 92 + dy), f"VALE {c['pts']} PUNTO{'S' if c['pts'] > 1 else ''}", 10, (255, 230, 170))
-    if ts > .9:
-        f = F(18); w = int(d.textlength(c["chip"], font=f)) + 16; x0 = 135 - w // 2; fl = ts < 1.0
-        d.rectangle((x0 - 2, 100, x0 + w + 2, 126), fill=(255, 205, 60)); d.rectangle((x0, 102, x0 + w, 124), fill=WHITE if fl else (14, 8, 34))
-        lt(d, (135, 114), c["chip"], 18, DARK if fl else GOLD, shadow=(60, 30, 0))
+    if EP.get("gba"):                                    # compact header: the bottom name box already shows clue number + difficulty
+        lt(d, (135, 22 + dy), f"VALE {c['pts']} PUNTO{'S' if c['pts'] > 1 else ''}", 10, (255, 230, 170))
+        if ts > .5:
+            f = F(18); w = int(d.textlength(c["chip"], font=f)) + 16; x0 = 135 - w // 2; fl = ts < .6
+            d.rectangle((x0 - 2, 32, x0 + w + 2, 58), fill=(255, 205, 60)); d.rectangle((x0, 34, x0 + w, 56), fill=WHITE if fl else (14, 8, 34))
+            lt(d, (135, 46), c["chip"], 18, DARK if fl else GOLD, shadow=(60, 30, 0))
+    else:
+        lt(d, (135, 46 + dy), f"PISTA {n} / {NCL}", 24, GOLD, shadow=(110, 50, 0))
+        bw = 26 if NCL >= 5 else 32; step = bw + 4; x0b = 135 - (NCL * step - 4) // 2
+        for i in range(NCL):
+            fill = diffc(i + 1, NB) if i < n and ts > .45 + i * .11 else (50, 36, 80)
+            d.rectangle((x0b + i * step, 66 + dy, x0b + i * step + bw, 70 + dy), fill=fill)
+        lt(d, (135, 80 + dy), f"DIFICULTAD: {c['diff']}", 11, col_)
+        lt(d, (135, 92 + dy), f"VALE {c['pts']} PUNTO{'S' if c['pts'] > 1 else ''}", 10, (255, 230, 170))
+        if ts > .9:
+            f = F(18); w = int(d.textlength(c["chip"], font=f)) + 16; x0 = 135 - w // 2; fl = ts < 1.0
+            d.rectangle((x0 - 2, 100, x0 + w + 2, 126), fill=(255, 205, 60)); d.rectangle((x0, 102, x0 + w, 124), fill=WHITE if fl else (14, 8, 34))
+            lt(d, (135, 114), c["chip"], 18, DARK if fl else GOLD, shadow=(60, 30, 0))
     if ts > .6:
         rem = min(max(1 - max(0, ts - TW0) / (seg_len - TW0 - .2), 0), 1); urgent = rem < .3 and int(t * 6) % 2
-        d.rectangle((12, 12, 258, 18), fill=(14, 8, 34)); d.rectangle((14, 14, 14 + int(242 * rem), 16), fill=(255, 255, 255) if urgent else col_)
+        if EP.get("gba"):
+            d.rectangle((12, 390, 258, 420), fill=(20, 16, 40), outline=(24, 16, 40)); d.rectangle((14, 392, 256, 418), outline=(255, 214, 80))
+            lt(d, (22, 400), f"PISTA {n}/{NCL}", 9, (255, 230, 120), anchor="lm"); lt(d, (250, 400), c["diff"], 8, (255, 255, 255) if urgent else col_, anchor="rm")
+            for kk in range(10): d.rectangle((22 + kk * 23, 407, 22 + kk * 23 + 20, 412), fill=(col_ if kk < math.ceil(rem * 10) else (60, 50, 90)), outline=(24, 16, 40))
+        else:
+            d.rectangle((12, 12, 258, 18), fill=(14, 8, 34)); d.rectangle((14, 14, 14 + int(242 * rem), 16), fill=(255, 255, 255) if urgent else col_)
     if seg in BANNERS and BANNER_T <= ts < BANNER_T + 1.6:
         e = ts - BANNER_T; kk = ease(e / .2); by = 208 + int((1 - kk) * 40) + int(2 * math.sin(t * 12))
         pill(d, 135, by, by + 22, 232, GOLD); lt(d, (135, by + 11), BANNERS[seg], 11, DARK, shadow=(255, 230, 140))
@@ -1715,6 +1806,7 @@ def render(t):
         sil(im, 98, 266, t, q=False); im.paste(SPR_HAT_M, (178 - 24, 266 - 96), SPR_HAT_M); qmark(im, 134, 150 + int(3 * math.sin(t * 3)), 2)
     elif scn == "robots":                                    # last clue: the two helmeted silhouettes finally show up
         b1 = 1 if int(t * 4.5) % 2 else 0; im.paste(SPR_ROBOT_A, (98 - 24, 266 - 96 + b1), SPR_ROBOT_A); im.paste(SPR_ROBOT_B, (172 - 24, 266 - 96 + 1 - b1), SPR_ROBOT_B)
+    elif EP.get("gba"): gba_sil(im, t)
     else: sil(im, 135, 266, t)
     if seg == S_WIN:
         im2 = Image.new("RGB", (W, H), (20, 10, 38)); im2.paste(im, (0, -(SHIFT if PREV["sprite"] == "snoop" else 58))); im = im2
