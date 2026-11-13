@@ -205,6 +205,10 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.rect(ex, 14, ex + 2, 14, (36, 26, 40))
         P.rect(ex, 15, ex + 2, 18, (255, 255, 255)); P.rect(ex + 1, 15, ex + 2, 18, CS['iris'])
         P.rect(ex + 1, 16, ex + 2, 17, (24, 18, 32)); P.px(ex + 1, 15, (255, 255, 255))
+    if CS.get('eyes') == 'narrow':                     # ojos rasgados: párpado grueso y 2 filas de iris
+        for ex in (cx - 5, cx + 3):
+            P.rect(ex, 14, ex + 2, 18, sk); P.rect(ex - 1, 15, ex + 3, 15, (30, 22, 36))
+            P.rect(ex, 16, ex + 2, 17, (40, 30, 34)); P.rect(ex + (2 if ex > cx else 0), 16, ex + (2 if ex > cx else 0), 16, (255, 255, 255))
     if CS['sleepy']:
         for ex in (cx - 5, cx + 3): P.rect(ex, 14, ex + 2, 14, skd); P.rect(ex, 15, ex + 2, 15, (30, 22, 40))
     P.rect(cx - 6, 12, cx - 3, 12, hc['d']); P.rect(cx + 3, 12, cx + 6, 12, hc['d'])

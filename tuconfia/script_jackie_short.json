@@ -1,0 +1,98 @@
+{
+ "titulo": "jackie",
+ "meta": {
+  "famoso": "Jackie Chan"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Un palo le revienta la cara en pleno rodaje. Quien lo sostiene... es *Bruce Lee*.",
+   "tts": "Un palo le revienta la cara en pleno rodaje. Quien lo sostiene... es Brus Li.",
+   "gen": "[tense] Un palo le revienta la cara en pleno rodaje. Quien lo sostiene... es Brus Li.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "Él solo era un doble de riesgo. Bruce Lee se disculpa. Nadie sabía que ese chico iba a cambiar el cine.",
+   "tts": "Él solo era un doble de riesgo. Brus Li se disculpa. Nadie sabía que ese chico iba a cambiar el cine.",
+   "gen": "[mysterious] Él solo era un doble de riesgo. Brus Li se disculpa. Nadie sabía que ese chico iba a cambiar el cine.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "A los 7 años lo dejaron interno en una escuela de ópera de Pekín: diez años de entrenamiento y *castigos*.",
+   "tts": "A los siete años lo dejaron interno en una escuela de ópera de Pekín: diez años de entrenamiento y castigos.",
+   "gen": "[sad] A los siete años lo dejaron interno en una escuela de ópera de Pekín: diez años de entrenamiento y castigos.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "Cuando Bruce Lee murió, quisieron convertirlo en su copia. *Fracasó* una y otra vez.",
+   "tts": "Cuando Brus Li murió, quisieron convertirlo en su copia. Fracasó una y otra vez.",
+   "gen": "[sad] Cuando Brus Li murió, quisieron convertirlo en su copia. Fracasó una y otra vez.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Entonces hizo lo contrario: kung fu con comedia. Pero su primera película en Hollywood también fracasó.",
+   "tts": "Entonces hizo lo contrario: kung fu con comedia. Pero su primera película en Jólibud también fracasó.",
+   "gen": "[serious] Entonces hizo lo contrario: kung fu con comedia. Pero su primera película en Jólibud también fracasó.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "En 1986 cayó de un árbol rodando una escena. Se rompió el *cráneo*. Casi muere.",
+   "tts": "En mil novecientos ochenta y seis cayó de un árbol rodando una escena. Se rompió el cráneo. Casi muere.",
+   "gen": "[tense] En mil novecientos ochenta y seis cayó de un árbol rodando una escena. Se rompió el cráneo. Casi muere.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Volvió. Y siguió haciendo sus propias escenas de riesgo.",
+   "tts": "Volvió. Y siguió haciendo sus propias escenas de riesgo.",
+   "gen": "[determined] Volvió. Y siguió haciendo sus propias escenas de riesgo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "En 1996, Rumble in the Bronx debutó *número uno* en Estados Unidos. Récord Guinness. Y un Óscar honorífico.",
+   "tts": "En mil novecientos noventa y seis, Rámbol in de Bronx debutó número uno en Estados Unidos. Récord Guínes. Y un Óscar honorífico.",
+   "gen": "[excited] En mil novecientos noventa y seis, Rámbol in de Bronx debutó número uno en Estados Unidos. Récord Guínes. Y un Óscar honorífico.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L9",
+   "rol": "",
+   "t": "Ese doble al que nadie quería... era *Jackie Chan*.",
+   "tts": "Ese doble al que nadie quería... era Yáki Chan.",
+   "gen": "[dramatic] Ese doble al que nadie quería... era Yáki Chan.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L10",
+   "rol": "",
+   "t": "No seas la copia de nadie. Sígueme para más historias.",
+   "tts": "No seas la copia de nadie. Sígueme para más historias.",
+   "gen": "[warmly] No seas la copia de nadie. Sígueme para más historias.",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

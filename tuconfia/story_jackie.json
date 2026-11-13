@@ -1,0 +1,103 @@
+{
+ "cast": {
+  "adult": {
+   "skin": [
+    232,
+    192,
+    150
+   ],
+   "hair": [
+    30,
+    26,
+    26
+   ],
+   "outfit": "grey"
+  },
+  "young": {
+   "skin": [
+    236,
+    198,
+    158
+   ],
+   "hair": [
+    26,
+    22,
+    22
+   ],
+   "outfit": "opera"
+  }
+ },
+ "scenes": [
+  {
+   "kit": "jc_golpe",
+   "line": 0
+  },
+  {
+   "kit": "jc_doble",
+   "line": 1
+  },
+  {
+   "kit": "jc_opera",
+   "line": 2
+  },
+  {
+   "kit": "jc_copia",
+   "line": 3
+  },
+  {
+   "kit": "jc_hollywood",
+   "line": 4
+  },
+  {
+   "kit": "jc_arbol",
+   "line": 5
+  },
+  {
+   "kit": "jc_vuelve",
+   "line": 6
+  },
+  {
+   "kit": "jc_exito",
+   "line": 7
+  },
+  {
+   "kit": "jc_revela",
+   "line": 8
+  },
+  {
+   "kit": "close",
+   "line": 9
+  }
+ ],
+ "turn": 6,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "EL GOLPE",
+   "l2": "DE BRUCE LEE"
+  },
+  {
+   "scene": 3,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "SU COPIA",
+   "l2": "FRACASÓ"
+  },
+  {
+   "scene": 5,
+   "start": 0.3,
+   "end": 2.6,
+   "l1": "CRÁNEO",
+   "l2": "ROTO"
+  },
+  {
+   "scene": 7,
+   "start": 0.3,
+   "end": 2.8,
+   "l1": "NÚMERO 1",
+   "l2": "EN EE. UU."
+  }
+ ]
+}

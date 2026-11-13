@@ -17,6 +17,15 @@ WHITE = (252, 252, 255)
 
 # ojo izquierdo (de la imagen), esquina exterior a la izquierda
 EYE = {
+    'narrow': ["..........",          # ojos rasgados: párpado bajo, 2 filas de iris (Jackie, Bruce)
+               "..........",
+               "..........",
+               "...LLLLL..",
+               ".LLLLLLLLL",
+               "..WDDPPDW.",
+               "....llll..",
+               "..........",
+               ".........."],
     'open_f': ["...LLLLL..",
                ".LLLLLLLLL",
                "LL.WDDDDW.",
@@ -199,6 +208,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     elif expr == 'smile': tpl = EYE['happy']
     elif look[1] > 0: tpl = EYE['down']
     else: tpl = EYE['open_f' if fem else 'open_m']
+    if CS.get('eyes') == 'narrow' and tpl is not EYE['happy'] and not blink: tpl = EYE['narrow']
     ey = 44
     _stamp(px, tpl, cx - 15, ey, p)
     _stamp(px, tpl, cx + 5, ey, p, mirror=True)
@@ -216,7 +226,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     br = p['brow']
     d = ImageDraw.Draw(final)
     lb, rb = (cx - 14, cx - 6), (cx + 6, cx + 14)
-    by = 39
+    by = 39 + (2 if CS.get('eyes') == 'narrow' else 0)
     if expr in ('sad', 'worry'):
         d.line([(lb[0], by + 1), (lb[1], by - 2)], fill=br, width=1); d.line([(lb[0] + 1, by + 2), (lb[1], by - 1)], fill=br)
         d.line([(rb[0], by - 2), (rb[1], by + 1)], fill=br); d.line([(rb[0], by - 1), (rb[1] - 1, by + 2)], fill=br)

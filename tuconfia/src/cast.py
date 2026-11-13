@@ -124,10 +124,10 @@ CAST['johnson'].update(raise_=True); CAST['johnson']['raise'] = True; CAST['john
 
 # --- short: Jackie Chan
 CAST.update({
- 'jackie_k': dict(style='shag', skin=(240, 206, 168), hair=ramp((26, 22, 22)), iris=(54, 40, 32), outfit='opera', kid=True, nose=True, height='short'),
- 'jackie_y': dict(style='short', skin=(236, 198, 158), hair=ramp((26, 22, 22)), iris=(54, 40, 32), outfit='opera', build='athletic', nose=True),
- 'jackie':   dict(style='shag', skin=(232, 192, 150), hair=ramp((30, 26, 26)), iris=(54, 40, 32), outfit='grey', build='athletic', smirk=True, nose=True),
- 'bruce':    dict(style='short', skin=(236, 198, 156), hair=ramp((18, 16, 18)), iris=(40, 30, 26), outfit='kungfu', build='athletic', strong=True, brows='thick'),
+ 'jackie_k': dict(style='shag', skin=(240, 206, 168), hair=ramp((26, 22, 22)), iris=(54, 40, 32), outfit='opera', kid=True, nose=True, eyes='narrow', height='short'),
+ 'jackie_y': dict(style='short', skin=(236, 198, 158), hair=ramp((26, 22, 22)), iris=(54, 40, 32), outfit='opera', build='athletic', nose=True, eyes='narrow', brows='thick'),
+ 'jackie':   dict(style='shag', skin=(232, 192, 150), hair=ramp((30, 26, 26)), iris=(54, 40, 32), outfit='grey', build='athletic', nose=True, eyes='narrow', hair2='part'),
+ 'bruce':    dict(style='short', skin=(236, 198, 156), hair=ramp((18, 16, 18)), iris=(40, 30, 26), outfit='kungfu', build='athletic', strong=True, brows='intense', eyes='narrow', hair2='side', chin_sq=True),
  'maestro':  dict(style='short', skin=(226, 186, 146), hair=ramp((186, 186, 190)), iris=(54, 40, 32), outfit='kungfu', hair2='bald', mustache=True, brows='thick', age=True),
 })
 

@@ -1,6 +1,6 @@
 """Rasgos para parecido con famosos, comunes a los tres dibujantes (chibi «r», cuerpo entero «b», retrato «p»).
 Claves opcionales del reparto (cast.py):
-  hair2: bald | buzz | pompadour | volume | wild | bun | afro   (sustituye al peinado frontal del estilo)
+  hair2: bald | buzz | part (raya al medio) | side (raya lateral) | pompadour | volume | wild | bun | afro   (sustituye al peinado frontal del estilo)
   nose: bool (nariz ancha)   mustache: bool   unibrow: bool   brows: 'thick'   age: bool (arrugas)   smirk: bool (media sonrisa)   chin: bool (papada)
   build: slim | average | athletic | heavy | muscular   height: short | average | tall   (solo cuerpo entero)"""
 import numpy as np
@@ -18,6 +18,24 @@ def dither_cap(P, mask, col_a, col_b, k=.5):
 
 
 # ------------------------------------------------------------------ cuerpo entero (84x124, cabeza ~ cx±9, y 0-27)
+# peinados con raya (en coordenadas del retrato, relativas a cx); se escalan para el sprite de batalla y el chibi
+HAIRP = {
+ 'part': [((-25, 56), (-27, 26), (-18, 8), (0, 2), (18, 8), (27, 26), (25, 56), (20, 40), (14, 30), (4, 26), (0, 22), (-4, 26), (-14, 30), (-20, 40))],
+ 'side': [((-23, 44), (-24, 22), (-14, 6), (4, 2), (20, 8), (25, 24), (23, 44), (20, 30), (12, 22), (-6, 20), (-14, 24), (-19, 32))],
+}
+HAIRD = {'part': ((2, 8), (26, 26), (25, 54), (18, 32)), 'side': ((6, 6), (24, 22), (23, 42), (18, 26))}
+PARTL = {'part': ((0, 4), (0, 22)), 'side': ((-10, 4), (-12, 20))}
+
+
+def _sc(pts, cx, sx, sy, oy=0): return [(cx + x * sx, oy + y * sy) for x, y in pts]
+
+
+def parted(P, h, cx, b, dk, sx, sy, oy=0):
+    P.add(lambda d: d.polygon(_sc(HAIRP[h][0], cx, sx, sy, oy), fill=255), b, edge_k=.45)
+    P.add(lambda d: d.polygon(_sc(HAIRD[h], cx, sx, sy, oy), fill=255), dk, edge=False, sh=False)
+    (x0, y0), (x1, y1) = _sc(PARTL[h], cx, sx, sy, oy); P.line([(round(x0), round(y0)), (round(x1), round(y1))], dk)
+
+
 def back_b(P, CS, cx, hc):
     h = CS.get('hair2')
     if h == 'volume':
@@ -44,6 +62,7 @@ def front_b(P, CS, cx, hc, sk):
         else: P.rect(cx - 5, 3, cx - 3, 3, shade(sk, 1.12)); P.px(cx - 6, 4, shade(sk, 1.12))
         sm = P.mask(lambda d: d.polygon([(cx + 4, 2), (cx + 9, 7), (cx + 9, 11), (cx + 6, 9)], fill=255)) & cap
         P.a[sm] = (*shade(sk if h == 'bald' else hc['b'], .86), 255)
+    elif h in HAIRP: parted(P, h, cx, hc['b'], hc['d'], .42, .4)
     elif h == 'pompadour':
         P.add(lambda d: d.polygon([(cx - 10, 16), (cx - 10, 7), (cx - 6, 2), (cx, 0), (cx + 8, 0), (cx + 13, 3), (cx + 11, 7), (cx + 6, 8), (cx + 9, 11), (cx + 10, 16), (cx + 7, 10), (cx + 1, 9), (cx - 5, 10), (cx - 8, 12)], fill=255), hc['b'], edge_k=.45)
         P.line([(cx - 4, 2), (cx + 7, 1)], hc['l']); P.line([(cx - 2, 4), (cx + 9, 3)], hc['l'])
@@ -64,6 +83,8 @@ def front_b(P, CS, cx, hc, sk):
 
 
 def face_b(P, CS, cx, hc, sk):
+    if CS.get('brows') == 'intense':
+        P.rect(cx - 7, 10, cx - 5, 10, hc['dd']); P.rect(cx - 5, 11, cx - 3, 12, hc['dd']); P.rect(cx + 5, 10, cx + 7, 10, hc['dd']); P.rect(cx + 3, 11, cx + 5, 12, hc['dd'])
     if CS.get('brows') == 'thick': P.rect(cx - 7, 11, cx - 3, 11, hc['b']); P.rect(cx + 3, 11, cx + 7, 11, hc['b'])
     if CS.get('raise'): P.rect(cx + 3, 12, cx + 6, 12, sk); P.rect(cx + 3, 10, cx + 6, 10, hc['dd'])          # ceja levantada
     if CS.get('earring'): P.px(cx - 10, 20, (250, 210, 70))
@@ -100,6 +121,7 @@ def front_r(P, CS, cx, HR, sk):
         else: P.rect(cx - 10, 4, cx - 5, 4, shade(sk, 1.12)); P.rect(cx - 12, 6, cx - 11, 7, shade(sk, 1.12))
         sm = P.mask(lambda d: d.polygon([(cx + 9, 3), (cx + 18, 10), (cx + 18, 15), (cx + 13, 10)], fill=255)) & cap
         P.a[sm] = (*shade(sk if h == 'bald' else HR['b'], .86), 255)
+    elif h in HAIRP: parted(P, h, cx, HR['b'], HR['d'], .8, .55)
     elif h == 'pompadour':
         P.add(lambda d: d.polygon([(cx - 19, 22), (cx - 20, 10), (cx - 13, 3), (cx - 3, 0), (cx + 10, 0), (cx + 22, 3), (cx + 20, 9), (cx + 12, 11), (cx + 18, 14), (cx + 19, 22), (cx + 15, 15), (cx + 4, 12), (cx - 6, 13), (cx - 14, 16)], fill=255), HR['b'], edge_k=.45)
         P.line([(cx - 8, 2), (cx + 14, 2)], HR['l']); P.line([(cx - 6, 5), (cx + 16, 5)], HR['l'])
@@ -120,6 +142,8 @@ def front_r(P, CS, cx, HR, sk):
 
 
 def face_r(P, CS, cx, HR, sk):
+    if CS.get('brows') == 'intense':
+        P.rect(cx - 12, 14, cx - 8, 15, HR['dd']); P.rect(cx - 8, 16, cx - 5, 17, HR['dd']); P.rect(cx + 8, 14, cx + 12, 15, HR['dd']); P.rect(cx + 5, 16, cx + 8, 17, HR['dd'])
     if CS.get('brows') == 'thick': P.rect(cx - 12, 15, cx - 5, 15, HR['b']); P.rect(cx + 5, 15, cx + 12, 15, HR['b'])
     if CS.get('raise'): P.rect(cx + 5, 16, cx + 11, 17, sk); P.rect(cx + 5, 13, cx + 11, 14, HR['dd'])
     if CS.get('earring'): P.rect(cx - 19, 26, cx - 18, 27, (250, 210, 70))
@@ -156,6 +180,9 @@ def front_p(d, CS, cx, hb, hd, hl, sk):
         else:
             for k in range(60): d.point((cx - 18 + (k * 13) % 36, 8 + (k * 7) % 26), fill=shade(hb, 1.25))
             d.polygon([(cx + 12, 10), (cx + 21, 22), (cx + 21, 36), (cx + 14, 20)], fill=hd)
+    elif h in HAIRP:
+        d.polygon(_sc(HAIRP[h][0], cx, 1, 1), fill=hb); d.polygon(_sc(HAIRD[h], cx, 1, 1), fill=hd); d.line(_sc(PARTL[h], cx, 1, 1), fill=hd)
+        for x0 in (-16, -8, 8): d.line([(cx + x0, 10), (cx + x0 + (3 if x0 > 0 else -3), 22)], fill=hl)
     elif h == 'pompadour':
         d.polygon([(cx - 22, 48), (cx - 23, 26), (cx - 16, 10), (cx - 4, 0), (cx + 12, -2), (cx + 30, 4), (cx + 26, 14), (cx + 14, 20), (cx + 22, 26), (cx + 22, 48), (cx + 18, 32), (cx + 6, 26), (cx - 8, 28), (cx - 16, 34)], fill=hb)
         for k in range(4): d.line([(cx - 10 + k * 2, 4 + k * 3), (cx + 22 - k * 2, 4 + k * 3)], fill=hl)
@@ -178,6 +205,13 @@ def front_p(d, CS, cx, hb, hd, hl, sk):
 def face_p(d, CS, cx, hd, brow, by, sk=(230, 190, 160), hb=None):
     if CS.get('brows') == 'thick':
         for x0 in (cx - 15, cx + 5): d.rectangle([x0, by - 3, x0 + 10, by - 1], fill=hb or brow)
+    if CS.get('brows') == 'intense':
+        c = hb or brow
+        d.polygon([(cx - 16, by - 4), (cx - 4, by - 1), (cx - 4, by + 1), (cx - 16, by - 2)], fill=c)
+        d.polygon([(cx + 16, by - 4), (cx + 4, by - 1), (cx + 4, by + 1), (cx + 16, by - 2)], fill=c)
+    if CS.get('grin'):                                                                                     # sonrisa ancha con dientes (Jackie)
+        d.polygon([(cx - 8, 60), (cx + 8, 60), (cx + 5, 65), (cx - 5, 65)], fill=(120, 40, 52))
+        d.rectangle([cx - 7, 60, cx + 7, 61], fill=(252, 252, 248)); d.line([(cx - 3, 64), (cx + 3, 64)], fill=(232, 120, 128))
     if CS.get('raise'):
         d.line([(cx + 6, by - 1), (cx + 14, by)], fill=sk); d.line([(cx + 6, by - 4), (cx + 10, by - 6), (cx + 14, by - 5)], fill=brow)
     if CS.get('earring'): d.ellipse([cx - 22, 54, cx - 18, 58], fill=(250, 210, 70))

@@ -392,6 +392,9 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.rect(ex, 20, ex + 2, 24, CS['iris']); P.rect(ex + 3, 20, ex + 3, 23, (255, 255, 255))
         P.rect(ex, 20, ex, 20, (255, 255, 255)); P.rect(ex + 1, 20, ex + 1, 20, (255, 255, 255)); P.rect(ex + 1, 21, ex + 1, 22, tuple(int(v*1.15) for v in CS['iris']))
         P.rect(ex, 25, ex + 2, 25, skd)
+        if CS.get('eyes') == 'narrow':                 # ojos rasgados
+            P.rect(ex, 19, ex + 3, 25, sk); P.rect(ex - 1, 20, ex + 4, 21, (30, 22, 40))
+            P.rect(ex, 22, ex + 3, 23, (40, 30, 34)); P.px(ex + (3 if ex > cx else 0), 22, (255, 255, 255)); P.rect(ex, 24, ex + 3, 24, skd)
     # cejas gruesas
     br = HR['dd']
     P.rect(cx - 11, 16, cx - 6, 17, br); P.rect(cx + 6, 16, cx + 11, 17, br)
