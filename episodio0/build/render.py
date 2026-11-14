@@ -692,7 +692,7 @@ def esc_hook(img, t, L, ctx):
     """K01 — gancho: la frase completa está en pantalla desde el fotograma 0."""
     l = L["K01"]
     ts = l["tokens"][3]["s"]                      # "ELIMINARTE."
-    f = int(t * FPS)
+    f = math.floor(t * FPS)
     antes = t < ts
     img.paste(ROJO)
     img = hazard(img, 108, 10, t)
@@ -741,8 +741,8 @@ def esc_final(img, t, L, ctx):
     t0 = l["inicio"] - 0.12
     f = int(t * FPS)
     img.paste(ROJO)
-    img = hazard(img, 108, 10, t)
-    img = hazard(img, 420, 10, -t)
+    img = hazard(img, 108, 10, t - TL["duracion"])
+    img = hazard(img, 420, 10, TL["duracion"] - t)
     txt_c(img, "COMENTA ASÍ", 180, 150, P["bone"], 3, sombra=P["red_d"])
     n = int(np.clip((t - t0) / 0.07, 0, 5))
     ico = ["fuego", "rayo", "estrella"][int((t - t0) / 0.3) % 3] if n == 5 else None
@@ -922,7 +922,36 @@ def golpe_camara(img, t):
     return img.transform((W, H), Image.EXTENT, (ox, oy, ox + cw, oy + ch), Image.NEAREST)
 
 
+T_FIN = TL["duracion"]
+
+
+def _zoom(img, k):
+    if k < 0.004:
+        return img
+    s_ = 1 + k
+    cw, ch = W / s_, H / s_
+    ox, oy = (W - cw) / 2, (H - ch) / 2
+    return img.transform((W, H), Image.EXTENT, (ox, oy, ox + cw, oy + ch), Image.NEAREST)
+
+
+def _post_bucle(img, t, T):
+    img = _zoom(img, 0.07 * (t - (T - LOOP_ZOOM)) / LOOP_ZOOM) if t >= T - LOOP_ZOOM else img
+    arr = (np.array(img).astype(np.float32) * VIG).astype(np.uint8)
+    return Image.fromarray(arr)
+
+
+LOOP_M = 0.45      # s: el final se transforma en el gancho
+LOOP_ZOOM = 0.2    # s: el zoom sube hasta igualar el golpe del fotograma 0
+
+
 def fotograma(t):
+    T = TL["duracion"]
+    if t >= T - LOOP_M:
+        p = (t - (T - LOOP_M)) / LOOP_M
+        if t >= T - 0.12 or hsh(int(t * FPS), 77) < p ** 0.8:
+            # el gancho, renderizado con tiempo negativo => continúa sin saltos en t=0
+            img = esc_hook(Image.new("RGB", (W, H), P["bg0"]), t - T, LMAP, {})
+            return _post_bucle(img, t, T)
     idx = 0
     for i, l in enumerate(LINEAS):
         if t >= (l["inicio"] - 0.12 if i else 0):
@@ -943,8 +972,10 @@ def fotograma(t):
     if idx and (prev, l["escena"]) not in CONTINUAS and 0 <= t - t_ini < 2 / FPS and l["escena"] not in ("logo", "final"):
         img = glitch_filas(img, round(t * FPS), 7, 3)
     img = golpe_camara(img, t)
+    if t >= T_FIN - LOOP_ZOOM:
+        img = _zoom(img, 0.07 * (t - (T_FIN - LOOP_ZOOM)) / LOOP_ZOOM)
     arr = (np.array(img).astype(np.float32) * VIG).astype(np.uint8)
-    return Image.fromarray(arr)       # sin fundido inicial ni final: corte en seco = bucle
+    return Image.fromarray(arr)
 
 
 def main():

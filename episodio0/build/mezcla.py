@@ -284,6 +284,9 @@ def mezclar(tl):
     colocar(sfx, subida(1.1) * 0.8, k14["inicio"] - 0.1, 1.0)
     colocar(sfx, kick(60, 30, 1.0, 0.35), tok(k14, "ABRE"), 0.8)
 
+    # ---- bucle: un riser sube justo antes de reiniciar y el impacto del segundo 0 lo resuelve
+    colocar(sfx, subida(0.85) * 1.3, T - 0.85, 1.0)
+
     # ---- final: golpe y glitch (el corte en seco al reiniciar el bucle hace el resto)
     colocar(sfx, boom(1.6), t_final + 0.05, 1.0)
     for k in range(3):

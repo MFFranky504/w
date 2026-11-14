@@ -48,7 +48,7 @@ LINEAS = [
 PAUSA_ANTES = {"K01": 0.0, "K02": 0.10, "K03": 0.18, "K04": 0.20, "K05": 0.28, "K06": 0.22,
                "K07": 0.08, "K08": 0.22, "K09": 0.20, "K10": 0.30, "K11": 0.10, "K12": 0.24,
                "K13": 0.10, "K14": 0.12, "K15": 0.22}
-COLA_FINAL = 0.9  # segundos tras la última línea (el video se corta en seco y repite)
+COLA_FINAL = 1.2  # segundos tras la última línea; los últimos 0.45 s se transforman en el fotograma 0 (bucle)
 
 
 def tokens(texto):

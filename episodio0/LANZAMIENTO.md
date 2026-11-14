@@ -7,7 +7,7 @@
 
 | Archivo | Uso | Formato |
 |---|---|---|
-| `episodio0_convocatoria.mp4` | Reel de convocatoria | 1080×1920 · 30 fps · 51 s · H.264 + AAC · ≈ −15 LUFS |
+| `episodio0_convocatoria.mp4` | Reel de convocatoria | 1080×1920 · 30 fps · 52 s · H.264 + AAC · ≈ −15 LUFS |
 | `portada_reel.png` | Portada del Reel (= fotograma 0, el gancho) | 1080×1920; todo lo importante cae dentro del recorte 3:4 de la cuadrícula |
 | `bases_1.png` … `bases_4.png` | Carrusel "Bases oficiales" | 1080×1350 (4:5) |
 
@@ -109,7 +109,7 @@ Esta promoción no está patrocinada, avalada ni administrada por Instagram ni M
 | **SLAM** (palabra gigante + flash + sacudida): NADIE · TÚ · NI NOSOTROS · CAE · NO TE VAS · AHORA | cada 3–6 s | Interrupción de patrón en las frases clave |
 | **Golpe de zoom + sonido en cada palabra de énfasis y en cada corte** | continuo | Un cambio visual cada ≈ 1.5–3 s |
 | **Silencios dramáticos** antes de "Ni nosotros" y de "¿Entras?" | 0:26 y 0:48 | El contraste hace que el golpe pegue más |
-| **Bucle**: el último fotograma es el primero ("¿ENTRAS?" → "ESTE COMENTARIO PUEDE ELIMINARTE") | 0:51 | Cada repetición suma tiempo de visualización |
+| **Bucle sin costura**: en los últimos 0.45 s "¿ENTRAS?" se transforma con glitch en "ESTE COMENTARIO PUEDE ELIMINARTE" (mismas rayas, misma tarjeta, mismo zoom), un riser de audio sube y el impacto del segundo 0 lo resuelve | 0:51 → 0:00 | Cada repetición suma tiempo de visualización y se lee como una sola frase: "¿Entras? Este comentario puede eliminarte" |
 
 Subtítulos dentro de la zona segura (inferior libre ≈ 320 px, superior ≈ 120 px, lateral ≈ 120 px).
 
