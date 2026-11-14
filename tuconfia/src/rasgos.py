@@ -4,6 +4,7 @@ Claves opcionales del reparto (cast.py):
   nose: bool (nariz ancha)   mustache: bool   unibrow: bool   brows: 'thick'   age: bool (arrugas)   smirk: bool (media sonrisa)   chin: bool (papada)
   build: slim | average | athletic | heavy | muscular   height: short | average | tall   (solo cuerpo entero)"""
 import math
+import pelo as PELO
 import numpy as np
 from PIL import Image
 from lib import shade
@@ -52,6 +53,7 @@ def back_b(P, CS, cx, hc):
 
 def front_b(P, CS, cx, hc, sk):
     """devuelve True si dibujó el pelo (y el estilo normal no debe dibujarse)."""
+    if PELO.front_b(P, CS, cx, hc, sk): return True
     h = CS.get('hair2')
     if not h: return False
     if h in ('bald', 'buzz'):
@@ -111,6 +113,7 @@ def back_r(P, CS, cx, HR):
 
 
 def front_r(P, CS, cx, HR, sk):
+    if PELO.front_r(P, CS, cx, HR, sk): return True
     h = CS.get('hair2')
     if not h: return False
     if h in ('bald', 'buzz'):
@@ -157,6 +160,7 @@ def face_r(P, CS, cx, HR, sk):
 
 # ------------------------------------------------------------------ retrato (cara cx±19, y 24-69; pelo 0-52)
 def back_p(bd, CS, cx, hb, hd):
+    if PELO.back_p(bd, CS, cx, hb, hd): return True
     h = CS.get('hair2')
     if h == 'volume':
         bd.ellipse([cx - 40, -6, cx + 40, 92], fill=hb); bd.ellipse([cx - 32, 52, cx + 32, 98], fill=hd)
@@ -170,6 +174,7 @@ def back_p(bd, CS, cx, hb, hd):
 
 
 def front_p(d, CS, cx, hb, hd, hl, sk):
+    if PELO.front_p(d, CS, cx, hb, hd, hl): return True
     h = CS.get('hair2')
     if not h: return False
     if h in ('bald', 'buzz'):
@@ -204,7 +209,7 @@ def front_p(d, CS, cx, hb, hd, hl, sk):
 
 
 def face_p(d, CS, cx, hd, brow, by, sk=(230, 190, 160), hb=None):
-    if CS.get('brows') == 'thick':
+    if CS.get('brows') == 'thick' and not CS.get('_mt'):
         for x0 in (cx - 15, cx + 5): d.rectangle([x0, by - 3, x0 + 10, by - 1], fill=hb or brow)
     if CS.get('brows') == 'intense':
         c = hb or brow
@@ -213,7 +218,7 @@ def face_p(d, CS, cx, hd, brow, by, sk=(230, 190, 160), hb=None):
     if CS.get('grin'):                                                                                     # sonrisa ancha con dientes (Jackie)
         d.polygon([(cx - 8, 60), (cx + 8, 60), (cx + 5, 65), (cx - 5, 65)], fill=(120, 40, 52))
         d.rectangle([cx - 7, 60, cx + 7, 61], fill=(252, 252, 248)); d.line([(cx - 3, 64), (cx + 3, 64)], fill=(232, 120, 128))
-    if CS.get('raise'):
+    if CS.get('raise') and not CS.get('_mt'):
         d.line([(cx + 6, by - 1), (cx + 14, by)], fill=sk); d.line([(cx + 6, by - 4), (cx + 10, by - 6), (cx + 14, by - 5)], fill=brow)
     if CS.get('earring'): d.ellipse([cx - 22, 54, cx - 18, 58], fill=(250, 210, 70))
     if CS.get('age'):
@@ -290,16 +295,17 @@ def over_b(P, CS, cx, hc, sk, GY, top):
             for k in range(6): P.add(lambda d, k=k, sx=sx: d.ellipse([cx + sx * 10 - 3, 18 + k * 5, cx + sx * 10 + 3, 24 + k * 5], fill=255), hc['b'], edge_k=.45)
             P.rect(cx + sx * 10 - 2, 48, cx + sx * 10 + 2, 49, (220, 60, 80))
     m = CS.get('mst')
-    if m == 'pencil': P.rect(cx - 4, 22, cx - 2, 22, hc['dd']); P.rect(cx + 2, 22, cx + 4, 22, hc['dd']); P.px(cx - 5, 23, hc['dd']); P.px(cx + 5, 23, hc['dd'])
-    if m == 'walrus': P.add(lambda d: d.polygon([(cx - 5, 21), (cx + 5, 21), (cx + 5, 24), (cx, 23), (cx - 5, 24)], fill=255), hc['b'], edge_k=.45)
+    if m == 'pencil':                                       # 2 px por lado en las comisuras; 5 px limpios en el centro
+        for sx in (-1, 1): P.px(cx + sx * 3, 22, hc['dd']); P.px(cx + sx * 4, 22, hc['dd'])
+    if m == 'walrus': walrus_b(P, cx, hc)
     h = CS.get('hat')
     if h in HATC:
         cr, br, band = HATC[h]
         if h in ('bombin', 'fedora'):
-            P.add(lambda d: d.rounded_rectangle([cx - 6, 0, cx + 5, 7], radius=3, fill=255), cr, edge_k=.45)
-            P.add(lambda d: d.ellipse([cx - 10, 5, cx + 9, 9], fill=255), br, edge_k=.45)
+            P.add(lambda d: d.rounded_rectangle([cx - 6, 0, cx + 6, 7], radius=3, fill=255), cr, edge_k=.45, hi=False)
+            P.add(lambda d: d.ellipse([cx - 10, 5, cx + 10, 9], fill=255), br, edge_k=.45, hi=False)
         else:
-            P.add(lambda d: d.ellipse([cx - 20, 5, cx + 20, 10], fill=255), br, edge_k=.45)
+            P.add(lambda d: d.ellipse([cx - 20, 5, cx + 20, 10], fill=255), br, edge_k=.45, hi=False)
             P.add(lambda d: d.polygon([(cx - 7, 7), (cx - 6, 1), (cx - 2, 0), (cx + 2, 0), (cx + 6, 1), (cx + 7, 7)], fill=255), cr, edge_k=.45)
             P.rect(cx - 7, 5, cx + 7, 6, band)
 
@@ -330,16 +336,17 @@ def over_r(P, CS, cx, HR, sk):
             for k in range(5): P.add(lambda d, k=k, sx=sx: d.ellipse([cx + sx * 17 - 3, 22 + k * 5, cx + sx * 17 + 3, 28 + k * 5], fill=255), HR['b'], edge_k=.45)
             P.rect(cx + sx * 17 - 2, 47, cx + sx * 17 + 2, 48, (220, 60, 80))
     m = CS.get('mst')
-    if m == 'pencil': P.rect(cx - 7, 26, cx - 4, 26, HR['dd']); P.rect(cx + 4, 26, cx + 7, 26, HR['dd'])
-    if m == 'walrus': P.add(lambda d: d.polygon([(cx - 8, 25), (cx + 8, 25), (cx + 8, 29), (cx, 27), (cx - 8, 29)], fill=255), HR['b'], edge_k=.45)
+    if m == 'pencil':                                       # mechón inclinado hacia afuera; 7 px limpios en el centro
+        for sx in (-1, 1): P.px(cx + sx * 4, 26, HR['dd']); P.px(cx + sx * 5, 26, HR['dd']); P.px(cx + sx * 6, 27, HR['dd'])
+    if m == 'walrus': walrus_r(P, cx, HR)
     h = CS.get('hat')
     if h in HATC:
         cr, br, band = HATC[h]
         if h in ('bombin', 'fedora'):
-            P.add(lambda d: d.rounded_rectangle([cx - 10, 0, cx + 9, 10], radius=4, fill=255), cr, edge_k=.45)
-            P.add(lambda d: d.ellipse([cx - 16, 8, cx + 15, 13], fill=255), br, edge_k=.45)
+            P.add(lambda d: d.rounded_rectangle([cx - 10, 0, cx + 10, 10], radius=4, fill=255), cr, edge_k=.45, hi=False)
+            P.add(lambda d: d.ellipse([cx - 16, 8, cx + 16, 13], fill=255), br, edge_k=.45, hi=False)
         else:
-            P.add(lambda d: d.ellipse([cx - 23, 8, cx + 22, 14], fill=255), br, edge_k=.45)
+            P.add(lambda d: d.ellipse([cx - 22, 8, cx + 22, 14], fill=255), br, edge_k=.45, hi=False)
             P.add(lambda d: d.polygon([(cx - 11, 10), (cx - 9, 1), (cx - 3, 0), (cx + 3, 0), (cx + 9, 1), (cx + 11, 10)], fill=255), cr, edge_k=.45)
             P.rect(cx - 11, 7, cx + 11, 8, band)
 
@@ -364,10 +371,14 @@ def over_p(final, CS, cx, hb, hd, hl, sk):
             for k in range(9): d.ellipse([cx + sx * 25 - 6, 52 + k * 10, cx + sx * 25 + 6, 64 + k * 10], fill=hb, outline=hd)
             d.rectangle([cx + sx * 25 - 5, 142, cx + sx * 25 + 5, 146], fill=(220, 60, 80))
     m = CS.get('mst')
-    if m == 'pencil':
-        d.line([(cx - 13, 61), (cx - 10, 58), (cx - 4, 59)], fill=(20, 16, 18), width=2); d.line([(cx + 4, 59), (cx + 10, 58), (cx + 13, 61)], fill=(20, 16, 18), width=2)
-    if m == 'walrus':
-        d.polygon([(cx - 13, 57), (cx + 13, 57), (cx + 14, 64), (cx + 6, 62), (cx, 63), (cx - 6, 62), (cx - 14, 64)], fill=hb, outline=hd)
+    if m == 'pencil':                                       # 2 mechones de 3-4 px que bajan hacia afuera; centro (7 px) sin pelo
+        for sx in (-1, 1):
+            for x, y in ((4, 59), (5, 59), (6, 59), (6, 60), (7, 60), (8, 60)): d.point((cx + sx * x, y), fill=(24, 18, 20))
+    if m == 'walrus':                                       # silueta triangular: 3 filas bajo la nariz, más ancha y baja hacia afuera, muesca central y puntas caídas
+        d.polygon([(cx - 3, 57), (cx + 3, 57), (cx + 8, 58), (cx + 12, 60), (cx + 13, 64), (cx + 10, 62), (cx + 5, 63), (cx + 1, 62), (cx, 61),
+                   (cx - 1, 62), (cx - 5, 63), (cx - 10, 62), (cx - 13, 64), (cx - 12, 60), (cx - 8, 58)], fill=hb, outline=hd)
+        d.line([(cx - 2, 58), (cx + 2, 58)], fill=hl)
+        for x in (-8, -4, 4, 8): d.line([(cx + x, 59), (cx + x + (1 if x > 0 else -1), 61)], fill=hd)
     h = CS.get('hat')
     if h in HATC:
         cr, br, band = HATC[h]
@@ -377,3 +388,21 @@ def over_p(final, CS, cx, hb, hd, hl, sk):
         else:
             d.ellipse([cx - 48, 22, cx + 48, 36], fill=br, outline=shade(br, .6))
             d.polygon([(cx - 18, 28), (cx - 16, 4), (cx - 6, 0), (cx + 6, 0), (cx + 16, 4), (cx + 18, 28)], fill=cr, outline=shade(cr, .6)); d.rectangle([cx - 18, 20, cx + 18, 24], fill=band)
+
+
+def walrus_b(P, cx, hc):
+    """bigotón del cuerpo entero (cabeza de 20 px): V invertida con muesca central, puntas caídas y sombra debajo."""
+    b, l, dk = hc['b'], hc['l'], hc['dd']
+    for y, xs, col in ((21, range(-2, 3), l), (22, [-4, -3, -2, -1, 1, 2, 3, 4], b), (23, [-5, -4, -3, 3, 4, 5], b), (24, [-5, 5], dk)):
+        for x in xs: P.px(cx + x, y, col)
+    for x in (-2, 2): P.px(cx + x, 23, dk)                                  # sombra bajo el bigote: separa de la boca
+
+
+def walrus_r(P, cx, HR):
+    """bigotón del chibi (cabeza de 36 px)."""
+    b, l, dk = HR['b'], HR['l'], HR['dd']
+    rows = ((25, range(-3, 4), l), (26, [x for x in range(-7, 8) if x != 0], b), (27, [x for x in range(-9, 10) if abs(x) >= 3], b),
+            (28, [-10, -9, -8, 8, 9, 10], b), (29, [-10, 10], dk))
+    for y, xs, col in rows:
+        for x in xs: P.px(cx + x, y, col)
+    for x in (-2, -1, 1, 2): P.px(cx + x, 27, dk)

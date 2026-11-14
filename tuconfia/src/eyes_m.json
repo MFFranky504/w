@@ -1,0 +1,98 @@
+{
+"m1": {
+"L": [
+"sLLLLLLs..",
+"....sLLLLs",
+".......sLL",
+"..LLLLLLs.",
+".LssLhLLL.",
+"sLWWLLLLWs",
+".sWWLDDLW.",
+"..hWWLLWs.",
+"...sLLLs.."
+],
+"R": [
+"..sLLLLLLs",
+"sLLLLs....",
+"LLs.......",
+".sLLLLLL..",
+".LLhLLssL.",
+"sWLLLLWWLs",
+".WLDDLWWs.",
+".sWLLWWh..",
+"..sLLLs..."
+]
+},
+"m2": {
+"L": [
+"..sLLLs....",
+"sLLLLLLLs..",
+"..sssssLLLs",
+".........LL",
+".sLLLLLLLs.",
+".LssLhLLsLL",
+".sWWLDDLWWs",
+"..sWWLLWW..",
+"...sLLLLss."
+],
+"R": [
+"....sLLLs..",
+"..sLLLLLLLs",
+"sLLLsssss..",
+"LL.........",
+".sLLLLLLLs.",
+"LLsLhLLssL.",
+"sWWLDDLWWs.",
+"..WWLLWWs..",
+".ssLLLLs..."
+]
+},
+"m3": {
+"L": [
+"...sLLLs......",
+".sLLssLLLLs...",
+"sLLs...sLLLLs.",
+"ss........sLLs",
+"....LLLLLLLs..",
+"..LLssLLhLsL..",
+"..sLsWLDDLWWs.",
+"...sLWWLLWWss.",
+"....ssLLLLsss.",
+"...........s..",
+"..........s..."
+],
+"R": [
+"......sLLLs...",
+"...sLLLLssLLs.",
+".sLLLLs...sLLs",
+"sLLs........ss",
+"..sLLLLLLL....",
+"..LsLLhLssLL..",
+".sWWLDDLWsLs..",
+".ssWWLLWWLs...",
+".sssLLLLss....",
+"..s...........",
+"...s.........."
+]
+},
+"m4": {
+"L": [
+"...sLLLLss.",
+".....ssss..",
+"LLLLLLLLL..",
+"sLssLLLssL.",
+".LWWLLLsWWs",
+"..sWWssWWs.",
+"....sLLLs.."
+],
+"R": [
+".ssLLLLs...",
+"..ssss.....",
+"..LLLLLLLLL",
+".LssLLLssLs",
+"sWWsLLLWWL.",
+".sWWssWWs..",
+"..sLLLs...."
+]
+}
+}

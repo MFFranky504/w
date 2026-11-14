@@ -12,6 +12,26 @@ PAL = {
     'you': dict(skin=(242, 196, 158), hair=(52, 62, 116), hair_d=(32, 38, 76), hair_l=(110, 136, 206), iris=(70, 50, 40), iris_l=(150, 108, 74), blush=(236, 140, 130), brow=(36, 40, 76)),
 }
 LASH = (36, 22, 36)
+import json as _json, os as _os
+EYE_M = _json.load(open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'eyes_m.json')))   # ojos de hombre (referencia del usuario)
+EYE_M_BROW = {'m1': 3, 'm2': 4, 'm3': 4, 'm4': 2}       # filas de ceja de cada variante
+
+
+def _stamp_m(px, var, side, cxe, y_w, sk, iris, brow, raise_=0):
+    """ojo de hombre con su ceja: cxe = centro del ojo, y_w = fila de la primera fila con blanco."""
+    tpl = EYE_M[var][side]; nb = EYE_M_BROW[var]
+    rw = next(i for i, r in enumerate(tpl) if 'W' in r)
+    cols = [c for r in tpl[nb:] for c, ch in enumerate(r) if ch in 'LWD']
+    x0 = int(round(cxe - (min(cols) + max(cols)) / 2)); y0 = y_w - rw
+    cm = {'L': LASH, 'W': WHITE, 'D': iris, 'h': (255, 240, 222), 's': (int(sk[0] * .9), int(sk[1] * .72), int(sk[2] * .72))}
+    for r, row in enumerate(tpl):
+        dy = -raise_ if r < nb else 0
+        for c, ch in enumerate(row):
+            if ch in cm:
+                col = cm[ch]
+                if r < nb and ch == 'L': col = brow
+                px[x0 + c, y0 + r + dy] = (*col, 255)
+
 PUP = (22, 16, 30)
 WHITE = (252, 252, 255)
 
@@ -214,6 +234,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     fpoly = [(cx - 18, 24), (cx + 18, 24), (cx + 19, 48), (cx + 15, 58), (cx + 7, 66), (cx, 69), (cx - 7, 66), (cx - 15, 58), (cx - 19, 48)]
     if CS['strong']: fpoly = [(cx - 18, 24), (cx + 18, 24), (cx + 21, 46), (cx + 20, 58), (cx + 12, 67), (cx, 70), (cx - 12, 67), (cx - 20, 58), (cx - 21, 46)]
     d.polygon(fpoly, fill=sk)
+    import pelo as PELO; PELO.skull_p(d, CS, cx, sk)
     if style == 'shag':
         d.polygon([(cx - 13, 21), (cx - 4, 17), (cx + 6, 18), (cx + 14, 29), (cx + 18, 32), (cx - 18, 32)], fill=sk)
     if style == 'short':  # frente hasta el flequillo (sin hueco)
@@ -234,17 +255,26 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     if blink: tpl = EYE['closed']
     elif expr == 'smile': tpl = EYE['happy']
     elif look[1] > 0: tpl = EYE['down']
-    else: tpl = EYE['open_f' if fem else 'male']
+    else: tpl = EYE['open_f' if fem else 'open_m']
     if CS.get('eyes') == 'narrow' and tpl is not EYE['happy'] and not blink: tpl = EYE['narrow']
     if CS.get('eyes') in ('small', 'droopy') and tpl is not EYE['happy'] and not blink: tpl = EYE[CS['eyes']]
     ey = 44
-    _stamp(px, tpl, cx - 15, ey, p)
-    _stamp(px, tpl, cx + 5, ey, p, mirror=True)
+    mvar = None
+    if CS.get('v2') and not fem and not CS.get('eyes') and not blink and tpl is not EYE['happy']:
+        mvar = 'm4' if CS['sleepy'] else 'm3' if (CS.get('age') or expr in ('sad', 'worry')) else 'm2' if CS.get('brows') == 'thick' else 'm1'
+    if mvar:
+        hb_ = p['hair']; brow_c = p['brow'] if sum(hb_) > 420 else LASH                    # cejas canosas si el pelo es claro
+        up = 2 if expr == 'wow' else 0
+        _stamp_m(px, mvar, 'L', cx - 10, 47, sk, p['iris'], brow_c, up)
+        _stamp_m(px, mvar, 'R', cx + 10, 47, sk, p['iris'], brow_c, up + (2 if CS.get('raise') else 0))
+    else:
+        _stamp(px, tpl, cx - 15, ey, p)
+        _stamp(px, tpl, cx + 5, ey, p, mirror=True)
     # mirada lateral: desplaza pupilas 1 px
     if look[0] and tpl in (EYE['open_f'], EYE['open_m']):
         for x0, mir in ((cx - 15, False), (cx + 5, True)):
             pass
-    if CS['sleepy']:
+    if CS['sleepy'] and not mvar:
         for x0 in (cx - 15, cx + 5):
             for yy in range(ey, ey + 3):
                 for xx in range(x0, x0 + 10): px[xx, yy] = (*skd, 255)
@@ -255,14 +285,15 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     d = ImageDraw.Draw(final)
     lb, rb = (cx - 14, cx - 6), (cx + 6, cx + 14)
     by = 39 + (2 if CS.get('eyes') == 'narrow' else 0)
-    if expr in ('sad', 'worry'):
+    if mvar: pass                                          # la ceja va dentro de la plantilla del ojo
+    elif expr in ('sad', 'worry'):
         d.line([(lb[0], by + 1), (lb[1], by - 2)], fill=br, width=1); d.line([(lb[0] + 1, by + 2), (lb[1], by - 1)], fill=br)
         d.line([(rb[0], by - 2), (rb[1], by + 1)], fill=br); d.line([(rb[0], by - 1), (rb[1] - 1, by + 2)], fill=br)
     elif expr == 'wow':
         d.line([(lb[0], by - 2), (lb[1], by - 3)], fill=br); d.line([(rb[0], by - 3), (rb[1], by - 2)], fill=br)
     else:
         d.line([(lb[0], by), (lb[0] + 3, by - 1), (lb[1], by - 1)], fill=br); d.line([(rb[0], by - 1), (rb[1] - 3, by - 1), (rb[1], by)], fill=br)
-    RG.face_p(d, CS, cx, hd, br, by, sk, hb)
+    RG.face_p(d, dict(CS, _mt=bool(mvar)), cx, hd, br, by, sk, hb)
     # nariz
     px[cx + 1, 56] = (*skdd, 255); px[cx, 57] = (*skd, 255)
     # boca

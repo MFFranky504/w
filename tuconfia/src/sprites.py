@@ -294,7 +294,8 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     # ---------- pelo trasero (largo en Tabitha, mechón lateral en los demás) y volúmenes especiales
     import rasgos as RG
     RG.back_r(P, CS, cx, HR)
-    if CS.get('hair2') in ('volume', 'afro', 'wild', 'bun', 'bald', 'buzz', 'pompadour'): pass
+    import pelo as PELO
+    if CS.get('hair2') in ('volume', 'afro', 'wild', 'bun', 'bald', 'buzz', 'pompadour') or PELO.style_of(CS): pass
     elif style == 'tab':
         P.add(lambda d: d.polygon([(2, 14), (3, 6), (12, 1), (32, 1), (41, 6), (42, 14), (43, 40), (38, 46), (33, 44), (33, 30), (11, 30), (11, 44), (6, 46), (1, 40)], fill=255), HR['d'], edge_k=.4)
     elif style == 'you':
@@ -397,9 +398,9 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.rect(ex, 20, ex + 2, 24, CS['iris']); P.rect(ex + 3, 20, ex + 3, 23, (255, 255, 255))
         P.rect(ex, 20, ex, 20, (255, 255, 255)); P.rect(ex + 1, 20, ex + 1, 20, (255, 255, 255)); P.rect(ex + 1, 21, ex + 1, 22, tuple(int(v*1.15) for v in CS['iris']))
         P.rect(ex, 25, ex + 2, 25, skd)
-        if style != 'tab' and not CS.get('eyes'):       # hombres: ojo más bajo y sin brillos de anime
-            P.rect(ex, 19, ex + 3, 25, sk); P.rect(ex - 1, 20, ex + 4, 21, (30, 22, 40))
-            P.rect(ex, 22, ex + 3, 24, (255, 255, 255)); P.rect(ex + (0 if ex < cx else 1), 22, ex + (2 if ex < cx else 3), 24, CS['iris']); P.rect(ex + 1, 22, ex + 2, 23, (24, 18, 32))
+        if CS.get('v2') and style != 'tab' and not CS.get('eyes'):   # hombres v2: sin brillos de anime; iris en la misma posición en los dos ojos
+            P.rect(ex, 19, ex + 3, 25, sk); P.rect(ex - 1, 21 if CS['glasses'] else 20, ex + 4, 21, (30, 22, 40))
+            P.rect(ex, 22, ex + 3, 24, (255, 255, 255)); P.rect(ex + 1, 22, ex + 2, 24, CS['iris']); P.rect(ex + 1, 22, ex + 2, 23, (24, 18, 32))   # pupila centrada
         if CS.get('eyes') == 'small':
             P.rect(ex, 19, ex + 3, 25, sk); P.rect(ex, 20, ex + 3, 20, (30, 22, 40)); P.rect(ex + 1, 21, ex + 2, 23, (40, 30, 34))
         if CS.get('eyes') == 'droopy':
@@ -446,7 +447,8 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     # sombra lateral derecha + brillos
     mh = P.mask(lambda d: d.polygon([(cx + 10, 4), (cx + 19, 9), (cx + 20, 22), (cx + 17, 15), (cx + 14, 8)], fill=255))
     P.a[mh & (P.a[..., 3] > 0) & (P.a[..., :3] == HR['b']).all(-1)] = (*HR['d'], 255)
-    if CS.get('hair2') is None:
+    import pelo as PELO
+    if CS.get('hair2') is None and not PELO.style_of(CS):
         for (x0, y0, x1, y1) in [(cx - 14, 6, cx - 8, 4), (cx - 6, 4, cx, 3), (cx - 16, 12, cx - 14, 9)]:
             P.line([(x0, y0), (x1, y1)], HR['l'])
         P.line([(cx - 12, 14), (cx - 9, 13)], HR['dd']); P.line([(cx + 2, 14), (cx + 5, 13)], HR['dd'])

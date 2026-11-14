@@ -210,10 +210,11 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.rect(ex, 14, ex + 2, 14, (36, 26, 40))
         P.rect(ex, 15, ex + 2, 18, (255, 255, 255)); P.rect(ex + 1, 15, ex + 2, 18, CS['iris'])
         P.rect(ex + 1, 16, ex + 2, 17, (24, 18, 32)); P.px(ex + 1, 15, (255, 255, 255))
-    if style != 'tab' and not CS.get('eyes'):           # hombres: ojo más bajo (3 filas), párpado grueso, sin brillo de anime
+    if CS.get('v2') and style != 'tab' and not CS.get('eyes'):   # hombres v2: ojo de 2 filas, párpado grueso; iris en la MISMA posición en los dos ojos
         for ex in (cx - 5, cx + 3):
-            P.rect(ex, 18, ex + 2, 18, sk); P.rect(ex - (1 if ex < cx else 0), 14, ex + 2 + (1 if ex > cx else 0), 15, (36, 26, 40))
-            P.rect(ex, 16, ex + 2, 17, (255, 255, 255)); P.rect(ex + (0 if ex < cx else 1), 16, ex + (1 if ex < cx else 2), 17, CS['iris']); P.px(ex + (1 if ex < cx else 1), 16, (24, 18, 32))
+            P.rect(ex, 14, ex + 2, 18, sk)
+            P.rect(ex - (1 if ex < cx else 0), 15 if CS['glasses'] else 14, ex + 2 + (1 if ex > cx else 0), 15, (36, 26, 40))   # párpado (1 fila con gafas)
+            P.rect(ex, 16, ex + 2, 17, (255, 255, 255)); P.rect(ex + 1, 16, ex + 1, 17, (24, 18, 32))                       # blanco · pupila centrada · blanco
     if CS.get('eyes') == 'narrow':                     # ojos rasgados: párpado grueso y 2 filas de iris
         for ex in (cx - 5, cx + 3):
             P.rect(ex, 14, ex + 2, 18, sk); P.rect(ex - 1, 15, ex + 3, 15, (30, 22, 36))
@@ -225,7 +226,10 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
             P.rect(ex, 14, ex + 2, 15, sk); P.rect(ex - 1, 16, ex + 3, 16, (30, 22, 36)); P.px(ex + (3 if ex > cx else -1), 17, (30, 22, 36))
     if CS['sleepy']:
         for ex in (cx - 5, cx + 3): P.rect(ex, 14, ex + 2, 14, skd); P.rect(ex, 15, ex + 2, 15, (30, 22, 40))
-    P.rect(cx - 6, 12, cx - 3, 12, hc['d']); P.rect(cx + 3, 12, cx + 6, 12, hc['d'])
+    if CS.get('v2') and style != 'tab' and not CS.get('eyes'):
+        bc = hc['dd'] if sum(hc['b']) < 420 else hc['d']
+        P.rect(cx - 7, 11, cx - 5, 11, bc); P.rect(cx - 6, 12, cx - 2, 12, bc); P.rect(cx + 5, 11, cx + 7, 11, bc); P.rect(cx + 2, 12, cx + 6, 12, bc)
+    else: P.rect(cx - 6, 12, cx - 3, 12, hc['d']); P.rect(cx + 3, 12, cx + 6, 12, hc['d'])
     if CS['strong']: P.rect(cx - 6, 11, cx - 3, 11, hc['dd']); P.rect(cx + 3, 11, cx + 6, 11, hc['dd'])
     P.px(cx + 1, 21, skdd); P.rect(cx - 1, 23, cx + 1, 23, (182, 78, 90))
     if style not in ('king', 'short', 'shag'):
@@ -251,7 +255,8 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.add(lambda d: d.polygon([(cx - 1, 2), (cx + 3, -3 + 3), (cx + 5, 2)], fill=255), hc['b'], edge=False)
     mh = P.mask(lambda d: d.polygon([(cx + 5, 3), (cx + 11, 6), (cx + 11, 17), (cx + 8, 10)], fill=255))
     P.a[mh & (P.a[..., 3] > 0) & (P.a[..., :3] == hc['b']).all(-1)] = (*hc['d'], 255)
-    if CS.get('hair2') is None: P.line([(cx - 7, 5), (cx - 3, 3)], hc['l']); P.line([(cx - 2, 3), (cx + 3, 2)], hc['l'])
+    import pelo as PELO
+    if CS.get('hair2') is None and not PELO.style_of(CS): P.line([(cx - 7, 5), (cx - 3, 3)], hc['l']); P.line([(cx - 2, 3), (cx + 3, 2)], hc['l'])
     if fem and outfit == 'uniform':
         P.add(lambda d: d.polygon([(cx - 10, 9), (cx - 7, 2), (cx, 0), (cx + 7, 2), (cx + 10, 9)], fill=255), o['top'], edge_k=.45)
         P.add(lambda d: d.polygon([(cx - 12, 9), (cx + 14, 9), (cx + 16, 12), (cx - 10, 12)], fill=255), o['top2'], edge_k=.45)

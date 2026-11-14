@@ -133,12 +133,12 @@ CAST.update({
 
 # --- short: Cantinflas (siluetas distintas: flaco con pantalón caído, gordo con chaleco, señora de rebozo, abuelo de sarape, productor alto)
 CAST.update({
- 'cant_y': dict(style='shag', skin=(206, 156, 114), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='peladito', build='slim', face='long', mst='pencil', hat='bombin', smirk=True, raise_=True),
- 'cant':   dict(style='shag', skin=(204, 154, 112), hair=ramp((26, 22, 22)), iris=(50, 36, 30), outfit='tux', build='slim', face='long', mst='pencil', smirk=True, raise_=True),
- 'dueno':  dict(style='short', skin=(222, 176, 136), hair=ramp((120, 116, 112)), iris=(60, 44, 36), outfit='vest', hair2='bald', build='heavy', belly=True, height='short', face='round', mst='walrus', brows='thick', eyes='small'),
- 'senora': dict(style='tab', skin=(196, 140, 100), hair=ramp((22, 18, 20)), iris=(50, 36, 30), outfit='rebozo', braids=True, face='round', height='short'),
- 'abuelo': dict(style='short', skin=(176, 124, 88), hair=ramp((226, 226, 230)), iris=(50, 36, 30), outfit='zarape', hat='sombrero', mst='walrus', age=True, face='long', build='slim', height='short', eyes='droopy'),
- 'todd':   dict(style='short', skin=(236, 198, 164), hair=ramp((30, 26, 28)), iris=(60, 50, 40), outfit='coat', hair2='side', build='slim', height='tall', face='square', hat='fedora', glasses=True),
+ 'cant_y': dict(style='shag', skin=(206, 156, 114), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='peladito', hair2='messy', build='slim', face='long', mst='pencil', hat='bombin', raise_=True, v2=True),
+ 'cant':   dict(style='shag', skin=(204, 154, 112), hair=ramp((26, 22, 22)), iris=(50, 36, 30), outfit='tux', hair2='sidepart', build='slim', face='long', mst='pencil', raise_=True, v2=True),
+ 'dueno':  dict(style='short', skin=(222, 176, 136), hair=ramp((120, 116, 112)), iris=(60, 44, 36), outfit='vest', hair2='bald', build='heavy', belly=True, height='short', face='round', mst='walrus', brows='thick', v2=True),
+ 'senora': dict(style='tab', skin=(196, 140, 100), hair=ramp((22, 18, 20)), iris=(50, 36, 30), outfit='rebozo', hair2='pulled', braids=True, face='round', height='short', v2=True),
+ 'abuelo': dict(style='short', skin=(176, 124, 88), hair=ramp((226, 226, 230)), iris=(50, 36, 30), outfit='zarape', hat='sombrero', mst='walrus', age=True, face='long', build='slim', height='short', hair2='receding', v2=True),
+ 'todd':   dict(style='short', skin=(236, 198, 164), hair=ramp((30, 26, 28)), iris=(60, 50, 40), outfit='coat', hair2='slick', build='slim', height='tall', face='square', hat='fedora', glasses=True, v2=True),
 })
 
 
@@ -147,3 +147,4 @@ def resolve(who):
     return c
 
 for _k in ('cant_y', 'cant'): CAST[_k]['raise'] = CAST[_k].pop('raise_')
+
