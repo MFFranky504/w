@@ -101,8 +101,8 @@ def carrusel():
     img = lienzo(W, H, 220)
     cabecera(img, "CALENDARIO", 4)
     y = lista(img, [("HOY", "INSCRIPCIÓN ABIERTA"),
-                    ("29 NOV", "CIERRE · 20:00 CDMX"),
-                    ("30 NOV", "JUEGO 1: LA PRIMERA PUERTA"),
+                    ("17 NOV", "CIERRE · 20:00 CDMX"),
+                    ("18 NOV", "JUEGO 1: LA PRIMERA PUERTA"),
                     ("6 SEM", "6 JUEGOS · 1 CAMPEÓN")], 92)
     lista(img, ["SOLO USAMOS TU ID Y TU ALIAS PÚBLICO. NUNCA DATOS PERSONALES.",
                 "EDAD MÍNIMA: LA QUE EXIGEN LOS TÉRMINOS DE INSTAGRAM.",

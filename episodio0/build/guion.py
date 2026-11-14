@@ -9,8 +9,8 @@ Sintaxis de cada línea:
 # --- Parámetros de la temporada (cambiar aquí y re-renderizar) ---
 NOMBRE_DICHO = "Ai-gram Gueims."
 NOMBRE_PANTALLA = "IGRAM GAMES"
-CIERRE_PANTALLA = ("DOM 29 NOV", "20:00 HORA CDMX", "(02:00 UTC · LUN 30 NOV)")
-INICIO_JUEGO1 = "LUN 30 NOV"
+CIERRE_PANTALLA = ("MAR 17 NOV", "20:00 HORA CDMX", "(02:00 UTC · MIÉ 18 NOV)")
+INICIO_JUEGO1 = "MIÉ 18 NOV"
 
 VOZ = {"model": "microsoft/mai-voice-2.1", "voice": "es-MX-Alejo"}
 
@@ -27,9 +27,9 @@ LINEAS = [
     ("L09", "fantasma", "Y si caes... no te vas."),
     ("L10", "votos", "Los eliminados siguen votando cómo se juega."),
     ("L11", "comentario", "Para entrar, comenta {entro|*\"ENTRO\"} y un emoji en este video."),
-    ("L12", "fecha", "Las inscripciones cierran el domingo {veintinueve|*29} de noviembre, a las {ocho de la noche,|*20:00,} {hora de Ciudad de México.|HORA CDMX.}"),
+    ("L12", "fecha", "Las inscripciones cierran el martes {diecisiete|*17} de noviembre, a las {ocho de la noche,|*20:00,} {hora de Ciudad de México.|HORA CDMX.}"),
     ("L13", "gratis", "Es gratis. Y todo es digital."),
-    ("L14", "puertas", "La primera puerta se abre el {lunes treinta.|*LUNES 30.}"),
+    ("L14", "puertas", "La primera puerta se abre el {miércoles dieciocho.|*MIÉRCOLES 18.}"),
     ("L15", "final", "¿Entras?"),
 ]
 

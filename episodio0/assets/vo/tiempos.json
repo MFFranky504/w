@@ -442,9 +442,9 @@
   ]
  },
  "L12": {
-  "dicho": "Las inscripciones cierran el domingo veintinueve de noviembre, a las ocho de la noche, hora de Ciudad de México.",
-  "duracion": 7.344,
-  "transcripcion": "Las inscripciones cierran el domingo 29 de noviembre a las 8 de la noche hora de Ciudad de México.",
+  "dicho": "Las inscripciones cierran el martes diecisiete de noviembre, a las ocho de la noche, hora de Ciudad de México.",
+  "duracion": 8.04,
+  "transcripcion": "Las inscripciones cierran el martes 17 de noviembre a las 8 de la noche hora de Ciudad de México.",
   "palabras": [
    {
     "w": "Las",
@@ -454,92 +454,92 @@
    {
     "w": "inscripciones",
     "s": 0.18,
-    "e": 0.86
+    "e": 0.92
    },
    {
     "w": "cierran",
-    "s": 0.86,
-    "e": 1.64
+    "s": 0.92,
+    "e": 1.78
    },
    {
     "w": "el",
-    "s": 1.64,
-    "e": 1.82
+    "s": 1.78,
+    "e": 2.02
    },
    {
-    "w": "domingo",
-    "s": 1.82,
-    "e": 2.5
+    "w": "martes",
+    "s": 2.02,
+    "e": 2.64
    },
    {
-    "w": "29",
-    "s": 2.5,
-    "e": 3.12
+    "w": "17",
+    "s": 2.64,
+    "e": 3.02
    },
    {
     "w": "de",
-    "s": 3.12,
-    "e": 3.54
+    "s": 3.02,
+    "e": 3.4
    },
    {
     "w": "noviembre",
-    "s": 3.54,
-    "e": 4.08
+    "s": 3.4,
+    "e": 3.92
    },
    {
     "w": "a",
-    "s": 4.08,
-    "e": 4.34
+    "s": 3.92,
+    "e": 4.4
    },
    {
     "w": "las",
-    "s": 4.34,
-    "e": 4.5
+    "s": 4.4,
+    "e": 4.58
    },
    {
     "w": "8",
-    "s": 4.5,
-    "e": 4.78
+    "s": 4.58,
+    "e": 4.76
    },
    {
     "w": "de",
-    "s": 4.78,
+    "s": 4.76,
     "e": 5
    },
    {
     "w": "la",
     "s": 5,
-    "e": 5.1
+    "e": 5.08
    },
    {
     "w": "noche",
-    "s": 5.1,
-    "e": 5.42
+    "s": 5.08,
+    "e": 5.4
    },
    {
     "w": "hora",
-    "s": 5.42,
-    "e": 5.76
-   },
-   {
-    "w": "de",
-    "s": 5.76,
+    "s": 5.4,
     "e": 5.98
    },
    {
-    "w": "Ciudad",
+    "w": "de",
     "s": 5.98,
-    "e": 6.32
+    "e": 6.26
+   },
+   {
+    "w": "Ciudad",
+    "s": 6.26,
+    "e": 6.68
    },
    {
     "w": "de",
-    "s": 6.32,
-    "e": 6.4
+    "s": 6.68,
+    "e": 6.74
    },
    {
     "w": "México.",
-    "s": 6.4,
-    "e": 6.7
+    "s": 6.74,
+    "e": 7.06
    }
   ]
  },
@@ -581,9 +581,9 @@
   ]
  },
  "L14": {
-  "dicho": "La primera puerta se abre el lunes treinta.",
-  "duracion": 3.792,
-  "transcripcion": "La primera puerta se abre el lunes 30.",
+  "dicho": "La primera puerta se abre el miércoles dieciocho.",
+  "duracion": 4.104,
+  "transcripcion": "La primera puerta se abre el miércoles 18.",
   "palabras": [
    {
     "w": "La",
@@ -593,37 +593,37 @@
    {
     "w": "primera",
     "s": 0.14,
-    "e": 0.42
+    "e": 0.4
    },
    {
     "w": "puerta",
-    "s": 0.42,
-    "e": 0.78
+    "s": 0.4,
+    "e": 0.82
    },
    {
     "w": "se",
-    "s": 0.78,
-    "e": 1.46
+    "s": 0.82,
+    "e": 1.38
    },
    {
     "w": "abre",
-    "s": 1.46,
-    "e": 1.8
+    "s": 1.38,
+    "e": 1.78
    },
    {
     "w": "el",
-    "s": 1.8,
-    "e": 2.4
+    "s": 1.78,
+    "e": 2.24
    },
    {
-    "w": "lunes",
-    "s": 2.4,
-    "e": 2.78
+    "w": "miércoles",
+    "s": 2.24,
+    "e": 2.94
    },
    {
-    "w": "30.",
-    "s": 2.78,
-    "e": 3.06
+    "w": "18.",
+    "s": 2.94,
+    "e": 3.34
    }
   ]
  },
