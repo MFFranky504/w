@@ -7,8 +7,8 @@
 
 | Archivo | Uso | Formato |
 |---|---|---|
-| `episodio0_convocatoria.mp4` | Reel de convocatoria | 1080×1920 · 30 fps · 65 s · H.264 + AAC · −14 LUFS |
-| `portada_reel.png` | Portada del Reel | 1080×1920; lo importante cae dentro del recorte 3:4 de la cuadrícula |
+| `episodio0_convocatoria.mp4` | Reel de convocatoria | 1080×1920 · 30 fps · 51 s · H.264 + AAC · ≈ −15 LUFS |
+| `portada_reel.png` | Portada del Reel (= fotograma 0, el gancho) | 1080×1920; todo lo importante cae dentro del recorte 3:4 de la cuadrícula |
 | `bases_1.png` … `bases_4.png` | Carrusel "Bases oficiales" | 1080×1350 (4:5) |
 
 ---
@@ -39,9 +39,9 @@
 ## Texto del Reel (caption)
 
 ```
-🔻 IGRAM GAMES · TEMPORADA 1 · INSCRIPCIONES ABIERTAS 🔻
+🔻 ESTE COMENTARIO PUEDE ELIMINARTE 🔻
 
-Todos pueden entrar. Solo uno va a ganar.
+IGram Games · Temporada 1 · Inscripciones abiertas.
 6 juegos. 6 semanas. 1 campeón. Todo pasa aquí.
 
 ▶ CÓMO ENTRAR
@@ -60,7 +60,7 @@ Comenta ENTRO + un emoji en este Reel. Ejemplo: ENTRO 🔥
 📌 Bases completas en el carrusel fijado del perfil.
 
 La primera puerta se abre el miércoles 18.
-¿Entras?
+¿Entras? 👇
 
 Esta promoción no está patrocinada, avalada ni administrada por Instagram ni Meta, ni está asociada a ellos.
 
@@ -82,21 +82,36 @@ Esta promoción no está patrocinada, avalada ni administrada por Instagram ni M
 
 | t (s) | Línea | Escena | Texto en pantalla |
 |---|---|---|---|
-| 00.70 | L01 | multitud | TODOS PUEDEN ENTRAR. |
-| 02.92 | L02 | derez | SOLO UNO VA A GANAR. |
-| 05.54 | L03 | logo | ESTO ES IGRAM GAMES. |
-| 08.06 | L04 | conteo | 6 SEMANAS. 6 JUEGOS. 1 GANADOR. |
-| 12.93 | L05 | id | AL INSCRIBIRTE, RECIBES UN NÚMERO. |
-| 16.59 | L06 | id_zoom | ESE NÚMERO ERES TÚ. |
-| 19.01 | L07 | reglas | LAS REGLAS SE PUBLICAN ANTES DE CADA JUEGO... Y NADIE LAS CAMBIA. |
-| 25.42 | L08 | elecciones | TUS DECISIONES, Y LAS DE TODOS LOS DEMÁS, DECIDEN SI SIGUES. |
-| 30.58 | L09 | fantasma | Y SI CAES... NO TE VAS. |
-| 34.16 | L10 | votos | LOS ELIMINADOS SIGUEN VOTANDO CÓMO SE JUEGA. |
-| 37.45 | L11 | comentario | PARA ENTRAR, COMENTA "ENTRO" Y UN EMOJI EN ESTE VIDEO. |
-| 42.51 | L12 | fecha | LAS INSCRIPCIONES CIERRAN EL MARTES 17 DE NOVIEMBRE, A LAS 20:00, HORA CDMX. |
-| 51.05 | L13 | gratis | ES GRATIS. Y TODO ES DIGITAL. |
-| 55.29 | L14 | puertas | LA PRIMERA PUERTA SE ABRE EL MIÉRCOLES 18. |
-| 60.20 | L15 | final | ¿ENTRAS? |
+| 00.00 | K01 | hook | ESTE COMENTARIO PUEDE ELIMINARTE. |
+| 02.36 | K02 | derez | O SER EL ÚLTIMO EN PIE. |
+| 04.24 | K03 | logo | BIENVENIDO A IGRAM GAMES. |
+| 06.86 | K04 | conteo | 6 JUEGOS. 1 GANADOR. |
+| 11.06 | K05 | tease | Y HAY UNA REGLA QUE NADIE VE VENIR. |
+| 14.56 | K06 | id | 1. COMENTAS, Y RECIBES UN NÚMERO. |
+| 17.96 | K07 | id_zoom | ESE NÚMERO ERES TÚ. |
+| 19.88 | K08 | reglas | 2. REGLAS PÚBLICAS, ANTES DE JUGAR. NADIE LAS CAMBIA. NI NOSOTROS. |
+| 26.78 | K09 | elecciones | 3. TUS DECISIONES, Y LAS DE TODOS, DECIDEN QUIÉN CAE. |
+| 31.49 | K10 | fantasma | Y LA 4. SI CAES... NO TE VAS. |
+| 35.50 | K11 | votos | LOS ELIMINADOS SIGUEN VOTANDO CÓMO SE JUEGA. |
+| 38.19 | K12 | comentario | COMENTA ENTRO Y UN EMOJI. AHORA. |
+| 41.08 | K13 | fecha | CIERRA EL MARTES 17, A LAS 20:00, HORA CDMX. |
+| 45.47 | K14 | puertas | EL MIÉRCOLES 18, ABRE LA PRIMERA PUERTA. |
+| 48.81 | K15 | final | ¿ENTRAS? |
+
+## Por qué engancha (estructura de retención)
+
+| Recurso | Dónde | Para qué |
+|---|---|---|
+| **Gancho en el fotograma 0**: "ESTE COMENTARIO PUEDE ELIMINARTE" con la tarjeta de comentario, rayas de peligro e impacto de audio en el segundo 0 | 0:00–0:02 | Se entiende sin sonido y sin fundido de entrada; abre la pregunta "¿qué pasa si comento?" |
+| **Segundo gancho**: "O ser el último en pie" (la multitud se desintegra y queda uno) | 0:02–0:04 | Promesa: la recompensa de entrar |
+| **Lazo abierto**: "Una regla que NADIE ve venir…" | 0:11 → se cierra en la regla 4 (0:31) | Retiene hasta el último tercio |
+| **Contador "REGLA 1/4 … 4/4"** | 0:14–0:37 | El espectador sabe cuánto falta |
+| **SLAM** (palabra gigante + flash + sacudida): NADIE · TÚ · NI NOSOTROS · CAE · NO TE VAS · AHORA | cada 3–6 s | Interrupción de patrón en las frases clave |
+| **Golpe de zoom + sonido en cada palabra de énfasis y en cada corte** | continuo | Un cambio visual cada ≈ 1.5–3 s |
+| **Silencios dramáticos** antes de "Ni nosotros" y de "¿Entras?" | 0:26 y 0:48 | El contraste hace que el golpe pegue más |
+| **Bucle**: el último fotograma es el primero ("¿ENTRAS?" → "ESTE COMENTARIO PUEDE ELIMINARTE") | 0:51 | Cada repetición suma tiempo de visualización |
+
+Subtítulos dentro de la zona segura (inferior libre ≈ 320 px, superior ≈ 120 px, lateral ≈ 120 px).
 
 **Cumplimiento de las Hard Rules:** no hay cifras de participantes, el único ID es `J-????` (o dígitos girando como ruleta), el comentario de muestra lleva la etiqueta "EJEMPLO" y no aparecen handles. La eliminación se muestra como "desconexión" pixelada, sin violencia. Todo el arte, la fuente, la música y los efectos son originales y se generan por código.
 
@@ -106,7 +121,7 @@ Esta promoción no está patrocinada, avalada ni administrada por Instagram ni M
 
 ```
 build/guion.py    → texto, nombre, fechas y voz (ÚNICA fuente; cambia aquí)
-build/tts.py      → locución por línea (Pollinations · MAI-Voice es-MX-Alejo) + tiempos por palabra (Whisper)
+build/tts.py      → locución por línea (Pollinations · MAI-Voice es-MX-Alejo, recortada y a 1.12×) + tiempos por palabra (Whisper)
 build/mezcla.py   → línea de tiempo + música/efectos sintetizados + mezcla a −14 LUFS
 build/render.py   → escenas pixel art 360×640 → ×3 → MP4 (≈1 min de render)
 build/piezas.py   → portada + carrusel de bases
@@ -114,6 +129,6 @@ build/fuente.py   → fuente bitmap propia (mayúsculas, acentos, Ñ)
 ```
 
 Para regenerar todo: `cd episodio0/build && python3 tts.py && python3 mezcla.py && python3 render.py && python3 piezas.py`.
-Para cambiar el **nombre** o la **fecha de cierre**, edita `guion.py`, regenera la línea afectada (`python3 tts.py L03`, `L12` o `L14`) y vuelve a correr `mezcla.py`, `render.py` y `piezas.py`.
+Para cambiar el **nombre** o la **fecha de cierre**, edita `guion.py`, regenera la línea afectada (`python3 tts.py K03`, `K13` o `K14`) y vuelve a correr `mezcla.py`, `render.py` y `piezas.py`.
 
 **Voz:** ElevenLabs no tiene saldo (cuenta gratuita, unos 400 caracteres restantes) y OpenAI no tiene créditos. La locución usa MAI-Voice (es-MX-Alejo) vía Pollinations. Para tener la voz definitiva del Anfitrión en ElevenLabs hace falta un plan de pago.

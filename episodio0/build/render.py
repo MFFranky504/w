@@ -252,8 +252,8 @@ def sil(col, ojo, esc):
 # ------------------------------------------------------------------ escenas
 def esc_multitud(img, t, L, ctx):
     """L01 + L02: la multitud llena la sala; luego se desintegra salvo uno."""
-    l2 = L["L02"]
-    td0, td1 = l2["inicio"] + 0.1, l2["fin"] - 0.15
+    l2 = L["K02"]
+    td0, td1 = l2["inicio"] + 0.12, l2["fin"] - 0.12
     prog_der = np.clip((t - td0) / (td1 - td0), 0, 1)
     luz = 2 if prog_der < 0.5 else (3 if prog_der < 1 else 4)
     img.paste(SALA[luz])
@@ -272,8 +272,9 @@ def esc_multitud(img, t, L, ctx):
         tm = td0 + m["td"] * (td1 - td0 - 0.3)
         p = (t - tm) / 0.3
         desintegrar(img, spr, x, y, p, m["x"] * 7 + m["fi"], P["amber"] if m["fi"] >= 3 else P["bone_dd"])
-    a = 1 - np.clip(t / 0.6, 0, 1)
-    return fundido(img, a)
+    if prog_der >= 0.8:
+        tag_id(img, 180, 396 - SPR_H[2][0].height - 36, "J-????", 2)
+    return img
 
 
 def emblema(img, cx, y, esc_j, t_ini, t):
@@ -295,7 +296,7 @@ def emblema(img, cx, y, esc_j, t_ini, t):
 
 
 def esc_logo(img, t, L, ctx):
-    l = L["L03"]
+    l = L["K03"]
     t0 = l["inicio"] - 0.12
     img.paste(OSCURO_LOGO)
     yb = emblema(img, 180, 112, 14, t0, t)
@@ -316,10 +317,10 @@ def pop(t, ts, esc):
 
 
 def esc_conteo(img, t, L, ctx):
-    l = L["L04"]
+    l = L["K04"]
     img.paste(OSCURO)
-    txt_c(img, "TEMPORADA 1", 180, 120, P["bone_dd"], 2)
-    cols = [(62, 0, "6", "SEMANAS"), (180, 2, "6", "JUEGOS"), (298, 4, "1", "GANADOR")]
+    txt_c(img, "TEMPORADA 1", 180, 196, P["bone_dd"], 2)
+    cols = [(100, 0, "6", "JUEGOS"), (260, 2, "1", "GANADOR")]
     d = ImageDraw.Draw(img)
     for cx, ti, num, lab in cols:
         ts = l["tokens"][ti]["s"] - 0.05
@@ -329,10 +330,10 @@ def esc_conteo(img, t, L, ctx):
         final = num == "1"
         color = P["bone"] if final else P["amber"]
         s = texto(num, color, e, sombra=P["red_d"] if not final else P["amber_d"])
-        pegar_centrado(img, s, cx, 175 - (e - 9) * 5)
-        txt_c(img, lab, cx, 262, P["bone_d"] if not final else P["amber"], 2)
+        pegar_centrado(img, s, cx, 245 - (e - 9) * 5)
+        txt_c(img, lab, cx, 332, P["bone_d"] if not final else P["amber"], 2)
         if final and (t - ts) % 0.5 < 0.35:
-            d.rectangle([cx - 52, 160, cx + 52, 292], outline=P["amber"], width=2)
+            d.rectangle([cx - 62, 230, cx + 62, 362], outline=P["amber"], width=2)
     return img
 
 
@@ -346,7 +347,7 @@ def tag_id(img, cx, y, txt, esc):
 
 
 def esc_id(img, t, L, ctx):
-    l5, l6 = L["L05"], L["L06"]
+    l5, l6 = L["K06"], L["K07"]
     zoom = t >= l6["inicio"] - 0.12
     img.paste(SALA[3] if zoom else SALA[2])
     t0 = l5["inicio"] - 0.12
@@ -357,7 +358,7 @@ def esc_id(img, t, L, ctx):
         s = SPR_H[3][1 if paso else 0]
         bob = 0 if camina < 1 else (1 if math.sin(t * 3) > 0.7 else 0)
         pegar(img, s, x - s.width / 2, 400 - s.height - bob)
-        rueda = l5["tokens"][3]["s"] - 0.1 <= t < l5["fin"]
+        rueda = l5["tokens"][4]["s"] - 0.1 <= t < l5["fin"]
         if camina >= 1:
             dig = "".join(str(int(hsh(int(t * 15), k) * 10)) for k in range(4)) if rueda else "????"
             tag_id(img, 180, 400 - s.height - 40, "J-" + dig, 2)
@@ -373,7 +374,7 @@ def esc_id(img, t, L, ctx):
 
 
 def esc_reglas(img, t, L, ctx):
-    l = L["L07"]
+    l = L["K08"]
     img.paste(OSCURO)
     d = ImageDraw.Draw(img)
     x0, y0, x1, y1 = 74, 118, 286, 366
@@ -433,7 +434,7 @@ PART = Particulas()
 
 
 def esc_elecciones(img, t, L, ctx):
-    l = L["L08"]
+    l = L["K09"]
     img.paste(SALA[1])
     d = ImageDraw.Draw(img)
     t_cierre = l["tokens"][-1]["s"]
@@ -470,10 +471,10 @@ def esc_elecciones(img, t, L, ctx):
 
 
 def esc_fantasma(img, t, L, ctx):
-    l9, l10 = L["L09"], L["L10"]
+    l9, l10 = L["K10"], L["K11"]
     if t < l10["inicio"] - 0.12:
         img.paste(SALA[3])
-        t_cae = l9["tokens"][2]["s"]
+        t_cae = l9["tokens"][tk_idx(l9, "CAES", 4)]["s"]
         s = SPR_H[4][0]
         x, y = 180 - s.width / 2, 404 - s.height
         p = (t - t_cae) / 0.45
@@ -516,7 +517,7 @@ def esc_fantasma(img, t, L, ctx):
 
 
 def esc_comentario(img, t, L, ctx):
-    l = L["L11"]
+    l = L["K12"]
     img.paste(OSCURO)
     d = ImageDraw.Draw(img)
     txt_c(img, "COMENTA ASÍ:", 180, 132, P["bone"], 2)
@@ -526,7 +527,7 @@ def esc_comentario(img, t, L, ctx):
     cab = SPR_H[2][0].crop((0, 0, 22, 14 * 2))
     d.rectangle([x0 + 8, y0 + 10, x0 + 44, y0 + 46], fill=P["bg1"])
     pegar(img, cab, x0 + 15, y0 + 16)
-    t_esc = l["tokens"][3]["s"]
+    t_esc = l["tokens"][tk_idx(l, "ENTRO", 1)]["s"]
     palabra = "ENTRO"
     n = int(np.clip((t - t_esc) / 0.09, 0, len(palabra)))
     xs = x0 + 56
@@ -552,13 +553,13 @@ def esc_comentario(img, t, L, ctx):
 
 
 def esc_fecha(img, t, L, ctx):
-    l = L["L12"]
+    l = L["K13"]
     img.paste(OSCURO)
     d = ImageDraw.Draw(img)
     t0 = l["inicio"] - 0.12
     caida = np.clip((t - t0) / 0.14, 0, 1)
     oy = int((1 - caida) * -30)
-    x0, y0, x1, y1 = 42, 130 + oy, 318, 330 + oy
+    x0, y0, x1, y1 = 42, 190 + oy, 318, 390 + oy
     d.rectangle([x0 + 4, y0 + 4, x1 + 4, y1 + 4], fill=P["bg0"])
     d.rectangle([x0, y0, x1, y1], fill=P["bg1"], outline=P["bg4"], width=2)
     d.rectangle([x0, y0, x1, y0 + 34], fill=P["red_d"])
@@ -566,11 +567,11 @@ def esc_fecha(img, t, L, ctx):
     if int(t * 2) % 2 == 0:
         d.rectangle([x0 + 10, y0 + 13, x0 + 15, y0 + 18], fill=P["red"])
     fecha, hora, utc = guion.CIERRE_PANTALLA
-    if t >= l["tokens"][4]["s"] - 0.05:
+    if t >= l["tokens"][2]["s"] - 0.05:
         txt_c(img, fecha, 180, y0 + 58, P["bone"], 4, sombra=P["bg0"])
-    if t >= l["tokens"][10]["s"] - 0.05:
+    if t >= l["tokens"][5]["s"] - 0.05:
         txt_c(img, hora, 180, y0 + 120, P["amber"], 2)
-    if t >= l["tokens"][11]["s"] - 0.05:
+    if t >= l["tokens"][6]["s"] - 0.05:
         txt_c(img, utc, 180, y0 + 160, P["bone_d"], 1)
     return img
 
@@ -601,10 +602,10 @@ def esc_gratis(img, t, L, ctx):
 
 
 def esc_puertas(img, t, L, ctx):
-    l = L["L14"]
+    l = L["K14"]
     img.paste(SALA[0])
     d = ImageDraw.Draw(img)
-    t_abre = l["tokens"][4]["s"]
+    t_abre = l["tokens"][3]["s"]
     luz = np.clip((t - t_abre) / 0.8, 0, 1)
     txt_c(img, "LA PRIMERA PUERTA", 180, 112, P["bone_d"], 1)
     txt_c(img, guion.INICIO_JUEGO1, 180, 128, P["amber"], 3, sombra=P["red_d"])
@@ -629,32 +630,143 @@ def esc_puertas(img, t, L, ctx):
     return img
 
 
-def esc_final(img, t, L, ctx):
-    l = L["L15"]
-    t0 = l["inicio"] - 0.12
-    img.paste(OSCURO_LOGO)
-    yb = emblema(img, 180, 96, 7, -9, t)
-    txt_c(img, guion.NOMBRE_PANTALLA, 180, yb + 12, P["amber"], 2, sombra=P["red_d"])
-    s = texto("¿ENTRAS?", P["bone"], 6, sombra=P["red_d"])
-    pegar_centrado(img, s, 180, 236)
-    if t > t0 + 0.9 and (int((t - t0) * 2.5) % 2 == 0 or t > t0 + 2.4):
-        txt_c(img, 'COMENTA "ENTRO" + EMOJI', 180, 330, P["amber"], 2)
-    if t > t0 + 1.3:
-        f, h, _ = guion.CIERRE_PANTALLA
-        txt_c(img, "CIERRE: " + f + " · " + h, 180, 362, P["bone_d"], 1)
-    if t - t0 < 0.06:
-        img = fundido(img, 0.55, P["bone"])
-    if t - t0 < 0.35:
-        img = glitch_filas(img, round(t * FPS), 9)
+def tk_idx(l, pref, default=0):
+    for i, tk in enumerate(l["tokens"]):
+        if tk["txt"].upper().startswith(pref):
+            return i
+    return default
+
+
+def fondo_rojo():
+    base = np.array(fondo_oscuro(0.55, 300)).astype(np.float32)
+    base = base * np.array([2.2, 0.7, 0.75]) + np.array([16, 0, 4])
+    arr = np.clip(base, 0, 255).astype(np.uint8)
+    arr[::4] = (arr[::4].astype(np.float32) * 0.72).astype(np.uint8)   # líneas de barrido
+    return Image.fromarray(arr)
+
+
+ROJO = fondo_rojo()
+
+
+def hazard(img, y0, h, t, col=None, col2=None):
+    col = col or P["red"]
+    col2 = col2 or P["bg0"]
+    arr = np.array(img)
+    xs = np.arange(W)[None, :]
+    ys = np.arange(h)[:, None]
+    m = (((xs + ys + int(t * 60)) // 8) % 2 == 0)[..., None]
+    arr[y0:y0 + h] = np.where(m, np.array(col, np.uint8), np.array(col2, np.uint8))
+    return Image.fromarray(arr)
+
+
+_tj = {}
+CARD_X, CARD_Y, CARD_W, CARD_H = 30, 200, 300, 70
+
+
+def tarjeta(escrito, ico, cursor=False):
+    """Tarjeta de comentario (la misma en el primer y en el último fotograma: bucle)."""
+    k = (escrito, ico, cursor)
+    if k in _tj:
+        return _tj[k]
+    im = Image.new("RGBA", (CARD_W, CARD_H), (0, 0, 0, 255))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, CARD_W - 1, CARD_H - 1], fill=P["bg2"], outline=P["bg4"])
+    d.rectangle([10, 16, 46, 52], fill=P["bg1"])
+    cab = SPR_H[2][0].crop((0, 0, 22, 28))
+    im.paste(cab, (17, 20), cab)
+    x = 58
+    if escrito:
+        sp = texto(escrito, P["bone"], 3)
+        im.paste(sp, (x, 18), sp)
+        x += sp.width + 6
+    if ico:
+        sp = SPR_ICO[ico]
+        im.paste(sp, (x, 22), sp)
+    if cursor:
+        d.rectangle([x, 18, x + 2, 50], fill=P["amber"])
+    _tj[k] = im
+    return im
+
+
+def esc_hook(img, t, L, ctx):
+    """K01 — gancho: la frase completa está en pantalla desde el fotograma 0."""
+    l = L["K01"]
+    ts = l["tokens"][3]["s"]                      # "ELIMINARTE."
+    f = int(t * FPS)
+    antes = t < ts
+    img.paste(ROJO)
+    img = hazard(img, 108, 10, t)
+    img = hazard(img, 420, 10, -t)
+
+    def j(k, a=2):
+        return int((hsh(f, k) - 0.5) * 2 * (a if antes else a * 2))
+
+    txt_c(img, "ESTE COMENTARIO", 180 + j(1), 150, P["bone"], 3, sombra=P["red_d"])
+    card = tarjeta("ENTRO", "fuego")
+    if antes:
+        pegar(img, card, CARD_X + j(2), CARD_Y + j(3))
+        if int(t * 8) % 2 == 0:
+            ImageDraw.Draw(img).rectangle([CARD_X - 3, CARD_Y - 3, CARD_X + CARD_W + 2, CARD_Y + CARD_H + 2],
+                                          outline=P["red"], width=2)
+    else:
+        desintegrar(img, card, CARD_X, CARD_Y, (t - ts) / 0.45, 11, P["red"])
+    txt_c(img, "PUEDE", 180 + j(4), 300, P["bone"], 3, sombra=P["red_d"])
+    pegar_centrado(img, texto("ELIMINARTE.", P["red"], 4, sombra=P["bg0"]), 180 + j(5, 3), 346)
+    if t < 0.35:
+        img = glitch_filas(img, f, 14, 5)
     return img
 
 
-ESCENAS = {"multitud": esc_multitud, "derez": esc_multitud, "logo": esc_logo, "conteo": esc_conteo,
+def esc_tease(img, t, L, ctx):
+    """K05 — lazo abierto: 'REGLA ?' (se resuelve en K10, REGLA 4)."""
+    l = L["K05"]
+    t0 = l["inicio"] - 0.12
+    f = int(t * FPS)
+    img.paste(OSCURO)
+    d = ImageDraw.Draw(img)
+    txt_c(img, "REGLA", 180, 112, P["bone_d"], 3)
+    col = P["red"] if hsh(f // 2, 1) < 0.35 else P["amber"]
+    pegar_centrado(img, texto("?", col, 9, sombra=P["red_d"]), 180 + int((hsh(f, 2) - 0.5) * 8), 150)
+    d.rectangle([116, 148, 244, 248], outline=P["bg4"], width=2)
+    for k in range(4):
+        d.rectangle([116 + k * 34, 244, 118 + k * 34, 252], fill=P["bg4"])
+    if t - t0 < 0.5:
+        img = glitch_filas(img, f, 12, 2)
+    return img
+
+
+def esc_final(img, t, L, ctx):
+    """K15 — mismo encuadre que el gancho (bucle): tarjeta en el mismo lugar."""
+    l = L["K15"]
+    t0 = l["inicio"] - 0.12
+    f = int(t * FPS)
+    img.paste(ROJO)
+    img = hazard(img, 108, 10, t)
+    img = hazard(img, 420, 10, -t)
+    txt_c(img, "COMENTA ASÍ", 180, 150, P["bone"], 3, sombra=P["red_d"])
+    n = int(np.clip((t - t0) / 0.07, 0, 5))
+    ico = ["fuego", "rayo", "estrella"][int((t - t0) / 0.3) % 3] if n == 5 else None
+    pegar(img, tarjeta("ENTRO"[:n], ico, cursor=n < 5), CARD_X, CARD_Y)
+    pegar_centrado(img, texto("¿ENTRAS?", P["bone"], 6, sombra=P["red_d"]), 180 + (int((hsh(f, 3) - 0.5) * 4) if t - t0 < 0.3 else 0), 300)
+    fch, hr, _ = guion.CIERRE_PANTALLA
+    txt_c(img, "CIERRA " + fch + " · " + hr, 180, 384, P["amber"], 1)
+    txt_c(img, "GRATIS · 100% DIGITAL · PREMIO SIMBÓLICO", 180, 400, P["bone_d"], 1)
+    if t - t0 < 0.06:
+        img = fundido(img, 0.55, P["bone"])
+    if t - t0 < 0.3:
+        img = glitch_filas(img, f, 9)
+    return img
+
+
+ESCENAS = {"hook": esc_hook, "derez": esc_multitud, "logo": esc_logo, "conteo": esc_conteo, "tease": esc_tease,
            "id": esc_id, "id_zoom": esc_id, "reglas": esc_reglas, "elecciones": esc_elecciones,
            "fantasma": esc_fantasma, "votos": esc_fantasma, "comentario": esc_comentario, "fecha": esc_fecha,
-           "gratis": esc_gratis, "puertas": esc_puertas, "final": esc_final}
-SIN_SUBTITULOS = {"logo", "conteo", "fecha", "final"}
-CONTINUAS = {("multitud", "derez"), ("id", "id_zoom"), ("fantasma", "votos")}
+           "puertas": esc_puertas, "final": esc_final}
+SIN_SUBTITULOS = {"hook", "logo", "conteo", "fecha", "final"}
+SIN_HUD = {"hook", "derez", "logo", "final", "tease"}
+CONTINUAS = {("id", "id_zoom"), ("fantasma", "votos")}
+CHIPS = {"id": 1, "id_zoom": 1, "reglas": 2, "elecciones": 3, "fantasma": 4, "votos": 4}
+SLAM_Y = {"tease": 292}
 
 
 # ------------------------------------------------------------------ subtítulos
@@ -733,11 +845,11 @@ def dibujar_pagina(img, pg, t):
 
 def hud(img, t):
     s = texto("EP.00 · CONVOCATORIA", P["bone_dd"], 1)
-    pegar(img, s, 14, 90)
+    pegar(img, s, 14, 46)
     s2 = texto("INSCRIPCIÓN ABIERTA", P["bone_dd"], 1)
-    pegar(img, s2, W - 14 - s2.width, 90)
+    pegar(img, s2, W - 14 - s2.width, 46)
     if int(t * 2) % 2 == 0:
-        ImageDraw.Draw(img).rectangle([W - 22 - s2.width, 92, W - 18 - s2.width, 96], fill=P["red"])
+        ImageDraw.Draw(img).rectangle([W - 22 - s2.width, 48, W - 18 - s2.width, 52], fill=P["red"])
 
 
 # ------------------------------------------------------------------ fotograma
@@ -745,6 +857,69 @@ TL = json.loads((OUT / "timeline.json").read_text())
 LINEAS = TL["lineas"]
 LMAP = {l["id"]: l for l in LINEAS}
 CTX = {}
+
+# eventos de cámara: (tiempo, fuerza, slam)
+EVENTOS = []
+for _i, _l in enumerate(LINEAS):
+    EVENTOS.append((_l["inicio"] - 0.12 if _i else 0.0, 0.07, False))
+    for _tk in _l["tokens"]:
+        if _tk["slam"]:
+            EVENTOS.append((_tk["s"], 0.12, True))
+        elif _tk["enf"]:
+            EVENTOS.append((_tk["s"], 0.05, False))
+
+CHIP_T0 = {}
+for _l in LINEAS:
+    _n = CHIPS.get(_l["escena"])
+    if _n and _n not in CHIP_T0:
+        CHIP_T0[_n] = _l["inicio"] - 0.12
+
+
+def chip(img, n, t):
+    dt = t - CHIP_T0[n]
+    e = 4 if dt < 0.1 else 3
+    pegar_centrado(img, texto(f"REGLA {n}/4", P["amber"], e, sombra=P["red_d"]), 180, 62)
+
+
+def slam(img, t, l):
+    for tk in l["tokens"]:
+        if tk["slam"] and tk["s"] <= t < tk["e"] + 0.5:
+            dt = t - tk["s"]
+            for e in (7, 6, 5, 4, 3):
+                lineas = fuente.partir(tk["txt"], 300, e)
+                if len(lineas) <= 2 and all(fuente.ancho_texto(x, e) <= 300 for x in lineas):
+                    break
+            alto = fuente.H_CELDA * e + 6
+            y0 = SLAM_Y.get(l["escena"], 215)
+            h = len(lineas) * alto + 24
+            arr = np.array(img)
+            arr[y0 - 12:y0 - 12 + h] = arr[y0 - 12:y0 - 12 + h] // 5
+            img = Image.fromarray(arr)
+            col = P["ghost"] if tk["txt"].startswith("NO TE") else P["bone"]
+            for k, ln in enumerate(lineas):
+                jx = int((hsh(int(t * FPS), k) - 0.5) * 6) if dt < 0.18 else 0
+                txt_c(img, ln, 180 + jx, y0 + k * alto, col, e + (1 if dt < 0.06 else 0), sombra=P["red"])
+            if dt < 0.05:
+                img = fundido(img, 0.45, P["bone"])
+    return img
+
+
+def golpe_camara(img, t):
+    k = 0.0
+    fuerte = 0.0
+    for te, f, sl in EVENTOS:
+        dt = t - te
+        if 0 <= dt < 0.4:
+            k += f * math.exp(-dt / 0.11)
+            if sl and dt < 0.16:
+                fuerte = max(fuerte, f)
+    if k < 0.004:
+        return img
+    s = 1 + k
+    cw, ch = W / s, H / s
+    ox = (W - cw) / 2 + ((hsh(int(t * FPS), 8) - 0.5) * 10 * fuerte / 0.12 if fuerte else 0)
+    oy = (H - ch) / 2 + ((hsh(int(t * FPS), 9) - 0.5) * 10 * fuerte / 0.12 if fuerte else 0)
+    return img.transform((W, H), Image.EXTENT, (ox, oy, ox + cw, oy + ch), Image.NEAREST)
 
 
 def fotograma(t):
@@ -755,20 +930,21 @@ def fotograma(t):
     l = LINEAS[idx]
     img = Image.new("RGB", (W, H), P["bg0"])
     img = ESCENAS[l["escena"]](img, t, LMAP, CTX.setdefault(l["escena"], {}))
-    if l["escena"] not in ("multitud", "logo", "final"):
+    if l["escena"] not in SIN_HUD:
         hud(img, t)
+    n = CHIPS.get(l["escena"])
+    if n:
+        chip(img, n, t)
+    img = slam(img, t, l)
     subtitulos(img, t, LINEAS)
     # corte con glitch en cambios de escena (salvo continuidad)
     t_ini = l["inicio"] - 0.12
     prev = LINEAS[idx - 1]["escena"] if idx else None
     if idx and (prev, l["escena"]) not in CONTINUAS and 0 <= t - t_ini < 2 / FPS and l["escena"] not in ("logo", "final"):
         img = glitch_filas(img, round(t * FPS), 7, 3)
+    img = golpe_camara(img, t)
     arr = (np.array(img).astype(np.float32) * VIG).astype(np.uint8)
-    img = Image.fromarray(arr)
-    T = TL["duracion"]
-    if t > T - 0.5:
-        img = fundido(img, (t - (T - 0.5)) / 0.5)
-    return img
+    return Image.fromarray(arr)       # sin fundido inicial ni final: corte en seco = bucle
 
 
 def main():

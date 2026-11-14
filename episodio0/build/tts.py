@@ -13,8 +13,14 @@ def tts(texto, dest):
     body = json.dumps({**guion.VOZ, "input": texto, "response_format": "mp3"}).encode()
     req = urllib.request.Request(f"{BASE}/speech", data=body, method="POST",
                                  headers={"Content-Type": "application/json", "Authorization": "Bearer x"})
+    raw = dest.with_suffix(".raw.mp3")
     with urllib.request.urlopen(req, timeout=120) as r:
-        dest.write_bytes(r.read())
+        raw.write_bytes(r.read())
+    # recorta el silencio inicial y acelera sin cambiar el tono
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(raw), "-af",
+                    f"silenceremove=start_periods=1:start_threshold=-42dB:start_silence=0.03,atempo={guion.VELOCIDAD}",
+                    "-c:a", "libmp3lame", "-q:a", "2", str(dest)], check=True)
+    raw.unlink()
 
 
 def transcribir(src):

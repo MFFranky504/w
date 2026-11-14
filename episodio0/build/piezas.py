@@ -21,19 +21,18 @@ def guardar(img, nombre):
 
 
 def portada():
-    img = R.SALA[3].copy()
+    """Portada del Reel = fotograma 0 del video (el gancho), más la marca abajo."""
+    img = R.ROJO.copy()
+    img = R.hazard(img, 108, 10, 0)
+    img = R.hazard(img, 420, 10, 0)
+    R.txt_c(img, "ESTE COMENTARIO", 180, 150, P["bone"], 3, sombra=P["red_d"])
+    R.pegar(img, R.tarjeta("ENTRO", "fuego"), R.CARD_X, R.CARD_Y)
+    R.txt_c(img, "PUEDE", 180, 300, P["bone"], 3, sombra=P["red_d"])
+    R.pegar_centrado(img, R.texto("ELIMINARTE.", P["red"], 4, sombra=P["bg0"]), 180, 346)
     d = ImageDraw.Draw(img)
-    d.rectangle([0, 0, R.W, 250], fill=P["bg0"])
-    img.paste(R.OSCURO_LOGO.crop((0, 40, R.W, 250)), (0, 40))
-    yb = R.emblema(img, 180, 88, 7, -9, 0)
-    R.txt_c(img, guion.NOMBRE_PANTALLA, 180, yb + 12, P["amber"], 3, sombra=P["red_d"])
-    R.txt_c(img, "TEMPORADA 1", 180, yb + 50, P["bone_d"], 2)
-    s = R.SPR_H[4][0]
-    R.pegar(img, s, 180 - s.width / 2, 404 - s.height)
-    R.tag_id(img, 180, 404 - s.height - 44, "J-????", 2)
-    d.rectangle([20, 432, 340, 500], fill=P["red_d"])
-    R.txt_c(img, "INSCRIPCIONES ABIERTAS", 180, 444, P["bone"], 2)
-    R.txt_c(img, "CIERRE " + FECHA + " · " + HORA, 180, 474, P["bone"], 1)
+    d.rectangle([0, 450, R.W, 520], fill=P["bg0"])
+    R.txt_c(img, guion.NOMBRE_PANTALLA, 180, 458, P["amber"], 3, sombra=P["red_d"])
+    R.txt_c(img, "INSCRIPCIONES ABIERTAS · CIERRA " + FECHA + " · " + HORA, 180, 498, P["bone_d"], 1)
     guardar(img, "portada_reel.png")
 
 

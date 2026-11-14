@@ -1,351 +1,408 @@
 {
- "L01": {
-  "dicho": "Todos pueden entrar.",
-  "duracion": 1.872,
-  "transcripcion": "Todos pueden entrar.",
+ "K01": {
+  "dicho": "Este comentario puede eliminarte.",
+  "duracion": 2.256,
+  "transcripcion": "Este comentario puede eliminarte.",
   "palabras": [
    {
-    "w": "Todos",
+    "w": "Este",
     "s": 0,
-    "e": 0.18
+    "e": 0.16
    },
    {
-    "w": "pueden",
-    "s": 0.18,
-    "e": 0.48
+    "w": "comentario",
+    "s": 0.16,
+    "e": 0.82
    },
    {
-    "w": "entrar.",
-    "s": 0.48,
-    "e": 0.8
+    "w": "puede",
+    "s": 0.82,
+    "e": 1.08
+   },
+   {
+    "w": "eliminarte.",
+    "s": 1.08,
+    "e": 1.74
    }
   ]
  },
- "L02": {
-  "dicho": "Solo uno va a ganar.",
-  "duracion": 1.872,
-  "transcripcion": "Solo uno va a ganar.",
+ "K02": {
+  "dicho": "O ser el último en pie.",
+  "duracion": 1.704,
+  "transcripcion": "o ser el último en pie.",
   "palabras": [
    {
-    "w": "Solo",
-    "s": 0,
-    "e": 0.18
-   },
-   {
-    "w": "uno",
-    "s": 0.18,
-    "e": 0.5
-   },
-   {
-    "w": "va",
-    "s": 0.5,
-    "e": 0.96
-   },
-   {
-    "w": "a",
-    "s": 0.96,
-    "e": 1.02
-   },
-   {
-    "w": "ganar.",
-    "s": 1.02,
-    "e": 1.4
-   }
-  ]
- },
- "L03": {
-  "dicho": "Esto es Ai-gram Gueims.",
-  "duracion": 1.92,
-  "transcripcion": "Esto es iGram Games.",
-  "palabras": [
-   {
-    "w": "Esto",
-    "s": 0,
-    "e": 0.24
-   },
-   {
-    "w": "es",
-    "s": 0.24,
-    "e": 0.48
-   },
-   {
-    "w": "iGram",
-    "s": 0.48,
-    "e": 0.96
-   },
-   {
-    "w": "Games.",
-    "s": 0.96,
-    "e": 1.18
-   }
-  ]
- },
- "L04": {
-  "dicho": "Seis semanas. Seis juegos. Un ganador.",
-  "duracion": 4.32,
-  "transcripcion": "Seis semanas, seis juegos, un ganador.",
-  "palabras": [
-   {
-    "w": "Seis",
-    "s": 0,
-    "e": 0.36
-   },
-   {
-    "w": "semanas,",
-    "s": 0.36,
-    "e": 0.68
-   },
-   {
-    "w": "seis",
-    "s": 0.92,
-    "e": 1.56
-   },
-   {
-    "w": "juegos,",
-    "s": 1.56,
-    "e": 2.02
-   },
-   {
-    "w": "un",
-    "s": 2.22,
-    "e": 3.36
-   },
-   {
-    "w": "ganador.",
-    "s": 3.36,
-    "e": 3.82
-   }
-  ]
- },
- "L05": {
-  "dicho": "Al inscribirte, recibes un número.",
-  "duracion": 3.408,
-  "transcripcion": "Al inscribirte, recibes un número.",
-  "palabras": [
-   {
-    "w": "Al",
+    "w": "o",
     "s": 0,
     "e": 0.12
    },
    {
-    "w": "inscribirte,",
+    "w": "ser",
     "s": 0.12,
-    "e": 0.9
+    "e": 0.22
    },
    {
-    "w": "recibes",
-    "s": 0.9,
-    "e": 1.64
+    "w": "el",
+    "s": 0.22,
+    "e": 0.32
    },
    {
-    "w": "un",
-    "s": 1.64,
-    "e": 1.96
+    "w": "último",
+    "s": 0.32,
+    "e": 0.52
    },
    {
-    "w": "número.",
-    "s": 1.96,
-    "e": 2.8
+    "w": "en",
+    "s": 0.52,
+    "e": 0.74
+   },
+   {
+    "w": "pie.",
+    "s": 0.74,
+    "e": 0.86
    }
   ]
  },
- "L06": {
+ "K03": {
+  "dicho": "Bienvenido a Ai-gram Gueims.",
+  "duracion": 2.424,
+  "transcripcion": "Bienvenido a iGram Games.",
+  "palabras": [
+   {
+    "w": "Bienvenido",
+    "s": 0,
+    "e": 0.6
+   },
+   {
+    "w": "a",
+    "s": 0.6,
+    "e": 0.76
+   },
+   {
+    "w": "iGram",
+    "s": 0.76,
+    "e": 1.32
+   },
+   {
+    "w": "Games.",
+    "s": 1.32,
+    "e": 1.58
+   }
+  ]
+ },
+ "K04": {
+  "dicho": "Seis juegos. Un solo ganador.",
+  "duracion": 3.912,
+  "transcripcion": "Seis juegos, un solo ganador.",
+  "palabras": [
+   {
+    "w": "Seis",
+    "s": 0,
+    "e": 0.48
+   },
+   {
+    "w": "juegos,",
+    "s": 0.48,
+    "e": 0.78
+   },
+   {
+    "w": "un",
+    "s": 0.94,
+    "e": 1.94
+   },
+   {
+    "w": "solo",
+    "s": 1.94,
+    "e": 2.52
+   },
+   {
+    "w": "ganador.",
+    "s": 2.52,
+    "e": 3.3
+   }
+  ]
+ },
+ "K05": {
+  "dicho": "Y hay una regla que nadie ve venir.",
+  "duracion": 3.288,
+  "transcripcion": "Y hay una regla que nadie ve venir.",
+  "palabras": [
+   {
+    "w": "Y",
+    "s": 0,
+    "e": 0.08
+   },
+   {
+    "w": "hay",
+    "s": 0.08,
+    "e": 0.26
+   },
+   {
+    "w": "una",
+    "s": 0.26,
+    "e": 0.48
+   },
+   {
+    "w": "regla",
+    "s": 0.48,
+    "e": 1.04
+   },
+   {
+    "w": "que",
+    "s": 1.04,
+    "e": 1.56
+   },
+   {
+    "w": "nadie",
+    "s": 1.56,
+    "e": 1.9
+   },
+   {
+    "w": "ve",
+    "s": 1.9,
+    "e": 2.2
+   },
+   {
+    "w": "venir.",
+    "s": 2.2,
+    "e": 2.5
+   }
+  ]
+ },
+ "K06": {
+  "dicho": "Uno. Comentas, y recibes un número.",
+  "duracion": 3.312,
+  "transcripcion": "1. Comentas y recibes un número.",
+  "palabras": [
+   {
+    "w": "1.",
+    "s": 0,
+    "e": 0.18
+   },
+   {
+    "w": "Comentas",
+    "s": 1.34,
+    "e": 1.66
+   },
+   {
+    "w": "y",
+    "s": 1.66,
+    "e": 1.72
+   },
+   {
+    "w": "recibes",
+    "s": 1.72,
+    "e": 2.46
+   },
+   {
+    "w": "un",
+    "s": 2.46,
+    "e": 2.56
+   },
+   {
+    "w": "número.",
+    "s": 2.56,
+    "e": 2.78
+   }
+  ]
+ },
+ "K07": {
   "dicho": "Ese número eres tú.",
-  "duracion": 1.872,
+  "duracion": 1.704,
   "transcripcion": "Ese número eres tú.",
   "palabras": [
    {
     "w": "Ese",
     "s": 0,
-    "e": 0.24
+    "e": 0.18
    },
    {
     "w": "número",
-    "s": 0.24,
-    "e": 0.46
+    "s": 0.18,
+    "e": 0.38
    },
    {
     "w": "eres",
-    "s": 0.46,
-    "e": 0.88
-   },
-   {
-    "w": "tú.",
-    "s": 0.88,
-    "e": 1.36
-   }
-  ]
- },
- "L07": {
-  "dicho": "Las reglas se publican antes de cada juego... y nadie las cambia.",
-  "duracion": 5.904,
-  "transcripcion": "Las reglas se publican antes de cada juego y nadie las cambia.",
-  "palabras": [
-   {
-    "w": "Las",
-    "s": 0,
-    "e": 0.16
-   },
-   {
-    "w": "reglas",
-    "s": 0.16,
+    "s": 0.38,
     "e": 0.76
    },
    {
-    "w": "se",
+    "w": "tú.",
     "s": 0.76,
     "e": 1.18
-   },
-   {
-    "w": "publican",
-    "s": 1.18,
-    "e": 1.9
-   },
-   {
-    "w": "antes",
-    "s": 1.9,
-    "e": 2.28
-   },
-   {
-    "w": "de",
-    "s": 2.28,
-    "e": 2.44
-   },
-   {
-    "w": "cada",
-    "s": 2.44,
-    "e": 2.66
-   },
-   {
-    "w": "juego",
-    "s": 2.66,
-    "e": 3.06
-   },
-   {
-    "w": "y",
-    "s": 3.06,
-    "e": 4.26
-   },
-   {
-    "w": "nadie",
-    "s": 4.26,
-    "e": 4.72
-   },
-   {
-    "w": "las",
-    "s": 4.72,
-    "e": 4.96
-   },
-   {
-    "w": "cambia.",
-    "s": 4.96,
-    "e": 5.48
    }
   ]
  },
- "L08": {
-  "dicho": "Tus decisiones, y las de todos los demás, deciden si sigues.",
-  "duracion": 4.608,
-  "transcripcion": "Tus decisiones y las de todos los demás deciden si sigues.",
+ "K08": {
+  "dicho": "Dos. Reglas públicas, antes de jugar. Nadie las cambia. Ni nosotros.",
+  "duracion": 6.696,
+  "transcripcion": "2. Reglas públicas antes de jugar. Nadie las cambia. Ni nosotros.",
   "palabras": [
    {
-    "w": "Tus",
-    "s": 0,
-    "e": 0.14
-   },
-   {
-    "w": "decisiones",
-    "s": 0.14,
-    "e": 1.04
-   },
-   {
-    "w": "y",
-    "s": 1.04,
-    "e": 1.4
-   },
-   {
-    "w": "las",
-    "s": 1.4,
-    "e": 1.58
-   },
-   {
-    "w": "de",
-    "s": 1.58,
-    "e": 1.7
-   },
-   {
-    "w": "todos",
-    "s": 1.7,
-    "e": 1.98
-   },
-   {
-    "w": "los",
-    "s": 1.98,
-    "e": 2.2
-   },
-   {
-    "w": "demás",
-    "s": 2.2,
-    "e": 2.46
-   },
-   {
-    "w": "deciden",
-    "s": 2.46,
-    "e": 3.6
-   },
-   {
-    "w": "si",
-    "s": 3.6,
-    "e": 3.84
-   },
-   {
-    "w": "sigues.",
-    "s": 3.84,
-    "e": 4.34
-   }
-  ]
- },
- "L09": {
-  "dicho": "Y si caes... no te vas.",
-  "duracion": 3.288,
-  "transcripcion": "Y si caes, no te vas.",
-  "palabras": [
-   {
-    "w": "Y",
+    "w": "2.",
     "s": 0,
     "e": 0.2
    },
    {
-    "w": "si",
-    "s": 0.2,
-    "e": 0.56
+    "w": "Reglas",
+    "s": 0.72,
+    "e": 1.2
    },
    {
-    "w": "caes,",
-    "s": 0.56,
-    "e": 1.16
+    "w": "públicas",
+    "s": 1.2,
+    "e": 1.82
    },
    {
-    "w": "no",
-    "s": 1.16,
-    "e": 2.14
+    "w": "antes",
+    "s": 1.82,
+    "e": 2.46
    },
    {
-    "w": "te",
-    "s": 2.14,
-    "e": 2.26
+    "w": "de",
+    "s": 2.46,
+    "e": 2.68
    },
    {
-    "w": "vas.",
-    "s": 2.26,
-    "e": 2.52
+    "w": "jugar.",
+    "s": 2.68,
+    "e": 2.9
+   },
+   {
+    "w": "Nadie",
+    "s": 3.7,
+    "e": 4.18
+   },
+   {
+    "w": "las",
+    "s": 4.18,
+    "e": 4.28
+   },
+   {
+    "w": "cambia.",
+    "s": 4.28,
+    "e": 4.8
+   },
+   {
+    "w": "Ni",
+    "s": 5.1,
+    "e": 5.58
+   },
+   {
+    "w": "nosotros.",
+    "s": 5.58,
+    "e": 5.86
    }
   ]
  },
- "L10": {
+ "K09": {
+  "dicho": "Tres. Tus decisiones, y las de todos, deciden quién cae.",
+  "duracion": 4.416,
+  "transcripcion": "3. Tus decisiones y las de todos deciden quién cae.",
+  "palabras": [
+   {
+    "w": "3.",
+    "s": 0,
+    "e": 0.18
+   },
+   {
+    "w": "Tus",
+    "s": 0.62,
+    "e": 1.02
+   },
+   {
+    "w": "decisiones",
+    "s": 1.02,
+    "e": 1.82
+   },
+   {
+    "w": "y",
+    "s": 1.82,
+    "e": 2.04
+   },
+   {
+    "w": "las",
+    "s": 2.04,
+    "e": 2.18
+   },
+   {
+    "w": "de",
+    "s": 2.18,
+    "e": 2.28
+   },
+   {
+    "w": "todos",
+    "s": 2.28,
+    "e": 2.58
+   },
+   {
+    "w": "deciden",
+    "s": 2.58,
+    "e": 3.42
+   },
+   {
+    "w": "quién",
+    "s": 3.42,
+    "e": 3.58
+   },
+   {
+    "w": "cae.",
+    "s": 3.58,
+    "e": 4
+   }
+  ]
+ },
+ "K10": {
+  "dicho": "Y la cuatro. Si caes... no te vas.",
+  "duracion": 3.912,
+  "transcripcion": "Y la 4. Si caes, no te vas.",
+  "palabras": [
+   {
+    "w": "Y",
+    "s": 0,
+    "e": 0.08
+   },
+   {
+    "w": "la",
+    "s": 0.08,
+    "e": 0.14
+   },
+   {
+    "w": "4.",
+    "s": 0.14,
+    "e": 0.34
+   },
+   {
+    "w": "Si",
+    "s": 0.94,
+    "e": 1.36
+   },
+   {
+    "w": "caes,",
+    "s": 1.36,
+    "e": 1.88
+   },
+   {
+    "w": "no",
+    "s": 1.88,
+    "e": 2.88
+   },
+   {
+    "w": "te",
+    "s": 2.88,
+    "e": 2.98
+   },
+   {
+    "w": "vas.",
+    "s": 2.98,
+    "e": 3.2
+   }
+  ]
+ },
+ "K11": {
   "dicho": "Los eliminados siguen votando cómo se juega.",
-  "duracion": 2.688,
-  "transcripcion": "Los eliminados siguen votando como se juega.",
+  "duracion": 2.448,
+  "transcripcion": "Los eliminados siguen votando cómo se juega.",
   "palabras": [
    {
     "w": "Los",
@@ -355,287 +412,195 @@
    {
     "w": "eliminados",
     "s": 0.1,
-    "e": 0.74
+    "e": 0.66
    },
    {
     "w": "siguen",
-    "s": 0.74,
-    "e": 1.08
+    "s": 0.66,
+    "e": 0.94
    },
    {
     "w": "votando",
-    "s": 1.08,
-    "e": 1.48
+    "s": 0.94,
+    "e": 1.32
    },
    {
-    "w": "como",
-    "s": 1.48,
-    "e": 1.7
+    "w": "cómo",
+    "s": 1.32,
+    "e": 1.5
    },
    {
     "w": "se",
-    "s": 1.7,
-    "e": 1.86
+    "s": 1.5,
+    "e": 1.66
    },
    {
     "w": "juega.",
-    "s": 1.86,
-    "e": 2.2
+    "s": 1.66,
+    "e": 1.98
    }
   ]
  },
- "L11": {
-  "dicho": "Para entrar, comenta entro y un emoji en este video.",
-  "duracion": 4.608,
-  "transcripcion": "Para entrar, comenta entro y un emoji en este video.",
+ "K12": {
+  "dicho": "Comenta entro y un emoji. Ahora.",
+  "duracion": 2.784,
+  "transcripcion": "Comenta entro y un emoji. Ahora.",
   "palabras": [
    {
-    "w": "Para",
+    "w": "Comenta",
     "s": 0,
-    "e": 0.12
-   },
-   {
-    "w": "entrar,",
-    "s": 0.12,
-    "e": 0.56
-   },
-   {
-    "w": "comenta",
-    "s": 0.76,
-    "e": 1.42
+    "e": 0.38
    },
    {
     "w": "entro",
-    "s": 1.42,
-    "e": 2.18
+    "s": 0.38,
+    "e": 0.84
    },
    {
     "w": "y",
-    "s": 2.18,
-    "e": 2.48
-   },
-   {
-    "w": "un",
-    "s": 2.48,
-    "e": 2.9
-   },
-   {
-    "w": "emoji",
-    "s": 2.9,
-    "e": 3.26
-   },
-   {
-    "w": "en",
-    "s": 3.26,
-    "e": 3.6
-   },
-   {
-    "w": "este",
-    "s": 3.6,
-    "e": 3.78
-   },
-   {
-    "w": "video.",
-    "s": 3.78,
-    "e": 4.04
-   }
-  ]
- },
- "L12": {
-  "dicho": "Las inscripciones cierran el martes diecisiete de noviembre, a las ocho de la noche, hora de Ciudad de México.",
-  "duracion": 8.04,
-  "transcripcion": "Las inscripciones cierran el martes 17 de noviembre a las 8 de la noche hora de Ciudad de México.",
-  "palabras": [
-   {
-    "w": "Las",
-    "s": 0,
-    "e": 0.18
-   },
-   {
-    "w": "inscripciones",
-    "s": 0.18,
-    "e": 0.92
-   },
-   {
-    "w": "cierran",
-    "s": 0.92,
-    "e": 1.78
-   },
-   {
-    "w": "el",
-    "s": 1.78,
-    "e": 2.02
-   },
-   {
-    "w": "martes",
-    "s": 2.02,
-    "e": 2.64
-   },
-   {
-    "w": "17",
-    "s": 2.64,
-    "e": 3.02
-   },
-   {
-    "w": "de",
-    "s": 3.02,
-    "e": 3.4
-   },
-   {
-    "w": "noviembre",
-    "s": 3.4,
-    "e": 3.92
-   },
-   {
-    "w": "a",
-    "s": 3.92,
-    "e": 4.4
-   },
-   {
-    "w": "las",
-    "s": 4.4,
-    "e": 4.58
-   },
-   {
-    "w": "8",
-    "s": 4.58,
-    "e": 4.76
-   },
-   {
-    "w": "de",
-    "s": 4.76,
-    "e": 5
-   },
-   {
-    "w": "la",
-    "s": 5,
-    "e": 5.08
-   },
-   {
-    "w": "noche",
-    "s": 5.08,
-    "e": 5.4
-   },
-   {
-    "w": "hora",
-    "s": 5.4,
-    "e": 5.98
-   },
-   {
-    "w": "de",
-    "s": 5.98,
-    "e": 6.26
-   },
-   {
-    "w": "Ciudad",
-    "s": 6.26,
-    "e": 6.68
-   },
-   {
-    "w": "de",
-    "s": 6.68,
-    "e": 6.74
-   },
-   {
-    "w": "México.",
-    "s": 6.74,
-    "e": 7.06
-   }
-  ]
- },
- "L13": {
-  "dicho": "Es gratis. Y todo es digital.",
-  "duracion": 3.744,
-  "transcripcion": "Es gratis. Y todo es digital.",
-  "palabras": [
-   {
-    "w": "Es",
-    "s": 0,
-    "e": 0.2
-   },
-   {
-    "w": "gratis.",
-    "s": 0.2,
+    "s": 0.84,
     "e": 1.1
    },
    {
-    "w": "Y",
+    "w": "un",
     "s": 1.1,
-    "e": 1.54
+    "e": 1.22
    },
    {
-    "w": "todo",
-    "s": 1.54,
-    "e": 1.8
+    "w": "emoji.",
+    "s": 1.22,
+    "e": 1.48
    },
    {
-    "w": "es",
-    "s": 1.8,
-    "e": 2.24
-   },
-   {
-    "w": "digital.",
-    "s": 2.24,
-    "e": 2.94
+    "w": "Ahora.",
+    "s": 1.7,
+    "e": 2.22
    }
   ]
  },
- "L14": {
-  "dicho": "La primera puerta se abre el miércoles dieciocho.",
-  "duracion": 4.104,
-  "transcripcion": "La primera puerta se abre el miércoles 18.",
+ "K13": {
+  "dicho": "Cierra el martes diecisiete, a las ocho de la noche, hora de México.",
+  "duracion": 4.272,
+  "transcripcion": "Cierra el martes 17 a las 8 de la noche, hora de México.",
   "palabras": [
    {
-    "w": "La",
+    "w": "Cierra",
     "s": 0,
-    "e": 0.14
-   },
-   {
-    "w": "primera",
-    "s": 0.14,
-    "e": 0.4
-   },
-   {
-    "w": "puerta",
-    "s": 0.4,
-    "e": 0.82
-   },
-   {
-    "w": "se",
-    "s": 0.82,
-    "e": 1.38
-   },
-   {
-    "w": "abre",
-    "s": 1.38,
-    "e": 1.78
+    "e": 0.22
    },
    {
     "w": "el",
-    "s": 1.78,
-    "e": 2.24
+    "s": 0.22,
+    "e": 0.32
    },
    {
-    "w": "miércoles",
-    "s": 2.24,
-    "e": 2.94
+    "w": "martes",
+    "s": 0.32,
+    "e": 0.7
    },
    {
-    "w": "18.",
-    "s": 2.94,
-    "e": 3.34
+    "w": "17",
+    "s": 0.7,
+    "e": 0.96
+   },
+   {
+    "w": "a",
+    "s": 0.96,
+    "e": 1.84
+   },
+   {
+    "w": "las",
+    "s": 1.84,
+    "e": 2.02
+   },
+   {
+    "w": "8",
+    "s": 2.02,
+    "e": 2.2
+   },
+   {
+    "w": "de",
+    "s": 2.2,
+    "e": 2.4
+   },
+   {
+    "w": "la",
+    "s": 2.4,
+    "e": 2.48
+   },
+   {
+    "w": "noche,",
+    "s": 2.48,
+    "e": 2.82
+   },
+   {
+    "w": "hora",
+    "s": 2.92,
+    "e": 3.24
+   },
+   {
+    "w": "de",
+    "s": 3.24,
+    "e": 3.4
+   },
+   {
+    "w": "México.",
+    "s": 3.4,
+    "e": 3.62
    }
   ]
  },
- "L15": {
+ "K14": {
+  "dicho": "El miércoles dieciocho, abre la primera puerta.",
+  "duracion": 3.12,
+  "transcripcion": "El miércoles 18 abre la primera puerta.",
+  "palabras": [
+   {
+    "w": "El",
+    "s": 0,
+    "e": 0.08
+   },
+   {
+    "w": "miércoles",
+    "s": 0.08,
+    "e": 0.52
+   },
+   {
+    "w": "18",
+    "s": 0.52,
+    "e": 1
+   },
+   {
+    "w": "abre",
+    "s": 1,
+    "e": 1.64
+   },
+   {
+    "w": "la",
+    "s": 1.64,
+    "e": 1.84
+   },
+   {
+    "w": "primera",
+    "s": 1.84,
+    "e": 2.1
+   },
+   {
+    "w": "puerta.",
+    "s": 2.1,
+    "e": 2.44
+   }
+  ]
+ },
+ "K15": {
   "dicho": "¿Entras?",
-  "duracion": 1.872,
+  "duracion": 1.704,
   "transcripcion": "¿Entras?",
   "palabras": [
    {
     "w": "¿Entras?",
     "s": 0,
-    "e": 0.44
+    "e": 0.36
    }
   ]
  }

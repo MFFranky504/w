@@ -1,755 +1,769 @@
 {
- "duracion": 65.27,
+ "duracion": 51.412,
  "lineas": [
   {
-   "id": "L01",
-   "escena": "multitud",
-   "inicio": 0.7,
-   "fin": 2.572,
-   "voz_ini": 0.7,
-   "voz_fin": 1.5,
+   "id": "K01",
+   "escena": "hook",
+   "inicio": 0.0,
+   "fin": 2.256,
+   "voz_ini": 0.0,
+   "voz_fin": 1.74,
    "tokens": [
     {
-     "txt": "TODOS",
+     "txt": "ESTE",
      "enf": false,
-     "s": 0.7,
-     "e": 0.8799999999999999
+     "slam": false,
+     "s": 0.0,
+     "e": 0.16
     },
     {
-     "txt": "PUEDEN",
+     "txt": "COMENTARIO",
      "enf": false,
-     "s": 0.8799999999999999,
-     "e": 1.18
+     "slam": false,
+     "s": 0.16,
+     "e": 0.82
     },
     {
-     "txt": "ENTRAR.",
+     "txt": "PUEDE",
      "enf": false,
-     "s": 1.18,
-     "e": 1.5
+     "slam": false,
+     "s": 0.82,
+     "e": 1.08
+    },
+    {
+     "txt": "ELIMINARTE.",
+     "enf": true,
+     "slam": false,
+     "s": 1.08,
+     "e": 1.74
     }
    ],
    "alineado": true
   },
   {
-   "id": "L02",
+   "id": "K02",
    "escena": "derez",
-   "inicio": 2.922,
-   "fin": 4.7940000000000005,
-   "voz_ini": 2.922,
-   "voz_fin": 4.322,
+   "inicio": 2.356,
+   "fin": 4.06,
+   "voz_ini": 2.356,
+   "voz_fin": 3.2159999999999997,
    "tokens": [
     {
-     "txt": "SOLO",
+     "txt": "O",
      "enf": false,
-     "s": 2.922,
-     "e": 3.1020000000000003
+     "slam": false,
+     "s": 2.356,
+     "e": 2.476
     },
     {
-     "txt": "UNO",
+     "txt": "SER",
      "enf": false,
-     "s": 3.1020000000000003,
-     "e": 3.422
+     "slam": false,
+     "s": 2.476,
+     "e": 2.576
     },
     {
-     "txt": "VA",
+     "txt": "EL",
      "enf": false,
-     "s": 3.422,
-     "e": 3.882
+     "slam": false,
+     "s": 2.576,
+     "e": 2.6759999999999997
     },
     {
-     "txt": "A",
-     "enf": false,
-     "s": 3.882,
-     "e": 3.942
-    },
-    {
-     "txt": "GANAR.",
-     "enf": false,
-     "s": 3.942,
-     "e": 4.322
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L03",
-   "escena": "logo",
-   "inicio": 5.5440000000000005,
-   "fin": 7.464,
-   "voz_ini": 5.5440000000000005,
-   "voz_fin": 6.724,
-   "tokens": [
-    {
-     "txt": "ESTO",
-     "enf": false,
-     "s": 5.5440000000000005,
-     "e": 5.784000000000001
-    },
-    {
-     "txt": "ES",
-     "enf": false,
-     "s": 5.784000000000001,
-     "e": 6.024000000000001
-    },
-    {
-     "txt": "IGRAM GAMES.",
+     "txt": "ÚLTIMO",
      "enf": true,
-     "s": 6.024000000000001,
-     "e": 6.724
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L04",
-   "escena": "conteo",
-   "inicio": 8.064,
-   "fin": 12.384,
-   "voz_ini": 8.064,
-   "voz_fin": 11.884,
-   "tokens": [
-    {
-     "txt": "6",
-     "enf": true,
-     "s": 8.064,
-     "e": 8.424
-    },
-    {
-     "txt": "SEMANAS.",
-     "enf": false,
-     "s": 8.424,
-     "e": 8.744
-    },
-    {
-     "txt": "6",
-     "enf": true,
-     "s": 8.984,
-     "e": 9.624
-    },
-    {
-     "txt": "JUEGOS.",
-     "enf": false,
-     "s": 9.624,
-     "e": 10.084
-    },
-    {
-     "txt": "1",
-     "enf": true,
-     "s": 10.284,
-     "e": 11.424
-    },
-    {
-     "txt": "GANADOR.",
-     "enf": false,
-     "s": 11.424,
-     "e": 11.884
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L05",
-   "escena": "id",
-   "inicio": 12.934000000000001,
-   "fin": 16.342000000000002,
-   "voz_ini": 12.934000000000001,
-   "voz_fin": 15.734000000000002,
-   "tokens": [
-    {
-     "txt": "AL",
-     "enf": false,
-     "s": 12.934000000000001,
-     "e": 13.054
-    },
-    {
-     "txt": "INSCRIBIRTE,",
-     "enf": false,
-     "s": 13.054,
-     "e": 13.834000000000001
-    },
-    {
-     "txt": "RECIBES",
-     "enf": false,
-     "s": 13.834000000000001,
-     "e": 14.574000000000002
-    },
-    {
-     "txt": "UN",
-     "enf": false,
-     "s": 14.574000000000002,
-     "e": 14.894000000000002
-    },
-    {
-     "txt": "NÚMERO.",
-     "enf": false,
-     "s": 14.894000000000002,
-     "e": 15.734000000000002
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L06",
-   "escena": "id_zoom",
-   "inicio": 16.592000000000002,
-   "fin": 18.464000000000002,
-   "voz_ini": 16.592000000000002,
-   "voz_fin": 17.952,
-   "tokens": [
-    {
-     "txt": "ESE",
-     "enf": false,
-     "s": 16.592000000000002,
-     "e": 16.832
-    },
-    {
-     "txt": "NÚMERO",
-     "enf": false,
-     "s": 16.832,
-     "e": 17.052000000000003
-    },
-    {
-     "txt": "ERES",
-     "enf": false,
-     "s": 17.052000000000003,
-     "e": 17.472
-    },
-    {
-     "txt": "TÚ.",
-     "enf": false,
-     "s": 17.472,
-     "e": 17.952
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L07",
-   "escena": "reglas",
-   "inicio": 19.014000000000003,
-   "fin": 24.918000000000003,
-   "voz_ini": 19.014000000000003,
-   "voz_fin": 24.494000000000003,
-   "tokens": [
-    {
-     "txt": "LAS",
-     "enf": false,
-     "s": 19.014000000000003,
-     "e": 19.174000000000003
-    },
-    {
-     "txt": "REGLAS",
-     "enf": false,
-     "s": 19.174000000000003,
-     "e": 19.774000000000004
-    },
-    {
-     "txt": "SE",
-     "enf": false,
-     "s": 19.774000000000004,
-     "e": 20.194000000000003
-    },
-    {
-     "txt": "PUBLICAN",
-     "enf": false,
-     "s": 20.194000000000003,
-     "e": 20.914
-    },
-    {
-     "txt": "ANTES",
-     "enf": false,
-     "s": 20.914,
-     "e": 21.294000000000004
-    },
-    {
-     "txt": "DE",
-     "enf": false,
-     "s": 21.294000000000004,
-     "e": 21.454000000000004
-    },
-    {
-     "txt": "CADA",
-     "enf": false,
-     "s": 21.454000000000004,
-     "e": 21.674000000000003
-    },
-    {
-     "txt": "JUEGO...",
-     "enf": false,
-     "s": 21.674000000000003,
-     "e": 22.074
-    },
-    {
-     "txt": "Y",
-     "enf": false,
-     "s": 22.074,
-     "e": 23.274
-    },
-    {
-     "txt": "NADIE",
-     "enf": false,
-     "s": 23.274,
-     "e": 23.734
-    },
-    {
-     "txt": "LAS",
-     "enf": false,
-     "s": 23.734,
-     "e": 23.974000000000004
-    },
-    {
-     "txt": "CAMBIA.",
-     "enf": false,
-     "s": 23.974000000000004,
-     "e": 24.494000000000003
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L08",
-   "escena": "elecciones",
-   "inicio": 25.418000000000003,
-   "fin": 30.026000000000003,
-   "voz_ini": 25.418000000000003,
-   "voz_fin": 29.758000000000003,
-   "tokens": [
-    {
-     "txt": "TUS",
-     "enf": false,
-     "s": 25.418000000000003,
-     "e": 25.558000000000003
-    },
-    {
-     "txt": "DECISIONES,",
-     "enf": false,
-     "s": 25.558000000000003,
-     "e": 26.458000000000002
-    },
-    {
-     "txt": "Y",
-     "enf": false,
-     "s": 26.458000000000002,
-     "e": 26.818
-    },
-    {
-     "txt": "LAS",
-     "enf": false,
-     "s": 26.818,
-     "e": 26.998000000000005
-    },
-    {
-     "txt": "DE",
-     "enf": false,
-     "s": 26.998000000000005,
-     "e": 27.118000000000002
-    },
-    {
-     "txt": "TODOS",
-     "enf": false,
-     "s": 27.118000000000002,
-     "e": 27.398000000000003
-    },
-    {
-     "txt": "LOS",
-     "enf": false,
-     "s": 27.398000000000003,
-     "e": 27.618000000000002
-    },
-    {
-     "txt": "DEMÁS,",
-     "enf": false,
-     "s": 27.618000000000002,
-     "e": 27.878000000000004
-    },
-    {
-     "txt": "DECIDEN",
-     "enf": false,
-     "s": 27.878000000000004,
-     "e": 29.018000000000004
-    },
-    {
-     "txt": "SI",
-     "enf": false,
-     "s": 29.018000000000004,
-     "e": 29.258000000000003
-    },
-    {
-     "txt": "SIGUES.",
-     "enf": false,
-     "s": 29.258000000000003,
-     "e": 29.758000000000003
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L09",
-   "escena": "fantasma",
-   "inicio": 30.576000000000004,
-   "fin": 33.864000000000004,
-   "voz_ini": 30.576000000000004,
-   "voz_fin": 33.096000000000004,
-   "tokens": [
-    {
-     "txt": "Y",
-     "enf": false,
-     "s": 30.576000000000004,
-     "e": 30.776000000000003
-    },
-    {
-     "txt": "SI",
-     "enf": false,
-     "s": 30.776000000000003,
-     "e": 31.136000000000003
-    },
-    {
-     "txt": "CAES...",
-     "enf": false,
-     "s": 31.136000000000003,
-     "e": 31.736000000000004
-    },
-    {
-     "txt": "NO",
-     "enf": false,
-     "s": 31.736000000000004,
-     "e": 32.716
-    },
-    {
-     "txt": "TE",
-     "enf": false,
-     "s": 32.716,
-     "e": 32.836000000000006
-    },
-    {
-     "txt": "VAS.",
-     "enf": false,
-     "s": 32.836000000000006,
-     "e": 33.096000000000004
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L10",
-   "escena": "votos",
-   "inicio": 34.164,
-   "fin": 36.852000000000004,
-   "voz_ini": 34.164,
-   "voz_fin": 36.364000000000004,
-   "tokens": [
-    {
-     "txt": "LOS",
-     "enf": false,
-     "s": 34.164,
-     "e": 34.264
-    },
-    {
-     "txt": "ELIMINADOS",
-     "enf": false,
-     "s": 34.264,
-     "e": 34.904
-    },
-    {
-     "txt": "SIGUEN",
-     "enf": false,
-     "s": 34.904,
-     "e": 35.244
-    },
-    {
-     "txt": "VOTANDO",
-     "enf": false,
-     "s": 35.244,
-     "e": 35.644
-    },
-    {
-     "txt": "CÓMO",
-     "enf": false,
-     "s": 35.644,
-     "e": 35.864000000000004
-    },
-    {
-     "txt": "SE",
-     "enf": false,
-     "s": 35.864000000000004,
-     "e": 36.024
-    },
-    {
-     "txt": "JUEGA.",
-     "enf": false,
-     "s": 36.024,
-     "e": 36.364000000000004
-    }
-   ],
-   "alineado": true
-  },
-  {
-   "id": "L11",
-   "escena": "comentario",
-   "inicio": 37.452000000000005,
-   "fin": 42.06,
-   "voz_ini": 37.452000000000005,
-   "voz_fin": 41.492000000000004,
-   "tokens": [
-    {
-     "txt": "PARA",
-     "enf": false,
-     "s": 37.452000000000005,
-     "e": 37.572
-    },
-    {
-     "txt": "ENTRAR,",
-     "enf": false,
-     "s": 37.572,
-     "e": 38.01200000000001
-    },
-    {
-     "txt": "COMENTA",
-     "enf": false,
-     "s": 38.212,
-     "e": 38.87200000000001
-    },
-    {
-     "txt": "\"ENTRO\"",
-     "enf": true,
-     "s": 38.87200000000001,
-     "e": 39.632000000000005
-    },
-    {
-     "txt": "Y",
-     "enf": false,
-     "s": 39.632000000000005,
-     "e": 39.932
-    },
-    {
-     "txt": "UN",
-     "enf": false,
-     "s": 39.932,
-     "e": 40.352000000000004
-    },
-    {
-     "txt": "EMOJI",
-     "enf": false,
-     "s": 40.352000000000004,
-     "e": 40.712
+     "slam": false,
+     "s": 2.6759999999999997,
+     "e": 2.876
     },
     {
      "txt": "EN",
      "enf": false,
-     "s": 40.712,
-     "e": 41.05200000000001
+     "slam": false,
+     "s": 2.876,
+     "e": 3.096
     },
     {
-     "txt": "ESTE",
+     "txt": "PIE.",
      "enf": false,
-     "s": 41.05200000000001,
-     "e": 41.232000000000006
-    },
-    {
-     "txt": "VIDEO.",
-     "enf": false,
-     "s": 41.232000000000006,
-     "e": 41.492000000000004
+     "slam": false,
+     "s": 3.096,
+     "e": 3.2159999999999997
     }
    ],
    "alineado": true
   },
   {
-   "id": "L12",
-   "escena": "fecha",
-   "inicio": 42.510000000000005,
-   "fin": 50.550000000000004,
-   "voz_ini": 42.510000000000005,
-   "voz_fin": 49.57000000000001,
+   "id": "K03",
+   "escena": "logo",
+   "inicio": 4.239999999999999,
+   "fin": 6.664,
+   "voz_ini": 4.239999999999999,
+   "voz_fin": 5.819999999999999,
    "tokens": [
     {
-     "txt": "LAS",
+     "txt": "BIENVENIDO",
      "enf": false,
-     "s": 42.510000000000005,
-     "e": 42.690000000000005
-    },
-    {
-     "txt": "INSCRIPCIONES",
-     "enf": false,
-     "s": 42.690000000000005,
-     "e": 43.43000000000001
-    },
-    {
-     "txt": "CIERRAN",
-     "enf": false,
-     "s": 43.43000000000001,
-     "e": 44.290000000000006
-    },
-    {
-     "txt": "EL",
-     "enf": false,
-     "s": 44.290000000000006,
-     "e": 44.53000000000001
-    },
-    {
-     "txt": "MARTES",
-     "enf": false,
-     "s": 44.53000000000001,
-     "e": 45.150000000000006
-    },
-    {
-     "txt": "17",
-     "enf": true,
-     "s": 45.150000000000006,
-     "e": 45.53000000000001
-    },
-    {
-     "txt": "DE",
-     "enf": false,
-     "s": 45.53000000000001,
-     "e": 45.910000000000004
-    },
-    {
-     "txt": "NOVIEMBRE,",
-     "enf": false,
-     "s": 45.910000000000004,
-     "e": 46.43000000000001
+     "slam": false,
+     "s": 4.239999999999999,
+     "e": 4.839999999999999
     },
     {
      "txt": "A",
      "enf": false,
-     "s": 46.43000000000001,
-     "e": 46.910000000000004
+     "slam": false,
+     "s": 4.839999999999999,
+     "e": 4.999999999999999
     },
     {
-     "txt": "LAS",
-     "enf": false,
-     "s": 46.910000000000004,
-     "e": 47.09
-    },
-    {
-     "txt": "20:00,",
+     "txt": "IGRAM GAMES.",
      "enf": true,
-     "s": 47.09,
-     "e": 47.910000000000004
-    },
-    {
-     "txt": "HORA CDMX.",
-     "enf": false,
-     "s": 47.910000000000004,
-     "e": 49.57000000000001
+     "slam": false,
+     "s": 4.999999999999999,
+     "e": 5.819999999999999
     }
    ],
    "alineado": true
   },
   {
-   "id": "L13",
-   "escena": "gratis",
-   "inicio": 51.050000000000004,
-   "fin": 54.794000000000004,
-   "voz_ini": 51.050000000000004,
-   "voz_fin": 53.99,
+   "id": "K04",
+   "escena": "conteo",
+   "inicio": 6.864,
+   "fin": 10.776,
+   "voz_ini": 6.864,
+   "voz_fin": 10.164,
    "tokens": [
     {
-     "txt": "ES",
-     "enf": false,
-     "s": 51.050000000000004,
-     "e": 51.25000000000001
+     "txt": "6",
+     "enf": true,
+     "slam": false,
+     "s": 6.864,
+     "e": 7.343999999999999
     },
     {
-     "txt": "GRATIS.",
+     "txt": "JUEGOS.",
      "enf": false,
-     "s": 51.25000000000001,
-     "e": 52.150000000000006
+     "slam": false,
+     "s": 7.343999999999999,
+     "e": 7.644
+    },
+    {
+     "txt": "1",
+     "enf": true,
+     "slam": false,
+     "s": 7.804,
+     "e": 9.384
+    },
+    {
+     "txt": "GANADOR.",
+     "enf": false,
+     "slam": false,
+     "s": 9.384,
+     "e": 10.164
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K05",
+   "escena": "tease",
+   "inicio": 11.056,
+   "fin": 14.344,
+   "voz_ini": 11.056,
+   "voz_fin": 13.556,
+   "tokens": [
+    {
+     "txt": "Y",
+     "enf": false,
+     "slam": false,
+     "s": 11.056,
+     "e": 11.136
+    },
+    {
+     "txt": "HAY",
+     "enf": false,
+     "slam": false,
+     "s": 11.136,
+     "e": 11.315999999999999
+    },
+    {
+     "txt": "UNA",
+     "enf": false,
+     "slam": false,
+     "s": 11.315999999999999,
+     "e": 11.536
+    },
+    {
+     "txt": "REGLA",
+     "enf": false,
+     "slam": false,
+     "s": 11.536,
+     "e": 12.096
+    },
+    {
+     "txt": "QUE",
+     "enf": false,
+     "slam": false,
+     "s": 12.096,
+     "e": 12.616
+    },
+    {
+     "txt": "NADIE",
+     "enf": true,
+     "slam": true,
+     "s": 12.616,
+     "e": 12.956
+    },
+    {
+     "txt": "VE",
+     "enf": false,
+     "slam": false,
+     "s": 12.956,
+     "e": 13.256
+    },
+    {
+     "txt": "VENIR.",
+     "enf": false,
+     "slam": false,
+     "s": 13.256,
+     "e": 13.556
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K06",
+   "escena": "id",
+   "inicio": 14.564,
+   "fin": 17.876,
+   "voz_ini": 14.564,
+   "voz_fin": 17.344,
+   "tokens": [
+    {
+     "txt": "1.",
+     "enf": true,
+     "slam": false,
+     "s": 14.564,
+     "e": 14.744
+    },
+    {
+     "txt": "COMENTAS,",
+     "enf": false,
+     "slam": false,
+     "s": 15.904,
+     "e": 16.224
     },
     {
      "txt": "Y",
      "enf": false,
-     "s": 52.150000000000006,
-     "e": 52.59
+     "slam": false,
+     "s": 16.224,
+     "e": 16.284
     },
     {
-     "txt": "TODO",
+     "txt": "RECIBES",
      "enf": false,
-     "s": 52.59,
-     "e": 52.85
+     "slam": false,
+     "s": 16.284,
+     "e": 17.024
     },
     {
-     "txt": "ES",
+     "txt": "UN",
      "enf": false,
-     "s": 52.85,
-     "e": 53.290000000000006
+     "slam": false,
+     "s": 17.024,
+     "e": 17.124
     },
     {
-     "txt": "DIGITAL.",
-     "enf": false,
-     "s": 53.290000000000006,
-     "e": 53.99
+     "txt": "NÚMERO.",
+     "enf": true,
+     "slam": false,
+     "s": 17.124,
+     "e": 17.344
     }
    ],
    "alineado": true
   },
   {
-   "id": "L14",
-   "escena": "puertas",
-   "inicio": 55.294000000000004,
-   "fin": 59.398,
-   "voz_ini": 55.294000000000004,
-   "voz_fin": 58.634,
+   "id": "K07",
+   "escena": "id_zoom",
+   "inicio": 17.956,
+   "fin": 19.66,
+   "voz_ini": 17.956,
+   "voz_fin": 19.136,
    "tokens": [
+    {
+     "txt": "ESE",
+     "enf": false,
+     "slam": false,
+     "s": 17.956,
+     "e": 18.136
+    },
+    {
+     "txt": "NÚMERO",
+     "enf": false,
+     "slam": false,
+     "s": 18.136,
+     "e": 18.336
+    },
+    {
+     "txt": "ERES",
+     "enf": true,
+     "slam": false,
+     "s": 18.336,
+     "e": 18.716
+    },
+    {
+     "txt": "TÚ.",
+     "enf": true,
+     "slam": true,
+     "s": 18.716,
+     "e": 19.136
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K08",
+   "escena": "reglas",
+   "inicio": 19.88,
+   "fin": 26.576,
+   "voz_ini": 19.88,
+   "voz_fin": 25.74,
+   "tokens": [
+    {
+     "txt": "2.",
+     "enf": true,
+     "slam": false,
+     "s": 19.88,
+     "e": 20.08
+    },
+    {
+     "txt": "REGLAS",
+     "enf": false,
+     "slam": false,
+     "s": 20.599999999999998,
+     "e": 21.08
+    },
+    {
+     "txt": "PÚBLICAS,",
+     "enf": false,
+     "slam": false,
+     "s": 21.08,
+     "e": 21.7
+    },
+    {
+     "txt": "ANTES",
+     "enf": false,
+     "slam": false,
+     "s": 21.7,
+     "e": 22.34
+    },
+    {
+     "txt": "DE",
+     "enf": false,
+     "slam": false,
+     "s": 22.34,
+     "e": 22.56
+    },
+    {
+     "txt": "JUGAR.",
+     "enf": false,
+     "slam": false,
+     "s": 22.56,
+     "e": 22.779999999999998
+    },
+    {
+     "txt": "NADIE",
+     "enf": false,
+     "slam": false,
+     "s": 23.58,
+     "e": 24.06
+    },
+    {
+     "txt": "LAS",
+     "enf": false,
+     "slam": false,
+     "s": 24.06,
+     "e": 24.16
+    },
+    {
+     "txt": "CAMBIA.",
+     "enf": false,
+     "slam": false,
+     "s": 24.16,
+     "e": 24.68
+    },
+    {
+     "txt": "NI NOSOTROS.",
+     "enf": true,
+     "slam": true,
+     "s": 24.979999999999997,
+     "e": 25.74
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K09",
+   "escena": "elecciones",
+   "inicio": 26.776,
+   "fin": 31.192,
+   "voz_ini": 26.776,
+   "voz_fin": 30.776,
+   "tokens": [
+    {
+     "txt": "3.",
+     "enf": true,
+     "slam": false,
+     "s": 26.776,
+     "e": 26.956
+    },
+    {
+     "txt": "TUS",
+     "enf": false,
+     "slam": false,
+     "s": 27.396,
+     "e": 27.796
+    },
+    {
+     "txt": "DECISIONES,",
+     "enf": false,
+     "slam": false,
+     "s": 27.796,
+     "e": 28.596
+    },
+    {
+     "txt": "Y",
+     "enf": false,
+     "slam": false,
+     "s": 28.596,
+     "e": 28.816
+    },
+    {
+     "txt": "LAS",
+     "enf": false,
+     "slam": false,
+     "s": 28.816,
+     "e": 28.956
+    },
+    {
+     "txt": "DE",
+     "enf": false,
+     "slam": false,
+     "s": 28.956,
+     "e": 29.056
+    },
+    {
+     "txt": "TODOS,",
+     "enf": false,
+     "slam": false,
+     "s": 29.056,
+     "e": 29.356
+    },
+    {
+     "txt": "DECIDEN",
+     "enf": false,
+     "slam": false,
+     "s": 29.356,
+     "e": 30.195999999999998
+    },
+    {
+     "txt": "QUIÉN",
+     "enf": false,
+     "slam": false,
+     "s": 30.195999999999998,
+     "e": 30.356
+    },
+    {
+     "txt": "CAE.",
+     "enf": true,
+     "slam": true,
+     "s": 30.356,
+     "e": 30.776
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K10",
+   "escena": "fantasma",
+   "inicio": 31.492,
+   "fin": 35.404,
+   "voz_ini": 31.492,
+   "voz_fin": 34.692,
+   "tokens": [
+    {
+     "txt": "Y",
+     "enf": false,
+     "slam": false,
+     "s": 31.492,
+     "e": 31.572
+    },
     {
      "txt": "LA",
      "enf": false,
-     "s": 55.294000000000004,
-     "e": 55.434000000000005
+     "slam": false,
+     "s": 31.572,
+     "e": 31.632
     },
     {
-     "txt": "PRIMERA",
-     "enf": false,
-     "s": 55.434000000000005,
-     "e": 55.694
+     "txt": "4.",
+     "enf": true,
+     "slam": false,
+     "s": 31.632,
+     "e": 31.832
     },
     {
-     "txt": "PUERTA",
+     "txt": "SI",
      "enf": false,
-     "s": 55.694,
-     "e": 56.114000000000004
+     "slam": false,
+     "s": 32.432,
+     "e": 32.852000000000004
     },
     {
-     "txt": "SE",
-     "enf": false,
-     "s": 56.114000000000004,
-     "e": 56.67400000000001
+     "txt": "CAES...",
+     "enf": true,
+     "slam": false,
+     "s": 32.852000000000004,
+     "e": 33.372
     },
     {
-     "txt": "ABRE",
+     "txt": "NO TE VAS.",
+     "enf": true,
+     "slam": true,
+     "s": 33.372,
+     "e": 34.692
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K11",
+   "escena": "votos",
+   "inicio": 35.504000000000005,
+   "fin": 37.952000000000005,
+   "voz_ini": 35.504000000000005,
+   "voz_fin": 37.484,
+   "tokens": [
+    {
+     "txt": "LOS",
      "enf": false,
-     "s": 56.67400000000001,
-     "e": 57.074000000000005
+     "slam": false,
+     "s": 35.504000000000005,
+     "e": 35.604000000000006
+    },
+    {
+     "txt": "ELIMINADOS",
+     "enf": false,
+     "slam": false,
+     "s": 35.604000000000006,
+     "e": 36.164
+    },
+    {
+     "txt": "SIGUEN",
+     "enf": false,
+     "slam": false,
+     "s": 36.164,
+     "e": 36.444
+    },
+    {
+     "txt": "VOTANDO",
+     "enf": false,
+     "slam": false,
+     "s": 36.444,
+     "e": 36.824000000000005
+    },
+    {
+     "txt": "CÓMO SE JUEGA.",
+     "enf": true,
+     "slam": false,
+     "s": 36.824000000000005,
+     "e": 37.484
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K12",
+   "escena": "comentario",
+   "inicio": 38.19200000000001,
+   "fin": 40.976000000000006,
+   "voz_ini": 38.19200000000001,
+   "voz_fin": 40.412000000000006,
+   "tokens": [
+    {
+     "txt": "COMENTA",
+     "enf": false,
+     "slam": false,
+     "s": 38.19200000000001,
+     "e": 38.57200000000001
+    },
+    {
+     "txt": "ENTRO",
+     "enf": true,
+     "slam": false,
+     "s": 38.57200000000001,
+     "e": 39.03200000000001
+    },
+    {
+     "txt": "Y",
+     "enf": false,
+     "slam": false,
+     "s": 39.03200000000001,
+     "e": 39.29200000000001
+    },
+    {
+     "txt": "UN",
+     "enf": false,
+     "slam": false,
+     "s": 39.29200000000001,
+     "e": 39.412000000000006
+    },
+    {
+     "txt": "EMOJI.",
+     "enf": false,
+     "slam": false,
+     "s": 39.412000000000006,
+     "e": 39.672000000000004
+    },
+    {
+     "txt": "AHORA.",
+     "enf": true,
+     "slam": true,
+     "s": 39.89200000000001,
+     "e": 40.412000000000006
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K13",
+   "escena": "fecha",
+   "inicio": 41.07600000000001,
+   "fin": 45.348000000000006,
+   "voz_ini": 41.07600000000001,
+   "voz_fin": 44.696000000000005,
+   "tokens": [
+    {
+     "txt": "CIERRA",
+     "enf": false,
+     "slam": false,
+     "s": 41.07600000000001,
+     "e": 41.29600000000001
     },
     {
      "txt": "EL",
      "enf": false,
-     "s": 57.074000000000005,
-     "e": 57.534000000000006
+     "slam": false,
+     "s": 41.29600000000001,
+     "e": 41.39600000000001
     },
     {
-     "txt": "MIÉRCOLES 18.",
+     "txt": "MARTES 17,",
      "enf": true,
-     "s": 57.534000000000006,
-     "e": 58.634
+     "slam": false,
+     "s": 41.39600000000001,
+     "e": 42.03600000000001
+    },
+    {
+     "txt": "A",
+     "enf": false,
+     "slam": false,
+     "s": 42.03600000000001,
+     "e": 42.91600000000001
+    },
+    {
+     "txt": "LAS",
+     "enf": false,
+     "slam": false,
+     "s": 42.91600000000001,
+     "e": 43.09600000000001
+    },
+    {
+     "txt": "20:00,",
+     "enf": true,
+     "slam": false,
+     "s": 43.09600000000001,
+     "e": 43.89600000000001
+    },
+    {
+     "txt": "HORA CDMX.",
+     "enf": false,
+     "slam": false,
+     "s": 43.99600000000001,
+     "e": 44.696000000000005
     }
    ],
    "alineado": true
   },
   {
-   "id": "L15",
+   "id": "K14",
+   "escena": "puertas",
+   "inicio": 45.468,
+   "fin": 48.588,
+   "voz_ini": 45.468,
+   "voz_fin": 47.908,
+   "tokens": [
+    {
+     "txt": "EL",
+     "enf": false,
+     "slam": false,
+     "s": 45.468,
+     "e": 45.548
+    },
+    {
+     "txt": "MIÉRCOLES 18,",
+     "enf": true,
+     "slam": false,
+     "s": 45.548,
+     "e": 46.468
+    },
+    {
+     "txt": "ABRE",
+     "enf": false,
+     "slam": false,
+     "s": 46.468,
+     "e": 47.108000000000004
+    },
+    {
+     "txt": "LA",
+     "enf": false,
+     "slam": false,
+     "s": 47.108000000000004,
+     "e": 47.30800000000001
+    },
+    {
+     "txt": "PRIMERA",
+     "enf": false,
+     "slam": false,
+     "s": 47.30800000000001,
+     "e": 47.568000000000005
+    },
+    {
+     "txt": "PUERTA.",
+     "enf": true,
+     "slam": false,
+     "s": 47.568000000000005,
+     "e": 47.908
+    }
+   ],
+   "alineado": true
+  },
+  {
+   "id": "K15",
    "escena": "final",
-   "inicio": 60.198,
-   "fin": 62.07,
-   "voz_ini": 60.198,
-   "voz_fin": 60.638,
+   "inicio": 48.808,
+   "fin": 50.512,
+   "voz_ini": 48.808,
+   "voz_fin": 49.168,
    "tokens": [
     {
      "txt": "¿ENTRAS?",
-     "enf": false,
-     "s": 60.198,
-     "e": 60.638
+     "enf": true,
+     "slam": false,
+     "s": 48.808,
+     "e": 49.168
     }
    ],
    "alineado": true
