@@ -127,7 +127,7 @@ def battle(who='king', pose='hold', outfit=None, W=72, H=112):
         P.add(lambda d: d.polygon([(cx - 8, 31), (cx + 8, 31), (cx, 40)], fill=255), (255, 255, 255), sh=False)
         P.add(lambda d: d.rectangle([cx + 4, 46, cx + 10, 50], fill=255), (255, 255, 255), sh=False)
         P.add(lambda d: d.polygon([(cx - 13, 56), (cx + 13, 56), (cx + 13, 66), (cx - 13, 66)], fill=255), (255, 176, 112))  # delantal
-    elif outfit in ('turtle', 'suit85'):
+    elif outfit in ('turtle', 'suit85', 'peladito', 'vest', 'rebozo', 'zarape'):
         pass                                               # sin detalles extra (jersey liso / traje)
     else:  # hoodie
         P.line([(cx - 4, 36), (cx - 5, 50)], (246, 246, 252)); P.line([(cx + 4, 36), (cx + 5, 48)], (246, 246, 252))
@@ -280,6 +280,10 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
           'suit85': dict(b=(44, 46, 62), d=(26, 28, 42), l=(96, 100, 128), pants=(44, 46, 62), boots=(20, 20, 26)),
           'turtle': dict(b=(30, 30, 38), d=(16, 16, 22), l=(86, 86, 102), pants=(70, 104, 168), boots=(228, 228, 234)),
           'grey': dict(b=(156, 160, 172), d=(112, 116, 132), l=(206, 210, 220), pants=(70, 78, 110), boots=(110, 70, 52)),
+          'peladito': dict(b=(234, 226, 200), d=(200, 190, 160), l=(250, 246, 230), pants=(122, 98, 72), boots=(70, 52, 40)),
+          'vest': dict(b=(246, 244, 236), d=(210, 206, 196), l=(255, 255, 250), pants=(40, 38, 46), boots=(24, 20, 22)),
+          'rebozo': dict(b=(244, 238, 226), d=(206, 198, 184), l=(255, 252, 244), pants=(60, 90, 150), boots=(70, 46, 40)),
+          'zarape': dict(b=(232, 224, 206), d=(196, 186, 166), l=(250, 246, 236), pants=(236, 230, 214), boots=(150, 104, 64)),
           'kungfu': dict(b=(34, 34, 40), d=(18, 18, 24), l=(84, 84, 98), pants=(30, 30, 36), boots=(22, 22, 26)),
           'opera': dict(b=(244, 240, 228), d=(200, 194, 178), l=(255, 255, 250), pants=(30, 30, 38), boots=(24, 24, 30)),
           'hoodie': dict(b=(86, 102, 212), d=(56, 68, 156), l=(134, 154, 244), pants=(52, 58, 106), boots=(248, 248, 252))}[outfit]
@@ -378,6 +382,7 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     # ---------- cabeza
     fpts = [(cx - 17, 13), (cx + 17, 13), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx - 11, 32), (cx - 16, 28), (cx - 18, 21)]
     if CS['strong']: fpts = [(cx - 17, 13), (cx + 17, 13), (cx + 19, 22), (cx + 19, 29), (cx + 14, 33), (cx - 14, 33), (cx - 19, 29), (cx - 19, 22)]
+    fpts = RG.face_shape(fpts, CS, cx, 2)
     P.add(lambda d: d.polygon(fpts, fill=255), sk, sh=False, hi=False, edge_k=.42)
     m = P.mask(lambda d: d.polygon([(cx + 10, 15), (cx + 17, 16), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx + 6, 32), (cx + 12, 27), (cx + 13, 21)], fill=255))
     P.a[m & (P.a[..., 3] > 0)] = (*skd, 255)
@@ -392,6 +397,10 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.rect(ex, 20, ex + 2, 24, CS['iris']); P.rect(ex + 3, 20, ex + 3, 23, (255, 255, 255))
         P.rect(ex, 20, ex, 20, (255, 255, 255)); P.rect(ex + 1, 20, ex + 1, 20, (255, 255, 255)); P.rect(ex + 1, 21, ex + 1, 22, tuple(int(v*1.15) for v in CS['iris']))
         P.rect(ex, 25, ex + 2, 25, skd)
+        if CS.get('eyes') == 'small':
+            P.rect(ex, 19, ex + 3, 25, sk); P.rect(ex, 20, ex + 3, 20, (30, 22, 40)); P.rect(ex + 1, 21, ex + 2, 23, (40, 30, 34))
+        if CS.get('eyes') == 'droopy':
+            P.rect(ex, 19, ex + 3, 21, sk); P.rect(ex - 1, 22, ex + 4, 22, (30, 22, 40)); P.rect(ex, 23, ex + 3, 24, (40, 30, 34)); P.px(ex + (4 if ex > cx else -1), 23, (30, 22, 40))
         if CS.get('eyes') == 'narrow':                 # ojos rasgados
             P.rect(ex, 19, ex + 3, 25, sk); P.rect(ex - 1, 20, ex + 4, 21, (30, 22, 40))
             P.rect(ex, 22, ex + 3, 23, (40, 30, 34)); P.px(ex + (3 if ex > cx else 0), 22, (255, 255, 255)); P.rect(ex, 24, ex + 3, 24, skd)
@@ -449,6 +458,7 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.rect(cx + 18, 20, cx + 19, 26, (255, 200, 70)); P.rect(cx + 18, 27, cx + 19, 27, (240, 150, 140)); P.px(cx + 18, 19, (60, 50, 60))
     if style == 'tab' and CS.get('hair2') is None:    # horquilla
         P.rect(cx - 17, 14, cx - 14, 15, (255, 240, 170)); P.px(cx - 15, 14, (255, 255, 255))
+    RG.over_r(P, CS, cx, HR, sk)
     return P.final()
 
 

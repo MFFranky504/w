@@ -3,6 +3,7 @@ Claves opcionales del reparto (cast.py):
   hair2: bald | buzz | part (raya al medio) | side (raya lateral) | pompadour | volume | wild | bun | afro   (sustituye al peinado frontal del estilo)
   nose: bool (nariz ancha)   mustache: bool   unibrow: bool   brows: 'thick'   age: bool (arrugas)   smirk: bool (media sonrisa)   chin: bool (papada)
   build: slim | average | athletic | heavy | muscular   height: short | average | tall   (solo cuerpo entero)"""
+import math
 import numpy as np
 from PIL import Image
 from lib import shade
@@ -176,7 +177,7 @@ def front_p(d, CS, cx, hb, hd, hl, sk):
         d.ellipse([cx - 21, 9, cx + 21, 64], fill=col)                         # cráneo más bajo: no queda en forma de huevo
         d.rectangle([cx - 30, 37, cx + 30, 80], fill=(0, 0, 0, 0))              # solo por encima de las cejas: no tapa la cara
         if h == 'bald':
-            d.ellipse([cx - 13, 8, cx - 4, 14], fill=shade(sk, 1.1)); d.polygon([(cx + 10, 8), (cx + 21, 22), (cx + 21, 36), (cx + 14, 18)], fill=shade(sk, .86))
+            d.ellipse([cx - 12, 13, cx - 4, 18], fill=shade(sk, 1.1)); d.polygon([(cx + 11, 14), (cx + 19, 24), (cx + 20, 36), (cx + 14, 22)], fill=shade(sk, .86))   # dentro del cráneo: sin bultos
         else:
             for k in range(60): d.point((cx - 18 + (k * 13) % 36, 8 + (k * 7) % 26), fill=shade(hb, 1.25))
             d.polygon([(cx + 12, 10), (cx + 21, 22), (cx + 21, 36), (cx + 14, 20)], fill=hd)
@@ -234,3 +235,145 @@ def fix_p(final, CS, cx, sk, ol):
     m = (np.abs(band[..., :3].astype(int) - np.array(ol)).sum(-1) < 30) & (band[..., 3] > 0)
     band[m, :3] = sk; a[36:40, cx - 22:cx + 23] = band
     final.paste(Image.fromarray(a), (0, 0))
+
+
+# ================================================================ siluetas (capas encima del cuerpo base)
+# hat: 'bombin' (sombrerito de fieltro) | 'sombrero' (ala ancha)   belly: bool   mst: 'pencil' (bigotito en las comisuras) | 'walrus'
+# braids: bool   face: 'long' | 'round' | 'square'   outfits con silueta: peladito, vest, rebozo, zarape
+HATC = {'bombin': ((96, 84, 70), (62, 52, 44), (70, 60, 50)), 'fedora': ((150, 140, 128), (110, 100, 92), (40, 36, 40)), 'sombrero': ((214, 180, 110), (160, 126, 70), (150, 40, 40))}   # copa, ala/sombra, cinta
+
+
+def face_shape(fp, CS, cx, k):
+    """deforma el contorno de la cara: k = escala (1 batalla, 2 chibi)."""
+    f = CS.get('face')
+    if not f: return fp
+    ys = [p[1] for p in fp]; top, bot = min(ys), max(ys)
+    out = []
+    for x, y in fp:
+        u = (y - top) / max(1, bot - top)
+        if f == 'long': x = cx + (x - cx) * (.9 if u > .4 else .95); y = y + u * 1.6 * k
+        elif f == 'round': x = cx + (x - cx) * (1.0 + .1 * math.sin(u * math.pi)); y = y - u * .6 * k
+        elif f == 'square': x = cx + (x - cx) * (1.0 + .12 * u)
+        out.append((x, y))
+    return out
+
+
+def over_b(P, CS, cx, hc, sk, GY, top):
+    o = CS['outfit']
+    if o == 'peladito':                                          # pantalón aguado y caído, soga, trapo al hombro
+        pc = (122, 98, 72)
+        P.add(lambda d: d.polygon([(cx - 11, 70), (cx + 11, 70), (cx + 14, 92), (cx + 3, 94), (cx, 78), (cx - 3, 94), (cx - 14, 92)], fill=255), pc, edge_k=.42)
+        P.rect(cx - 11, 69, cx + 11, 70, (214, 186, 120)); P.px(cx - 3, 71, (214, 186, 120)); P.px(cx - 3, 72, (214, 186, 120))
+        P.add(lambda d: d.rectangle([cx + 4, 80, cx + 8, 84], fill=255), (150, 124, 90), edge=False, sh=False, hi=False)       # parche
+        P.add(lambda d: d.polygon([(cx - 13, 28), (cx - 5, 28), (cx - 7, 58), (cx - 14, 54)], fill=255), (176, 142, 96), edge_k=.45)   # gabardina
+        for y in (36, 44): P.rect(cx - 13, y, cx - 7, y, (140, 70, 60))
+    if o == 'vest':
+        P.add(lambda d: d.polygon([(cx - 11, 30), (cx - 3, 30), (cx, 46), (cx + 3, 30), (cx + 11, 30), (cx + 11, 68), (cx - 11, 68)], fill=255), (34, 32, 40), edge_k=.45)
+        P.line([(cx - 9, 52), (cx - 3, 56), (cx + 4, 52)], (240, 200, 90))
+    if CS.get('belly'):
+        bc = (34, 32, 40) if o == 'vest' else top
+        P.add(lambda d: d.ellipse([cx - 13, 42, cx + 15, 70], fill=255), bc, edge_k=.42)
+        if o == 'vest':
+            P.add(lambda d: d.polygon([(cx - 2, 42), (cx + 3, 42), (cx + 1, 58)], fill=255), (246, 244, 236), edge=False, sh=False, hi=False)
+            P.line([(cx - 10, 56), (cx - 2, 60), (cx + 8, 55)], (240, 200, 90))
+    if o == 'rebozo':
+        P.add(lambda d: d.polygon([(cx - 10, 62), (cx + 10, 62), (cx + 17, GY - 1), (cx - 17, GY - 1)], fill=255), (60, 90, 150), edge_k=.42)   # falda larga
+        P.rect(cx - 16, GY - 5, cx + 16, GY - 4, (240, 200, 90))
+        P.add(lambda d: d.polygon([(cx - 13, 28), (cx + 13, 28), (cx + 15, 50), (cx, 44), (cx - 15, 50)], fill=255), (150, 50, 70), edge_k=.45)     # rebozo
+        for x in range(cx - 14, cx + 15, 3): P.px(x, 50 - abs(x - cx) * 6 // 15, (240, 200, 160))
+    if o == 'zarape':
+        P.add(lambda d: d.polygon([(cx - 6, 27), (cx + 6, 27), (cx + 17, 40), (cx + 16, 70), (cx - 16, 70), (cx - 17, 40)], fill=255), (196, 60, 60), edge_k=.42)
+        for y, col in ((40, (240, 200, 90)), (46, (60, 120, 150)), (52, (240, 240, 230)), (58, (60, 120, 150)), (64, (240, 200, 90))): P.rect(cx - 16, y, cx + 16, y + 1, col)
+        for x in range(cx - 15, cx + 16, 3): P.px(x, 71, (240, 200, 90))
+    if CS.get('braids'):
+        for sx in (-1, 1):
+            for k in range(6): P.add(lambda d, k=k, sx=sx: d.ellipse([cx + sx * 10 - 3, 18 + k * 5, cx + sx * 10 + 3, 24 + k * 5], fill=255), hc['b'], edge_k=.45)
+            P.rect(cx + sx * 10 - 2, 48, cx + sx * 10 + 2, 49, (220, 60, 80))
+    m = CS.get('mst')
+    if m == 'pencil': P.rect(cx - 4, 22, cx - 2, 22, hc['dd']); P.rect(cx + 2, 22, cx + 4, 22, hc['dd']); P.px(cx - 5, 23, hc['dd']); P.px(cx + 5, 23, hc['dd'])
+    if m == 'walrus': P.add(lambda d: d.polygon([(cx - 5, 21), (cx + 5, 21), (cx + 5, 24), (cx, 23), (cx - 5, 24)], fill=255), hc['b'], edge_k=.45)
+    h = CS.get('hat')
+    if h in HATC:
+        cr, br, band = HATC[h]
+        if h in ('bombin', 'fedora'):
+            P.add(lambda d: d.rounded_rectangle([cx - 6, 0, cx + 5, 7], radius=3, fill=255), cr, edge_k=.45)
+            P.add(lambda d: d.ellipse([cx - 10, 5, cx + 9, 9], fill=255), br, edge_k=.45)
+        else:
+            P.add(lambda d: d.ellipse([cx - 20, 5, cx + 20, 10], fill=255), br, edge_k=.45)
+            P.add(lambda d: d.polygon([(cx - 7, 7), (cx - 6, 1), (cx - 2, 0), (cx + 2, 0), (cx + 6, 1), (cx + 7, 7)], fill=255), cr, edge_k=.45)
+            P.rect(cx - 7, 5, cx + 7, 6, band)
+
+
+def over_r(P, CS, cx, HR, sk):
+    o = CS['outfit']
+    if o == 'peladito':
+        pc = (122, 98, 72)
+        P.add(lambda d: d.polygon([(cx - 12, 50), (cx + 12, 50), (cx + 13, 61), (cx + 1, 61), (cx, 56), (cx - 1, 61), (cx - 13, 61)], fill=255), pc, edge_k=.45)
+        P.rect(cx - 12, 49, cx + 12, 50, (214, 186, 120))
+        P.add(lambda d: d.polygon([(cx - 13, 33), (cx - 6, 33), (cx - 8, 49), (cx - 14, 47)], fill=255), (176, 142, 96), edge_k=.45)
+        P.rect(cx - 13, 40, cx - 8, 40, (140, 70, 60))
+    if o == 'vest':
+        P.add(lambda d: d.polygon([(cx - 12, 35), (cx - 4, 35), (cx, 44), (cx + 4, 35), (cx + 12, 35), (cx + 12, 52), (cx - 12, 52)], fill=255), (34, 32, 40), edge_k=.45)
+    if CS.get('belly'):
+        bc = (34, 32, 40) if o == 'vest' else (240, 236, 226)
+        P.add(lambda d: d.ellipse([cx - 14, 37, cx + 15, 55], fill=255), bc, edge_k=.42)
+        P.line([(cx - 8, 47), (cx, 50), (cx + 8, 46)], (240, 200, 90))
+    if o == 'rebozo':
+        P.add(lambda d: d.polygon([(cx - 12, 48), (cx + 12, 48), (cx + 15, 63), (cx - 15, 63)], fill=255), (60, 90, 150), edge_k=.42)
+        P.rect(cx - 14, 60, cx + 14, 60, (240, 200, 90))
+        P.add(lambda d: d.polygon([(cx - 15, 33), (cx + 15, 33), (cx + 16, 46), (cx, 42), (cx - 16, 46)], fill=255), (150, 50, 70), edge_k=.45)
+    if o == 'zarape':
+        P.add(lambda d: d.polygon([(cx - 8, 32), (cx + 8, 32), (cx + 19, 40), (cx + 18, 54), (cx - 18, 54), (cx - 19, 40)], fill=255), (196, 60, 60), edge_k=.42)
+        for y, col in ((41, (240, 200, 90)), (45, (60, 120, 150)), (49, (240, 240, 230))): P.rect(cx - 18, y, cx + 18, y + 1, col)
+    if CS.get('braids'):
+        for sx in (-1, 1):
+            for k in range(5): P.add(lambda d, k=k, sx=sx: d.ellipse([cx + sx * 17 - 3, 22 + k * 5, cx + sx * 17 + 3, 28 + k * 5], fill=255), HR['b'], edge_k=.45)
+            P.rect(cx + sx * 17 - 2, 47, cx + sx * 17 + 2, 48, (220, 60, 80))
+    m = CS.get('mst')
+    if m == 'pencil': P.rect(cx - 7, 26, cx - 4, 26, HR['dd']); P.rect(cx + 4, 26, cx + 7, 26, HR['dd'])
+    if m == 'walrus': P.add(lambda d: d.polygon([(cx - 8, 25), (cx + 8, 25), (cx + 8, 29), (cx, 27), (cx - 8, 29)], fill=255), HR['b'], edge_k=.45)
+    h = CS.get('hat')
+    if h in HATC:
+        cr, br, band = HATC[h]
+        if h in ('bombin', 'fedora'):
+            P.add(lambda d: d.rounded_rectangle([cx - 10, 0, cx + 9, 10], radius=4, fill=255), cr, edge_k=.45)
+            P.add(lambda d: d.ellipse([cx - 16, 8, cx + 15, 13], fill=255), br, edge_k=.45)
+        else:
+            P.add(lambda d: d.ellipse([cx - 23, 8, cx + 22, 14], fill=255), br, edge_k=.45)
+            P.add(lambda d: d.polygon([(cx - 11, 10), (cx - 9, 1), (cx - 3, 0), (cx + 3, 0), (cx + 9, 1), (cx + 11, 10)], fill=255), cr, edge_k=.45)
+            P.rect(cx - 11, 7, cx + 11, 8, band)
+
+
+def over_p(final, CS, cx, hb, hd, hl, sk):
+    from PIL import ImageDraw
+    d = ImageDraw.Draw(final); W, H = final.size; o = CS['outfit']
+    if o == 'peladito':
+        d.polygon([(4, H), (8, 96), (22, 86), (34, 84), (30, H)], fill=(176, 142, 96)); d.line([(8, 110), (30, 108)], fill=(140, 70, 60)); d.line([(8, 126), (30, 124)], fill=(140, 70, 60))
+        for x, y in ((cx + 10, 110), (cx + 20, 140)): d.ellipse([x, y, x + 5, y + 4], fill=(196, 186, 160))
+    if o == 'vest':
+        d.polygon([(10, H), (14, 92), (cx - 12, 80), (cx - 4, 112), (cx, H)], fill=(34, 32, 40)); d.polygon([(W - 10, H), (W - 14, 92), (cx + 12, 80), (cx + 4, 112), (cx, H)], fill=(28, 26, 34))
+        d.line([(cx - 20, 130), (cx - 4, 138), (cx + 14, 130)], fill=(240, 200, 90))
+    if o == 'rebozo':
+        d.polygon([(0, H), (4, 92), (18, 82), (cx - 12, 80), (cx, 110), (cx + 12, 80), (W - 18, 82), (W - 4, 92), (W, H)], fill=(150, 50, 70))
+        for y in range(96, H, 10): d.line([(4, y), (cx - 10, y + 6)], fill=(176, 70, 90)); d.line([(W - 4, y), (cx + 10, y + 6)], fill=(120, 36, 56))
+    if o == 'zarape':
+        d.polygon([(0, H), (6, 90), (cx - 12, 78), (cx + 12, 78), (W - 6, 90), (W, H)], fill=(196, 60, 60))
+        for y, col in ((104, (240, 200, 90)), (118, (60, 120, 150)), (132, (240, 240, 230)), (146, (60, 120, 150)), (160, (240, 200, 90))): d.rectangle([0, y, W, y + 3], fill=col)
+    if CS.get('braids'):
+        for sx in (-1, 1):
+            for k in range(9): d.ellipse([cx + sx * 25 - 6, 52 + k * 10, cx + sx * 25 + 6, 64 + k * 10], fill=hb, outline=hd)
+            d.rectangle([cx + sx * 25 - 5, 142, cx + sx * 25 + 5, 146], fill=(220, 60, 80))
+    m = CS.get('mst')
+    if m == 'pencil':
+        d.line([(cx - 13, 61), (cx - 10, 58), (cx - 4, 59)], fill=(20, 16, 18), width=2); d.line([(cx + 4, 59), (cx + 10, 58), (cx + 13, 61)], fill=(20, 16, 18), width=2)
+    if m == 'walrus':
+        d.polygon([(cx - 13, 57), (cx + 13, 57), (cx + 14, 64), (cx + 6, 62), (cx, 63), (cx - 6, 62), (cx - 14, 64)], fill=hb, outline=hd)
+    h = CS.get('hat')
+    if h in HATC:
+        cr, br, band = HATC[h]
+        if h in ('bombin', 'fedora'):
+            d.rounded_rectangle([cx - 20, 2, cx + 20, 28], radius=8, fill=cr, outline=shade(cr, .6)); d.rectangle([cx - 20, 20, cx + 20, 24], fill=br)
+            d.ellipse([cx - 30, 24, cx + 30, 34], fill=br, outline=shade(br, .6))
+        else:
+            d.ellipse([cx - 48, 22, cx + 48, 36], fill=br, outline=shade(br, .6))
+            d.polygon([(cx - 18, 28), (cx - 16, 4), (cx - 6, 0), (cx + 6, 0), (cx + 16, 4), (cx + 18, 28)], fill=cr, outline=shade(cr, .6)); d.rectangle([cx - 18, 20, cx + 18, 24], fill=band)

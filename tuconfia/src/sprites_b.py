@@ -34,6 +34,10 @@ OUTF = {
  'suit85': dict(top=(44, 46, 62), top2=(26, 28, 42), under=(250, 250, 252), pants=(44, 46, 62), shoes=(20, 20, 26), sole=(10, 10, 14)),
  'turtle': dict(top=(30, 30, 38), top2=(16, 16, 22), under=(30, 30, 38), pants=(70, 104, 168), shoes=(228, 228, 234), sole=(150, 150, 162)),
  'grey': dict(top=(156, 160, 172), top2=(112, 116, 132), under=(206, 210, 220), pants=(70, 78, 110), shoes=(110, 70, 52), sole=(236, 226, 204)),
+ 'peladito': dict(top=(234, 226, 200), top2=(200, 190, 160), under=(234, 226, 200), pants=(122, 98, 72), shoes=(70, 52, 40), sole=(40, 30, 26)),
+ 'vest': dict(top=(246, 244, 236), top2=(210, 206, 196), under=(246, 244, 236), pants=(40, 38, 46), shoes=(24, 20, 22), sole=(10, 10, 12)),
+ 'rebozo': dict(top=(244, 238, 226), top2=(206, 198, 184), under=(244, 238, 226), pants=(60, 90, 150), shoes=(70, 46, 40), sole=(40, 30, 26)),
+ 'zarape': dict(top=(232, 224, 206), top2=(196, 186, 166), under=(232, 224, 206), pants=(236, 230, 214), shoes=(150, 104, 64), sole=(90, 60, 40)),
  'kungfu': dict(top=(34, 34, 40), top2=(18, 18, 24), under=(34, 34, 40), pants=(30, 30, 36), shoes=(22, 22, 26), sole=(200, 196, 186)),
  'opera': dict(top=(244, 240, 228), top2=(200, 194, 178), under=(244, 240, 228), pants=(30, 30, 38), shoes=(24, 24, 30), sole=(200, 196, 186)),
  'hoodie':  dict(top=(86, 102, 212), top2=(56, 68, 156), under=(246, 246, 252), pants=(52, 58, 106), shoes=(248, 248, 252), sole=(150, 150, 172)),
@@ -146,7 +150,7 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.add(lambda d: d.polygon([(cx - 7, 30), (cx + 7, 30), (cx, 38)], fill=255), (255, 255, 255), sh=False, edge_k=.55)
         P.add(lambda d: d.polygon([(cx - wa_w - .5, 55), (cx + wa_w + .5, 55), (cx + hp_w + 3, 79), (cx - hp_w - 3, 79)], fill=255), (255, 178, 114), edge_k=.5)
         P.rect(cx + 2, 40, cx + 6, 43, (255, 255, 255)); P.rect(cx + 3, 42, cx + 5, 42, o['top2'])
-    elif outfit in ('turtle', 'suit85'):
+    elif outfit in ('turtle', 'suit85', 'peladito', 'vest', 'rebozo', 'zarape'):
         pass                                               # sin detalles extra (jersey liso / traje)
     elif outfit in ('kungfu', 'opera'):                   # chaqueta china: cuello mao, botones de lazo y fajín
         P.add(lambda d: d.rounded_rectangle([cx - 5, 26, cx + 5, 31], radius=2, fill=255), o['top2'], edge_k=.5)
@@ -191,6 +195,7 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
     # ---------------- cabeza (≈ 6.5 cabezas de alto)
     fp = [(cx - 8, 8), (cx + 8, 8), (cx + 8.6, 16), (cx + 7, 21), (cx + 4, 25), (cx, 26.5), (cx - 4, 25), (cx - 7, 21), (cx - 8.6, 16)]
     if CS['strong']: fp = [(cx - 8, 8), (cx + 8, 8), (cx + 9.4, 16), (cx + 8.8, 22), (cx + 6, 26), (cx, 27.6), (cx - 6, 26), (cx - 8.8, 22), (cx - 9.4, 16)]
+    fp = RG.face_shape(fp, CS, cx, 1)
     P.add(lambda d: d.polygon(fp, fill=255), sk, sh=False, hi=False, edge_k=.42)
     if CS['stubble']:
         for yy in range(22, 28):
@@ -209,6 +214,11 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         for ex in (cx - 5, cx + 3):
             P.rect(ex, 14, ex + 2, 18, sk); P.rect(ex - 1, 15, ex + 3, 15, (30, 22, 36))
             P.rect(ex, 16, ex + 2, 17, (40, 30, 34)); P.rect(ex + (2 if ex > cx else 0), 16, ex + (2 if ex > cx else 0), 16, (255, 255, 255))
+    if CS.get('eyes') == 'small':
+        for ex in (cx - 5, cx + 3): P.rect(ex, 14, ex + 2, 18, sk); P.rect(ex, 15, ex + 2, 15, (30, 22, 36)); P.rect(ex + 1, 16, ex + 1, 17, (36, 26, 30))
+    if CS.get('eyes') == 'droopy':
+        for ex in (cx - 5, cx + 3):
+            P.rect(ex, 14, ex + 2, 15, sk); P.rect(ex - 1, 16, ex + 3, 16, (30, 22, 36)); P.px(ex + (3 if ex > cx else -1), 17, (30, 22, 36))
     if CS['sleepy']:
         for ex in (cx - 5, cx + 3): P.rect(ex, 14, ex + 2, 14, skd); P.rect(ex, 15, ex + 2, 15, (30, 22, 40))
     P.rect(cx - 6, 12, cx - 3, 12, hc['d']); P.rect(cx + 3, 12, cx + 6, 12, hc['d'])
@@ -244,4 +254,5 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
     if CS['beard']:
         P.add(lambda d: d.polygon([(cx - 7.5, 19), (cx - 6, 24), (cx - 3, 27), (cx + 3, 27), (cx + 6, 24), (cx + 7.5, 19), (cx + 4, 22), (cx - 4, 22)], fill=255), hc['d'], edge_k=.5, sh=False)
     if who == 'king': P.rect(cx + 11, 14, cx + 11, 19, (255, 200, 70))
+    RG.over_b(P, CS, cx, hc, sk, GY, top)
     return P.final()

@@ -131,7 +131,19 @@ CAST.update({
  'maestro':  dict(style='short', skin=(226, 186, 146), hair=ramp((186, 186, 190)), iris=(54, 40, 32), outfit='kungfu', hair2='bald', mustache=True, brows='thick', age=True),
 })
 
+# --- short: Cantinflas (siluetas distintas: flaco con pantalón caído, gordo con chaleco, señora de rebozo, abuelo de sarape, productor alto)
+CAST.update({
+ 'cant_y': dict(style='shag', skin=(206, 156, 114), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='peladito', build='slim', face='long', mst='pencil', hat='bombin', smirk=True, raise_=True),
+ 'cant':   dict(style='shag', skin=(204, 154, 112), hair=ramp((26, 22, 22)), iris=(50, 36, 30), outfit='tux', build='slim', face='long', mst='pencil', smirk=True, raise_=True),
+ 'dueno':  dict(style='short', skin=(222, 176, 136), hair=ramp((120, 116, 112)), iris=(60, 44, 36), outfit='vest', hair2='bald', build='heavy', belly=True, height='short', face='round', mst='walrus', brows='thick', eyes='small'),
+ 'senora': dict(style='tab', skin=(196, 140, 100), hair=ramp((22, 18, 20)), iris=(50, 36, 30), outfit='rebozo', braids=True, face='round', height='short'),
+ 'abuelo': dict(style='short', skin=(176, 124, 88), hair=ramp((226, 226, 230)), iris=(50, 36, 30), outfit='zarape', hat='sombrero', mst='walrus', age=True, face='long', build='slim', height='short', eyes='droopy'),
+ 'todd':   dict(style='short', skin=(236, 198, 164), hair=ramp((30, 26, 28)), iris=(60, 50, 40), outfit='coat', hair2='side', build='slim', height='tall', face='square', hat='fedora', glasses=True),
+})
+
 
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False); c.setdefault('hair2', None); c.setdefault('mustache', False); c.setdefault('unibrow', False); c.setdefault('build', 'average'); c.setdefault('height', 'average')
     return c
+
+for _k in ('cant_y', 'cant'): CAST[_k]['raise'] = CAST[_k].pop('raise_')

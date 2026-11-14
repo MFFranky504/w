@@ -17,6 +17,24 @@ WHITE = (252, 252, 255)
 
 # ojo izquierdo (de la imagen), esquina exterior a la izquierda
 EYE = {
+    'small': ["..........",           # ojos pequeños y redondos (hombre mayor, gordo)
+              "..........",
+              "...LLLL...",
+              "..LWDDWL..",
+              "...WDPW...",
+              "....ll....",
+              "..........",
+              "..........",
+              ".........."],
+    'droopy': ["..........",          # párpado caído hacia afuera (anciano, mirada cansada)
+               "..........",
+               "..LLLL....",
+               ".LLLLLLLL.",
+               "..WDDPPDLL",
+               "...WDPPDW.",
+               "....llll..",
+               "..........",
+               ".........."],
     'narrow': ["..........",          # ojos rasgados: párpado bajo, 2 filas de iris (Jackie, Bruce)
                "..........",
                "..........",
@@ -134,7 +152,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
             'tee_yellow': ((250, 210, 70), (206, 160, 30), (255, 240, 150)), 'tee_red': ((230, 80, 70), (170, 44, 48), (255, 140, 120)),
             'plaid': ((198, 66, 60), (150, 40, 44), (232, 110, 96)), 'teacher': ((236, 232, 220), (196, 192, 182), (252, 252, 248)),
             'cardigan': ((226, 172, 70), (184, 130, 44), (246, 206, 116)), 'uniform': ((246, 120, 160), (206, 82, 124), (255, 170, 200)),
-            'kungfu': ((34, 34, 40), (18, 18, 24), (84, 84, 98)), 'opera': ((244, 240, 228), (200, 194, 178), (255, 255, 250)),
+            'peladito': ((234, 226, 200), (200, 190, 160), (250, 246, 230)), 'vest': ((246, 244, 236), (210, 206, 196), (255, 255, 250)), 'rebozo': ((244, 238, 226), (206, 198, 184), (255, 252, 244)), 'zarape': ((232, 224, 206), (196, 186, 166), (250, 246, 236)), 'kungfu': ((34, 34, 40), (18, 18, 24), (84, 84, 98)), 'opera': ((244, 240, 228), (200, 194, 178), (255, 255, 250)),
             'hoodie': ((76, 92, 200), (52, 62, 150), (120, 140, 236))}
     tb, td, tl = tops[outfit]
     d.polygon([(2, H), (6, 92), (16, 84), (cx - 12, 78), (cx + 12, 78), (W - 16, 84), (W - 6, 92), (W - 2, H)], fill=tb)
@@ -209,6 +227,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     elif look[1] > 0: tpl = EYE['down']
     else: tpl = EYE['open_f' if fem else 'open_m']
     if CS.get('eyes') == 'narrow' and tpl is not EYE['happy'] and not blink: tpl = EYE['narrow']
+    if CS.get('eyes') in ('small', 'droopy') and tpl is not EYE['happy'] and not blink: tpl = EYE[CS['eyes']]
     ey = 44
     _stamp(px, tpl, cx - 15, ey, p)
     _stamp(px, tpl, cx + 5, ey, p, mirror=True)
@@ -307,6 +326,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
         d.polygon([(cx - 17, 46), (cx - 16, 58), (cx - 9, 66), (cx, 70), (cx + 9, 66), (cx + 16, 58), (cx + 17, 46), (cx + 11, 54), (cx + 5, 58), (cx - 5, 58), (cx - 11, 54)], fill=hd)
     final.alpha_composite(outline(hair, ol_hair))
     RG.fix_p(final, CS, cx, sk, ol_hair)
+    RG.over_p(final, CS, cx, hb, hd, hl, sk)
     return final
 
 
