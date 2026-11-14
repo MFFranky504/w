@@ -397,6 +397,9 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
         P.rect(ex, 20, ex + 2, 24, CS['iris']); P.rect(ex + 3, 20, ex + 3, 23, (255, 255, 255))
         P.rect(ex, 20, ex, 20, (255, 255, 255)); P.rect(ex + 1, 20, ex + 1, 20, (255, 255, 255)); P.rect(ex + 1, 21, ex + 1, 22, tuple(int(v*1.15) for v in CS['iris']))
         P.rect(ex, 25, ex + 2, 25, skd)
+        if style != 'tab' and not CS.get('eyes'):       # hombres: ojo más bajo y sin brillos de anime
+            P.rect(ex, 19, ex + 3, 25, sk); P.rect(ex - 1, 20, ex + 4, 21, (30, 22, 40))
+            P.rect(ex, 22, ex + 3, 24, (255, 255, 255)); P.rect(ex + (0 if ex < cx else 1), 22, ex + (2 if ex < cx else 3), 24, CS['iris']); P.rect(ex + 1, 22, ex + 2, 23, (24, 18, 32))
         if CS.get('eyes') == 'small':
             P.rect(ex, 19, ex + 3, 25, sk); P.rect(ex, 20, ex + 3, 20, (30, 22, 40)); P.rect(ex + 1, 21, ex + 2, 23, (40, 30, 34))
         if CS.get('eyes') == 'droopy':

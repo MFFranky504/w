@@ -17,6 +17,15 @@ WHITE = (252, 252, 255)
 
 # ojo izquierdo (de la imagen), esquina exterior a la izquierda
 EYE = {
+    'male': ["..........",            # ojo masculino: más pequeño, párpado marcado, sin pestañas de anime
+             "..........",
+             "...LLLLL..",
+             "..LLWDDDWL",
+             "...WDPPDW.",
+             "...WDPPDW.",
+             "....llll..",
+             "..........",
+             ".........."],
     'small': ["..........",           # ojos pequeños y redondos (hombre mayor, gordo)
               "..........",
               "...LLLL...",
@@ -225,7 +234,7 @@ def portrait(who='king', expr='n', look=(0, 0), blink=False, sc=None, outfit=Non
     if blink: tpl = EYE['closed']
     elif expr == 'smile': tpl = EYE['happy']
     elif look[1] > 0: tpl = EYE['down']
-    else: tpl = EYE['open_f' if fem else 'open_m']
+    else: tpl = EYE['open_f' if fem else 'male']
     if CS.get('eyes') == 'narrow' and tpl is not EYE['happy'] and not blink: tpl = EYE['narrow']
     if CS.get('eyes') in ('small', 'droopy') and tpl is not EYE['happy'] and not blink: tpl = EYE[CS['eyes']]
     ey = 44

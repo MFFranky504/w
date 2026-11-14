@@ -210,6 +210,10 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.rect(ex, 14, ex + 2, 14, (36, 26, 40))
         P.rect(ex, 15, ex + 2, 18, (255, 255, 255)); P.rect(ex + 1, 15, ex + 2, 18, CS['iris'])
         P.rect(ex + 1, 16, ex + 2, 17, (24, 18, 32)); P.px(ex + 1, 15, (255, 255, 255))
+    if style != 'tab' and not CS.get('eyes'):           # hombres: ojo más bajo (3 filas), párpado grueso, sin brillo de anime
+        for ex in (cx - 5, cx + 3):
+            P.rect(ex, 18, ex + 2, 18, sk); P.rect(ex - (1 if ex < cx else 0), 14, ex + 2 + (1 if ex > cx else 0), 15, (36, 26, 40))
+            P.rect(ex, 16, ex + 2, 17, (255, 255, 255)); P.rect(ex + (0 if ex < cx else 1), 16, ex + (1 if ex < cx else 2), 17, CS['iris']); P.px(ex + (1 if ex < cx else 1), 16, (24, 18, 32))
     if CS.get('eyes') == 'narrow':                     # ojos rasgados: párpado grueso y 2 filas de iris
         for ex in (cx - 5, cx + 3):
             P.rect(ex, 14, ex + 2, 18, sk); P.rect(ex - 1, 15, ex + 3, 15, (30, 22, 36))
