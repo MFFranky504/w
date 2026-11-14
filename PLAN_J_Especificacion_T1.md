@@ -362,3 +362,15 @@ Participación por juego: G1 60 % · G2 75 % · G3 70 % (fricción del DM) · G4
 1. Voz del Anfitrión (tono e idioma neutro o mexicano).
 2. Nombre definitivo ("LOS JUEGOS" es provisional) y registro de marca.
 3. Premio simbólico concreto (insignia, cameo en T2, título "Superviviente S01").
+
+---
+
+## Adenda — 14/11/2026: lanzamiento adelantado
+
+Por decisión del productor, la convocatoria se abre **hoy** y no el 4 de enero de 2027.
+
+- **Nombre público:** IGram Games. Riesgo aceptado: las normas de marca de Instagram prohíben "Insta"/"Gram" en nombres de productos. El nombre es un solo parámetro en `episodio0/build/guion.py`, así que cambiarlo cuesta minutos.
+- **Inscripción:** 14 nov → **dom 29 nov 2026, 20:00 CDMX**. Los comentarios persisten en el post, así que la ingesta (§5) puede terminarse durante la ventana. **Es bloqueante para el 29 de noviembre.**
+- **Juego 1:** lun 30 nov 2026. Con la cadencia de §3.1, los veredictos caen el **jueves 24 de diciembre (Nochebuena)** y el **jueves 31 de diciembre (Año Nuevo)**. Hay que decidir antes del 10 de diciembre si esas semanas se adelantan al miércoles o se hace una pausa de fiestas.
+- **Episodio 0** pasa a ser el Reel de convocatoria (`episodio0/`). El piloto con datos simulados del gate (§7.2) se sustituye por la producción real de este episodio: pipeline de render en ≈1 minuto.
+- **App Review de mensajería:** se vuelve urgente, porque el G3 caería alrededor del 14 de diciembre. Si no se aprueba antes del 7 de diciembre, se activa el Plan B o C (§6.2, E11).
