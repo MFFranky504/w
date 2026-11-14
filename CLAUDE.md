@@ -8,3 +8,6 @@ Uso en el flujo de vídeos: Gemini verifica hechos del guion, hace de abogado de
 ## Shorts casi automáticos (Gemini hace casi todo)
 `python3 tuconfia/src/auto_short.py <nombre> "<famoso>" "<enfoque>" "<hechos permitidos>"` pide a Gemini hechos, guion, reparto, escenas y ganchos; genera voz (ElevenLabs), alineación, render, revisión visual y textos de plataforma. Requiere `pip install --no-deps num2words`.
 Reglas aprendidas: dar siempre los hechos permitidos (sin ellos Gemini inventa datos, por ejemplo un despido que nunca existió); revisar el tono de piel y el pelo del reparto (Gemini puso a Morgan Freeman con piel clara); los ganchos de pantalla no pueden pasar de 13 caracteres por línea; y mirar si el kit de escena encaja con lo narrado.
+
+## Voz gratis (si se acaba ElevenLabs)
+Pollinations (`gen.pollinations.ai`, clave ya guardada en el entorno) tiene voces gratis por `/v1/audio/speech`, en formato OpenAI. Gemini las escuchó y la mejor fue `model: microsoft/mai-voice-2.1`, `voice: es-MX-Grant` (9/10), seguida de `es-MX-Alejo` (8/10). Las de OpenAI (onyx, echo) suenan peor en español. Hay muestras en `tuconfia/audio/muestras_voz/`. Las voces de Gemini no devuelven audio por la ruta OpenAI y la nativa está bloqueada para nuestra clave.
