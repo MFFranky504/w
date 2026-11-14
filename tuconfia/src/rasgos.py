@@ -118,8 +118,9 @@ def front_r(P, CS, cx, HR, sk):
     if not h: return False
     if h in ('bald', 'buzz'):
         rows = np.arange(P.a.shape[0])[:, None]
-        cap = P.mask(lambda d: d.ellipse([cx - 18, 1, cx + 18, 31], fill=255)) & (rows < 15)
-        olm = P.mask(lambda d: d.ellipse([cx - 19, 0, cx + 19, 32], fill=255)) & (rows < 15) & ~cap
+        w_ = 16 if CS.get('v2') else 18; t_ = 2 if CS.get('v2') else 1
+        cap = P.mask(lambda d: d.ellipse([cx - w_, t_, cx + w_, 31], fill=255)) & (rows < 15)
+        olm = P.mask(lambda d: d.ellipse([cx - w_ - 1, t_ - 1, cx + w_ + 1, 32], fill=255)) & (rows < 15) & ~cap
         P.a[olm] = (*shade(sk, .5), 255); P.a[cap] = (*sk, 255)
         if h == 'buzz': dither_cap(P, cap & (rows < 12), HR['b'], shade(sk, .9), .3)
         else: P.rect(cx - 10, 4, cx - 5, 4, shade(sk, 1.12)); P.rect(cx - 12, 6, cx - 11, 7, shade(sk, 1.12))

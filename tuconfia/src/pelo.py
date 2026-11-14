@@ -156,7 +156,8 @@ def front_b(P, CS, cx, hc, sk):
 def front_r(P, CS, cx, HR, sk):
     st = style_of(CS)
     if not st: return False
-    _draw_small(P, st, cx, HR, sk, .9, .67, 1 - 6 * .67, ([cx - 18, 1, cx + 18, 31], 15), CS)
+    wide = st in ('pulled', 'wavy')
+    _draw_small(P, st, cx, HR, sk, .9 if wide else .78, .67, 1 - 6 * .67, ([cx - 18, 1, cx + 18, 31] if wide else [cx - 16, 2, cx + 16, 30], 15), CS)
     return True
 
 

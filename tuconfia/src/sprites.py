@@ -383,7 +383,9 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     # ---------- cabeza
     fpts = [(cx - 17, 13), (cx + 17, 13), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx - 11, 32), (cx - 16, 28), (cx - 18, 21)]
     if CS['strong']: fpts = [(cx - 17, 13), (cx + 17, 13), (cx + 19, 22), (cx + 19, 29), (cx + 14, 33), (cx - 14, 33), (cx - 19, 29), (cx - 19, 22)]
-    fpts = RG.face_shape(fpts, CS, cx, 2)
+    if CS.get('v2') and style != 'tab':                # hombres v2: cabeza más estrecha y de mentón redondo (misma lectura que la de la señora)
+        fpts = [(cx - 15, 13), (cx + 15, 13), (cx + 16, 20), (cx + 15, 26), (cx + 12, 30), (cx + 7, 32), (cx - 7, 32), (cx - 12, 30), (cx - 15, 26), (cx - 16, 20)]
+    else: fpts = RG.face_shape(fpts, dict(CS, face='round') if CS.get('v2') else CS, cx, 2)
     P.add(lambda d: d.polygon(fpts, fill=255), sk, sh=False, hi=False, edge_k=.42)
     m = P.mask(lambda d: d.polygon([(cx + 10, 15), (cx + 17, 16), (cx + 18, 21), (cx + 16, 28), (cx + 11, 32), (cx + 6, 32), (cx + 12, 27), (cx + 13, 21)], fill=255))
     P.a[m & (P.a[..., 3] > 0)] = (*skd, 255)
@@ -432,15 +434,17 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
             for bx in (cx - 12, cx + 10): P.rect(bx, 27, bx + 2, 27, (250, 140, 150)); P.rect(bx, 28, bx + 2, 28, (252, 170, 172))
             P.rect(cx - 1, 29, cx, 29, (214, 80, 104))
         else:
-            for ex in (cx - 9, cx + 6):
-                P.rect(ex, 20, ex + 3, 20, DK)                                                                          # pestaña de 4 px
-                P.rect(ex + 1, 21, ex + 2, 22 if old else 24, DK)                                                       # columna oscura de 2 px
-                if not old: P.rect(ex + 1, 24, ex + 2, 24, tuple(min(255, int(v * 1.3 + 30)) for v in CS['iris']))
+            for ex in (cx - 10, cx + 6):                                                                                # mismos ojos que la señora, sin rabillo
+                P.rect(ex, 20, ex + 4, 20, DK)
+                if old: P.rect(ex + 1, 21, ex + 3, 22, DK); P.rect(ex + 1, 23, ex + 3, 23, CS['iris'])
+                else:
+                    P.rect(ex + 1, 21, ex + 3, 22, DK); P.rect(ex + 1, 23, ex + 3, 24, CS['iris']); P.rect(ex + 1, 25, ex + 3, 25, tuple(min(255, int(v * 1.5 + 40)) for v in CS['iris']))
+                    P.px(ex + 3, 24, (255, 255, 255))
                 P.px(ex + 1, 21, (255, 255, 255))
                 bw = 2 if CS.get('brows') == 'thick' else 1; up = 1 if (CS.get('raise') and ex > cx) else 0
-                P.rect(ex, 17 - up - (bw - 1), ex + 3, 17 - up, HR['dd'] if sum(HR['b']) < 420 else HR['d'])
-            for bx in (cx - 12, cx + 11): P.rect(bx, 26, bx + 1, 26, tuple(int(a * .6 + b * .4) for a, b in zip(sk, (250, 130, 130))))
-            P.rect(cx - 1, 28, cx, 28, (176, 72, 84))
+                P.rect(ex + 1, 17 - up - (bw - 1), ex + 3, 17 - up, HR['dd'] if sum(HR['b']) < 420 else HR['d'])
+            for bx in (cx - 13, cx + 11): P.rect(bx, 27, bx + 2, 27, tuple(int(a * .55 + b * .45) for a, b in zip(sk, (250, 130, 130))))
+            P.rect(cx - 1, 29, cx, 29, (176, 72, 84))
     if CS['glasses']:   # gafas redondas
         for ex in (cx - 12, cx + 5):
             P.rect(ex, 18, ex + 7, 18, (34, 30, 48)); P.rect(ex, 26, ex + 7, 26, (34, 30, 48))
