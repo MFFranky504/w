@@ -1,0 +1,464 @@
+[
+ {
+  "cap": 0,
+  "emo": "tense",
+  "kit": "stage",
+  "t": "La peor noche de su vida en un escenario... es la razón por la que hoy todavía usas su *nombre*."
+ },
+ {
+  "cap": 0,
+  "emo": "tense",
+  "kit": "stage",
+  "t": "Un muchacho flaco, de pantalón caído, se quedó *mudo* frente a toda la carpa."
+ },
+ {
+  "cap": 0,
+  "emo": "mysterious",
+  "kit": "stage",
+  "t": "Y lo que hizo en los segundos siguientes... terminó dentro del *diccionario*."
+ },
+ {
+  "cap": 0,
+  "emo": "warm",
+  "kit": "title",
+  "t": "Esta es la historia de cómo un error convirtió a un muchacho pobre en el cómico más querido de *México*."
+ },
+ {
+  "cap": 0,
+  "emo": "mysterious",
+  "kit": "title",
+  "t": "Y al final vas a entender por qué hoy hablas como él... aunque no lo *sepas*."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "city",
+  "t": "Ciudad de México. Doce de agosto de mil novecientos *once*."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "city",
+  "t": "Ahí nace Mario Moreno, en una familia *pobre*."
+ },
+ {
+  "cap": 1,
+  "emo": "sad",
+  "kit": "city",
+  "t": "De esas casas donde el dinero no alcanza... y los niños crecen *rápido*."
+ },
+ {
+  "cap": 1,
+  "emo": "hopeful",
+  "kit": "city",
+  "t": "Mario no tenía dinero. Tenía hambre de *salir* de ahí."
+ },
+ {
+  "cap": 1,
+  "emo": "excited",
+  "kit": "boxing",
+  "t": "Así que probó de *todo*."
+ },
+ {
+  "cap": 1,
+  "emo": "excited",
+  "kit": "boxing",
+  "t": "Se subió a un ring de *boxeo*."
+ },
+ {
+  "cap": 1,
+  "emo": "funny",
+  "kit": "bullring",
+  "t": "Se puso un traje de luces... como torero *cómico*."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "bullring",
+  "t": "Probó un oficio, y otro, y otro *más*."
+ },
+ {
+  "cap": 1,
+  "emo": "sad",
+  "kit": "bullring",
+  "t": "Ninguno le cambió la *vida*."
+ },
+ {
+  "cap": 1,
+  "emo": "mysterious",
+  "kit": "bullring",
+  "t": "Pero en los barrios de la ciudad había un lugar donde la gente pobre iba a *reírse*..."
+ },
+ {
+  "cap": 2,
+  "emo": "excited",
+  "kit": "carpa",
+  "t": "Las *carpas*."
+ },
+ {
+  "cap": 2,
+  "emo": "warm",
+  "kit": "carpa",
+  "t": "Teatros ambulantes de lona, con bancas de madera, música... y cómicos."
+ },
+ {
+  "cap": 2,
+  "emo": "tense",
+  "kit": "carpa",
+  "t": "Un público de barrio, que no tenía paciencia con nadie *aburrido*."
+ },
+ {
+  "cap": 2,
+  "emo": "warm",
+  "kit": "carpa",
+  "t": "En los años treinta, Mario empezó a trabajar *ahí*."
+ },
+ {
+  "cap": 2,
+  "emo": "warm",
+  "kit": "valentina",
+  "t": "Y en la carpa conoció a Valentina Ivanova... que se convirtió en su *esposa*."
+ },
+ {
+  "cap": 2,
+  "emo": "hopeful",
+  "kit": "valentina",
+  "t": "Por fin tenía un escenario y alguien que creía en *él*."
+ },
+ {
+  "cap": 2,
+  "emo": "mysterious",
+  "kit": "valentina",
+  "t": "Pero lo peor todavía no había *llegado*."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "backstage",
+  "t": "Una noche, según contaba él mismo, salió a escena *nervioso*."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "backstage",
+  "t": "Las luces encima. La carpa entera *mirándolo*."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "freeze",
+  "t": "Abrió la boca... y se le olvidó el *texto*."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "freeze",
+  "t": "Un segundo. Dos. *Tres*."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "freeze",
+  "t": "Cualquiera habría salido *corriendo*."
+ },
+ {
+  "cap": 3,
+  "emo": "mysterious",
+  "kit": "freeze",
+  "t": "Pero él hizo algo *raro*."
+ },
+ {
+  "cap": 3,
+  "emo": "funny",
+  "kit": "babble",
+  "t": "Empezó a hablar... sin decir *nada*."
+ },
+ {
+  "cap": 3,
+  "emo": "funny",
+  "kit": "babble",
+  "t": "Palabras que daban vueltas. Frases que empezaban... y nunca *terminaban*."
+ },
+ {
+  "cap": 3,
+  "emo": "excited",
+  "kit": "laugh",
+  "t": "Y la carpa... *explotó* de risa."
+ },
+ {
+  "cap": 3,
+  "emo": "warm",
+  "kit": "laugh",
+  "t": "Según contó él, ese error fue el nacimiento de su *estilo*."
+ },
+ {
+  "cap": 3,
+  "emo": "funny",
+  "kit": "name",
+  "t": "Y según la leyenda, alguien del público le gritó algo como: «¡En la cantina te *inflas*!»"
+ },
+ {
+  "cap": 3,
+  "emo": "excited",
+  "kit": "name",
+  "t": "De ahí habría salido el nombre que lo haría famoso: *Cantinflas*."
+ },
+ {
+  "cap": 3,
+  "emo": "mysterious",
+  "kit": "name",
+  "t": "Pero ser famoso en una carpa... no es ser famoso en el *cine*."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "cine",
+  "t": "Mil novecientos treinta y seis. Le llega su primera *película*."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "cine",
+  "t": "Se llamaba «No te engañes *corazón*»."
+ },
+ {
+  "cap": 4,
+  "emo": "sad",
+  "kit": "cine",
+  "t": "Y pasó sin *éxito*."
+ },
+ {
+  "cap": 4,
+  "emo": "sad",
+  "kit": "cine",
+  "t": "Imagínate: por fin en la pantalla grande... y casi nadie lo *nota*."
+ },
+ {
+  "cap": 4,
+  "emo": "sad",
+  "kit": "rain",
+  "t": "Ahí es donde mucha gente se *rinde*."
+ },
+ {
+  "cap": 4,
+  "emo": "hopeful",
+  "kit": "rain",
+  "t": "Él *no*."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "costume",
+  "t": "Siguió en la carpa, puliendo a su personaje: el *peladito*."
+ },
+ {
+  "cap": 4,
+  "emo": "funny",
+  "kit": "costume",
+  "t": "El pantalón a punto de caerse, una soga de cinturón, la gabardina al hombro... y ese bigote en las *comisuras*."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "costume",
+  "t": "Un hombre del pueblo, igual que la gente que lo *veía*."
+ },
+ {
+  "cap": 4,
+  "emo": "mysterious",
+  "kit": "costume",
+  "t": "Y entonces llegó mil novecientos *cuarenta*."
+ },
+ {
+  "cap": 5,
+  "emo": "excited",
+  "kit": "estreno",
+  "t": "«Ahí está el *detalle*»."
+ },
+ {
+  "cap": 5,
+  "emo": "excited",
+  "kit": "estreno",
+  "t": "La película lo convierte en *estrella*."
+ },
+ {
+  "cap": 5,
+  "emo": "warm",
+  "kit": "estreno",
+  "t": "De pronto, todo México conocía su *cara*."
+ },
+ {
+  "cap": 5,
+  "emo": "warm",
+  "kit": "estreno",
+  "t": "El muchacho que se quedó en blanco... ahora llenaba la *pantalla*."
+ },
+ {
+  "cap": 5,
+  "emo": "funny",
+  "kit": "estreno",
+  "t": "Y lo hacía con lo mismo que casi lo hunde: hablar sin decir *nada*."
+ },
+ {
+  "cap": 5,
+  "emo": "mysterious",
+  "kit": "estreno",
+  "t": "Pero su siguiente reto estaba al otro lado de la *frontera*."
+ },
+ {
+  "cap": 6,
+  "emo": "excited",
+  "kit": "hollywood",
+  "t": "Mil novecientos cincuenta y seis. *Hollywood*."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "hollywood",
+  "t": "El productor Mike Todd prepara una película enorme: «La vuelta al mundo en ochenta *días*»."
+ },
+ {
+  "cap": 6,
+  "emo": "excited",
+  "kit": "hollywood",
+  "t": "Y elige a Cantinflas para uno de los papeles *principales*."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "balloon",
+  "t": "Es Passepartout, el ayudante que acompaña al protagonista alrededor del *mundo*."
+ },
+ {
+  "cap": 6,
+  "emo": "excited",
+  "kit": "oscar",
+  "t": "La película gana el Óscar a mejor *película*."
+ },
+ {
+  "cap": 6,
+  "emo": "excited",
+  "kit": "oscar",
+  "t": "Y en mil novecientos cincuenta y siete, él gana el Globo de *Oro*."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "oscar",
+  "t": "El muchacho de la carpa... ahora tenía un premio de Hollywood en las *manos*."
+ },
+ {
+  "cap": 6,
+  "emo": "mysterious",
+  "kit": "oscar",
+  "t": "Pero la cima tiene una *trampa*."
+ },
+ {
+  "cap": 7,
+  "emo": "warm",
+  "kit": "pepe",
+  "t": "Mil novecientos sesenta. Hollywood le da su propia película: «*Pepe*»."
+ },
+ {
+  "cap": 7,
+  "emo": "sad",
+  "kit": "pepe",
+  "t": "Y esta vez... no repite el *éxito*."
+ },
+ {
+  "cap": 7,
+  "emo": "tense",
+  "kit": "pepe",
+  "t": "Podía quedarse persiguiendo a *Hollywood*."
+ },
+ {
+  "cap": 7,
+  "emo": "hopeful",
+  "kit": "home",
+  "t": "Pero volvió a México... y siguió haciendo cine para su *gente*."
+ },
+ {
+  "cap": 7,
+  "emo": "warm",
+  "kit": "home",
+  "t": "A veces un «no» es solo la señal para volver a *casa*."
+ },
+ {
+  "cap": 7,
+  "emo": "mysterious",
+  "kit": "home",
+  "t": "Y lo que dejó en casa... fue más grande que cualquier *trofeo*."
+ },
+ {
+  "cap": 8,
+  "emo": "warm",
+  "kit": "dictionary",
+  "t": "Mil novecientos noventa y *dos*."
+ },
+ {
+  "cap": 8,
+  "emo": "excited",
+  "kit": "dictionary",
+  "t": "La Real Academia Española incluye un verbo nuevo en su diccionario: *cantinflear*."
+ },
+ {
+  "cap": 8,
+  "emo": "funny",
+  "kit": "dictionary",
+  "t": "Hablar mucho... sin decir *nada*."
+ },
+ {
+  "cap": 8,
+  "emo": "mysterious",
+  "kit": "dictionary",
+  "t": "¿Te suena? Es exactamente lo que hizo aquella noche en la *carpa*."
+ },
+ {
+  "cap": 8,
+  "emo": "hopeful",
+  "kit": "dictionary",
+  "t": "Su peor noche... se volvió una *palabra*."
+ },
+ {
+  "cap": 8,
+  "emo": "sad",
+  "kit": "funeral",
+  "t": "El veinte de abril de mil novecientos noventa y tres, Mario Moreno murió en Ciudad de *México*."
+ },
+ {
+  "cap": 8,
+  "emo": "sad",
+  "kit": "funeral",
+  "t": "Sus funerales duraron tres *días*."
+ },
+ {
+  "cap": 8,
+  "emo": "warm",
+  "kit": "funeral",
+  "t": "Una multitud fue a *despedirlo*."
+ },
+ {
+  "cap": 8,
+  "emo": "hopeful",
+  "kit": "final",
+  "t": "Piénsalo..."
+ },
+ {
+  "cap": 8,
+  "emo": "hopeful",
+  "kit": "final",
+  "t": "Se quedó en blanco frente a todos... y convirtió ese error en su *estilo*."
+ },
+ {
+  "cap": 8,
+  "emo": "hopeful",
+  "kit": "final",
+  "t": "No escondió su peor momento. Lo hizo *suyo*."
+ },
+ {
+  "cap": 8,
+  "emo": "mysterious",
+  "kit": "final",
+  "t": "Y tú... ¿qué error tuyo podría convertirse en tu *estilo*?"
+ }
+]

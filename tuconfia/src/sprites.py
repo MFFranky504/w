@@ -127,7 +127,7 @@ def battle(who='king', pose='hold', outfit=None, W=72, H=112):
         P.add(lambda d: d.polygon([(cx - 8, 31), (cx + 8, 31), (cx, 40)], fill=255), (255, 255, 255), sh=False)
         P.add(lambda d: d.rectangle([cx + 4, 46, cx + 10, 50], fill=255), (255, 255, 255), sh=False)
         P.add(lambda d: d.polygon([(cx - 13, 56), (cx + 13, 56), (cx + 13, 66), (cx - 13, 66)], fill=255), (255, 176, 112))  # delantal
-    elif outfit in ('turtle', 'suit85', 'peladito', 'vest', 'rebozo', 'zarape'):
+    elif outfit in ('turtle', 'suit85', 'peladito', 'vest', 'rebozo', 'zarape', 'boxer', 'luces', 'vestido'):
         pass                                               # sin detalles extra (jersey liso / traje)
     else:  # hoodie
         P.line([(cx - 4, 36), (cx - 5, 50)], (246, 246, 252)); P.line([(cx + 4, 36), (cx + 5, 48)], (246, 246, 252))
@@ -284,6 +284,9 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
           'vest': dict(b=(246, 244, 236), d=(210, 206, 196), l=(255, 255, 250), pants=(40, 38, 46), boots=(24, 20, 22)),
           'rebozo': dict(b=(244, 238, 226), d=(206, 198, 184), l=(255, 252, 244), pants=(60, 90, 150), boots=(70, 46, 40)),
           'zarape': dict(b=(232, 224, 206), d=(196, 186, 166), l=(250, 246, 236), pants=(236, 230, 214), boots=(150, 104, 64)),
+          'boxer': dict(b=(214, 52, 52), d=(160, 30, 36), l=(250, 110, 100), pants=(250, 250, 250), boots=(40, 40, 52)),
+          'luces': dict(b=(226, 186, 70), d=(170, 120, 30), l=(255, 230, 140), pants=(226, 186, 70), boots=(30, 26, 34)),
+          'vestido': dict(b=(70, 140, 160), d=(44, 100, 120), l=(130, 196, 210), pants=(70, 140, 160), boots=(110, 50, 50)),
           'kungfu': dict(b=(34, 34, 40), d=(18, 18, 24), l=(84, 84, 98), pants=(30, 30, 36), boots=(22, 22, 26)),
           'opera': dict(b=(244, 240, 228), d=(200, 194, 178), l=(255, 255, 250), pants=(30, 30, 38), boots=(24, 24, 30)),
           'hoodie': dict(b=(86, 102, 212), d=(56, 68, 156), l=(134, 154, 244), pants=(52, 58, 106), boots=(248, 248, 252))}[outfit]

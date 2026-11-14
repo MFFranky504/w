@@ -141,6 +141,15 @@ CAST.update({
  'todd':   dict(style='short', skin=(236, 198, 164), hair=ramp((30, 26, 28)), iris=(60, 50, 40), outfit='coat', hair2='slick', build='slim', height='tall', face='square', hat='fedora', glasses=True, v2=True),
 })
 
+# --- video largo: Cantinflas (más versiones del protagonista y Valentina)
+CAST.update({
+ 'cant_k':   dict(style='shag', skin=(206, 156, 114), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='grey', hair2='messy', kid=True, face='round', v2=True),
+ 'cant_box': dict(style='shag', skin=(206, 156, 114), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='boxer', hair2='messy', build='slim', face='long', v2=True),
+ 'cant_tor': dict(style='shag', skin=(206, 156, 114), hair=ramp((24, 20, 20)), iris=(50, 36, 30), outfit='luces', hair2='slick', build='slim', face='long', v2=True),
+ 'cant_pp':  dict(style='shag', skin=(204, 154, 112), hair=ramp((26, 22, 22)), iris=(50, 36, 30), outfit='vest', hair2='sidepart', hat='bombin', build='slim', face='long', mst='pencil', v2=True),
+ 'valentina': dict(style='tab', skin=(244, 214, 190), hair=ramp((96, 64, 44)), iris=(70, 90, 110), outfit='vestido', hair2='pulled', face='round', v2=True),
+})
+
 
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False); c.setdefault('hair2', None); c.setdefault('mustache', False); c.setdefault('unibrow', False); c.setdefault('build', 'average'); c.setdefault('height', 'average')

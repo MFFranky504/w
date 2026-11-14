@@ -38,6 +38,9 @@ OUTF = {
  'vest': dict(top=(246, 244, 236), top2=(210, 206, 196), under=(246, 244, 236), pants=(40, 38, 46), shoes=(24, 20, 22), sole=(10, 10, 12)),
  'rebozo': dict(top=(244, 238, 226), top2=(206, 198, 184), under=(244, 238, 226), pants=(60, 90, 150), shoes=(70, 46, 40), sole=(40, 30, 26)),
  'zarape': dict(top=(232, 224, 206), top2=(196, 186, 166), under=(232, 224, 206), pants=(236, 230, 214), shoes=(150, 104, 64), sole=(90, 60, 40)),
+ 'boxer': dict(top=(214, 52, 52), top2=(160, 30, 36), under=(214, 52, 52), pants=(250, 250, 250), shoes=(40, 40, 52), sole=(220, 220, 230), shorts=True, socks=(250, 250, 255)),
+ 'luces': dict(top=(226, 186, 70), top2=(170, 120, 30), under=(250, 246, 236), pants=(226, 186, 70), shoes=(30, 26, 34), sole=(10, 10, 14)),
+ 'vestido': dict(top=(70, 140, 160), top2=(44, 100, 120), under=(70, 140, 160), pants=(70, 140, 160), shoes=(110, 50, 50), sole=(60, 30, 30)),
  'kungfu': dict(top=(34, 34, 40), top2=(18, 18, 24), under=(34, 34, 40), pants=(30, 30, 36), shoes=(22, 22, 26), sole=(200, 196, 186)),
  'opera': dict(top=(244, 240, 228), top2=(200, 194, 178), under=(244, 240, 228), pants=(30, 30, 38), shoes=(24, 24, 30), sole=(200, 196, 186)),
  'hoodie':  dict(top=(86, 102, 212), top2=(56, 68, 156), under=(246, 246, 252), pants=(52, 58, 106), shoes=(248, 248, 252), sole=(150, 150, 172)),
@@ -150,7 +153,7 @@ def battle2(who='king', pose='hold', outfit=None, W=84, H=124):
         P.add(lambda d: d.polygon([(cx - 7, 30), (cx + 7, 30), (cx, 38)], fill=255), (255, 255, 255), sh=False, edge_k=.55)
         P.add(lambda d: d.polygon([(cx - wa_w - .5, 55), (cx + wa_w + .5, 55), (cx + hp_w + 3, 79), (cx - hp_w - 3, 79)], fill=255), (255, 178, 114), edge_k=.5)
         P.rect(cx + 2, 40, cx + 6, 43, (255, 255, 255)); P.rect(cx + 3, 42, cx + 5, 42, o['top2'])
-    elif outfit in ('turtle', 'suit85', 'peladito', 'vest', 'rebozo', 'zarape'):
+    elif outfit in ('turtle', 'suit85', 'peladito', 'vest', 'rebozo', 'zarape', 'boxer', 'luces', 'vestido'):
         pass                                               # sin detalles extra (jersey liso / traje)
     elif outfit in ('kungfu', 'opera'):                   # chaqueta china: cuello mao, botones de lazo y fajín
         P.add(lambda d: d.rounded_rectangle([cx - 5, 26, cx + 5, 31], radius=2, fill=255), o['top2'], edge_k=.5)

@@ -287,6 +287,12 @@ def over_b(P, CS, cx, hc, sk, GY, top):
         P.rect(cx - 16, GY - 5, cx + 16, GY - 4, (240, 200, 90))
         P.add(lambda d: d.polygon([(cx - 13, 28), (cx + 13, 28), (cx + 15, 50), (cx, 44), (cx - 15, 50)], fill=255), (150, 50, 70), edge_k=.45)     # rebozo
         for x in range(cx - 14, cx + 15, 3): P.px(x, 50 - abs(x - cx) * 6 // 15, (240, 200, 160))
+    if o == 'vestido':
+        P.add(lambda d: d.polygon([(cx - 10, 60), (cx + 10, 60), (cx + 15, GY - 6), (cx - 15, GY - 6)], fill=255), top, edge_k=.42)
+        P.rect(cx - 9, 59, cx + 9, 60, (240, 200, 90))
+    if o == 'luces':                                         # bordados dorados del traje de luces
+        for y in range(34, 66, 6): P.rect(cx - 8, y, cx - 6, y + 1, (255, 236, 150)); P.rect(cx + 6, y, cx + 8, y + 1, (255, 236, 150))
+        P.rect(cx - 2, 30, cx + 2, 33, (200, 40, 60))
     if o == 'zarape':
         P.add(lambda d: d.polygon([(cx - 6, 27), (cx + 6, 27), (cx + 17, 40), (cx + 16, 70), (cx - 16, 70), (cx - 17, 40)], fill=255), (196, 60, 60), edge_k=.42)
         for y, col in ((40, (240, 200, 90)), (46, (60, 120, 150)), (52, (240, 240, 230)), (58, (60, 120, 150)), (64, (240, 200, 90))): P.rect(cx - 16, y, cx + 16, y + 1, col)
@@ -329,6 +335,12 @@ def over_r(P, CS, cx, HR, sk):
         P.add(lambda d: d.polygon([(cx - 12, 48), (cx + 12, 48), (cx + 15, 63), (cx - 15, 63)], fill=255), (60, 90, 150), edge_k=.42)
         P.rect(cx - 14, 60, cx + 14, 60, (240, 200, 90))
         P.add(lambda d: d.polygon([(cx - 15, 33), (cx + 15, 33), (cx + 16, 46), (cx, 42), (cx - 16, 46)], fill=255), (150, 50, 70), edge_k=.45)
+    if o == 'vestido':
+        P.add(lambda d: d.polygon([(cx - 12, 48), (cx + 12, 48), (cx + 14, 60), (cx - 14, 60)], fill=255), (70, 140, 160), edge_k=.42)
+    if o == 'luces':
+        for y in (38, 42, 46): P.rect(cx - 11, y, cx - 9, y, (255, 236, 150)); P.rect(cx + 9, y, cx + 11, y, (255, 236, 150))
+    if o == 'boxer':                                         # guantes
+        for sx in (-1, 1): P.add(lambda d, sx=sx: d.ellipse([cx + sx * 14 - 5, 44, cx + sx * 14 + 5, 54], fill=255), (200, 40, 40), edge_k=.45)
     if o == 'zarape':
         P.add(lambda d: d.polygon([(cx - 8, 32), (cx + 8, 32), (cx + 19, 40), (cx + 18, 54), (cx - 18, 54), (cx - 19, 40)], fill=255), (196, 60, 60), edge_k=.42)
         for y, col in ((41, (240, 200, 90)), (45, (60, 120, 150)), (49, (240, 240, 230))): P.rect(cx - 18, y, cx + 18, y + 1, col)
