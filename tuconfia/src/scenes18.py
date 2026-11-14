@@ -516,10 +516,11 @@ def _costume(T, tl, k):
     c.R(214, 30, 60, 100, (160, 120, 70)); c.R(218, 34, 52, 92, (180, 210, 230))   # espejo
     c.light(160, 30, 120, 40, (255, 240, 210), .5)
     body(c, 'cant_y', 140, 176, gesture(T, ('stand', 'hip'), 1.0), f=.9)
-    labels = [('PANTALÓN CAÍDO', 60, 140, 128), ('SOGA', 70, 112, 116), ('GABARDINA', 50, 70, 124), ('BIGOTE', 240, 54, 150)]
-    for i, (txt, lx, ly, ax) in enumerate(labels):
+    labels = [('GABARDINA', 66, 92, 127, 102), ('SOGA', 80, 116, 132, 126), ('PANTALÓN CAÍDO', 62, 134, 132, 140), ('BIGOTE', 222, 80, 144, 94)]
+    for i, (txt, lx, ly, ax, ay) in enumerate(labels):
         if tl > .5 + i * .7 or k > 0:
-            c.d.line([(lx + (30 if lx < 160 else -10), ly + 4), (ax, ly + 4)], fill=(255, 216, 74))
+            ex = lx + (len(txt) * 3 + 2 if lx < 160 else -len(txt) * 3 - 2)
+            c.d.line([(ex, ly + 4), (ax, ay)], fill=(255, 216, 74)); c.R(ax - 1, ay - 1, 3, 3, (255, 216, 74))
             bg.wtext(c, lx, ly, txt, (255, 216, 74), size=8, center=True)
     return fin(c, 'day', (1.04, 1, .96), .4)
 
@@ -530,7 +531,7 @@ def _costume_close(T, tl, k):
     return fin(c, 'day', (1.04, 1, .96), .45)
 
 
-costume = [_costume, _costume, _costume_close, _costume]
+costume = [_costume, _costume, _costume, _costume_close]
 
 
 # ================================================================ 5 · ahí está el detalle (1940)

@@ -336,7 +336,7 @@ def synth_audio():
     heartbeat = lambda: np.concatenate([thump(), np.zeros(int(.12 * SR)), thump() * .7])
 
     def laughs(t0, d, g=.5):                                   # risas: ráfagas de ruido modulado
-        n = noise(d, 2600); m = (.55 + .45 * np.sin(2 * np.pi * 5.5 * tt(d) + rng.random() * 6)) * np.minimum(1, np.minimum(tt(d), d - tt(d)) / .4)
+        n = noise(d, 1800); m = (.6 + .4 * np.sin(2 * np.pi * 4.5 * tt(d) + rng.random() * 6)) * np.minimum(1, np.minimum(tt(d), d - tt(d)) / 1.2)   # entrada y salida suaves
         add(n * m * .5, t0, g)
 
     def applause(t0, d, g=.5):
@@ -357,7 +357,7 @@ def synth_audio():
     s = first('freeze'); l3 = next(l for l in LINES if l['t'].startswith('Un segundo'))
     for w in l3['words'][:6]: add(np.sin(2 * np.pi * 1800 * tt(.05)) * np.exp(-tt(.05) * 60) * .5, w['start'], .6)   # tic de reloj en "un segundo, dos, tres"
     for k_ in ('babble', 'laugh', 'name'):
-        for s in sc.get(k_, []): laughs(s['t0'] + (.6 if k_ == 'babble' else 0), s['t1'] - s['t0'] - .4, .55 if k_ != 'babble' else .3)
+        for s in sc.get(k_, []): laughs(s['t0'] + (.6 if k_ == 'babble' else 0), s['t1'] - s['t0'] - .4, .28 if k_ != 'babble' else .16)
     for k_ in ('laugh', 'estreno', 'oscar', 'home'):
         for s in sc.get(k_, []): applause(s['t0'] + .2, min(5, s['t1'] - s['t0'] - .3), .5)
     s = first('boxing')                                        # campana del ring
@@ -424,6 +424,12 @@ if __name__ == '__main__':
         print(json.dumps([(s['kit'], round(s['t0'], 2), round(s['t1'], 2), s['chap']) for s in SCENES])); sys.exit()
     if args and args[0] == '--audio':
         synth_audio(); print('OK audio'); sys.exit()
+    if args and args[0] == '--range':                         # --range fa fb nombre: tramo de fotogramas (para re-renderizar solo una parte)
+        a_, b_, nm = int(args[1]), int(args[2]), args[3]
+        enc = subprocess.Popen(['ffmpeg', '-y', '-v', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{VW}x{VH}', '-r', str(FPS), '-i', '-',
+                                '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-tune', 'animation', '-pix_fmt', 'yuv420p', f'{ROOT}/out/{nm}.mp4'], stdin=subprocess.PIPE)
+        for fi in range(a_, b_): enc.stdin.write(frame(fi).tobytes())
+        enc.stdin.close(); enc.wait(); print('OK', nm); sys.exit()
     if args and args[0] == '--part':
         i_, n_ = int(args[1]), int(args[2]); nf = int(TOTAL * FPS); a_, b_ = nf * i_ // n_, nf * (i_ + 1) // n_
         enc = subprocess.Popen(['ffmpeg', '-y', '-v', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{VW}x{VH}', '-r', str(FPS), '-i', '-',
