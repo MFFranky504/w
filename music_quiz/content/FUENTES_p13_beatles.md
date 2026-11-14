@@ -5,4 +5,6 @@
 3. **Rechazo de 1962** — audición en Decca el 1 ene 1962, rechazados semanas después. La frase "los grupos de guitarras pasan de moda" se atribuye a Dick Rowe, quien lo negó → en el video va como "según la historia".
 4. **Azotea, Londres, 1969** — concierto del 30 ene 1969 en el techo de Apple Corps (3 Savile Row); la policía subió durante "Get Back" y el concierto terminó poco después.
 
-Respuesta de ayer: Nirvana — 104 ganadores (content/ganadores_p12_nirvana.json, un registro por usuario).
+Respuesta de ayer: Nirvana — 105 ganadores (incluye xolots_official, que respondió con un GIF de Kurt) (content/ganadores_p12_nirvana.json, un registro por usuario).
+
+Fondos: generados con Pollinations (modelo z-image-turbo), pixelados a 270x480 con paleta de 72 colores por pix_p13.py; originales en sprites/parte13/src. Revisados con Gemini (sin texto legible, logos ni personajes con copyright).

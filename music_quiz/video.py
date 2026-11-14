@@ -1511,8 +1511,13 @@ G13_ART = [_p13(f"artista_{k}.png") for k in range(6)]
 G13_SIL = [_sil_rgba(G13_ART[k]) for k in range(1, 5)] if G13_ART[1] else []
 if EP.get("gba_dir") == "parte13" and G13_SIL: G_ART_SIL = G13_SIL      # mystery silhouette of this episode
 GY = 266 - 139                                            # sprite cell is 100x140, feet on its row 138 (+1 outline)
+def ground_shadow(im, cx=135, cy=266, rx=30, ry=5, a_=.45):
+    arr = np.array(im).astype(np.float32); yy, xx = np.ogrid[cy - ry:cy + ry + 1, cx - rx:cx + rx + 1]
+    m = np.clip(1 - ((xx - cx) / rx) ** 2 - ((yy - cy) / ry) ** 2, 0, 1) * a_; arr[cy - ry:cy + ry + 1, cx - rx:cx + rx + 1] *= (1 - m)[..., None]
+    im.paste(Image.fromarray(arr.astype(np.uint8)))
 def gba_sil(im, t):
     f = G_ART_SIL[int(t * 6) % 4]; bob = 1 if int(t * 2.2) % 2 else 0
+    if EP.get("gba_dir") == "parte13": ground_shadow(im)
     im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 3)), 3)
 def kurt_gba(im, t, ts):                                      # reveal of Parte 12's answer (colour sprite from the Parte 12 sheet)
     bob = 1 if int(t * 2.4) % 2 else 0
@@ -1586,42 +1591,66 @@ def dyn_g_pool(im, t, ts, tag):
     for k in range(5):
         if int(t * 4 + k * 3) % 8 == 0: x = 20 + (k * 53) % 230; y = 262; d.point((x, y), fill=WHITE); d.point((x + 1, y), fill=(255, 240, 150))
 
-# ---- Parte 13 (The Beatles) scene animation ----
+# ---- Parte 13 (The Beatles) scene animation (AI-made pixel backgrounds + procedural life on top) ----
+def _lights(i):                                                      # bright, saturated pixels (lamps, neon, windows, sun) of background i
+    if not G13_BG[i]: return None
+    a = np.asarray(G13_BG[i]).astype(np.int16); mx = a.max(2); mn = a.min(2)
+    m = (mx > 215) & ((mx - mn) > 70); m[266:] = False; return m
+G13_LM = [_lights(i) for i in range(6)]
+def _pulse(im, i, t, amt=.22, speed=4.0, cell=12):
+    m = G13_LM[i]
+    if m is None: return
+    a = np.array(im).astype(np.float32); ys, xs = np.nonzero(m)
+    ph = ((xs // cell) * 7 + (ys // cell) * 13) % 17; k = 1 + amt * np.sin(t * speed + ph)
+    a[ys, xs] = np.clip(a[ys, xs] * k[:, None], 0, 255); im.paste(Image.fromarray(a.astype(np.uint8)))
+def _bloom(im, cx, cy, r, col, a_):
+    arr = np.array(im); glow(arr, cx, cy, r, col, a_); im.paste(Image.fromarray(arr))
+def _topdark(im, h=150, k=.55):                                     # darker sky band behind the big titles
+    a = np.array(im).astype(np.float32); g = (1 - np.clip(np.arange(h) / h, 0, 1) ** 1.5)[:, None, None] * k; a[:h] *= (1 - g); im.paste(Image.fromarray(a.astype(np.uint8)))
 def _birds(d, t, y0, col, n=3, sp=14):
     for k in range(n): x = (k * 90 + t * sp) % (W + 40) - 20; y = y0 + k * 16 + 5 * math.sin(t * 1.5 + k); f = int(t * 6 + k) % 2; d.line([(x - 5, y + (2 if f else -1)), (x, y), (x + 5, y + (2 if f else -1))], fill=col)
 def dyn_g13_port(im, t, ts, tag):
-    d = ImageDraw.Draw(im); _birds(d, t, 60, (250, 250, 250))
-    for k in range(10): y = 190 + k * 5; x = (k * 53 + t * 18) % W; d.line([(x, y), (x + 10, y)], fill=(255, 220, 190))            # sun glitter on the river
-    a = t * .3; d.line([(118, 83), (118 + 5 * math.sin(a), 83 - 5 * math.cos(a))], fill=(200, 40, 40))                              # clock hand
-    for k in range(5): d.point((61 + 2 * math.sin(t * 3 + k), 184 - ((t * 10 + k * 6) % 30)), fill=(220, 220, 230))               # ferry funnel smoke
+    a = np.array(im); band = a[196:250].copy()                                                                             # river: rows ripple sideways
+    for r in range(band.shape[0]):
+        s = int(round(1.6 * math.sin(t * 2.2 + r * .55)))
+        if s: a[196 + r] = np.roll(band[r], s, axis=0)
+    im.paste(Image.fromarray(a)); _pulse(im, 0, t, .15, 2.5); _bloom(im, 70, 150, 60, (255, 200, 120), .10 + .04 * math.sin(t * 2))
+    _topdark(im, 175, .78); d = ImageDraw.Draw(im); _birds(d, t, 40, (255, 255, 255), 4, 16)
+    for k in range(14):                                                                                                    # sun glitter on the water
+        if math.sin(t * 5 + k * 2.3) > .55: x = (k * 37 + int(t * 3)) % 200 + 20; y = 200 + (k * 11) % 44; d.line([(x, y), (x + 3, y)], fill=(255, 250, 210))
 def dyn_g13_hamburg(im, t, ts, tag):
-    d = ImageDraw.Draw(im)
-    if int(t * 3) % 5: d.rectangle((60, 86, 210, 112), outline=(255, 90, 170), width=2)                                              # flickering neon
-    else: d.rectangle((60, 86, 210, 112), outline=(90, 30, 60), width=2)
-    for k in range(6): x = 120 + k * 6 + 3 * math.sin(t * 2 + k); y = 200 - ((t * 14 + k * 9) % 70); d.point((x, y), fill=(130, 110, 140))   # smoke from the cellar
-    for k in range(4): x = 80 + k * 30; h = 3 + 3 * abs(math.sin(t * 7 + k)); d.rectangle((x, 236 - h, x + 2, 236), fill=(255, 214, 80))  # light pulsing out of the door
+    on = not (int(t * 9) % 23 in (3, 5))                                                                                  # neon stutters now and then
+    _pulse(im, 1, t, .28 if on else -.55, 6.0, 30)
+    if on: _bloom(im, 100, 110, 80, (255, 60, 170), .12); _bloom(im, 170, 150, 70, (60, 230, 255), .10)
+    d = ImageDraw.Draw(im); rs = random.Random(int(t * 30))
+    for _ in range(46): x = rs.randint(0, W); y = rs.randint(0, 270); d.line([(x, y), (x - 2, y + 7)], fill=(150, 160, 220))   # rain
+    for k in range(10): x = (k * 29 + int(t * 7)) % W; r = (t * 3 + k * .37) % 1; d.ellipse((x - 4 * r, 268 - r, x + 4 * r, 268 + r), outline=(170, 180, 240))   # splashes
+    for k in range(6): x = 70 + k * 5 + 3 * math.sin(t * 2 + k); y = 240 - ((t * 14 + k * 9) % 60); d.point((x, y), fill=(140, 120, 170))   # steam from the cellar
 def dyn_g13_fete(im, t, ts, tag):
-    d = ImageDraw.Draw(im); _birds(d, t, 70, (60, 60, 80))
-    for k in range(14):                                                                                                               # bunting flutter
-        x = 4 + k * 19; y = 20 + 8 * math.sin(math.pi * k / 13) + 2 * math.sin(t * 4 + k); d.polygon([(x, y), (x + 14, y), (x + 7, y + 12)], fill=[(230, 60, 60), (250, 250, 250), (60, 110, 220)][k % 3], outline=DARK)
-    n = int(t * 8) % 2; d.line([(32, 150), (46 + n, 200)], fill=(255, 255, 255))                                                   # tea-chest string vibrating
-    for k in range(3): x = 236 + 6 * math.sin(t * 2 + k); y = 200 - ((t * 8 + k * 7) % 20); d.point((x, y), fill=(240, 240, 240))    # tea steam
+    _pulse(im, 2, t, .10, 2.0); d = ImageDraw.Draw(im); _birds(d, t, 30, (60, 60, 90), 3, 12)
+    for k in range(4):                                                                                                     # butterflies
+        x = (k * 70 + t * 18) % (W + 20) - 10; y = 190 + 20 * math.sin(t * 1.3 + k * 2) + 6 * math.sin(t * 7 + k); f = int(t * 10 + k) % 2
+        c = [(255, 230, 80), (255, 140, 200), (140, 220, 255), (255, 255, 255)][k]; d.rectangle((x - 2 - f, y - 1, x - 1, y + 1), fill=c); d.rectangle((x + 1, y - 1, x + 2 + f, y + 1), fill=c)
+    for k in range(12): x = (k * 23 + t * 10 + 6 * math.sin(t + k)) % W; y = (k * 41 + t * 22) % 270; d.point((x, y), fill=[(255, 255, 255), (255, 200, 220)][k % 2])   # petals in the breeze
 def dyn_g13_audition(im, t, ts, tag):
+    _pulse(im, 3, t, .12, 3.0); _bloom(im, 134, 40, 70, (255, 190, 100), .14 + .05 * math.sin(t * 3))
     d = ImageDraw.Draw(im)
-    for cx in (200, 236): a = t * 5; d.line([(cx, 64), (cx + 10 * math.cos(a), 64 + 10 * math.sin(a))], fill=(200, 200, 210))      # tape reels spinning
-    for k in range(6): x = 22 + (k * 13 + t * 4) % 76; y = 42 + (t * 12 + k * 11) % 66; d.point((x, y), fill=WHITE)                  # snow falling outside
-    if int(t * 1.5) % 3 == 0: d.rectangle((194, 170, 224, 186), outline=(255, 60, 60), width=2)                                    # the stamp flashes
+    for k in range(18): x = 178 + (k * 13 + t * 5 + 3 * math.sin(t + k)) % 88; y = 12 + (t * 14 + k * 17) % 90; d.point((x, y), fill=WHITE)   # snow in the window
+    for cx, cy in ((61, 73),): a_ = t * 5; d.line([(cx, cy), (cx + 7 * math.cos(a_), cy + 7 * math.sin(a_))], fill=(230, 230, 240)); d.line([(cx, cy), (cx - 7 * math.cos(a_), cy - 7 * math.sin(a_))], fill=(230, 230, 240))   # reel spinning
+    for k in range(10): x = 110 + (k * 17 + t * 4) % 60; y = 60 + (k * 23 + t * 6) % 180; d.point((x, y), fill=(255, 230, 170))   # dust in the lamp light
 def dyn_g13_rooftop(im, t, ts, tag):
-    d = ImageDraw.Draw(im)
-    for k in range(5): x = (k * 61 + t * 40) % (W + 20) - 10; y = 120 + k * 14; d.line([(x, y), (x + 14, y)], fill=(235, 238, 245))   # cold wind
-    up = 2 * abs(math.sin(t * .8)); d.pieslice((236, 186 - up, 256, 210 - up), 180, 360, fill=(20, 24, 50), outline=DARK)           # police helmet bobbing
-    if int(t * 4) % 2: d.ellipse((96, 211, 120, 217), fill=(255, 240, 140), outline=DARK)                                          # cymbal shimmer
+    _pulse(im, 4, t, .08, 2.0); d = ImageDraw.Draw(im)
+    for k in range(7): x = (k * 47 + t * 60) % (W + 30) - 15; y = 60 + k * 26 + 4 * math.sin(t + k); d.line([(x, y), (x + 16, y)], fill=(235, 238, 245))   # cold wind
+    for cx, cy in ((46, 100), (70, 98), (92, 98), (176, 98), (220, 140)):                                                    # chimney smoke drifting right
+        for j in range(6): p = (t * .6 + j / 6) % 1; d.ellipse((cx + p * 30 - 2 - p * 3, cy - p * 40 - 2 - p * 3, cx + p * 30 + 2 + p * 3, cy - p * 40 + 2 + p * 3), fill=(205, 205, 212) if p < .7 else (180, 182, 190))
+    x = (t * 45) % (W + 40) - 20; y = 150 + 30 * math.sin(t * 2); d.polygon([(x, y), (x + 6, y - 2 + 2 * math.sin(t * 9)), (x + 5, y + 4), (x - 1, y + 5)], fill=(245, 240, 225), outline=DARK)   # loose sheet of paper
 def dyn_g13_crossing(im, t, ts, tag):
-    d = ImageDraw.Draw(im)
+    _pulse(im, 5, t, .30, 3.0, 20); _bloom(im, 193, 36, 40, (230, 240, 255), .10 + .04 * math.sin(t * 1.5))
+    for x in (6, 258): _bloom(im, x, 190, 26, (255, 200, 90), .25 if int(t * 2) % 2 else .05)                              # beacons blink
+    _topdark(im, 150, .5); d = ImageDraw.Draw(im)
     for k in range(30):
-        if math.sin(t * 3 + k * 1.9) > .6: d.point(((k * 47) % W, (k * 29) % 150), fill=(255, 255, 255))
-    for x in (44, 226):                                                                                                               # belisha beacons blink
-        if int(t * 2) % 2: d.ellipse((x - 7, 185, x + 7, 199), fill=(255, 220, 90), outline=DARK)
+        if math.sin(t * 3 + k * 1.9) > .6: d.point(((k * 47) % W, (k * 29) % 120), fill=(255, 255, 255))
+    for k in range(8): x = 60 + (k * 29 + 10 * math.sin(t * .7 + k)) % 160; y = 150 + 30 * math.sin(t * .9 + k * 1.3); c = (200, 255, 140) if math.sin(t * 4 + k) > 0 else (120, 160, 90); d.point((x, y), fill=c)   # fireflies
     s = (t * .5) % 4
     if s < .7: x = 240 - s * 260; y = 20 + s * 90; d.line([(x, y), (x + 14, y - 8)], fill=(255, 250, 210), width=2)
 
