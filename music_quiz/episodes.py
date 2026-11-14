@@ -121,6 +121,11 @@ WINNERS_P11 = [
 ]
 SPECIAL_P11 = {"Osamu Dazai": "1ER COMENTARIO"}
 
+# ---- winners of Parte 12 (Nirvana): comments naming Nirvana or Kurt Cobain (IG, TikTok, YouTube; each user once) ----
+import json as _json
+_P12 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "content", "ganadores_p12_nirvana.json")
+WINNERS_P12 = [(r["user"], r["plat"], r["pista"], r["likes"], r["horas"]) for r in _json.load(open(_P12))] if os.path.exists(_P12) else []
+
 def _sort_rows(raw):
     """Order requested by the channel owner: pista (1,2,3, sin pista) -> más likes -> comentó antes (más horas)."""
     s = sorted(enumerate(raw), key=lambda e: ((e[1][2] if e[1][2] else 9), -e[1][3], -e[1][4], e[0]))
@@ -144,6 +149,21 @@ EPISODES = {
                  text="En *2006* tocaron en *Coachella* dentro de una pirámide de pantallas y luces LED."),
             dict(n=5, diff="FÁCIL", pts=1, chip="GRAMMY", scene="grammy",
                  text="En *2014* ganaron el Grammy a *Álbum del Año*, con un disco que incluía «*Get Lucky*» junto a *Pharrell*."),
+        ]),
+    # ------------------------------------------------------------------ Parte 13: AC/DC (rock, estilo GBA) — respuesta de ayer: Nirvana
+    "p13": dict(
+        part=13, artist="The Beatles", genre="rock", music="rock", bpm=140, win_speed=360, prog=[0, 0, 5, 7, 0, 0, 5, 7], hook="b", next_part=14, gba=True, gba_dir="parte13",
+        hook_len=2.0, reveal=2.8, hook_scene="g13_hook", outro_scene="g13_outro", outro_sign=None,
+        prev=dict(sprite="kurt_gba", scene="g_outro", part=12, lines=("NIRVANA",), sub="ABERDEEN · WASHINGTON", winners=[], winners_part=12, special={}),
+        clues=[
+            dict(n=1, diff="ULTRA DIFÍCIL", pts=4, chip="48 NOCHES", scene="g13_hamburg",
+                 text="En *1960* tocaron *48 noches seguidas* en un club diminuto de *Hamburgo*, Alemania."),
+            dict(n=2, diff="MUY DIFÍCIL", pts=3, chip="SKIFFLE", scene="g13_fete",
+                 text="Empezaron como un grupo de *skiffle* con el nombre de una *escuela*. Dos miembros se conocieron en una *fiesta de iglesia*."),
+            dict(n=3, diff="DIFÍCIL", pts=2, chip="RECHAZO", scene="g13_audition",
+                 text="Una disquera los *rechazó* en *1962*; según la historia, dijeron que *los grupos de guitarras pasaban de moda*."),
+            dict(n=4, diff="MEDIA", pts=1, chip="AZOTEA", scene="g13_rooftop",
+                 text="Su último concierto público fue en la *azotea* de su oficina en *Londres*, en *1969*, hasta que llegó la policía."),
         ]),
     # ------------------------------------------------------------------ Parte 12: Nirvana (rock/grunge, estilo GBA) — respuesta de ayer: Queen
     "p12": dict(
@@ -214,6 +234,7 @@ EPISODES["p9"]["prev"]["winners"] = _sort_rows(WINNERS_P8)
 EPISODES["p10"]["prev"]["winners"] = _sort_rows(WINNERS_P9)
 EPISODES["p11"]["prev"]["winners"] = _sort_rows(WINNERS_P10)
 EPISODES["p12"]["prev"]["winners"] = _sort_rows(WINNERS_P11)
+EPISODES["p13"]["prev"]["winners"] = _sort_rows(WINNERS_P12)
 
 def current():
     ep = dict(EPISODES[os.environ.get("EPISODE", "p11")])

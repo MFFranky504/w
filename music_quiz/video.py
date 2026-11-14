@@ -528,6 +528,7 @@ def prev_draw(im, t, ts):
     kind = PREV["sprite"]
     if kind == "tyler": return tyler_draw(im, t, ts)
     if kind == "freddie_gba": return freddie_gba(im, t, ts)
+    if kind == "kurt_gba": return kurt_gba(im, t, ts)
     if kind == "mic": return mic_draw(im, t, ts)
     if kind == "nas2": return nas2_draw(im, t, ts)
     if kind == "snoop": snoop(im, t, mode="sil" if ts < REVEAL else "col"); (qmark(im, 140, 138 + int(3 * math.sin(t * 4)), 3) if ts < REVEAL else None); return
@@ -1502,10 +1503,22 @@ def _sil_rgba(im):
 G_BG = [_png(f"fondo_{i}.png", "RGB") for i in range(7)]
 G_ART = [_png(f"artista_{k}.png") for k in range(6)]; G_QUE = [_png(f"ayer_queen_{k}.png") for k in range(6)]
 G_ART_SIL = [_sil_rgba(G_ART[k]) for k in range(1, 5)] if G_ART[1] else []
+_D13 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sprites", "parte13")
+def _p13(name, mode="RGBA"):
+    p = os.path.join(_D13, name); return Image.open(p).convert(mode) if os.path.exists(p) else None
+G13_BG = [_p13(f"fondo_{i}.png", "RGB") for i in range(6)]
+G13_ART = [_p13(f"artista_{k}.png") for k in range(6)]
+G13_SIL = [_sil_rgba(G13_ART[k]) for k in range(1, 5)] if G13_ART[1] else []
+if EP.get("gba_dir") == "parte13" and G13_SIL: G_ART_SIL = G13_SIL      # mystery silhouette of this episode
 GY = 266 - 139                                            # sprite cell is 100x140, feet on its row 138 (+1 outline)
 def gba_sil(im, t):
     f = G_ART_SIL[int(t * 6) % 4]; bob = 1 if int(t * 2.2) % 2 else 0
     im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 3)), 3)
+def kurt_gba(im, t, ts):                                      # reveal of Parte 12's answer (colour sprite from the Parte 12 sheet)
+    bob = 1 if int(t * 2.4) % 2 else 0
+    if ts < REVEAL: f = G_ART[0]; im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 4)), 3); return
+    e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); f = G_ART[1 + int(t * 6) % 4]
+    im.paste(f, (85, GY + jump + bob), f)
 def freddie_gba(im, t, ts):
     bob = 1 if int(t * 2.4) % 2 else 0
     if ts < REVEAL: im.paste(G_QUE[0], (85, GY + bob), G_QUE[0]); qmark(im, 130, 98 + int(3 * math.sin(t * 4)), 3); return
@@ -1573,12 +1586,51 @@ def dyn_g_pool(im, t, ts, tag):
     for k in range(5):
         if int(t * 4 + k * 3) % 8 == 0: x = 20 + (k * 53) % 230; y = 262; d.point((x, y), fill=WHITE); d.point((x + 1, y), fill=(255, 240, 150))
 
+# ---- Parte 13 (The Beatles) scene animation ----
+def _birds(d, t, y0, col, n=3, sp=14):
+    for k in range(n): x = (k * 90 + t * sp) % (W + 40) - 20; y = y0 + k * 16 + 5 * math.sin(t * 1.5 + k); f = int(t * 6 + k) % 2; d.line([(x - 5, y + (2 if f else -1)), (x, y), (x + 5, y + (2 if f else -1))], fill=col)
+def dyn_g13_port(im, t, ts, tag):
+    d = ImageDraw.Draw(im); _birds(d, t, 60, (250, 250, 250))
+    for k in range(10): y = 190 + k * 5; x = (k * 53 + t * 18) % W; d.line([(x, y), (x + 10, y)], fill=(255, 220, 190))            # sun glitter on the river
+    a = t * .3; d.line([(118, 83), (118 + 5 * math.sin(a), 83 - 5 * math.cos(a))], fill=(200, 40, 40))                              # clock hand
+    for k in range(5): d.point((61 + 2 * math.sin(t * 3 + k), 184 - ((t * 10 + k * 6) % 30)), fill=(220, 220, 230))               # ferry funnel smoke
+def dyn_g13_hamburg(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    if int(t * 3) % 5: d.rectangle((60, 86, 210, 112), outline=(255, 90, 170), width=2)                                              # flickering neon
+    else: d.rectangle((60, 86, 210, 112), outline=(90, 30, 60), width=2)
+    for k in range(6): x = 120 + k * 6 + 3 * math.sin(t * 2 + k); y = 200 - ((t * 14 + k * 9) % 70); d.point((x, y), fill=(130, 110, 140))   # smoke from the cellar
+    for k in range(4): x = 80 + k * 30; h = 3 + 3 * abs(math.sin(t * 7 + k)); d.rectangle((x, 236 - h, x + 2, 236), fill=(255, 214, 80))  # light pulsing out of the door
+def dyn_g13_fete(im, t, ts, tag):
+    d = ImageDraw.Draw(im); _birds(d, t, 70, (60, 60, 80))
+    for k in range(14):                                                                                                               # bunting flutter
+        x = 4 + k * 19; y = 20 + 8 * math.sin(math.pi * k / 13) + 2 * math.sin(t * 4 + k); d.polygon([(x, y), (x + 14, y), (x + 7, y + 12)], fill=[(230, 60, 60), (250, 250, 250), (60, 110, 220)][k % 3], outline=DARK)
+    n = int(t * 8) % 2; d.line([(32, 150), (46 + n, 200)], fill=(255, 255, 255))                                                   # tea-chest string vibrating
+    for k in range(3): x = 236 + 6 * math.sin(t * 2 + k); y = 200 - ((t * 8 + k * 7) % 20); d.point((x, y), fill=(240, 240, 240))    # tea steam
+def dyn_g13_audition(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for cx in (200, 236): a = t * 5; d.line([(cx, 64), (cx + 10 * math.cos(a), 64 + 10 * math.sin(a))], fill=(200, 200, 210))      # tape reels spinning
+    for k in range(6): x = 22 + (k * 13 + t * 4) % 76; y = 42 + (t * 12 + k * 11) % 66; d.point((x, y), fill=WHITE)                  # snow falling outside
+    if int(t * 1.5) % 3 == 0: d.rectangle((194, 170, 224, 186), outline=(255, 60, 60), width=2)                                    # the stamp flashes
+def dyn_g13_rooftop(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for k in range(5): x = (k * 61 + t * 40) % (W + 20) - 10; y = 120 + k * 14; d.line([(x, y), (x + 14, y)], fill=(235, 238, 245))   # cold wind
+    up = 2 * abs(math.sin(t * .8)); d.pieslice((236, 186 - up, 256, 210 - up), 180, 360, fill=(20, 24, 50), outline=DARK)           # police helmet bobbing
+    if int(t * 4) % 2: d.ellipse((96, 211, 120, 217), fill=(255, 240, 140), outline=DARK)                                          # cymbal shimmer
+def dyn_g13_crossing(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for k in range(30):
+        if math.sin(t * 3 + k * 1.9) > .6: d.point(((k * 47) % W, (k * 29) % 150), fill=(255, 255, 255))
+    for x in (44, 226):                                                                                                               # belisha beacons blink
+        if int(t * 2) % 2: d.ellipse((x - 7, 185, x + 7, 199), fill=(255, 220, 90), outline=DARK)
+    s = (t * .5) % 4
+    if s < .7: x = 240 - s * 260; y = 20 + s * 90; d.line([(x, y), (x + 14, y - 8)], fill=(255, 250, 210), width=2)
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
        "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
        "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook)),
-       "g_hook": (G_BG[0], dyn_g_hook), "g_outro": (G_BG[6], dyn_g_outro), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
+       "g_hook": (G_BG[0], dyn_g_hook), "g13_hook": (G13_BG[0], dyn_g13_port), "g13_hamburg": (G13_BG[1], dyn_g13_hamburg), "g13_fete": (G13_BG[2], dyn_g13_fete), "g13_audition": (G13_BG[3], dyn_g13_audition), "g13_rooftop": (G13_BG[4], dyn_g13_rooftop), "g13_outro": (G13_BG[5], dyn_g13_crossing), "g_outro": (G_BG[6], dyn_g_outro), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
        "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards),
        "workshop": (WORKSHOP, dyn_workshop), "wembley": (WEMBLEY, dyn_wembley), "cafe": (CAFE, dyn_cafe), "school": (SCHOOL, dyn_school), "airport": (AIRPORT, dyn_airport)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
@@ -1637,7 +1689,7 @@ def ui_low(seg, ts, t):
                 lt(d, (135, 46 + dy), lines[0], s0, LIGHTBG_TXT if LIGHT_RECAP else WHITE, shadow=(255, 255, 255) if LIGHT_RECAP else (255, 70, 190)); lt(d, (135, 90 + dy), lines[1], s1, GOLD, shadow=(120, 50, 0)); py = 120
             else:
                 lt(d, (135, 40 + dy), "LA RESPUESTA DE AYER", 11, (255, 200, 120)); lt(d, (135, 82 + dy), lines[0], 56, GOLD, shadow=(120, 50, 0), anchor="mm"); py = 120
-            if PREV["sprite"] in ("tyler", "nas2", "freddie_gba"): py = 109
+            if PREV["sprite"] in ("tyler", "nas2", "freddie_gba", "kurt_gba"): py = 109
             if e > .5: pill(d, 135, py, py + 16, 196, (14, 8, 34), GOLD); lt(d, (135, py + 8), PREV["sub"], 9, (255, 200, 120))
             if ts > RECAP_LEN - 2.6:
                 b = int(2 * math.sin(t * 10)); msg = "¡AHORA LOS GANADORES!" if WINNERS else "¡HOY: UN NUEVO ARTISTA!"
