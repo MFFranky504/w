@@ -335,6 +335,8 @@ def over_r(P, CS, cx, HR, sk):
         for sx in (-1, 1):
             for k in range(5): P.add(lambda d, k=k, sx=sx: d.ellipse([cx + sx * 17 - 3, 22 + k * 5, cx + sx * 17 + 3, 28 + k * 5], fill=255), HR['b'], edge_k=.45)
             P.rect(cx + sx * 17 - 2, 47, cx + sx * 17 + 2, 48, (220, 60, 80))
+        if CS.get('v2'):                                   # flor en el pelo
+            P.add(lambda d: d.ellipse([cx - 16, 8, cx - 10, 14], fill=255), (240, 80, 110), edge_k=.5); P.rect(cx - 14, 10, cx - 13, 11, (255, 220, 120))
     m = CS.get('mst')
     if m == 'pencil':                                       # mechón inclinado hacia afuera; 7 px limpios en el centro
         for sx in (-1, 1): P.px(cx + sx * 4, 26, HR['dd']); P.px(cx + sx * 5, 26, HR['dd']); P.px(cx + sx * 6, 27, HR['dd'])

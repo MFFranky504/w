@@ -419,6 +419,28 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     P.px(cx + 1, 26, skdd); P.rect(cx - 1, 28, cx + 2, 28, (176, 72, 84)); P.px(cx + 2, 27, (176, 72, 84))
     if style not in ('king', 'short', 'shag'):
         for bx in (cx - 13, cx + 10): P.rect(bx, 26, bx + 2, 26, (246, 150, 150)); P.rect(bx + 1, 27, bx + 2, 27, (246, 150, 150))
+    if CS.get('v2'):                                   # cara «cute» (referencia del usuario): ojos altos y separados con pestaña, sin nariz, boca mínima, rubor
+        for yy in range(15, 30):
+            for xx in range(cx - 12, cx + 12):
+                if P.a[yy, xx, 3] > 0: P.a[yy, xx] = (*sk, 255)
+        DK = (26, 20, 38); fem_ = style == 'tab'; old = CS.get('age')
+        if fem_:
+            for ex, out in ((cx - 10, cx - 10), (cx + 6, cx + 10)):
+                P.rect(ex, 20, ex + 4, 20, DK); P.px(out + (1 if out > cx else -1), 20, DK); P.px(out + (1 if out > cx else -1), 21, DK)   # pestaña larga con rabillo hacia afuera
+                P.rect(ex + 1, 21, ex + 3, 22, DK); P.rect(ex + 1, 23, ex + 3, 24, CS['iris']); P.rect(ex + 1, 25, ex + 3, 25, tuple(min(255, int(v * 1.5 + 40)) for v in CS['iris']))
+                P.px(ex + 1, 21, (255, 255, 255)); P.px(ex + 3, 24, (255, 255, 255))
+            for bx in (cx - 12, cx + 10): P.rect(bx, 27, bx + 2, 27, (250, 140, 150)); P.rect(bx, 28, bx + 2, 28, (252, 170, 172))
+            P.rect(cx - 1, 29, cx, 29, (214, 80, 104))
+        else:
+            for ex in (cx - 9, cx + 6):
+                P.rect(ex, 20, ex + 3, 20, DK)                                                                          # pestaña de 4 px
+                P.rect(ex + 1, 21, ex + 2, 22 if old else 24, DK)                                                       # columna oscura de 2 px
+                if not old: P.rect(ex + 1, 24, ex + 2, 24, tuple(min(255, int(v * 1.3 + 30)) for v in CS['iris']))
+                P.px(ex + 1, 21, (255, 255, 255))
+                bw = 2 if CS.get('brows') == 'thick' else 1; up = 1 if (CS.get('raise') and ex > cx) else 0
+                P.rect(ex, 17 - up - (bw - 1), ex + 3, 17 - up, HR['dd'] if sum(HR['b']) < 420 else HR['d'])
+            for bx in (cx - 12, cx + 11): P.rect(bx, 26, bx + 1, 26, tuple(int(a * .6 + b * .4) for a, b in zip(sk, (250, 130, 130))))
+            P.rect(cx - 1, 28, cx, 28, (176, 72, 84))
     if CS['glasses']:   # gafas redondas
         for ex in (cx - 12, cx + 5):
             P.rect(ex, 18, ex + 7, 18, (34, 30, 48)); P.rect(ex, 26, ex + 7, 26, (34, 30, 48))
