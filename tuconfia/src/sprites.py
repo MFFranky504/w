@@ -490,7 +490,23 @@ def rpg(who='king', outfit=None, step=0, W=46, H=70):
     if style == 'tab' and CS.get('hair2') is None:    # horquilla
         P.rect(cx - 17, 14, cx - 14, 15, (255, 240, 170)); P.px(cx - 15, 14, (255, 255, 255))
     RG.over_r(P, CS, cx, HR, sk)
+    if CS.get('v2'): return _humanoid(P.final(), slim=style != 'tab')
     return P.final()
+
+
+def _humanoid(im, torso=(43, 44, 47), legs=(53, 54, 55, 56, 57, 58), slim=False):
+    """chibi más alto y proporcionado (referencia del usuario): repite filas interiores del torso y de las piernas.
+    Solo se repiten filas de color plano, así los contornos siguen siendo de 1 px."""
+    a = np.array(im); rows = []
+    if slim:                                               # cuerpo más estrecho que la cabeza: quita 4 columnas interiores por debajo del cuello
+        c = a.shape[1] // 2; keep = [x for x in range(a.shape[1]) if x not in (c - 8, c - 4, c + 3, c + 7)]
+        body = a[37:, keep]; pad = np.zeros((body.shape[0], 2, 4), a.dtype)
+        a = np.concatenate([a[:37], np.concatenate([pad, body, pad], 1)], 0)
+    for y in range(a.shape[0]):
+        rows.append(a[y])
+        if y in torso or y in legs: rows.append(a[y])
+    return Image.fromarray(np.stack(rows), 'RGBA')
+
 
 
 # ------------------------------------------------------------------ PERRO (Butkus, dogo/bullmastiff)
