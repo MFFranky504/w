@@ -1,0 +1,80 @@
+{
+ "titulo": "oprah",
+ "meta": {
+  "famoso": "Oprah Winfrey"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Hasta *Oprah Winfrey* fue sacada del noticiero donde empezó.",
+   "tts": "Hasta Ópra Uínfri fue sacada del noticiero donde empezó.",
+   "gen": "[bold] Hasta Ópra Uínfri fue sacada del noticiero donde empezó.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "Tenía 22 años y presentaba las noticias de las 6 en Baltimore.",
+   "tts": "Tenía veintidós años y presentaba las noticias de las seis en Bóltimor.",
+   "gen": "[sad] Tenía veintidós años y presentaba las noticias de las seis en Bóltimor.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "En abril de 1977 la quitaron de ese noticiero.",
+   "tts": "En abril de mil novecientos setenta y siete la quitaron de ese noticiero.",
+   "gen": "[sad] En abril de mil novecientos setenta y siete la quitaron de ese noticiero.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "Años después lo llamó su *fracaso*: dijo que se sintió humillada.",
+   "tts": "Años después lo llamó su fracaso: dijo que se sintió humillada.",
+   "gen": "[sad] Años después lo llamó su fracaso: dijo que se sintió humillada.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "No la despidieron: la pasaron a otro puesto en la misma cadena.",
+   "tts": "No la despidieron: la pasaron a otro puesto en la misma cadena.",
+   "gen": "[hopeful] No la despidieron: la pasaron a otro puesto en la misma cadena.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "En 1978 empezó a copresentar *People Are Talking*, un programa de charla.",
+   "tts": "En mil novecientos setenta y ocho empezó a copresentar Pípol Ar Tókin, un programa de charla.",
+   "gen": "[hopeful] En mil novecientos setenta y ocho empezó a copresentar Pípol Ar Tókin, un programa de charla.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Y en 1986 nació *The Oprah Winfrey Show*, para todo el país.",
+   "tts": "Y en mil novecientos ochenta y seis nació Di Ópra Uínfri Chou, para todo el país.",
+   "gen": "[excited] Y en mil novecientos ochenta y seis nació Di Ópra Uínfri Chou, para todo el país.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "¿Qué puerta cerrada hoy podría llevarte a tu lugar?",
+   "tts": "¿Qué puerta cerrada hoy podría llevarte a tu lugar?",
+   "gen": "[softly] ¿Qué puerta cerrada hoy podría llevarte a tu lugar?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

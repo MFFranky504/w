@@ -75,6 +75,7 @@ lines = [dict(id=f"L{i + 1}", rol='', t=l['t'], tts=l['tts'], gen=f"[{l['emo']}]
 json.dump(dict(titulo=name, meta=dict(famoso=who), lines=lines), open(f'{ROOT}/script_{name}_short.json', 'w'), ensure_ascii=False, indent=1)
 json.dump(dict(cast=d['cast'], scenes=sc, turn=d['turn'], hooks=d['hooks']), open(f'{ROOT}/story_{name}.json', 'w'), ensure_ascii=False, indent=1)
 json.dump(d, open(f'{ROOT}/gemini_{name}.json', 'w'), ensure_ascii=False, indent=1)
+if os.environ.get('SOLO_GUION'): print('guion listo (sin voz):', f'{ROOT}/gemini_{name}.json'); sys.exit()
 tts = ' '.join(l['tts'] for l in lines)
 tmp = '/tmp/w/dk'; os.makedirs(tmp, exist_ok=True)
 open(f'{tmp}/{name}.json', 'w').write(json.dumps({"text": ' '.join(l['gen'] for l in lines), "model_id": "eleven_v3", "language_code": "es", "seed": 7, "voice_settings": {"stability": 0.0, "similarity_boost": 0.8, "style": 0.8}}))

@@ -1,0 +1,129 @@
+{
+ "hechos": {
+  "Oprah Winfrey 22 años Baltimore 1976": "VERIFICADO",
+  "Reasignada del noticiero de las 6 en 1977": "VERIFICADO",
+  "Oprah dijo que fracasó y se sintió humillada": "VERIFICADO",
+  "Copresentó People Are Talking en 1978": "VERIFICADO",
+  "The Oprah Winfrey Show nacional en 1986": "VERIFICADO"
+ },
+ "lines": [
+  {
+   "t": "Hasta *Oprah Winfrey* fue reasignada de su noticiero de las 6 en 1976.",
+   "tts": "Hasta Oprah Winfrey fue reasignada de su noticiero de las seis en mil novecientos setenta y seis.",
+   "emo": "bold"
+  },
+  {
+   "t": "Con solo 22 años, la sacaron de la pantalla en 1977.",
+   "tts": "Con solo veintidós años, la sacaron de la pantalla en mil novecientos setenta y siete.",
+   "emo": "sad"
+  },
+  {
+   "t": "Ella misma confesó que allí sintió *fracaso* y mucha humillación.",
+   "tts": "Ella misma confesó que allí sintió fracaso y mucha humillación.",
+   "emo": "sad"
+  },
+  {
+   "t": "Pero en 1978, un giro la llevó al programa *People Are Talking*.",
+   "tts": "Pero en mil novecientos setenta y ocho, un giro la llevó al programa People Are Talking.",
+   "emo": "hopeful"
+  },
+  {
+   "t": "Fue ahí donde descubrió su verdadera vocación frente a la audiencia.",
+   "tts": "Fue ahí donde descubrió su verdadera vocación frente a la audiencia.",
+   "emo": "warmly"
+  },
+  {
+   "t": "En 1986, lanzó *The Oprah Winfrey Show* a nivel nacional.",
+   "tts": "En mil novecientos ochenta y seis, lanzó The Oprah Winfrey Show a nivel nacional.",
+   "emo": "excited"
+  },
+  {
+   "t": "Un cambio de formato cambió su *destino* para siempre.",
+   "tts": "Un cambio de formato cambió su destino para siempre.",
+   "emo": "warmly"
+  },
+  {
+   "t": "¿Qué puerta se está cerrando hoy que podría abrirte un camino inesperado?",
+   "tts": "¿Qué puerta se está cerrando hoy que podría abrirte un camino inesperado?",
+   "emo": "softly"
+  }
+ ],
+ "cast": {
+  "young": {
+   "skin": [
+    210,
+    150,
+    100
+   ],
+   "hair": [
+    0,
+    0,
+    0
+   ],
+   "style": "short",
+   "outfit": "blazer",
+   "beard": false,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    210,
+    150,
+    100
+   ],
+   "hair": [
+    0,
+    0,
+    0
+   ],
+   "style": "short",
+   "outfit": "blazer",
+   "beard": false,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_flop",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 3
+  },
+  {
+   "kit": "e_sign",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "NO LA QUERÍAN",
+   "l2": "EN EL NOTICIERO"
+  }
+ ],
+ "titulo_short": "El fracaso de Oprah Winfrey 📺",
+ "resumen": "Oprah Winfrey fue reasignada en 1977 tras un inicio difícil en 1976. En 1986 logró lanzar su exitoso show nacional.",
+ "pregunta": "¿Qué puerta se está cerrando hoy que podría abrirte un camino inesperado?",
+ "hashtag": "#OprahWinfrey",
+ "riesgos": [],
+ "fonetica": {
+  "Oprah Winfrey": "Ópra Uínfri",
+  "People Are Talking": "Pípol Ar Tokin",
+  "The Oprah Winfrey Show": "The Ópra Uínfri Shou"
+ }
+}
