@@ -296,6 +296,7 @@ for ci, c in enumerate(CLUES):
     elif sc in ("workshop", "wembley"): S(lp(noise(d), 25) * .1, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc in ("g_garage", "g_studio"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc == "g_aberdeen": S(hp(noise(d), 2) * .05, t0, 1.0)
+    elif sc.startswith("g14"): S(lp(noise(d), 30) * .08, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc in ("g13_hamburg", "g13_audition"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc in ("g13_fete", "g13_rooftop"): S(hp(noise(d), 2) * .05, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc == "g_pool":

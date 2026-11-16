@@ -529,6 +529,7 @@ def prev_draw(im, t, ts):
     if kind == "tyler": return tyler_draw(im, t, ts)
     if kind == "freddie_gba": return freddie_gba(im, t, ts)
     if kind == "kurt_gba": return kurt_gba(im, t, ts)
+    if kind == "beatles_gba": return beatles_gba(im, t, ts)
     if kind == "mic": return mic_draw(im, t, ts)
     if kind == "nas2": return nas2_draw(im, t, ts)
     if kind == "snoop": snoop(im, t, mode="sil" if ts < REVEAL else "col"); (qmark(im, 140, 138 + int(3 * math.sin(t * 4)), 3) if ts < REVEAL else None); return
@@ -1510,6 +1511,13 @@ G13_BG = [_p13(f"fondo_{i}.png", "RGB") for i in range(6)]
 G13_ART = [_p13(f"artista_{k}.png") for k in range(6)]
 G13_SIL = [_sil_rgba(G13_ART[k]) for k in range(1, 5)] if G13_ART[1] else []
 if EP.get("gba_dir") == "parte13" and G13_SIL: G_ART_SIL = G13_SIL      # mystery silhouette of this episode
+_D14 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sprites", "parte14")
+def _p14(name, mode="RGBA"):
+    p = os.path.join(_D14, name); return Image.open(p).convert(mode) if os.path.exists(p) else None
+G14_BG = [_p14(f"fondo_{i}.png", "RGB") for i in range(7)]
+G14_ART = [_p14(f"artista_{k}.png") for k in range(6)]
+G14_SIL = [_sil_rgba(G14_ART[k]) for k in range(1, 5)] if G14_ART[1] else []
+if EP.get("gba_dir") == "parte14" and G14_SIL: G_ART_SIL = G14_SIL      # mystery silhouette of this episode
 GY = 266 - 139                                            # sprite cell is 100x140, feet on its row 138 (+1 outline)
 def ground_shadow(im, cx=135, cy=266, rx=30, ry=5, a_=.45):
     arr = np.array(im).astype(np.float32); yy, xx = np.ogrid[cy - ry:cy + ry + 1, cx - rx:cx + rx + 1]
@@ -1517,12 +1525,17 @@ def ground_shadow(im, cx=135, cy=266, rx=30, ry=5, a_=.45):
     im.paste(Image.fromarray(arr.astype(np.uint8)))
 def gba_sil(im, t):
     f = G_ART_SIL[int(t * 6) % 4]; bob = 1 if int(t * 2.2) % 2 else 0
-    if EP.get("gba_dir") == "parte13": ground_shadow(im)
+    if EP.get("gba_dir") in ("parte13", "parte14"): ground_shadow(im)
     im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 3)), 3)
 def kurt_gba(im, t, ts):                                      # reveal of Parte 12's answer (colour sprite from the Parte 12 sheet)
     bob = 1 if int(t * 2.4) % 2 else 0
     if ts < REVEAL: f = G_ART[0]; im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 4)), 3); return
     e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); f = G_ART[1 + int(t * 6) % 4]
+    im.paste(f, (85, GY + jump + bob), f)
+def beatles_gba(im, t, ts):                                   # reveal of Parte 13's answer (colour mop-top sprite from the Parte 13 sheet)
+    bob = 1 if int(t * 2.4) % 2 else 0
+    if ts < REVEAL: f = G13_ART[0]; im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 4)), 3); return
+    e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); f = G13_ART[1 + int(t * 6) % 4]
     im.paste(f, (85, GY + jump + bob), f)
 def freddie_gba(im, t, ts):
     bob = 1 if int(t * 2.4) % 2 else 0
@@ -1654,12 +1667,86 @@ def dyn_g13_crossing(im, t, ts, tag):
     s = (t * .5) % 4
     if s < .7: x = 240 - s * 260; y = 20 + s * 90; d.line([(x, y), (x + 14, y - 8)], fill=(255, 250, 210), width=2)
 
+# ---- Parte 14 (Michael Jackson) scene animation: lights, bulbs, confetti, smoke... drawn over the procedural backgrounds ----
+def _bulbs(d, pts, t, cols, r=2, speed=6):
+    for k, (x, y) in enumerate(pts): on = int(t * speed + k) % 3 != 0; d.ellipse((x - r, y - r, x + r, y + r), fill=cols[k % len(cols)] if on else (70, 50, 70), outline=DARK)
+def _sparkle(d, x, y, t, k, col=(255, 250, 200)):
+    s = math.sin(t * 5 + k * 2.1)
+    if s > .55: d.point((x, y), fill=WHITE); d.line([(x - 2, y), (x + 2, y)], fill=col); d.line([(x, y - 2), (x, y + 2)], fill=col)
+def dyn_g14_hook(im, t, ts, tag):
+    arr = np.array(im)
+    for k, (x, col) in enumerate(((26, (255, 110, 190)), (102, (255, 244, 210)), (170, (255, 244, 210)), (216, (110, 200, 255)))):
+        beam(arr, x + 18 * math.sin(t * 1.1 + k * 1.7), 135 + 30 * math.sin(t * .9 + k), 36, 266, 6, 90, col, .16)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for k in range(14): a = t * 1.2 + k * .45; x = 135 + 22 * math.cos(a + k); y = 78 + 14 * math.sin(a * 1.3 + k); _sparkle(d, x, y, t, k, (170, 220, 255))   # mirror-ball facets
+    for k in range(40):                                                                                                         # dance floor tiles light up in waves
+        gx, gy = (k * 7) % 15, (k * 5) % 12; x, y = gx * 18, 266 + gy * 16
+        if math.sin(t * 3 + gx * .7 + gy * .9) > .55: c = [(255, 80, 190), (90, 230, 255), (255, 230, 90), (130, 255, 150)][(gx + gy) % 4]; d.rectangle((x + 1, y + 1, x + 16, y + 14), fill=c)
+    for k in range(30): _sparkle(d, (k * 41) % W, (k * 37) % 230, t, k)
+def dyn_g14_gary(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    _bulbs(d, [(100 + k * 9, 98) for k in range(9)], t, [(255, 240, 160), (255, 160, 90)], 2, 7)
+    for (x, h) in ((14, 110), (196, 130), (154, 96)):                                                                           # smoke rising
+        for k in range(5): p = (t * .35 + k / 5) % 1; r_ = 5 + p * 14; d.ellipse((x + 8 + p * 40 - r_, 236 - h - 10 - p * 90 - r_, x + 8 + p * 40 + r_, 236 - h - 10 - p * 90 + r_), fill=(190 - int(p * 50), 140 - int(p * 30), 160 - int(p * 20)))
+    for x in range(70, 150, 20):
+        if math.sin(t * 6 + x) > -.2: d.rectangle((x + 5, 188, x + 9, 198), fill=(255, 230, 130))
+    for k in range(4): p = (t * .5 + k * .25) % 1; d.text((236 + 14 * math.sin(p * 6 + k), 212 - p * 60), "♪", font=F(10 + k % 2 * 2), fill=(255, 240, 160), anchor="mm")   # notes from the radio
+    for k in range(2): x = (k * 120 + t * 12) % (W + 40) - 20; y = 60 + k * 26 + 4 * math.sin(t * 1.6 + k); f = int(t * 6 + k) % 2; d.line([(x - 5, y + (2 if f else -1)), (x, y), (x + 5, y + (2 if f else -1))], fill=(60, 30, 40))
+    for k in range(10): _sparkle(d, 120 + (k * 53) % 140, 200 + (k * 11) % 30, t, k, (255, 200, 140))
+def dyn_g14_grammy(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    _bulbs(d, [(62 + k * 5.7, 53) for k in range(26)] + [(62 + k * 5.7, 150) for k in range(26)], t, [(255, 240, 170), (255, 200, 80)], 2, 8)
+    k_ = int(t * 2.2) % 8; d.line([(38 + k_ * 28 - 8, 150), (38 + k_ * 28 + 14, 176)], fill=WHITE); _sparkle(d, 38 + k_ * 28 + 10, 160, t, 1, (255, 244, 170))   # glint travels along the trophies
+    for k in range(8): _sparkle(d, 38 + k * 28 + 6, 158 + (k % 3) * 4, t, k * 3, (255, 244, 170))
+    for k in range(60):                                                                                                         # confetti falling
+        x = (k * 47 + 8 * math.sin(t * 2 + k)) % W; y = (t * (30 + k % 5 * 8) + k * 31) % 262; d.rectangle((x, y, x + 1, y + 2), fill=[(250, 200, 60), (255, 90, 150), (120, 220, 255), (255, 255, 255)][k % 4])
+    arr = np.array(im); glow(arr, 137, 100, 120, (255, 190, 60), .08 + .06 * math.sin(t * 3)); im.paste(Image.fromarray(arr))
+def dyn_g14_motown(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    pts = [(54 + k * 9 + 2, 48) for k in range(18)] + [(54 + k * 9 + 2, 155) for k in range(18)] + [(52, 56 + k * 15) for k in range(7)] + [(218, 56 + k * 15) for k in range(7)]
+    _bulbs(d, pts, t, [(255, 220, 120), (255, 120, 190)], 2, 9)
+    if int(t * 1.6) % 2: d.rectangle((8, 70, 44, 108), fill=(255, 70, 100), outline=DARK); d.text((26, 84), "ON", font=F(11), fill=WHITE, anchor="mm"); d.text((26, 99), "AIR", font=F(11), fill=WHITE, anchor="mm")
+    for x in (24, 226):
+        if int(t * 2) % 2: d.ellipse((x + 4, 170, x + 8, 174), fill=(255, 60, 60)); d.ellipse((x + 3, 169, x + 9, 175), outline=(255, 140, 140))
+    arr = np.array(im)
+    for k, x in enumerate((20, 250, 135)): beam(arr, x + 40 * math.sin(t * .9 + k * 2), 135, 10, 250, 6, 80, (255, 255, 255), .12)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for k in range(40): _sparkle(d, (k * 61) % W, (k * 29) % 230, t, k, (255, 190, 240))
+    for y in range(266, 330, 14):                                                                                               # glossy floor shimmer
+        for x in range(0, W, 36):
+            if math.sin(t * 3 + x * .1 + y * .2) > .7: d.rectangle((x + 4, y + 3, x + 12, y + 5), fill=(190, 170, 255))
+def dyn_g14_crown(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    for k, (x, y) in enumerate(((135, 126), (122, 134), (150, 140), (48, 160), (222, 168), (120, 150), (160, 128), (206, 172), (40, 168), (236, 176))): _sparkle(d, x + 3 * math.sin(t + k), y, t, k * 2)
+    for k in range(26): x = 40 + (k * 37 + t * 5 * (1 + k % 3)) % 190; y = 30 + (k * 53 + t * 9) % 200; d.point((x, y), fill=(255, 244, 200))   # dust in the spotlight
+    arr = np.array(im); glow(arr, 135, 140, 90, (255, 220, 120), .06 + .05 * math.sin(t * 2.4)); im.paste(Image.fromarray(arr))
+def dyn_g14_night(im, t, ts, tag):
+    arr = np.array(im)
+    for k, (x, c) in enumerate(((30, (255, 255, 255)), (110, (255, 244, 200)), (246, (200, 230, 255)))): beam(arr, x + 50 + 70 * math.sin(t * .6 + k * 2.1), x, 0, 236, 46, 8, c, .08)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    _bulbs(d, [(65 + k * 6, 158) for k in range(10)], t, [(255, 244, 190), (255, 150, 200)], 2, 6)
+    for k in range(40):
+        if math.sin(t * 3 + k * 1.9) > .6: d.point(((k * 47) % W, (k * 29) % 130), fill=(255, 255, 255))
+    for k in range(10): d.point(((k * 61 + t * 8) % W, 170 + (k * 17) % 60 + 3 * math.sin(t * 2 + k)), fill=(255, 214, 140))
+    s = (t * .5) % 4
+    if s < .7: x = 240 - s * 260; y = 20 + s * 90; d.line([(x, y), (x + 14, y - 8)], fill=(255, 250, 210), width=2)
+    for k in range(3): x = (k * 90 + t * 10) % (W + 40) - 20; y = 50 + k * 22 + 4 * math.sin(t * 1.5 + k); f = int(t * 6 + k) % 2; d.line([(x - 5, y + (2 if f else -1)), (x, y), (x + 5, y + (2 if f else -1))], fill=(30, 20, 50))
+def dyn_g14_abbey(im, t, ts, tag):
+    d = ImageDraw.Draw(im); _birds(d, t, 30, (60, 60, 80), 4, 14)
+    for x in (178, 250):
+        d.ellipse((x - 6, 178, x + 6, 192), fill=(255, 190, 60) if int(t * 2) % 2 else (200, 140, 40), outline=DARK)
+    for k in range(10): x = (k * 29 + 10 * math.sin(t + k) + t * 6) % W; y = (t * (14 + k % 4 * 4) + k * 41) % 230; d.ellipse((x, y, x + 2, y + 1), fill=[(120, 190, 90), (190, 210, 90)][k % 2])   # leaves falling
+    for k in range(3):                                                                                                          # butterflies
+        x = (k * 80 + t * 14) % (W + 20) - 10; y = 214 + 8 * math.sin(t * 1.3 + k * 2) + 4 * math.sin(t * 7 + k); f = int(t * 10 + k) % 2; c = [(255, 230, 80), (255, 255, 255), (255, 150, 200)][k]
+        d.rectangle((x - 2 - f, y - 1, x - 1, y + 1), fill=c); d.rectangle((x + 1, y - 1, x + 2 + f, y + 1), fill=c)
+    arr = np.array(im); glow(arr, 200, 30, 120, (255, 244, 200), .08); im.paste(Image.fromarray(arr))
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
        "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
        "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook)),
-       "g_hook": (G_BG[0], dyn_g_hook), "g13_hook": (G13_BG[0], dyn_g13_port), "g13_hamburg": (G13_BG[1], dyn_g13_hamburg), "g13_fete": (G13_BG[2], dyn_g13_fete), "g13_audition": (G13_BG[3], dyn_g13_audition), "g13_rooftop": (G13_BG[4], dyn_g13_rooftop), "g13_outro": (G13_BG[5], dyn_g13_crossing), "g_outro": (G_BG[6], dyn_g_outro), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
+       "g_hook": (G_BG[0], dyn_g_hook), "g13_hook": (G13_BG[0], dyn_g13_port), "g13_hamburg": (G13_BG[1], dyn_g13_hamburg), "g13_fete": (G13_BG[2], dyn_g13_fete), "g13_audition": (G13_BG[3], dyn_g13_audition), "g13_rooftop": (G13_BG[4], dyn_g13_rooftop), "g13_outro": (G13_BG[5], dyn_g13_crossing), "g14_hook": (G14_BG[0], dyn_g14_hook), "g14_gary": (G14_BG[1], dyn_g14_gary), "g14_grammy": (G14_BG[2], dyn_g14_grammy), "g14_motown": (G14_BG[3], dyn_g14_motown), "g14_crown": (G14_BG[4], dyn_g14_crown), "g14_outro": (G14_BG[5], dyn_g14_night), "g14_abbey": (G14_BG[6], dyn_g14_abbey), "g_outro": (G_BG[6], dyn_g_outro), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
        "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards),
        "workshop": (WORKSHOP, dyn_workshop), "wembley": (WEMBLEY, dyn_wembley), "cafe": (CAFE, dyn_cafe), "school": (SCHOOL, dyn_school), "airport": (AIRPORT, dyn_airport)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
@@ -1671,7 +1758,7 @@ SCENES = [_hook, REG[PREV["scene"]], _win] + [REG[c["scene"]] for c in CLUES] + 
 
 
 # ======================= UI / winners / render (v4) =======================
-LIGHT_RECAP = PREV["sprite"] == "tyler"; LIGHTBG_TXT = (70, 20, 120)
+LIGHT_RECAP = PREV["sprite"] in ("tyler", "beatles_gba"); LIGHTBG_TXT = (70, 20, 120)
 def pill(d, cx, y0, y1, w, fill, outline=None):
     d.rectangle((cx - w // 2, y0, cx + w // 2, y1), fill=fill, outline=outline)
 
@@ -1718,7 +1805,7 @@ def ui_low(seg, ts, t):
                 lt(d, (135, 46 + dy), lines[0], s0, LIGHTBG_TXT if LIGHT_RECAP else WHITE, shadow=(255, 255, 255) if LIGHT_RECAP else (255, 70, 190)); lt(d, (135, 90 + dy), lines[1], s1, GOLD, shadow=(120, 50, 0)); py = 120
             else:
                 lt(d, (135, 40 + dy), "LA RESPUESTA DE AYER", 11, (255, 200, 120)); lt(d, (135, 82 + dy), lines[0], 56, GOLD, shadow=(120, 50, 0), anchor="mm"); py = 120
-            if PREV["sprite"] in ("tyler", "nas2", "freddie_gba", "kurt_gba"): py = 109
+            if PREV["sprite"] in ("tyler", "nas2", "freddie_gba", "kurt_gba", "beatles_gba"): py = 109
             if e > .5: pill(d, 135, py, py + 16, 196, (14, 8, 34), GOLD); lt(d, (135, py + 8), PREV["sub"], 9, (255, 200, 120))
             if ts > RECAP_LEN - 2.6:
                 b = int(2 * math.sin(t * 10)); msg = "¡AHORA LOS GANADORES!" if WINNERS else "¡HOY: UN NUEVO ARTISTA!"
@@ -1815,7 +1902,7 @@ def draw_winners(img, ts):
         sz = 44; avail = ww - 110 - bw - 40
         while sz > 22 and wd.textlength(r["h"], font=fnt(sz)) > avail: sz -= 2
         wd.text((110, y + ROW_H // 2 - 4), r["h"], font=fnt(sz), fill=DARK if top else WHITE, anchor="lm")
-        wd.text((ww - 24, y + ROW_H // 2 - 4), badge, font=fb, fill=(150, 20, 60) if top else (255, 170, 205), anchor="rm")
+        if badge: wd.text((ww - 24, y + ROW_H // 2 - 4), badge, font=fb, fill=(150, 20, 60) if top else (255, 170, 205), anchor="rm")
     img.paste(win, (wx0, wy0))
 
 def draw_panel_text(img, seg, ts):

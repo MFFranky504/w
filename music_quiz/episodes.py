@@ -126,6 +126,9 @@ import json as _json
 _P12 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "content", "ganadores_p12_nirvana.json")
 WINNERS_P12 = [(r["user"], r["plat"], r["pista"], r["likes"], r["horas"]) for r in _json.load(open(_P12))] if os.path.exists(_P12) else []
 
+_P13 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "content", "ganadores_p13_beatles.json")
+WINNERS_P13 = [(r["user"], r["plat"], r["pista"], r["likes"], r["horas"]) for r in _json.load(open(_P13))] if os.path.exists(_P13) else []
+
 def _sort_rows(raw):
     """Order requested by the channel owner: pista (1,2,3, sin pista) -> más likes -> comentó antes (más horas)."""
     s = sorted(enumerate(raw), key=lambda e: ((e[1][2] if e[1][2] else 9), -e[1][3], -e[1][4], e[0]))
@@ -150,7 +153,22 @@ EPISODES = {
             dict(n=5, diff="FÁCIL", pts=1, chip="GRAMMY", scene="grammy",
                  text="En *2014* ganaron el Grammy a *Álbum del Año*, con un disco que incluía «*Get Lucky*» junto a *Pharrell*."),
         ]),
-    # ------------------------------------------------------------------ Parte 13: AC/DC (rock, estilo GBA) — respuesta de ayer: Nirvana
+    # ------------------------------------------------------------------ Parte 14: Michael Jackson (pop/funk, estilo GBA) — respuesta de ayer: The Beatles
+    "p14": dict(
+        part=14, artist="Michael Jackson", genre="pop", music="house", hook="b", next_part=15, gba=True, gba_dir="parte14",
+        hook_len=2.0, reveal=2.8, hook_scene="g14_hook", outro_scene="g14_outro", outro_sign=None,
+        prev=dict(sprite="beatles_gba", scene="g14_abbey", part=13, lines=("THE", "BEATLES"), sub="LIVERPOOL · INGLATERRA", winners=[], winners_part=13, special={}),
+        clues=[
+            dict(n=1, diff="ULTRA DIFÍCIL", pts=4, chip="A LOS 11", scene="g14_gary",
+                 text="A los *11 años* ya tenía un *#1 en EE. UU.* con un grupo de *hermanos*: sus primeros *cuatro sencillos* llegaron al número uno."),
+            dict(n=2, diff="MUY DIFÍCIL", pts=3, chip="8 GRAMMYS", scene="g14_grammy",
+                 text="En *1984* ganó *8 Grammys* en una sola noche, un récord que nadie ha superado."),
+            dict(n=3, diff="DIFÍCIL", pts=2, chip="1983 · TV", scene="g14_motown",
+                 text="En *1983*, en un especial de TV por el *aniversario* de su antigua discográfica, estrenó un *paso de baile* que parece deslizarse hacia atrás."),
+            dict(n=4, diff="MEDIA", pts=1, chip="REY DEL POP", scene="g14_crown",
+                 text="Le dicen el *Rey del Pop*: sombrero *fedora*, un solo *guante* brillante y mocasines negros."),
+        ]),
+    # ------------------------------------------------------------------ Parte 13: The Beatles (rock, estilo GBA) — respuesta de ayer: Nirvana
     "p13": dict(
         part=13, artist="The Beatles", genre="rock", music="rock", bpm=140, win_speed=360, prog=[0, 0, 5, 7, 0, 0, 5, 7], hook="b", next_part=14, gba=True, gba_dir="parte13",
         hook_len=2.0, reveal=2.8, hook_scene="g13_hook", outro_scene="g13_outro", outro_sign=None,
@@ -235,6 +253,7 @@ EPISODES["p10"]["prev"]["winners"] = _sort_rows(WINNERS_P9)
 EPISODES["p11"]["prev"]["winners"] = _sort_rows(WINNERS_P10)
 EPISODES["p12"]["prev"]["winners"] = _sort_rows(WINNERS_P11)
 EPISODES["p13"]["prev"]["winners"] = _sort_rows(WINNERS_P12)
+EPISODES["p14"]["prev"]["winners"] = _sort_rows(WINNERS_P13)
 
 def current():
     ep = dict(EPISODES[os.environ.get("EPISODE", "p11")])
