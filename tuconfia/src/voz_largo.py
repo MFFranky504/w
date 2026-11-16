@@ -3,7 +3,7 @@ Uso: python3 src/voz_largo.py <guion_final.json> <nombre>"""
 import json, re, sys, os, subprocess, time
 from num2words import num2words
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-EN = {'Mike Todd': 'Maik Tod', 'Passepartout': 'Paspartú', 'Hollywood': 'Jólibud', 'Valentina Ivanova': 'Valentina Ivánova'}
+EN = {'Mike Todd': 'Maik Tod', 'Steve Jobs': 'Stiv Yobs', 'Jobs': 'Yobs', 'Pixar': 'Píksar', 'NeXT': 'Néxt', 'Apple': 'Ápel', 'Lucasfilm': 'Lúcasfilm', 'Universal': 'Iunivérsal', 'Sylvester Stallone': 'Silvéster Stalón', 'Stallone': 'Stalón', 'Rocky': 'Róki', 'Butkus': 'Bútkus', 'Rowling': 'Róuling', 'J. K.': 'Yéi Kéi', 'Bloomsbury': 'Blúmsberi', 'Jim Carrey': 'Yim Kári', 'Carrey': 'Kári', 'Mulholland Drive': 'Malholand Draiv', 'Los Ángeles': 'Los Ánjeles', 'Walt Disney': 'Uólt Dísni', 'Disney': 'Dísni', 'Oswald': 'Ósuald', 'Mickey': 'Míki', 'Steamboat Willie': 'Stímbot Uíli', 'Ub Iwerks': 'Ab Áiuerks', 'Iwerks': 'Áiuerks', 'Al Michaels': 'Al Máikels', 'Harry Potter': 'Jári Póter', 'Passepartout': 'Paspartú', 'Hollywood': 'Jólibud', 'Valentina Ivanova': 'Valentina Ivánova'}
 
 
 def hablado(t):

@@ -1,0 +1,368 @@
+[
+ {
+  "cap": 0,
+  "emo": "tense",
+  "kit": "no5",
+  "t": "Cinco famosos. Cinco veces que les dijeron que *no*."
+ },
+ {
+  "cap": 0,
+  "emo": "tense",
+  "kit": "no5",
+  "t": "A uno lo echaron de su propia empresa. A otra le cerraron doce puertas."
+ },
+ {
+  "cap": 0,
+  "emo": "mysterious",
+  "kit": "no5",
+  "t": "Y todos hicieron lo mismo: *volvieron*."
+ },
+ {
+  "cap": 0,
+  "emo": "mysterious",
+  "kit": "no5",
+  "t": "Quédate hasta el final, porque el último se escribió un cheque que nadie le había pagado *todavía*."
+ },
+ {
+  "cap": 0,
+  "emo": "warm",
+  "kit": "no5",
+  "t": "Pero empecemos con el hombre que perdió a su *conejo*."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "d_ny",
+  "t": "Walt Disney. Nueva York, 1928."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "d_ny",
+  "t": "Tiene 26 años y un personaje que funciona: Oswald, un conejo de *dibujos*."
+ },
+ {
+  "cap": 1,
+  "emo": "tense",
+  "kit": "d_ny",
+  "t": "Va a pedir más dinero para su estudio... y le responden que le van a pagar *menos*."
+ },
+ {
+  "cap": 1,
+  "emo": "tense",
+  "kit": "d_ny",
+  "t": "Peor aún: los derechos de Oswald eran de *Universal*."
+ },
+ {
+  "cap": 1,
+  "emo": "tense",
+  "kit": "d_ny",
+  "t": "Y el distribuidor ya había contratado a la mayoría de sus animadores... a sus *espaldas*."
+ },
+ {
+  "cap": 1,
+  "emo": "tense",
+  "kit": "d_ny",
+  "t": "Walt podía aceptar el trato. Dijo *no*."
+ },
+ {
+  "cap": 1,
+  "emo": "sad",
+  "kit": "d_tren",
+  "t": "Se quedó sin el conejo y casi sin equipo. *Casi*."
+ },
+ {
+  "cap": 1,
+  "emo": "hopeful",
+  "kit": "d_tren",
+  "t": "Ub Iwerks fue el único animador clave que no firmó con el distribuidor."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "d_tren",
+  "t": "Según contó el propio Walt, en el tren de regreso imaginó un *ratón*."
+ },
+ {
+  "cap": 1,
+  "emo": "sad",
+  "kit": "d_tren",
+  "t": "Se llamó Mickey. Y su primer corto ni siquiera encontró *distribuidor*."
+ },
+ {
+  "cap": 1,
+  "emo": "excited",
+  "kit": "d_steam",
+  "t": "Hasta que el 18 de noviembre de 1928 estrenó «Steamboat Willie», con sonido *sincronizado*."
+ },
+ {
+  "cap": 1,
+  "emo": "excited",
+  "kit": "d_steam",
+  "t": "Y el público se *rio*."
+ },
+ {
+  "cap": 1,
+  "emo": "mysterious",
+  "kit": "d_oswald",
+  "t": "Y lo mejor viene después: en 2006, Disney recuperó a Oswald... a cambio de un narrador de *fútbol americano*."
+ },
+ {
+  "cap": 1,
+  "emo": "hopeful",
+  "kit": "d_oswald",
+  "t": "Setenta y ocho años *después*."
+ },
+ {
+  "cap": 1,
+  "emo": "mysterious",
+  "kit": "d_oswald",
+  "t": "Y esa empresa volverá a cruzarse en la historia de otro hombre... al que también *echaron*."
+ },
+ {
+  "cap": 2,
+  "emo": "warm",
+  "kit": "j_board",
+  "t": "Steve Jobs. Septiembre de 1985."
+ },
+ {
+  "cap": 2,
+  "emo": "sad",
+  "kit": "j_board",
+  "t": "Fundó Apple. Y perdió una lucha de poder *dentro* de ella."
+ },
+ {
+  "cap": 2,
+  "emo": "tense",
+  "kit": "j_board",
+  "t": "Ese mismo día presentó su renuncia... y fundó otra empresa: *NeXT*."
+ },
+ {
+  "cap": 2,
+  "emo": "warm",
+  "kit": "j_pixar",
+  "t": "Un año después compró la división gráfica de Lucasfilm. Se llamaría *Pixar*."
+ },
+ {
+  "cap": 2,
+  "emo": "sad",
+  "kit": "j_pixar",
+  "t": "Al principio fue un negocio de computadoras que no *despegó*."
+ },
+ {
+  "cap": 2,
+  "emo": "mysterious",
+  "kit": "j_pixar",
+  "t": "Pero no se rindió. Y diez años después, Apple iba a necesitar justo lo que él había *construido*."
+ },
+ {
+  "cap": 2,
+  "emo": "excited",
+  "kit": "j_apple",
+  "t": "En diciembre de 1996, Apple anunció que compraría *NeXT*."
+ },
+ {
+  "cap": 2,
+  "emo": "warm",
+  "kit": "j_apple",
+  "t": "Jobs volvió con la compra, primero como asesor. Y en septiembre de 1997 era director ejecutivo *interino*."
+ },
+ {
+  "cap": 2,
+  "emo": "excited",
+  "kit": "j_apple",
+  "t": "Doce años después de irse. Casi al *día*."
+ },
+ {
+  "cap": 2,
+  "emo": "hopeful",
+  "kit": "j_apple",
+  "t": "Y Pixar... en 2006, la compró Disney por 7.400 millones de dólares. La misma empresa del *conejo*."
+ },
+ {
+  "cap": 3,
+  "emo": "warm",
+  "kit": "r_room",
+  "t": "Sylvester Stallone. Estaba tan sin dinero que, según contó, vendió a su *perro*."
+ },
+ {
+  "cap": 3,
+  "emo": "sad",
+  "kit": "r_room",
+  "t": "Se llamaba Butkus. Lo dejó ir por unos pocos *dólares*."
+ },
+ {
+  "cap": 3,
+  "emo": "warm",
+  "kit": "r_room",
+  "t": "Pero tenía un guion de boxeo que había escrito: *Rocky*."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "r_pitch",
+  "t": "Los productores querían comprárselo. Le ofrecieron dinero. *Mucho*."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "r_pitch",
+  "t": "Pero él puso una condición: el protagonista sería *él*."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "r_pitch",
+  "t": "Estaba sin dinero... y les dijo que *no*."
+ },
+ {
+  "cap": 3,
+  "emo": "excited",
+  "kit": "r_oscar",
+  "t": "Al final aceptaron. Y «Rocky» ganó el Óscar a mejor *película*."
+ },
+ {
+  "cap": 3,
+  "emo": "hopeful",
+  "kit": "r_oscar",
+  "t": "Y el perro, según contó... también *volvió*."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "w_cafe",
+  "t": "J. K. Rowling. Una madre soltera con un *manuscrito*."
+ },
+ {
+  "cap": 4,
+  "emo": "sad",
+  "kit": "w_cafe",
+  "t": "Según varias biografías, vivía con ayudas del Estado y le costaba pagar el *alquiler*."
+ },
+ {
+  "cap": 4,
+  "emo": "sad",
+  "kit": "w_cafe",
+  "t": "Su libro fue rechazado por doce *editoriales*."
+ },
+ {
+  "cap": 4,
+  "emo": "tense",
+  "kit": "w_cafe",
+  "t": "Doce veces le dijeron que *no*."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "w_pub",
+  "t": "Hasta que Bloomsbury lo aceptó. Según se cuenta, la hija de ocho años del presidente leyó el primer capítulo... y pidió el *siguiente*."
+ },
+ {
+  "cap": 4,
+  "emo": "sad",
+  "kit": "w_pub",
+  "t": "Y su editor, según se cuenta, le aconsejó que consiguiera otro trabajo, porque con libros infantiles no ganaría *dinero*."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "w_books",
+  "t": "La primera tirada fue de apenas 500 *ejemplares*."
+ },
+ {
+  "cap": 4,
+  "emo": "excited",
+  "kit": "w_books",
+  "t": "Hoy esos libros se tradujeron a decenas de *idiomas*."
+ },
+ {
+  "cap": 5,
+  "emo": "warm",
+  "kit": "c_hill",
+  "t": "Jim Carrey. Un cómico canadiense intentando abrirse paso en Los *Ángeles*."
+ },
+ {
+  "cap": 5,
+  "emo": "mysterious",
+  "kit": "c_hill",
+  "t": "Según contó él mismo, una noche subió con su auto a Mulholland *Drive*."
+ },
+ {
+  "cap": 5,
+  "emo": "mysterious",
+  "kit": "c_hill",
+  "t": "Miró la ciudad... y se escribió un *cheque*."
+ },
+ {
+  "cap": 5,
+  "emo": "excited",
+  "kit": "c_check",
+  "t": "Por diez millones de dólares. Por «servicios de actuación *prestados*»."
+ },
+ {
+  "cap": 5,
+  "emo": "warm",
+  "kit": "c_check",
+  "t": "Con fecha del Día de Acción de Gracias de *1995*."
+ },
+ {
+  "cap": 5,
+  "emo": "tense",
+  "kit": "c_check",
+  "t": "Todavía no era la estrella que *sería*."
+ },
+ {
+  "cap": 5,
+  "emo": "hopeful",
+  "kit": "c_check",
+  "t": "Él asegura que, cuando llegó esa fecha, ya cobraba esa *cifra*."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "cierre",
+  "t": "Cinco historias. Un mismo *patrón*."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "cierre",
+  "t": "A Disney le quitaron el conejo... y creó un *ratón*."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "cierre",
+  "t": "A Jobs lo echaron de su empresa... y volvió a *salvarla*."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "cierre",
+  "t": "A Stallone le ofrecieron dinero... y eligió el *riesgo*."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "cierre",
+  "t": "A Rowling le dijeron doce veces que *no*."
+ },
+ {
+  "cap": 6,
+  "emo": "hopeful",
+  "kit": "cierre",
+  "t": "Y Carrey se escribió el sí... él *solo*."
+ },
+ {
+  "cap": 6,
+  "emo": "hopeful",
+  "kit": "cierre",
+  "t": "Ninguno esperó a que alguien les diera *permiso*."
+ },
+ {
+  "cap": 6,
+  "emo": "mysterious",
+  "kit": "cierre",
+  "t": "Y tú... ¿a qué *no* no le vas a hacer caso esta semana?"
+ }
+]

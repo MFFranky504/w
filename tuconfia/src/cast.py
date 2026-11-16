@@ -150,6 +150,18 @@ CAST.update({
  'valentina': dict(style='tab', skin=(244, 214, 190), hair=ramp((96, 64, 44)), iris=(70, 90, 110), outfit='vestido', hair2='pulled', face='round', v2=True),
 })
 
+# --- video largo «5 famosos que lo perdieron casi todo y volvieron» (estilo v2)
+CAST.update({
+ 'f_disney':  dict(style='short', skin=(240, 204, 172), hair=ramp((54, 38, 32)), iris=(80, 60, 44), outfit='blazer', hair2='sidepart', mst='pencil', build='slim', v2=True),
+ 'f_jobs85':  dict(style='short', skin=(236, 196, 164), hair=ramp((52, 40, 34)), iris=(70, 52, 40), outfit='suit85', hair2='sidepart', glasses=True, build='slim', v2=True),
+ 'f_jobs':    dict(style='short', skin=(236, 196, 164), hair=ramp((120, 112, 104)), iris=(70, 52, 40), outfit='turtle', hair2='receding', glasses=True, stubble=True, build='slim', v2=True),
+ 'f_stallone': dict(style='short', skin=(224, 174, 132), hair=ramp((40, 30, 28)), iris=(66, 46, 36), outfit='grey', hair2='slick', sleepy=True, strong=True, build='athletic', v2=True),
+ 'f_rowling': dict(style='tab', skin=(246, 214, 190), hair=ramp((110, 62, 40)), iris=(100, 70, 50), outfit='cardigan', hair2='wavy', build='slim', v2=True),
+ 'f_carrey':  dict(style='short', skin=(240, 200, 168), hair=ramp((60, 40, 30)), iris=(80, 120, 150), outfit='tee_blue', hair2='slick', face='long', build='slim', raise_=True, v2=True),
+ 'f_alice':   dict(style='tab', skin=(246, 214, 190), hair=ramp((140, 96, 60)), iris=(80, 100, 130), outfit='cardigan', hair2='pulled', kid=True, v2=True),
+})
+CAST['f_carrey']['raise'] = CAST['f_carrey'].pop('raise_')
+
 
 def resolve(who):
     c = dict(CAST[who]); c.setdefault('glasses', False); c.setdefault('beard', False); c.setdefault('kid', False); c.setdefault('sleepy', False); c.setdefault('strong', False); c.setdefault('stubble', False); c.setdefault('hair2', None); c.setdefault('mustache', False); c.setdefault('unibrow', False); c.setdefault('build', 'average'); c.setdefault('height', 'average')
