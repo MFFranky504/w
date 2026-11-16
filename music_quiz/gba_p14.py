@@ -246,40 +246,77 @@ def bg_abbey():
     d.line([(0, 266), (W, 266)], fill=INK); d.rectangle((0, 400, W, 404), fill=(236, 214, 90))
     return im
 
-# ------------------------------------------------------------------ mystery dancer (original design): fedora, black jacket, white glove, white socks, loafers
+# ------------------------------------------------------------------ mystery dancer v3 (original design): SLIM and elegant — black fedora, shoulder-length curls, sequin jacket, cropped trousers, white socks, loafers, ONE white glove
+def _glove_hand(d, x, y, flip=1, up=False, down=False):
+    Wc, Ws = (252, 252, 255), (178, 188, 220)
+    d.ellipse((x - 3, y - 3, x + 3, y + 3), fill=Wc); d.line([(x - 2, y + 2), (x + 2, y + 2)], fill=Ws)
+    for k, fx in enumerate((-3, -1, 1, 3)):                                                         # four slim fingers with 1px gaps
+        ln = (4, 6, 5, 4)[k] + (1 if up else 0); y0, y1 = (y + 3, y + 3 + ln) if down else (y - 3 - ln, y - 2)
+        d.rectangle((x + fx - 1, min(y0, y1), x + fx - 1, max(y0, y1)), fill=Wc); d.point((x + fx, (min(y0, y1) + max(y0, y1)) // 2), fill=Wc)
+    ty = y - 1; d.polygon([(x - 3 * flip, ty), (x - 6 * flip, ty - 2), (x - 6 * flip, ty), (x - 4 * flip, ty + 2)], fill=Wc)          # thumb
+    cy = y - 4 if down else y + 3; d.line([(x - 3, cy), (x + 3, cy)], fill=(150, 160, 200), width=2)                                 # cuff
+    for _ in range(8): d.point((x + R.randint(-3, 4), y + R.randint(-7, 5)), fill=R.choice([(120, 220, 255), (255, 200, 250), (255, 255, 150), (200, 200, 230)]))
+def _loafer(d, x, y, flip=1, toe=False):
+    L, LH = (20, 18, 28), (126, 122, 160)
+    if toe:                                                                                      # heel raised, only the toe touches the floor (moonwalk)
+        d.polygon([(x - 3, y - 6), (x + 2, y - 4), (x + 5 * flip, y + 6), (x - 1 * flip, y + 7), (x - 4 * flip, y + 1)], fill=L); d.line([(x - 1, y - 4), (x + 3 * flip, y + 4)], fill=LH)
+    else:
+        d.rounded_rectangle((x - 5, y, x + 7, y + 7), 3, fill=L); d.line([(x - 3, y + 1), (x + 4, y + 1)], fill=LH); d.rectangle((x - 5, y + 6, x + 7, y + 7), fill=(8, 6, 14))
+
 def dancer(frame=0):
-    """0 stand (hat tip) · 1-3 glide steps / glove up"""
+    """0 hat tip · 1 moonwalk glide + glove to the sky · 2 glove at chest, back arm swings · 3 hat tip + glove point"""
     im = Image.new("RGBA", (100, 140), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    SK, SKS, SKL = (232, 190, 160), (196, 150, 124), (250, 218, 190)
-    JK, JKS, JKL = (28, 26, 36), (14, 12, 22), (70, 68, 92)                    # black jacket
-    PT, PTS, PTL = (30, 28, 40), (16, 14, 24), (64, 62, 86)                    # black trousers
-    HT, HTS = (26, 24, 34), (10, 8, 16)
-    sl = [0, 5, 0, -5][frame]; lift = [0, 3, 0, 3][frame]; arm = [0, 5, 10, 5][frame]
-    for side, x0 in ((-1, 46), (1, 55)):                                       # legs (cropped trousers, white socks, loafers) — alternate sliding feet
-        off = sl * side; up = lift if side == 1 else 0
-        limb(d, (x0, 92), (x0 + off // 2, 118), 10, 8, PT, PTS, PTL)
-        d.rectangle((x0 + off // 2 - 4, 118, x0 + off // 2 + 4, 126 - up), fill=(250, 250, 252), outline=INK)
-        shoe(d, x0 + off, 128 - up, (22, 20, 30), (70, 68, 92), (10, 8, 16), side)
-    d.polygon([(40, 84), (62, 84), (63, 96), (39, 96)], fill=PT)
-    d.polygon([(38, 44), (64, 44), (65, 90), (37, 90)], fill=JK); d.line([(63, 46), (64, 88)], fill=JKS, width=3); d.line([(39, 46), (38, 88)], fill=JKL)
-    d.polygon([(44, 44), (58, 44), (51, 80)], fill=(244, 244, 250), outline=INK); d.line([(51, 46), (51, 80)], fill=(180, 184, 204))
-    texture(im, (37, 44, 65, 90), [JKL, JKS], 20)
-    limb(d, (64, 48), (76, 64), 8, 7, JK, JKS, JKL); limb(d, (76, 64), (70, 40 - arm // 2), 7, 6, JK, JKS, JKL)        # right arm: to the hat brim
-    hand(d, (70, 38 - arm // 2), SK, SKS, flip=1)
-    limb(d, (38, 48), (28, 64), 8, 7, JK, JKS, JKL); limb(d, (28, 64), (20 - arm // 3, 46 - arm), 7, 6, JK, JKS, JKL)  # left arm raised with the white glove
-    hand(d, (20 - arm // 3, 44 - arm), (250, 250, 255), (176, 184, 214), flip=-1)
-    for k in range(4): d.point((19 - arm // 3 + k * 2, 42 - arm + (k % 2) * 3), fill=(120, 220, 255))
-    hx, hy = 52, 28
-    d.rectangle((48, 38, 56, 46), fill=SKS)
-    d.ellipse((hx - 9, hy - 12, hx + 9, hy + 13), fill=SK); d.ellipse((hx + 2, hy - 8, hx + 10, hy + 11), fill=SKS); d.ellipse((hx - 7, hy + 1, hx - 3, hy + 6), fill=SKL)
-    d.polygon([(hx - 9, hy - 2), (hx - 12, hy + 14), (hx - 8, hy + 16), (hx - 7, hy + 4)], fill=HT)                                                          # dark curls framing the face
-    d.polygon([(hx + 9, hy - 2), (hx + 12, hy + 14), (hx + 8, hy + 16), (hx + 7, hy + 4)], fill=HTS)
-    for ex in (hx - 5, hx + 2): d.rectangle((ex, hy - 1, ex + 3, hy + 1), fill=(244, 240, 234)); d.rectangle((ex + 1, hy - 1, ex + 2, hy + 1), fill=(30, 20, 20))
-    d.line([(hx - 6, hy - 4), (hx - 2, hy - 5)], fill=HTS); d.line([(hx + 2, hy - 5), (hx + 6, hy - 4)], fill=HTS)
-    d.ellipse((hx - 2, hy + 7, hx + 3, hy + 11), fill=(150, 60, 70))
-    d.ellipse((hx - 20, hy - 12, hx + 20, hy - 4), fill=HT, outline=INK)                                                                                       # fedora brim (tilted)
-    d.polygon([(hx - 11, hy - 8), (hx - 10, hy - 22), (hx - 4, hy - 26), (hx + 4, hy - 26), (hx + 10, hy - 22), (hx + 11, hy - 8)], fill=HT)
-    d.rectangle((hx - 11, hy - 13, hx + 11, hy - 9), fill=(236, 236, 244)); d.line([(hx - 4, hy - 25), (hx - 4, hy - 19)], fill=(60, 58, 80))
+    SK, SKS, SKL = (226, 182, 150), (190, 142, 112), (244, 208, 178)
+    JK, JKS, JKL = (30, 28, 42), (14, 12, 24), (90, 88, 122)
+    HT, HTS, HTL = (28, 26, 38), (10, 8, 18), (96, 94, 126)
+    bob = [0, 0, 1, 0][frame]
+    pose = [dict(rh=((41, 49), (31, 40), (36, 21)), lh=((59, 49), (66, 65), (64, 84)), glove_up=False, legs=("flat", "flat")),
+            dict(rh=((41, 49), (32, 66), (40, 82)), lh=((59, 49), (71, 36), (78, 17)), glove_up=True, legs=("toe", "flat")),
+            dict(rh=((41, 49), (34, 62), (30, 78)), lh=((59, 49), (69, 60), (63, 52)), glove_up=False, legs=("flat", "toe")),
+            dict(rh=((41, 49), (31, 40), (36, 21)), lh=((59, 49), (70, 56), (79, 47)), glove_up=False, legs=("flat", "flat"))][frame]
+    # --- legs: slim cropped black trousers, white socks, loafers
+    for side, x0, kind in ((-1, 46, pose["legs"][0]), (1, 54, pose["legs"][1])):
+        tp = 3 if kind == "toe" else 0; fx = x0 + (side * 5 if kind == "toe" else side)
+        limb(d, (x0, 90), (x0 + (fx - x0) // 2, 110), 8, 7, (30, 28, 42), (14, 12, 24), (74, 72, 104)); limb(d, (x0 + (fx - x0) // 2, 110), (fx, 123 - tp), 7, 6, (30, 28, 42), (14, 12, 24), (74, 72, 104))
+        d.rectangle((fx - 2, 121 - tp, fx + 2, 129 - tp), fill=(252, 252, 255)); d.line([(fx - 2, 124 - tp), (fx + 2, 124 - tp)], fill=(196, 200, 222))
+        _loafer(d, fx, 130 if kind != "toe" else 131, side, kind == "toe")
+    d.polygon([(42, 84), (58, 84), (59, 98), (41, 98)], fill=(30, 28, 42))
+    # --- torso: slim black sequin jacket, satin lapels, white shirt
+    d.polygon([(40, 46 + bob), (60, 46 + bob), (58, 90), (42, 90)], fill=JK); d.line([(59, 48 + bob), (58, 88)], fill=JKS, width=2); d.line([(41, 48 + bob), (42, 88)], fill=JKL)
+    d.polygon([(45, 44 + bob), (55, 44 + bob), (50, 74)], fill=(246, 246, 252)); d.line([(50, 54), (50, 74)], fill=(196, 200, 222))
+    d.polygon([(45, 44 + bob), (50, 60), (46, 78), (41, 56)], fill=(58, 56, 80)); d.polygon([(55, 44 + bob), (50, 60), (54, 78), (59, 56)], fill=(26, 24, 40))     # satin lapels
+    d.line([(45, 47 + bob), (49, 59)], fill=JKL); d.polygon([(46, 44 + bob), (50, 51), (48, 46)], fill=WHITE); d.polygon([(54, 44 + bob), (50, 51), (52, 46)], fill=(214, 218, 236))
+    d.ellipse((50, 72, 52, 74), fill=(200, 200, 230)); d.ellipse((50, 80, 52, 82), fill=(200, 200, 230))
+    texture(im, (40, 46, 60, 90), [(150, 220, 255), (255, 214, 250), (250, 250, 255), JKL], 60)                      # sequins
+    # --- slim arms
+    (s1, e1, w1), (s2, e2, w2) = pose["rh"], pose["lh"]
+    s1 = (s1[0], s1[1] + bob); s2 = (s2[0], s2[1] + bob)
+    limb(d, s1, e1, 6, 5, JK, JKS, JKL); limb(d, e1, w1, 5, 4, JK, JKS, JKL); limb(d, s2, e2, 6, 5, JK, JKS, JKL); limb(d, e2, w2, 5, 4, JK, JKS, JKL)
+    texture(im, (24, 14, 86, 90), [(150, 220, 255), (255, 214, 250), WHITE], 18)
+    # --- head: small oval face, gentle eyes, soft smile, shoulder-length curls
+    hx, hy = 50, 28 + bob
+    for sx in (-1, 1):                                                                                                  # curls frame the face down to the shoulders
+        for k, (cx, cy) in enumerate(((hx + sx * 9, hy - 2), (hx + sx * 10, hy + 5), (hx + sx * 9, hy + 12), (hx + sx * 9, hy + 18))): d.ellipse((cx - 3, cy - 3, cx + 3, cy + 3), fill=(22, 18, 26)); d.point((cx - sx, cy - 1), fill=(96, 90, 126))
+    d.rectangle((47, 37 + bob, 53, 46 + bob), fill=SKS)
+    d.ellipse((hx - 8, hy - 13, hx + 8, hy + 13), fill=SK); d.ellipse((hx + 2, hy - 9, hx + 9, hy + 11), fill=SKS); d.ellipse((hx - 6, hy + 1, hx - 2, hy + 7), fill=SKL)
+    d.polygon([(hx - 7, hy + 5), (hx - 3, hy + 13), (hx + 3, hy + 13), (hx + 7, hy + 5), (hx + 4, hy + 12), (hx - 4, hy + 12)], fill=SKS)               # soft jaw shadow
+    for k, ex in enumerate((hx - 5, hx + 2)):                                                                         # calm eyes: small, dark iris, tiny highlight, thin soft brows
+        d.rectangle((ex, hy - 1, ex + 3, hy + 1), fill=(240, 232, 226)); d.rectangle((ex + 1, hy - 1, ex + 2, hy + 1), fill=(52, 34, 28)); d.point((ex + 1, hy - 1), fill=(200, 190, 190))
+        d.line([(ex - 1, hy - 3), (ex + 4, hy - 3)], fill=(70, 46, 40)); d.point((ex + 1 + k, hy - 4), fill=(70, 46, 40))
+    d.line([(hx, hy + 1), (hx, hy + 5)], fill=SKS); d.point((hx - 1, hy + 6), fill=(158, 108, 96)); d.point((hx + 1, hy + 6), fill=(158, 108, 96)); d.point((hx, hy + 5), fill=SKL)   # nose
+    d.line([(hx - 3, hy + 9), (hx + 3, hy + 9)], fill=(174, 88, 98)); d.point((hx - 4, hy + 8), fill=(174, 88, 98)); d.point((hx + 4, hy + 8), fill=(174, 88, 98)); d.point((hx, hy + 10), fill=(200, 120, 124))   # small smile
+    # --- fedora: pinched crown, satin band, tilted brim
+    d.polygon([(hx - 8, hy - 13), (hx - 7, hy - 21), (hx - 4, hy - 24), (hx - 1, hy - 22), (hx + 1, hy - 22), (hx + 4, hy - 24), (hx + 7, hy - 21), (hx + 8, hy - 13)], fill=HT)
+    d.polygon([(hx - 1, hy - 22), (hx, hy - 19), (hx + 1, hy - 22)], fill=HTS)
+    d.rectangle((hx - 8, hy - 17, hx + 8, hy - 14), fill=(60, 58, 84)); d.line([(hx - 7, hy - 16), (hx + 7, hy - 16)], fill=(140, 138, 178))
+    d.line([(hx - 6, hy - 21), (hx - 4, hy - 23)], fill=HTL)
+    d.polygon([(hx - 16, hy - 8), (hx - 12, hy - 14), (hx + 12, hy - 14), (hx + 15, hy - 11), (hx + 16, hy - 9), (hx + 9, hy - 6), (hx - 9, hy - 6)], fill=HT)
+    d.polygon([(hx - 16, hy - 8), (hx - 9, hy - 6), (hx + 9, hy - 6), (hx + 16, hy - 9), (hx + 9, hy - 8), (hx - 9, hy - 8)], fill=HTS); d.line([(hx - 12, hy - 11), (hx - 6, hy - 13)], fill=HTL)
+    d.rectangle((hx - 6, hy - 5, hx + 6, hy - 4), fill=(160, 118, 92))                                                    # brim shadow on the forehead
+    # --- hands drawn last (the one at the hat brim sits on top of it)
+    for (e, w, glove) in ((e1, w1, False), (e2, w2, True)):
+        if glove: _glove_hand(d, w[0], w[1] + bob, 1 if w[0] > 50 else -1, pose["glove_up"], down=(w[1] > e[1] + 6))
+        else: hand(d, (w[0], w[1] + bob), SK, SKS, flip=1 if w[0] > 50 else -1)
     return outline(im)
 
 def sheet_bgs(items, path, cols=4, s=2):
