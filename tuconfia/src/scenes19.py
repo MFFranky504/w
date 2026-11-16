@@ -10,7 +10,15 @@ from sprites import dog as _dog
 from scenes2 import bust
 import scenes18 as S
 
-cv, chibi, body, face, fin, put, spr, scaled = S.cv, S.chibi, S.body, S.face, S.fin, S.put, S.spr, S.scaled
+cv, chibi, body, fin, put, spr, scaled = S.cv, S.chibi, S.body, S.fin, S.put, S.spr, S.scaled
+
+
+def face(c, who, expr, t, x=None, sc=1.7, y_off=0, bob=True):
+    """primer plano más pequeño que el de scenes18 (~0.7): deja ver el fondo detallado."""
+    f = sc * .42
+    b = scaled(bust(who, expr, (0, 0), t, 1.0), f)
+    dy = int(math.sin(t * 2.2) * 1.0) if bob else 0
+    c.im.paste(b, (int((x if x is not None else WW / 2) - b.width / 2), WH - b.height + 4 + y_off + dy), b)
 
 
 def DOG(step):
@@ -569,7 +577,7 @@ def _w_books_b(T, tl, k):
     c = cv(); bg.shelf(c, 0, 0, WW, 150, seed=9); c.R(0, 150, WW, 30, (90, 60, 40))
     for i in range(14):
         a = (T * 12 + i * 23) % 300 - 20; b = spr(bust('f_alice', 'smile', (0, 0), T, .3)) if i % 7 == 0 else None
-    label(c, 160, 160, 'DECENAS DE IDIOMAS', (255, 216, 74), 12)
+    label(c, 200, 10, 'DECENAS DE IDIOMAS', (255, 216, 74), 12)
     langs = ('ES', 'EN', 'FR', 'DE', 'IT', 'PT', 'JA', 'RU')
     for i, l_ in enumerate(langs):
         x = 30 + i * 38; y = 40 + (i % 2) * 36 + int(math.sin(T * 2 + i) * 3)

@@ -195,11 +195,9 @@ for i, l in enumerate(LINES):
     m = re.search(r'\b(19\d\d|20\d\d)\b', l['t'])
     if m and l['start'] - _last > 4 and l['kit'] not in ('c_check',):
         POPS.append((l['start'] + .2, l['start'] + 2.4, m.group(1), 'año')); _last = l['start']
-SPECIAL = {'Walt podía aceptar el trato. Dijo *no*.': ('DIJO NO', 'stamp', 0), 'Estaba sin dinero... y les dijo que *no*.': ('LES DIJO NO', 'stamp', 0),
-           'Doce veces le dijeron que *no*.': ('12 NOES', 'stamp', 0), 'Y Carrey se escribió el sí... él *solo*.': ('SÍ', 'big', 0),
+SPECIAL = {'Walt podía aceptar el trato. Dijo *no*.': ('DIJO NO', 'stamp', 0), 'Y Carrey se escribió el sí... él *solo*.': ('SÍ', 'big', 0),
            'Y el público se *rio*.': ('¡JA JA JA!', 'big', -.8), 'Por diez millones de dólares. Por «servicios de actuación *prestados*».': ('$10 MILLONES', 'big', -1.4),
-           'Doce años después de irse. Casi al *día*.': ('12 AÑOS', 'big', -1.0), 'La primera tirada fue de apenas 500 *ejemplares*.': ('500', 'big', -1.0),
-           'Setenta y ocho años *después*.': ('78 AÑOS', 'big', -1.0), 'Hasta que el 18 de noviembre de 1928 estrenó «Steamboat Willie», con sonido *sincronizado*.': ('SONIDO', 'big', -1.2)}
+           'Hasta que el 18 de noviembre de 1928 estrenó «Steamboat Willie», con sonido *sincronizado*.': ('SONIDO', 'big', -1.2)}
 for i, l in enumerate(LINES):
     if l['t'] in SPECIAL:
         txt, kind, off = SPECIAL[l['t']]

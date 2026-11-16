@@ -16,11 +16,11 @@ Walt Disney, Steve Jobs, Sylvester Stallone, J. K. Rowling y Jim Carrey: cinco f
 
 0:00 Cinco veces «no»
 0:21 Walt Disney: el conejo perdido
-1:37 Steve Jobs: echado de su propia empresa
-2:37 Sylvester Stallone: el guion que no vendió
-3:17 J. K. Rowling: doce noes
-3:57 Jim Carrey: el cheque
-4:31 Lo que los une
+1:36 Steve Jobs: echado de su propia empresa
+2:34 Sylvester Stallone: el guion que no vendió
+3:12 J. K. Rowling: doce noes
+3:52 Jim Carrey: el cheque
+4:25 Lo que los une
 
 ¿A qué «no» no le vas a hacer caso esta semana? Cuéntamelo en los comentarios 👇
 
