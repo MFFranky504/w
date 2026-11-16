@@ -11,3 +11,9 @@ Reglas aprendidas: dar siempre los hechos permitidos (sin ellos Gemini inventa d
 
 ## Voz gratis (si se acaba ElevenLabs)
 Pollinations (`gen.pollinations.ai`, clave ya guardada en el entorno) tiene voces gratis por `/v1/audio/speech`, en formato OpenAI. Gemini las escuchó y la mejor fue `model: microsoft/mai-voice-2.1`, `voice: es-MX-Grant` (9/10), seguida de `es-MX-Alejo` (8/10). Las de OpenAI (onyx, echo) suenan peor en español. Hay muestras en `tuconfia/audio/muestras_voz/`. Las voces de Gemini no devuelven audio por la ruta OpenAI y la nativa está bloqueada para nuestra clave.
+
+## Voces: lo que se probó (16-nov-2026)
+- ElevenLabs: plan gratis, 10.000 caracteres al mes (se gastaron 9.592; se renueva ~9 dic). El conector de ElevenLabs (herramientas `creative_*`, `account_get_usage`) gasta esos mismos créditos. Es la mejor voz; subir a un plan de pago (Starter) es la mejora real de calidad.
+- Pollinations (`microsoft/mai-voice-2.1`): solo `es-MX-Grant` y `es-MX-Alejo` son gratis; Harper, Valeria y es-ES-Marta piden saldo. Los modelos `openai/gpt-audio-*` (con instrucciones de actuación) también piden saldo (~0,006 $ por frase). **La cuota gratis es diaria**: 138 frases la agotaron y respondió 402 hasta que se renueve. Genera las líneas en tandas.
+- MeloTTS (Cloudflare) suena robótica (Gemini 2/10); Grant fue 8/10 y Alejo 3/10.
+- Para darle vida a Grant sin gastar: `python3 tuconfia/src/narr_viva.py <guion_final.json> <nombre>` reutiliza las líneas ya generadas (`audio/lineas_<nombre>/`) y varía ritmo y tono según la emoción de cada frase (campo `emo`), con ecualización y compresión. Gemini lo puntuó 8/10 frente a 5/10 del original. Después hay que volver a pasar Whisper (Groq `whisper-large-v3`) para los tiempos de palabra.
