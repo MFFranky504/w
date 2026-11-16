@@ -378,11 +378,11 @@ def synth_audio():
     # ---- música: pista por tramo, mismo volumen, fundidos; silencio en «la noche en blanco» hasta que empieza a hablar sin decir nada
     T_ = lambda k: first(k)['t0']
     SECT = [('jazz3', 0.0, 0.0, T_('city'), .08),
-            ('heard_em_say', 0.0, T_('city'), T_('carpa'), .10),
+            ('piano_original', 0.0, T_('city'), T_('carpa'), .10),
             ('jazz3', 40.0, T_('carpa'), T_('freeze'), .10),
             ('jazz4', 0.0, T_('babble'), T_('cine'), .11),
             ('jazz2', 0.0, T_('cine'), T_('estreno'), .10),
-            ('congratulations', 0.0, T_('estreno'), T_('hollywood'), .11),
+            ('jazz4', 60.0, T_('estreno'), T_('hollywood'), .11),
             ('jazz4', 30.0, T_('hollywood'), T_('pepe'), .11),
             ('jazz2', 70.0, T_('pepe'), T_('home'), .09),
             ('jazz7', 0.0, T_('home'), T_('funeral'), .10),
