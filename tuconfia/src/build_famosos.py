@@ -362,7 +362,7 @@ def synth_audio():
     for s in sc.get('d_tren', []):                                    # traqueteo del tren
         t_ = s['t0']
         while t_ < s['t1'] - .3: add(thump() * .25, t_, .35); t_ += .42
-    SECT = [('jazz7', 0.0, 0.0, first('d_ny')['t0'], .09),
+    SECT = [('jazz7', 0.0, 0.0, first('d_ny')['t0'], .06),
             ('jazz3', 0.0, first('d_ny')['t0'], first('d_steam')['t0'], .10),
             ('jazz4', 0.0, first('d_steam')['t0'], first('j_board')['t0'], .10),
             ('jazz2', 0.0, first('j_board')['t0'], first('j_apple')['t0'], .10),
@@ -375,7 +375,7 @@ def synth_audio():
             ('jazz4', 70.0, first('c_check')['t0'], first('cierre')['t0'], .10),
             ('jazz7', 120.0, first('cierre')['t0'], TOTAL, .10)]
     TR = {k: dec(f'{ROOT}/audio/{k}.m4a') for k in set(x[0] for x in SECT)}
-    mus = np.zeros((N, 2), np.float32); FD = .8
+    mus = np.zeros((N, 2), np.float32); FD = 1.8
     for k_, (nm, off, a, b, g) in enumerate(SECT):
         i0, i1 = int(a * SR), min(N, int(b * SR)); n = i1 - i0
         if n <= 0: continue

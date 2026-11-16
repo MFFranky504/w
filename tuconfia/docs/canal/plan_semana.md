@@ -8,15 +8,14 @@ El usuario dejó el canal en manos de Claude esta semana (autorizó todo, 16-nov
 - Miniaturas: una cara grande y máx. 4 palabras. Títulos con pregunta o contraste.
 - No borrar nada sin avisar (YUP no puede borrar vídeos publicados fuera de YUP).
 
-## Calendario
+## Calendario (el usuario programó a mano sus propios Shorts del martes 17 y miércoles 18)
 | Día | Hora UTC | Qué | Estado |
 |---|---|---|---|
 | Lun 16 | 20:00 | Largo: Cantinflas (versión sin copyright) | programado, post ebecb9989ff217980529 |
-| Mar 17 | 20:00 | Short: Jackie Chan | programado, post 9b8df836404b37ef6268 |
-| Mié 18 | 20:00 | Short nuevo de la serie «Cayeron y se levantaron» | por producir |
-| Jue 19 | 20:00 | Short nuevo | por producir |
-| Vie 20 | 20:00 | Largo-lista de 8-12 min «Famosos que lo perdieron todo y volvieron» | por producir |
-| Sáb 21 | 20:00 | Short | por producir |
+| Mar 17 / Mié 18 | — | Shorts del usuario | no tocar |
+| Jue 19 | 20:00 | Short: Jackie Chan | programado, post 9b8df836404b37ef6268 |
+| Vie 20 | 20:00 | Largo-lista «5 famosos que lo perdieron casi todo y volvieron» | programado, post e9e95fd8701bd60428a6 |
+| Sáb 21 | 20:00 | Short nuevo de la serie «Cayeron y se levantaron» | por producir |
 | Dom 22 | — | Revisión de la semana (get_performance) y plan siguiente | |
 
 ## Pendiente del usuario (Studio)
