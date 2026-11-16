@@ -15,7 +15,7 @@ El usuario dejó el canal en manos de Claude esta semana (autorizó todo, 16-nov
 | Mar 17 / Mié 18 | — | Shorts del usuario | no tocar |
 | Jue 19 | 20:00 | Short: Jackie Chan | programado, post 9b8df836404b37ef6268 |
 | Vie 20 | 20:00 | Largo-lista «5 famosos que lo perdieron casi todo y volvieron» | programado, post e9e95fd8701bd60428a6 |
-| Sáb 21 | 20:00 | Short «Cayeron y se levantaron»: Oprah Winfrey (sacada del noticiero de las 6 en 1977; NO fue despedida) | guion y reparto listos (script_oprah_short.json, story_oprah.json); falta voz: `python3 -I src/voz_short.py oprah` cuando Pollinations tenga saldo, luego `STORY=oprah python3 -I src/build_story_short.py`; subir a YUP |
+| Sáb 21 | 20:00 | Short «Cayeron y se levantaron»: Oprah Winfrey (sacada del noticiero de las 6 en 1977; NO fue despedida) | guion y reparto listos (script_oprah_short.json, story_oprah.json); hecho y programado, post d699e861470207292e59 (voz Microsoft Edge TTS es-MX-JorgeNeural, gratis por proxy) |
 | Dom 22 | — | Revisión de la semana (get_performance) y plan siguiente | |
 
 ## Pendiente del usuario (Studio)

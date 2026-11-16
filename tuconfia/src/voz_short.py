@@ -14,6 +14,9 @@ d = f'{ROOT}/audio/lineas_{name}'; os.makedirs(d, exist_ok=True)
 for i, l in enumerate(S):
     f = f'{d}/l{i:03d}.mp3'
     if os.path.exists(f) and os.path.getsize(f) > 2000: continue
+    if os.environ.get('VOZ', 'edge') == 'edge':          # Microsoft Edge TTS (neural, gratis) por el proxy
+        import asyncio, edge_tts
+        asyncio.run(edge_tts.Communicate(l['tts'], os.environ.get('VOZ_ID', 'es-MX-JorgeNeural'), proxy=os.environ['HTTPS_PROXY']).save(f)); continue
     body = json.dumps({'model': 'microsoft/mai-voice-2.1', 'input': l['tts'], 'voice': 'es-MX-Grant', 'response_format': 'mp3'})
     for k in range(4):
         r = subprocess.run(['curl', '-s', '-m', '120', '-w', '%{http_code}', '-o', f, 'https://gen.pollinations.ai/v1/audio/speech', '-H', 'Authorization: Bearer proxy-injected',

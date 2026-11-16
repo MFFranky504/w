@@ -17,3 +17,6 @@ Pollinations (`gen.pollinations.ai`, clave ya guardada en el entorno) tiene voce
 - Pollinations (`microsoft/mai-voice-2.1`): solo `es-MX-Grant` y `es-MX-Alejo` son gratis; Harper, Valeria y es-ES-Marta piden saldo. Los modelos `openai/gpt-audio-*` (con instrucciones de actuación) también piden saldo (~0,006 $ por frase). **La cuota gratis es diaria**: 138 frases la agotaron y respondió 402 hasta que se renueve. Genera las líneas en tandas.
 - MeloTTS (Cloudflare) suena robótica (Gemini 2/10); Grant fue 8/10 y Alejo 3/10.
 - Para darle vida a Grant sin gastar: `python3 tuconfia/src/narr_viva.py <guion_final.json> <nombre>` reutiliza las líneas ya generadas (`audio/lineas_<nombre>/`) y varía ritmo y tono según la emoción de cada frase (campo `emo`), con ecualización y compresión. Gemini lo puntuó 8/10 frente a 5/10 del original. Después hay que volver a pasar Whisper (Groq `whisper-large-v3`) para los tiempos de palabra.
+
+## Voz Microsoft Edge TTS (gratis, sin cuota)
+`pip install edge-tts`; funciona por el proxy: `edge_tts.Communicate(texto, 'es-MX-JorgeNeural', proxy=os.environ['HTTPS_PROXY'])`. `tuconfia/src/voz_short.py <nombre>` la usa por defecto (`VOZ=pollinations` para Grant) y deja narración + alineación para `build_story_short.py`. Usada en el Short de Oprah (16-nov).
