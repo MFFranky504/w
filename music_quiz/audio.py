@@ -254,6 +254,10 @@ for i in range(1, S_OUT + 1):
     if i > 1 and T[i] == T[i - 1]: continue
     S(whoosh(.8), T[i] - .4, 1.0, pan=.2 if i % 2 else -.2)
     if i > 1: S(impact(.4, 65), T[i], .7)
+if EP.get("hook") == "d":                              # ULTRA hook (3 s): impact on frame 0, rising tension, heartbeat ticks
+    S(impact(.5, 70), .0, 1.0); S(boom(.6) * .7, .0, .9)
+    S(lp(noise(2.6), 8) * np.linspace(0, 1, int(2.6 * SR)) ** 2 * .55, .2, .6)
+    for tg in (.45, .9, 1.35, 1.8, 2.2, 2.55, 2.8): S(tick() * 1.4, tg, .8)
 # recap: slam, drumroll, reveal ("la respuesta de ayer")
 t1 = T[1]
 S(impact(.3, 90), t1 + .1, .8); S(blip(440, .08), t1 + .12, .7)
@@ -296,6 +300,7 @@ for ci, c in enumerate(CLUES):
     elif sc in ("workshop", "wembley"): S(lp(noise(d), 25) * .1, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc in ("g_garage", "g_studio"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc == "g_aberdeen": S(hp(noise(d), 2) * .05, t0, 1.0)
+    elif sc.startswith("g15"): S(lp(noise(d), 30) * .08, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc.startswith("g14"): S(lp(noise(d), 30) * .08, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc in ("g13_hamburg", "g13_audition"): S(lp(noise(d), 30) * .09, t0, 1.0); S(whoosh(.8), t0 + .2, .8)
     elif sc in ("g13_fete", "g13_rooftop"): S(hp(noise(d), 2) * .05, t0, 1.0); S(whoosh(.8), t0 + .2, .8)

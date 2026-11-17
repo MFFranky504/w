@@ -530,6 +530,7 @@ def prev_draw(im, t, ts):
     if kind == "freddie_gba": return freddie_gba(im, t, ts)
     if kind == "kurt_gba": return kurt_gba(im, t, ts)
     if kind == "beatles_gba": return beatles_gba(im, t, ts)
+    if kind == "mj_gba": return mj_gba(im, t, ts)
     if kind == "mic": return mic_draw(im, t, ts)
     if kind == "nas2": return nas2_draw(im, t, ts)
     if kind == "snoop": snoop(im, t, mode="sil" if ts < REVEAL else "col"); (qmark(im, 140, 138 + int(3 * math.sin(t * 4)), 3) if ts < REVEAL else None); return
@@ -1518,6 +1519,13 @@ G14_BG = [_p14(f"fondo_{i}.png", "RGB") for i in range(7)]
 G14_ART = [_p14(f"artista_{k}.png") for k in range(6)]
 G14_SIL = [_sil_rgba(G14_ART[k]) for k in range(1, 5)] if G14_ART[1] else []
 if EP.get("gba_dir") == "parte14" and G14_SIL: G_ART_SIL = G14_SIL      # mystery silhouette of this episode
+_D15 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sprites", "parte15")
+def _p15(name, mode="RGBA"):
+    p = os.path.join(_D15, name); return Image.open(p).convert(mode) if os.path.exists(p) else None
+G15_BG = [_p15(f"fondo_{i}.png", "RGB") for i in range(6)]
+G15_ART = [_p15(f"artista_{k}.png") for k in range(6)]
+G15_SIL = [_sil_rgba(G15_ART[k]) for k in range(1, 5)] if G15_ART[1] else []
+if EP.get("gba_dir") == "parte15" and G15_SIL: G_ART_SIL = G15_SIL      # mystery silhouette of this episode
 GY = 266 - 139                                            # sprite cell is 100x140, feet on its row 138 (+1 outline)
 def ground_shadow(im, cx=135, cy=266, rx=30, ry=5, a_=.45):
     arr = np.array(im).astype(np.float32); yy, xx = np.ogrid[cy - ry:cy + ry + 1, cx - rx:cx + rx + 1]
@@ -1525,7 +1533,7 @@ def ground_shadow(im, cx=135, cy=266, rx=30, ry=5, a_=.45):
     im.paste(Image.fromarray(arr.astype(np.uint8)))
 def gba_sil(im, t):
     f = G_ART_SIL[int(t * 6) % 4]; bob = 1 if int(t * 2.2) % 2 else 0
-    if EP.get("gba_dir") in ("parte13", "parte14"): ground_shadow(im)
+    if EP.get("gba_dir") in ("parte13", "parte14", "parte15"): ground_shadow(im)
     im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 3)), 3)
 def kurt_gba(im, t, ts):                                      # reveal of Parte 12's answer (colour sprite from the Parte 12 sheet)
     bob = 1 if int(t * 2.4) % 2 else 0
@@ -1536,6 +1544,11 @@ def beatles_gba(im, t, ts):                                   # reveal of Parte 
     bob = 1 if int(t * 2.4) % 2 else 0
     if ts < REVEAL: f = G13_ART[0]; im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 4)), 3); return
     e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); f = G13_ART[1 + int(t * 6) % 4]
+    im.paste(f, (85, GY + jump + bob), f)
+def mj_gba(im, t, ts):                                        # reveal of Parte 14's answer (colour dancer from the Parte 14 sheet)
+    bob = 1 if int(t * 2.4) % 2 else 0
+    if ts < REVEAL: f = G14_ART[0]; im.paste(f, (85, GY + bob), f); qmark(im, 142, 98 + int(3 * math.sin(t * 4)), 3); return
+    e = ts - REVEAL; jump = -int(abs(16 * math.exp(-e * 3.2) * math.cos(e * 15))); f = G14_ART[1 + int(t * 6) % 4]
     im.paste(f, (85, GY + jump + bob), f)
 def freddie_gba(im, t, ts):
     bob = 1 if int(t * 2.4) % 2 else 0
@@ -1741,12 +1754,71 @@ def dyn_g14_abbey(im, t, ts, tag):
         d.rectangle((x - 2 - f, y - 1, x - 1, y + 1), fill=c); d.rectangle((x + 1, y - 1, x + 2 + f, y + 1), fill=c)
     arr = np.array(im); glow(arr, 200, 30, 120, (255, 244, 200), .08); im.paste(Image.fromarray(arr))
 
+# ---- Parte 15 (Guns N' Roses) scene animation ----
+def _bursts(d, t, centers, cols):
+    for k, ((x, y), c) in enumerate(zip(centers, cols)):
+        p = (t * .45 + k * .31) % 1
+        if p < .8:
+            r = 4 + p * 26; f = 1 - p / .8
+            for a in range(0, 360, 20): ra = math.radians(a); d.line([(x + r * .6 * math.cos(ra), y + r * .6 * math.sin(ra)), (x + r * math.cos(ra), y + r * math.sin(ra))], fill=tuple(int(ch * f + 30) for ch in c))
+def dyn_g15_hook(im, t, ts, tag):
+    arr = np.array(im); glow(arr, 135, 190, 170, (255, 50, 70), .10 + .08 * math.sin(t * 6)); glow(arr, 205, 54, 60, (255, 120, 90), .12 + .05 * math.sin(t * 3)); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    if int(t * 9) % 11 not in (2, 4): d.rectangle((6, 120, 62, 142), outline=(255, 60, 110), width=2)
+    else: d.rectangle((6, 120, 62, 142), outline=(90, 30, 60), width=2)
+    for k in range(3): x = (t * (50 + k * 14) + k * 90) % (W + 60) - 30; y = 252 + k * 3; d.rectangle((x, y, x + 14, y + 4), fill=(210, 60, 70)); d.rectangle((x + 12, y + 1, x + 16, y + 3), fill=(255, 240, 180))   # cars
+    for k in range(18): x = (k * 47 + 6 * math.sin(t * 2 + k)) % W; y = 260 - (t * (18 + k % 4 * 6) + k * 23) % 200; d.point((x, y), fill=[(255, 160, 70), (255, 90, 60), (255, 220, 120)][k % 3])   # embers
+    for k in range(40):
+        if math.sin(t * 3 + k * 1.7) > .65: d.point(((k * 53) % W, (k * 29) % 110), fill=(255, 255, 255))
+def dyn_g15_club(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    _bulbs(d, [(54 + k * 10, 40) for k in range(17)] + [(54 + k * 10, 79) for k in range(17)], t, [(255, 240, 160), (255, 120, 90)], 2, 8)
+    if int(t * 6) % 3: d.polygon([(82, 110), (66, 146), (80, 146), (72, 178), (98, 136), (84, 136), (96, 110)], fill=(255, 250, 150), outline=DARK)
+    if int(t * 2) % 2: d.rectangle((127, 130, 143, 146), fill=(255, 250, 150), outline=DARK); d.line([(135, 133), (135, 143)], fill=DARK, width=3); d.line([(130, 138), (140, 138)], fill=DARK, width=3)
+    arr = np.array(im); beam(arr, 135 + 30 * math.sin(t * .8), 135, 80, 236, 40, 160, (255, 230, 170), .07); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for k in range(30): _sparkle(d, (k * 59) % W, (k * 31) % 220, t, k)
+    for k in range(10): d.point((20 + (k * 29 + t * 6) % 230, 230 - (t * 12 + k * 17) % 110), fill=(130, 110, 150))
+def dyn_g15_split(im, t, ts, tag):
+    d = ImageDraw.Draw(im)
+    x = (t * 28) % (W + 80) - 40; y = 40 + 8 * math.sin(t * .8); d.polygon([(x, y), (x + 18, y - 2), (x + 20, y + 1), (x + 2, y + 3)], fill=(240, 240, 250), outline=DARK); d.polygon([(x + 6, y), (x + 12, y - 8), (x + 14, y - 8), (x + 11, y)], fill=(200, 200, 220), outline=DARK)   # plane
+    for k in range(6): d.point((x - 4 - k * 5, y + 2 + k % 2), fill=(255, 255, 255))
+    a = t * .6; d.line([(34, 98), (34 + 8 * math.sin(a * 6), 98 - 8 * math.cos(a * 6))], fill=DARK)                                              # clock second hand
+    for k in range(3): xx = 140 + (k * 40 + t * 12) % 120; yy = 70 + k * 14 + 4 * math.sin(t * 1.5 + k); f = int(t * 6 + k) % 2; d.line([(xx - 5, yy + (2 if f else -1)), (xx, yy), (xx + 5, yy + (2 if f else -1))], fill=(60, 60, 80))
+    for k in range(18): xx = (k * 17 + t * 14) % 130; yy = (t * 40 + k * 29) % 236; d.line([(xx, yy), (xx - 2, yy + 5)], fill=(190, 200, 225))                  # rain over London
+    for k in range(12): _sparkle(d, 150 + (k * 37) % 110, 160 + (k * 17) % 70, t, k, (255, 240, 170))
+    xb = (t * 22) % (W + 40) - 20; d.rectangle((xb, 246, xb + 18, 254), fill=(210, 50, 60)); d.rectangle((xb + 16, 247, xb + 20, 250), fill=(255, 240, 180))
+def dyn_g15_tribute(im, t, ts, tag):
+    arr = np.array(im)
+    for k, x in enumerate((20, 135, 250)): beam(arr, x + 20 * math.sin(t * .9 + k * 2), 135, 30, 200, 6, 60, (255, 244, 210), .10)
+    glow(arr, 135, 118, 60, (255, 160, 70), .10 + .06 * math.sin(t * 7)); im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    fl = 2 * math.sin(t * 9); d.polygon([(126, 118), (135 + fl, 90 + fl // 2), (144, 118)], fill=(255, 190, 70), outline=DARK)
+    for k in range(70):                                                                                                         # lighters flicker in the crowd
+        x, y = (k * 37) % W, 238 + (k * 11) % 24
+        if math.sin(t * 8 + k) > -.3: d.point((x, y), fill=(255, 214, 120)); d.point((x, y - 1), fill=(255, 150, 60))
+    for k in range(40): _sparkle(d, (k * 61) % W, (k * 29) % 110, t, k)
+    for k in range(8): d.point((140 + (k * 11) % 60, 196 - (t * 10 + k * 7) % 40), fill=(250, 250, 250))
+def dyn_g15_tour(im, t, ts, tag):
+    d = ImageDraw.Draw(im); _bursts(d, t, ((40, 60), (210, 50), (130, 30), (82, 100), (190, 106)), ((255, 90, 90), (90, 230, 255), (255, 220, 90), (255, 130, 230), (140, 255, 150)))
+    _bulbs(d, [(44 + k * 10, 82) for k in range(18)] + [(44 + k * 10, 141) for k in range(18)], t, [(255, 240, 160), (250, 200, 60)], 2, 9)
+    for k in range(26): x = (k * 41 + 8 * math.sin(t * 2 + k)) % W; y = (t * (24 + k % 5 * 7) + k * 19) % 262; d.rectangle((x, y, x + 6, y + 3), fill=(110, 190, 120), outline=(60, 120, 70))   # cash raining
+    for (x, y) in ((40, 300), (200, 320), (120, 350), (60, 390), (210, 400)): _sparkle(d, x, y - 6, t, x, (255, 244, 170))
+    arr = np.array(im); glow(arr, 135, 112, 120, (255, 200, 60), .08 + .06 * math.sin(t * 3)); im.paste(Image.fromarray(arr))
+def dyn_g15_outro(im, t, ts, tag):
+    arr = np.array(im)
+    for k, (x, c) in enumerate(((70, (255, 255, 255)), (150, (255, 230, 190)), (230, (200, 230, 255)))): beam(arr, x + 40 * math.sin(t * .7 + k * 2.1), x + 60, 236, 0, 8, 44, c, .08)
+    im.paste(Image.fromarray(arr)); d = ImageDraw.Draw(im)
+    for k in range(40):
+        if math.sin(t * 3 + k * 1.9) > .6: d.point(((k * 47) % W, (k * 29) % 130), fill=(255, 255, 255))
+    for k in range(14): d.point((20 + (k * 37) % 230, 192 + (k * 11) % 40), fill=(255, 214, 140) if math.sin(t * 4 + k) > -.4 else (60, 40, 80))
+    s = (t * .5) % 4
+    if s < .7: x = 240 - s * 260; y = 20 + s * 90; d.line([(x, y), (x + 14, y - 8)], fill=(255, 250, 210), width=2)
+    for x in (92, 160): d.rectangle((x, 238, x + 9, 248), fill=(255, 224, 140) if int(t * 2 + x) % 3 else (90, 70, 110), outline=DARK)
+
 REG = {"brook": (BROOK, dyn_brooklyn), "sunset": (SUNSET, dyn_recap), "block": (BLOCK, dyn_block), "jazz": (JAZZ, dyn_jazz), "qb": (QB, dyn_qb),
        "battle": (BATTLE, dyn_battle), "press": (PRESS, _wrap(dyn_press, extra_press)), "paris": (PARIS, _wrap(dyn_paris, extra_paris)),
        "pyramid": (PYRAMID, _wrap(dyn_pyramid, extra_pyramid)), "grammy": (GRAMMY, _wrap(dyn_grammy, extra_grammy)), "robots": (ROBOTS, dyn_robots),
        "disco": (DISCO, _wrap(dyn_disco, extra_disco)), "rave": (RAVE, _wrap(dyn_rave, extra_rave)), "garden": (GARDEN, dyn_garden), "travel": (TRAVEL, dyn_travel),
        "hook_sunset": (SUNSET, _wrap(dyn_sunset, extra_hook)),
-       "g_hook": (G_BG[0], dyn_g_hook), "g13_hook": (G13_BG[0], dyn_g13_port), "g13_hamburg": (G13_BG[1], dyn_g13_hamburg), "g13_fete": (G13_BG[2], dyn_g13_fete), "g13_audition": (G13_BG[3], dyn_g13_audition), "g13_rooftop": (G13_BG[4], dyn_g13_rooftop), "g13_outro": (G13_BG[5], dyn_g13_crossing), "g14_hook": (G14_BG[0], dyn_g14_hook), "g14_gary": (G14_BG[1], dyn_g14_gary), "g14_grammy": (G14_BG[2], dyn_g14_grammy), "g14_motown": (G14_BG[3], dyn_g14_motown), "g14_crown": (G14_BG[4], dyn_g14_crown), "g14_outro": (G14_BG[5], dyn_g14_night), "g14_abbey": (G14_BG[6], dyn_g14_abbey), "g_outro": (G_BG[6], dyn_g_outro), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
+       "g_hook": (G_BG[0], dyn_g_hook), "g13_hook": (G13_BG[0], dyn_g13_port), "g13_hamburg": (G13_BG[1], dyn_g13_hamburg), "g13_fete": (G13_BG[2], dyn_g13_fete), "g13_audition": (G13_BG[3], dyn_g13_audition), "g13_rooftop": (G13_BG[4], dyn_g13_rooftop), "g13_outro": (G13_BG[5], dyn_g13_crossing), "g14_hook": (G14_BG[0], dyn_g14_hook), "g14_gary": (G14_BG[1], dyn_g14_gary), "g14_grammy": (G14_BG[2], dyn_g14_grammy), "g14_motown": (G14_BG[3], dyn_g14_motown), "g14_crown": (G14_BG[4], dyn_g14_crown), "g14_outro": (G14_BG[5], dyn_g14_night), "g14_abbey": (G14_BG[6], dyn_g14_abbey), "g15_hook": (G15_BG[0], dyn_g15_hook), "g15_club": (G15_BG[1], dyn_g15_club), "g15_split": (G15_BG[2], dyn_g15_split), "g15_tribute": (G15_BG[3], dyn_g15_tribute), "g15_tour": (G15_BG[4], dyn_g15_tour), "g15_outro": (G15_BG[5], dyn_g15_outro), "g_outro": (G_BG[6], dyn_g_outro), "g_wembley": (G_BG[1], dyn_g_wembley), "g_garage": (G_BG[2], dyn_g_garage), "g_studio": (G_BG[3], dyn_g_studio), "g_aberdeen": (G_BG[4], dyn_g_aberdeen), "g_pool": (G_BG[5], dyn_g_pool),
        "danger": (DANGER, dyn_danger), "set": (SET, dyn_set), "bedroom": (BEDROOM, dyn_bedroom), "tv": (TVROOM, dyn_tv), "store": (STORE, dyn_store), "awards": (AWARDS, dyn_awards),
        "workshop": (WORKSHOP, dyn_workshop), "wembley": (WEMBLEY, dyn_wembley), "cafe": (CAFE, dyn_cafe), "school": (SCHOOL, dyn_school), "airport": (AIRPORT, dyn_airport)}
 _outro = (BROOK, dyn_outro) if EP["outro_scene"] == "brook" else REG[EP["outro_scene"]]
@@ -1773,6 +1845,22 @@ def ui_low(seg, ts, t):
             if ts > 1.0: pill(d, 135, 300, 322, 222, (14, 8, 34), (255, 40, 60)); lt(d, (135, 311), f"{NCL} PISTAS · 0 FÁCILES", 11, WHITE)
             if ts > 1.4: lt(d, (135, 342), f"ARTISTA MISTERIOSO · PARTE {EP['part']}", 10, (255, 200, 120))
             if ts > 1.2: lt(d, (135, 362), f"¡SOLO {CLUE_LEN:g} SEGUNDOS POR PISTA!", 10, (255, 90, 90))
+            return ui
+        if EP["hook"] == "d":                           # ULTRA hook (3 s, starts on frame 0): flash + stamp + question + stakes + draining bar
+            sh = int(2 * math.sin(ts * 70)) if ts < .9 else 0
+            k0 = ease(min(ts / .2, 1)); dy0 = int((1 - k0) * -30)
+            pill(d, 135, 20 + dy0, 40 + dy0, 150, (200, 20, 50), WHITE); lt(d, (135, 30 + dy0), f"PARTE {EP['part']} · ULTRA DIFÍCIL", 10, WHITE)
+            on = ts > .5 or int(ts * 15) % 3 != 2
+            if on:
+                k = ease(ts / .25); dy = int((1 - k) * -30)
+                lt(d, (135 + sh, 72 + dy), "¿ERES FAN", 26, WHITE, shadow=(255, 40, 60)); lt(d, (135 - sh, 114 + dy), "DE VERDAD?", 30, GOLD, shadow=(220, 20, 40))
+            if ts > .9: lt(d, (135, 154), f"{NCL} PISTAS IMPOSIBLES", 13, WHITE, shadow=(255, 40, 60))
+            if ts > 1.2: pill(d, 135, 300, 322, 222, (14, 8, 34), (255, 40, 60)); lt(d, (135, 311), f"{NCL} PISTAS · 0 FÁCILES", 11, WHITE)
+            if ts > 1.7: lt(d, (135, 342), f"¡SOLO {CLUE_LEN:g} SEGUNDOS POR PISTA!", 10, (255, 90, 90))
+            if ts > 2.1: lt(d, (135, 362), "¿LO ADIVINAS ANTES DE LA ÚLTIMA?", 9, (255, 200, 120))
+            if ts > 1.0:
+                w = max(0, int(200 * (1 - (ts - 1.0) / 2.0))); d.rectangle((35, 380, 235, 386), fill=(40, 10, 30), outline=(255, 40, 60)); d.rectangle((36, 381, 36 + w, 385), fill=(255, 40, 60))
+            if ts < .12: d.rectangle((0, 0, W, H), fill=(255, 255, 255, int(95 * (1 - ts / .12))))
             return ui
         if EP["hook"] == "b":                           # NEW HOOK (first 2 s): "Solo el 1% adivina este artista"
             on = ts > .45 or int(ts * 15) % 3 != 2
@@ -1805,7 +1893,7 @@ def ui_low(seg, ts, t):
                 lt(d, (135, 46 + dy), lines[0], s0, LIGHTBG_TXT if LIGHT_RECAP else WHITE, shadow=(255, 255, 255) if LIGHT_RECAP else (255, 70, 190)); lt(d, (135, 90 + dy), lines[1], s1, GOLD, shadow=(120, 50, 0)); py = 120
             else:
                 lt(d, (135, 40 + dy), "LA RESPUESTA DE AYER", 11, (255, 200, 120)); lt(d, (135, 82 + dy), lines[0], 56, GOLD, shadow=(120, 50, 0), anchor="mm"); py = 120
-            if PREV["sprite"] in ("tyler", "nas2", "freddie_gba", "kurt_gba", "beatles_gba"): py = 109
+            if PREV["sprite"] in ("tyler", "nas2", "freddie_gba", "kurt_gba", "beatles_gba", "mj_gba"): py = 109
             if e > .5: pill(d, 135, py, py + 16, 196, (14, 8, 34), GOLD); lt(d, (135, py + 8), PREV["sub"], 9, (255, 200, 120))
             if ts > RECAP_LEN - 2.6:
                 b = int(2 * math.sin(t * 10)); msg = "¡AHORA LOS GANADORES!" if WINNERS else "¡HOY: UN NUEVO ARTISTA!"
@@ -2005,7 +2093,7 @@ def render(t):
         if i > 1 and T[i] == T[i - 1]: continue
         p = (t - (T[i] - WIPE / 2)) / WIPE
         if 0 < p < 1: wipe(big, p)
-    if t < .12: big = Image.blend(Image.new("RGB", (FW, FH)), big, t / .12)
+    if t < .12 and EP["hook"] != "d": big = Image.blend(Image.new("RGB", (FW, FH)), big, t / .12)
     if t > END - .5: big = Image.blend(Image.new("RGB", (FW, FH)), big, max(0, (END - t) / .5))
     return big
 

@@ -129,6 +129,9 @@ WINNERS_P12 = [(r["user"], r["plat"], r["pista"], r["likes"], r["horas"]) for r 
 _P13 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "content", "ganadores_p13_beatles.json")
 WINNERS_P13 = [(r["user"], r["plat"], r["pista"], r["likes"], r["horas"]) for r in _json.load(open(_P13))] if os.path.exists(_P13) else []
 
+_P14 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "content", "ganadores_p14_michael_jackson.json")
+WINNERS_P14 = [(r["user"], r["plat"], r["pista"], r["likes"], r["horas"]) for r in _json.load(open(_P14))] if os.path.exists(_P14) else []
+
 def _sort_rows(raw):
     """Order requested by the channel owner: pista (1,2,3, sin pista) -> más likes -> comentó antes (más horas)."""
     s = sorted(enumerate(raw), key=lambda e: ((e[1][2] if e[1][2] else 9), -e[1][3], -e[1][4], e[0]))
@@ -152,6 +155,23 @@ EPISODES = {
                  text="En *2006* tocaron en *Coachella* dentro de una pirámide de pantallas y luces LED."),
             dict(n=5, diff="FÁCIL", pts=1, chip="GRAMMY", scene="grammy",
                  text="En *2014* ganaron el Grammy a *Álbum del Año*, con un disco que incluía «*Get Lucky*» junto a *Pharrell*."),
+        ]),
+    # ------------------------------------------------------------------ Parte 15: Guns N' Roses (rock, ULTRA DIFÍCIL, estilo GBA) — respuesta de ayer: Michael Jackson
+    "p15": dict(
+        part=15, artist="Guns N' Roses", genre="rock", music="rock", bpm=124, prog=[0, 0, 3, 3, 5, 5, 3, 0], hook="d", next_part=16, mega=True, gba=True, gba_dir="parte15",
+        hook_len=3.0, reveal=2.8, hook_scene="g15_hook", outro_scene="g15_outro", outro_sign=None, diff_nb=12,
+        clue_len=7.0, last_clue_len=8.5, tw0=1.0, tws=0.022,
+        banners={0: "¡NIVEL: ULTRA DIFÍCIL!", 1: "SOLO PARA FANS DE VERDAD", 2: "NI LA ÚLTIMA ES FÁCIL"},
+        prev=dict(sprite="mj_gba", scene="g14_hook", part=14, lines=("MICHAEL", "JACKSON"), sub="GARY · INDIANA", winners=[], winners_part=14, special={}),
+        clues=[
+            dict(n=1, diff="IMPOSIBLE", pts=4, chip="26·03·85", scene="g15_club",
+                 text="Su primer concierto, en *1985*, se anunció con los nombres de *las dos bandas* de *Los Ángeles* que se fusionaron para crearla."),
+            dict(n=2, diff="IMPOSIBLE", pts=3, chip="INGLATERRA", scene="g15_split",
+                 text="Su guitarrista no nació en EE. UU., sino en *Inglaterra*, y se mudó a *Los Ángeles* siendo un niño de unos *6 años*."),
+            dict(n=3, diff="ULTRA DIFÍCIL", pts=2, chip="WEMBLEY 1992", scene="g15_tribute",
+                 text="En abril de *1992*, en *Wembley*, su cantante cantó un clásico de otra banda junto a sus *integrantes originales* y *Elton John*."),
+            dict(n=4, diff="MUY DIFÍCIL", pts=1, chip="$584M", scene="g15_tour",
+                 text="Su gira de reunión (*2016–2019*) recaudó *584 millones* de dólares: la *tercera* gira más taquillera de la historia."),
         ]),
     # ------------------------------------------------------------------ Parte 14: Michael Jackson (pop/funk, estilo GBA) — respuesta de ayer: The Beatles
     "p14": dict(
@@ -254,6 +274,7 @@ EPISODES["p11"]["prev"]["winners"] = _sort_rows(WINNERS_P10)
 EPISODES["p12"]["prev"]["winners"] = _sort_rows(WINNERS_P11)
 EPISODES["p13"]["prev"]["winners"] = _sort_rows(WINNERS_P12)
 EPISODES["p14"]["prev"]["winners"] = _sort_rows(WINNERS_P13)
+EPISODES["p15"]["prev"]["winners"] = _sort_rows(WINNERS_P14)
 
 def current():
     ep = dict(EPISODES[os.environ.get("EPISODE", "p11")])
