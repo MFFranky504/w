@@ -160,6 +160,7 @@ EPISODES = {
     "p15": dict(
         part=15, artist="Guns N' Roses", genre="rock", music="rock", bpm=124, prog=[0, 0, 3, 3, 5, 5, 3, 0], hook="d", next_part=16, mega=True, gba=True, gba_dir="parte15",
         hook_len=3.0, reveal=2.8, hook_scene="g15_hook", outro_scene="g15_outro", outro_sign=None, diff_nb=12,
+        win_cols=2, row_h=62, win_speed=400, win_label="ORDEN: PISTA > QUIÉN COMENTÓ ANTES", win_sub="ORDENADOS POR PISTA Y HORA",
         clue_len=7.0, last_clue_len=8.5, tw0=1.0, tws=0.022,
         banners={0: "¡NIVEL: ULTRA DIFÍCIL!", 1: "SOLO PARA FANS DE VERDAD", 2: "NI LA ÚLTIMA ES FÁCIL"},
         prev=dict(sprite="mj_gba", scene="g14_hook", part=14, lines=("MICHAEL", "JACKSON"), sub="GARY · INDIANA", winners=[], winners_part=14, special={}),

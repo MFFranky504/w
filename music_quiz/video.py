@@ -1903,7 +1903,7 @@ def ui_low(seg, ts, t):
         if EP.get("gba"): d.rectangle((0, 10, 270, 72), fill=(14, 8, 34, 150))
         k = ease(ts / .35); dy = int((1 - k) * -26)
         lt(d, (135, 24 + dy), f"GANADORES · PARTE {PREV['winners_part']}", 20, GOLD, shadow=(110, 50, 0))
-        lt(d, (135, 46 + dy), "ORDENADOS POR PISTA Y LIKES", 10, WHITE)
+        lt(d, (135, 46 + dy), EP.get("win_sub", "ORDENADOS POR PISTA Y LIKES"), 10, WHITE)
         lt(d, (135, 60 + dy), f"{len(WINNERS)} PERSONAS LO ADIVINARON", 9, (255, 200, 120))
         return ui
     if seg == S_OUT:
@@ -1970,7 +1970,7 @@ def draw_winners(img, ts):
     dy = int((1 - k) * 70); wb = 800 if PREV["sprite"] == "snoop" else 840; y0, y1 = wb + dy, wb + 740 + dy; d = ImageDraw.Draw(img)
     d.rectangle((44, y0 - 8, 1036, y1 + 8), fill=(14, 10, 36)); d.rectangle((52, y0, 1028, y1), fill=(24, 42, 150), outline=(255, 205, 60), width=8)
     d.rectangle((60, y0 + 8, 1020, y0 + 38), fill=(120, 70, 10)); d.fontmode = "1"
-    d.text((540, y0 + 24), "ORDEN: PISTA > LIKES > QUIÉN COMENTÓ ANTES", font=F(22), fill=(255, 235, 170), anchor="mm"); d.fontmode = "L"
+    d.text((540, y0 + 24), EP.get("win_label", "ORDEN: PISTA > LIKES > QUIÉN COMENTÓ ANTES"), font=F(22), fill=(255, 235, 170), anchor="mm"); d.fontmode = "L"
     wx0, wy0, ww, wh = 64, y0 + 44, 952, WIN_WH
     win = Image.new("RGB", (ww, wh), (24, 42, 150)); wd = ImageDraw.Draw(win)
     off = min(max(ts - WIN_START, 0) * WIN_SPEED, max(0, len(ROWS) * ROW_H - wh))
@@ -1980,7 +1980,16 @@ def draw_winners(img, ts):
         col = PCOL[r["pk"]]
         if r["kind"] == "hdr":
             wd.rounded_rectangle((6, y + 8, ww - 6, y + ROW_H - 8), 12, fill=(14, 10, 36), outline=col, width=3)
-            wd.text((ww // 2, y + ROW_H // 2 - 2), f"★  {PTXT[r['pk']]}  ★", font=fnt(38), fill=col, anchor="mm"); continue
+            wd.text((ww // 2, y + ROW_H // 2 - 2), f"★  {PTXT[r['pk']]}  ★", font=fnt(38 if ROW_H >= 80 else 30), fill=col, anchor="mm"); continue
+        if r["kind"] == "pair":                                        # compact mode: two winners per line
+            for j, it in enumerate(r["items"]):
+                x0 = 6 + j * (ww // 2); x1 = x0 + ww // 2 - 10; top = it["rank"] == 1
+                wd.rounded_rectangle((x0, y + 4, x1, y + ROW_H - 6), 12, fill=(255, 205, 60) if top else (40, 66, 190)); wd.rectangle((x0, y + 10, x0 + 7, y + ROW_H - 12), fill=col)
+                wd.ellipse((x0 + 14, y + 8, x0 + 62, y + ROW_H - 10), fill=(14, 10, 36)); wd.text((x0 + 38, y + ROW_H // 2 - 2), str(it["rank"]), font=fnt(24 if it["rank"] < 100 else 19), fill=col, anchor="mm")
+                sz = 34; avail = x1 - x0 - 70 - 14
+                while sz > 16 and wd.textlength(it["h"], font=fnt(sz)) > avail: sz -= 2
+                wd.text((x0 + 70, y + ROW_H // 2 - 2), it["h"], font=fnt(sz), fill=DARK if top else WHITE, anchor="lm")
+            continue
         top = r["rank"] == 1
         wd.rounded_rectangle((6, y + 6, ww - 6, y + ROW_H - 8), 14, fill=(255, 205, 60) if top else (40, 66, 190))
         wd.rectangle((6, y + 12, 14, y + ROW_H - 14), fill=col)

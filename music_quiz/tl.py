@@ -12,6 +12,7 @@ S_HOOK, S_RECAP, S_WIN, S_C1 = 0, 1, 2, 3
 S_OUT = S_C1 + NCL
 ROW_H, WIN_SPEED, WIN_WH, WIN_START = 88, 270, 686, 0.8
 WIN_SPEED = EP.get("win_speed", WIN_SPEED)   # winners list (full-res px, px/s)
+ROW_H = EP.get("row_h", ROW_H); WIN_COLS = EP.get("win_cols", 1)       # compact mode for long lists: 2 names per line
 CLUE_LEN, LAST_CLUE_LEN = EP.get("clue_len", 7.5), EP.get("last_clue_len", 9.0)   # last clue gets a 3-2-1 countdown
 TW0, TWS = EP.get("tw0", TW0), EP.get("tws", TWS)
 RECAP_LEN = 9.0 if WINNERS else REVEAL + 3.6
@@ -23,6 +24,17 @@ for h, pl, pk, lk, hr in WINNERS:
         ROWS.append(dict(kind="hdr", pk=pk)); _last = pk
     _rank += 1
     ROWS.append(dict(kind="row", rank=_rank, h=h, pl=pl, pk=pk, lk=lk))
+if WIN_COLS == 2:                                          # pair consecutive winners of the same pista on one line (headers stay alone)
+    _R2, _buf = [], []
+    for _r in ROWS:
+        if _r["kind"] == "hdr":
+            if _buf: _R2.append(dict(kind="pair", pk=_buf[0]["pk"], items=_buf)); _buf = []
+            _R2.append(_r)
+        else:
+            _buf.append(_r)
+            if len(_buf) == 2: _R2.append(dict(kind="pair", pk=_buf[0]["pk"], items=_buf)); _buf = []
+    if _buf: _R2.append(dict(kind="pair", pk=_buf[0]["pk"], items=_buf))
+    ROWS = _R2
 WIN_SCROLL = max(0, len(ROWS) * ROW_H - WIN_WH) / WIN_SPEED
 WIN_LEN = (WIN_START + WIN_SCROLL + 2.5) if WINNERS else 0.0
 
