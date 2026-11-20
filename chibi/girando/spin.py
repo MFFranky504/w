@@ -165,6 +165,9 @@ def smax(a, b, k):
 VIS_A = math.radians(16)          # visor tilt (front edge down)
 CROWN_C = np.array([0, 22.5, 13.0]); CROWN_R = np.array([16.0, 12.8, 15.5])
 TOP_D = np.array([0, -0.74, 0.67]); TOP_D = TOP_D / np.linalg.norm(TOP_D)
+DOME_C = np.array([0, 35.5, -1.0]); DOME_R = np.array([27.5, 25.0, 26.5])
+PATCH_LAT = math.radians(36)
+PATCH_D = np.array([0, -math.sin(PATCH_LAT), math.cos(PATCH_LAT)])
 
 
 def hat_parts(p):
@@ -174,7 +177,6 @@ def hat_parts(p):
     flaps = np.minimum(sd_ell(p, (-21.8, 51.5, -1.5), (5.6, 12.0, 8.6)),
                        sd_ell(p, (21.8, 51.5, -1.5), (5.6, 12.0, 8.6)))
     cyan = smin(dome, flaps, 4.0)
-    crown = sd_ell(p, CROWN_C, CROWN_R)
     q = p - np.array([0, 32.0, 24.0])
     ca, sa = math.cos(VIS_A), math.sin(VIS_A)
     qy = q[..., 1] * ca - q[..., 2] * sa
@@ -183,12 +185,12 @@ def hat_parts(p):
     qy = qy - 0.7 * np.sin(qx * 0.42 + 0.4) * np.clip(qz / 13 + 0.6, 0, 1)
     vis = sd_ell(np.stack([qx, qy, qz], -1), (0, 0, 0), (23.5, 2.3, 13.0))
     vis = smax(vis, -qz - 2.0, 1.0)          # only the front part of the plate
-    return cyan, crown, vis
+    return cyan, vis
 
 
 def hat_sdf(p):
-    cyan, crown, vis = hat_parts(p)
-    return np.minimum(np.minimum(cyan, crown), vis)
+    cyan, vis = hat_parts(p)
+    return np.minimum(cyan, vis)
 
 
 def march_hat(o, d):
@@ -336,18 +338,24 @@ def _render(phi, hop=0.0, arm=25.0):
     x, y, z = PL[..., 0], PL[..., 1], PL[..., 2]
 
     m = pid == 0
-    cyan_d, crown_d, vis_d = hat_parts(PL)
-    pinkpart = np.minimum(crown_d, vis_d) < cyan_d
-    q = unit((PL - CROWN_C) / CROWN_R)
-    ang = np.arccos(np.clip((q * TOP_D).sum(-1), -1, 1))
-    oncrown = crown_d <= vis_d
+    cyan_d, vis_d = hat_parts(PL)
+    onvis = vis_d < cyan_d
+    qd = unit((PL - DOME_C) / DOME_R)
+    ang = np.arccos(np.clip((qd * PATCH_D).sum(-1), -1, 1))
     grp[m] = HELM
-    grp[m & pinkpart] = CAP
-    grp[m & pinkpart & oncrown & (ang < 0.56)] = BALL
-    grp[m & pinkpart & oncrown & (ang >= 0.56) & (ang < 0.70)] = RING
+    grp[m & onvis] = CAP
+    patch = m & ~onvis & (y < 41)
+    grp[patch & (ang < 0.335)] = BALL
+    grp[patch & (ang >= 0.335) & (ang < 0.405)] = RING
+    # tangent coords on the patch (units) for the stitch texture
+    lam_p = np.arctan2(qd[..., 0], qd[..., 2])
+    lat_p = np.arcsin(np.clip(-qd[..., 1], -1, 1))
+    pu = lam_p * DOME_R[0]
+    pv = (lat_p - PATCH_LAT) * DOME_R[1]
+    stitch_on = (np.floor((pu - pv) * K / 1.0) % 3) == 0
+    dash_on = (np.floor((np.arctan2(pv, pu) + np.pi) / (2 * np.pi / 18)) % 2) == 0
     part = pid.copy()
-    part[m & pinkpart & oncrown] = 16
-    part[m & pinkpart & ~oncrown] = 17
+    part[m & onvis] = 17
 
     m = pid == 1
     bang = np.interp(x, BANG_X, BANG_Y)
@@ -390,8 +398,8 @@ def _render(phi, hop=0.0, arm=25.0):
     lvl[inten < 0.40] = 1
     lvl[inten < -0.32] = 0
     lvl[inten > 0.80] = 3
-    hi_groups = np.isin(grp, [BALL])
-    lvl[hi_groups & (inten > 0.95)] = 4
+    emb = np.isin(grp, [BALL, RING])
+    lvl[emb] = np.clip(lvl[emb], 1, 3)
     lvl[(grp == HELM_IN)] = np.clip(lvl[grp == HELM_IN] - 1, 0, 2)
     # soft shadow cast by the hat rim / visor
     under = np.isin(grp, [FACE_SKIN, HAIR]) & (y < 43.6)
@@ -413,6 +421,12 @@ def _render(phi, hop=0.0, arm=25.0):
             img[mm & (lvl == L)] = ramp[L]
     # lavender reflected light on the dark side of the sleeves
     img[np.isin(grp, [SL_O, SL_B]) & (lvl == 0) & (nw[..., 0] < 0)] = RAMPS['lav'][2]
+    # embroidery texture: satin-stitch diagonals on the pink, dashed stitches on the white ring
+    pk = RAMPS['pink']
+    for L in (1, 2, 3):
+        mm = (grp == BALL) & (lvl == L) & stitch_on
+        img[mm] = pk[min(L + 1, 4)]
+    img[(grp == RING) & ~dash_on] = RAMPS['white'][1]
 
     # ------------------------------------------------------------ lines
     def nb(a, dx, dy, fill):
@@ -423,8 +437,8 @@ def _render(phi, hop=0.0, arm=25.0):
 
     line = np.zeros((H, W), bool)
     soft = np.zeros((H, W), bool)
-    pair_lines = {(HELM, CAP), (HELM, RING), (CAP, RING), (SH_O, COLLAR), (SH_B, COLLAR),
-                  (V_SKIN, COLLAR), (HELM, BALL)}
+    pair_lines = {(HELM, CAP), (SH_O, COLLAR), (SH_B, COLLAR), (V_SKIN, COLLAR)}
+    emb_edge = np.zeros((H, W), bool)
     for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
         dn = nb(depth, dx, dy, np.inf)
         gn = nb(grp, dx, dy, -1)
@@ -432,11 +446,13 @@ def _render(phi, hop=0.0, arm=25.0):
         line |= hit & (gn >= 0) & (((dn < depth - 2.6) & (pn != part)) | (dn < depth - 9.0))
         for a_, b_ in pair_lines:
             line |= (grp == a_) & (gn == b_)
+        emb_edge |= (grp == HELM) & (gn == RING)
         soft |= (grp == FACE_SKIN) & (gn == HAIR) & (np.abs(dn - depth) < 2.6)
     for gname, rname in GROUP_RAMP.items():
         mm = line & (grp == gname)
         img[mm] = RAMPS[rname][5]
     img[soft & ~line] = RAMPS['skin'][1]
+    img[emb_edge & ~line] = RAMPS['cyan'][0]
 
     # ------------------------------------------------------------ face sprites
     def place(lx, ly, variants, cmap, only=(FACE_SKIN,), anchor='c'):
