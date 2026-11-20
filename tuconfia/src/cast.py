@@ -161,6 +161,14 @@ CAST.update({
  'f_alice':   dict(style='tab', skin=(246, 214, 190), hair=ramp((140, 96, 60)), iris=(80, 100, 130), outfit='cardigan', hair2='pulled', kid=True, v2=True),
 })
 CAST['f_carrey']['raise'] = CAST['f_carrey'].pop('raise_')
+CAST.update({
+ 'f_spiel':  dict(style='short', skin=(236, 200, 170), hair=ramp((70, 48, 36)), iris=(80, 60, 44), outfit='plaid', hair2='curly', glasses=True, build='slim', v2=True),
+ 'f_spiel_a': dict(style='short', skin=(236, 200, 170), hair=ramp((70, 48, 36)), iris=(80, 60, 44), outfit='blazer', hair2='curly', glasses=True, beard=True, build='average', v2=True),
+ 'f_seuss':  dict(style='short', skin=(238, 204, 176), hair=ramp((60, 44, 36)), iris=(80, 60, 44), outfit='tux', hair2='receding', mst='pencil', build='slim', v2=True),
+ 'f_dyson':  dict(style='short', skin=(240, 206, 178), hair=ramp((88, 66, 52)), iris=(90, 110, 130), outfit='hoodie', hair2='messy', build='average', v2=True),
+ 'f_blake':  dict(style='tab', skin=(240, 206, 180), hair=ramp((214, 170, 100)), iris=(90, 120, 150), outfit='blazer', hair2='wavy', build='slim', v2=True),
+ 'f_honda':  dict(style='short', skin=(232, 196, 160), hair=ramp((30, 26, 28)), iris=(50, 40, 36), outfit='grey', hair2='crew', glasses=True, build='average', v2=True),
+})
 
 
 def resolve(who):

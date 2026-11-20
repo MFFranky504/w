@@ -34,6 +34,8 @@ Prueba de 3 formatos de gancho, midiendo vistas a las 24 h: CIFRA (King, Sanders
 | Mar 24 | Short Lincoln (CONTRASTE) | 7caeaaa4bdaf73a637c7 |
 | Mié 25 | Short Sanders (CIFRA) | 20126021708a2d6aaf36 |
 | Jue 26 | Short Lucille Ball (PREGUNTA) | 147b81a3a23f892beca0 |
-| Vie 27 | Largo-lista nº2 | por producir |
+| Vie 27 | Largo-lista nº2 «5 personas a las que les dijeron que NO» (Spielberg, Seuss, Dyson, Blakely, Honda; 3:31; voz Edge Gonzalo) | a7ac6496ab2b96881ce4 |
 | Sáb 28 / Dom 29 | libres: repetir el formato que gane | |
 Fichas: docs/canal/shorts/<n>.json; generar con `python3 -I src/mk_short.py <n>`. Hechos: Lincoln perdió en 1832, 1855 y 1858 (Senado: lo eligen las legislaturas) y fue presidente en 1860; Beethoven casi sordo en el estreno del 7-may-1824 (no dirigía de verdad); Sanders: meme exagerado, solo 1952 Pete Harman (Salt Lake City) y el cheque de 105 $ «según se cuenta»; King: 30 rechazos «según contó», adelanto 2.500 $, bolsillo 400.000 $; Lucille: «no talento» según contó ella.
+
+Largo nº2: guion docs/largo_no5/guion_final.json; escenas src/scenes20.py; motor src/build_no5.py (copia de build_famosos); voz src/voz_edge_largo.py + narr_viva.py + Whisper (Groq); miniatura src/miniatura_no5.py. Capítulos: 0:00, 0:18, 0:56, 1:30, 2:02, 2:34, 2:59.

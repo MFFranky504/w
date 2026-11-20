@@ -1,0 +1,320 @@
+[
+ {
+  "cap": 0,
+  "emo": "tense",
+  "kit": "n5",
+  "t": "*5.127* intentos fallidos."
+ },
+ {
+  "cap": 0,
+  "emo": "tense",
+  "kit": "n5",
+  "t": "*27* editoriales que dijeron que no."
+ },
+ {
+  "cap": 0,
+  "emo": "tense",
+  "kit": "n5",
+  "t": "*5.000* dólares, y nada más."
+ },
+ {
+  "cap": 0,
+  "emo": "mysterious",
+  "kit": "n5",
+  "t": "Tres números de tres personas a las que el mundo les cerró la puerta."
+ },
+ {
+  "cap": 0,
+  "emo": "hopeful",
+  "kit": "n5",
+  "t": "Y hoy sus nombres están en tu casa, en tus libros y en tus películas."
+ },
+ {
+  "cap": 0,
+  "emo": "mysterious",
+  "kit": "n5",
+  "t": "Esta es la historia de cinco personas a las que les dijeron que *no*."
+ },
+ {
+  "cap": 0,
+  "emo": "hopeful",
+  "kit": "n5",
+  "t": "Y de lo que hicieron después."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "s_usc",
+  "t": "Steven Spielberg quería estudiar cine en la Universidad del Sur de California."
+ },
+ {
+  "cap": 1,
+  "emo": "sad",
+  "kit": "s_usc",
+  "t": "Lo rechazaron. Según se cuenta, por sus notas."
+ },
+ {
+  "cap": 1,
+  "emo": "sad",
+  "kit": "s_usc",
+  "t": "Terminó en otra universidad, la de Long Beach."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "s_uni",
+  "t": "Pero con 21 años consiguió algo mejor que una clase: entrar a un estudio."
+ },
+ {
+  "cap": 1,
+  "emo": "hopeful",
+  "kit": "s_uni",
+  "t": "Unas prácticas, sin sueldo, en el departamento de edición de *Universal*."
+ },
+ {
+  "cap": 1,
+  "emo": "hopeful",
+  "kit": "s_uni",
+  "t": "En 1968 rodó un cortometraje de 26 minutos llamado «Amblin»..."
+ },
+ {
+  "cap": 1,
+  "emo": "excited",
+  "kit": "s_duel",
+  "t": "y Universal le ofreció un contrato."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "s_duel",
+  "t": "Su primera película para televisión fue «Duel», en 1971."
+ },
+ {
+  "cap": 1,
+  "emo": "warm",
+  "kit": "s_duel",
+  "t": "Y décadas después, a los 55 años, volvió a la universidad de Long Beach... a recibir su título."
+ },
+ {
+  "cap": 2,
+  "emo": "tense",
+  "kit": "z_walk",
+  "t": "Theodor Geisel, el futuro Dr. Seuss, tenía un libro infantil y ninguna editorial lo quería."
+ },
+ {
+  "cap": 2,
+  "emo": "sad",
+  "kit": "z_walk",
+  "t": "Según se cuenta, lo rechazaron unas *27* veces."
+ },
+ {
+  "cap": 2,
+  "emo": "sad",
+  "kit": "z_walk",
+  "t": "Una tarde caminaba por Nueva York, decidido a quemar el manuscrito."
+ },
+ {
+  "cap": 2,
+  "emo": "mysterious",
+  "kit": "z_meet",
+  "t": "Y entonces se cruzó con un antiguo compañero de universidad."
+ },
+ {
+  "cap": 2,
+  "emo": "hopeful",
+  "kit": "z_meet",
+  "t": "Ese compañero acababa de empezar como editor de libros infantiles."
+ },
+ {
+  "cap": 2,
+  "emo": "excited",
+  "kit": "z_meet",
+  "t": "Le dijo: «Enséñamelo»."
+ },
+ {
+  "cap": 2,
+  "emo": "warm",
+  "kit": "z_book",
+  "t": "En 1937 se publicó «And to Think That I Saw It on Mulberry Street»."
+ },
+ {
+  "cap": 2,
+  "emo": "hopeful",
+  "kit": "z_book",
+  "t": "Años después, Geisel bromeó con que, si hubiera caminado por la otra acera, estaría en el negocio de las tintorerías."
+ },
+ {
+  "cap": 3,
+  "emo": "warm",
+  "kit": "d_garage",
+  "t": "James Dyson odiaba su aspiradora: la bolsa se llenaba y perdía fuerza."
+ },
+ {
+  "cap": 3,
+  "emo": "hopeful",
+  "kit": "d_garage",
+  "t": "Así que en 1978 construyó un prototipo con un ciclón de cartón."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "d_garage",
+  "t": "Y desde ese día empezó a mejorarlo."
+ },
+ {
+  "cap": 3,
+  "emo": "tense",
+  "kit": "d_count",
+  "t": "Prototipo tras prototipo. Uno más. Y otro más."
+ },
+ {
+  "cap": 3,
+  "emo": "sad",
+  "kit": "d_count",
+  "t": "Él mismo cuenta que fueron *5.127* prototipos."
+ },
+ {
+  "cap": 3,
+  "emo": "mysterious",
+  "kit": "d_count",
+  "t": "Cinco mil ciento veintiséis fracasos."
+ },
+ {
+  "cap": 3,
+  "emo": "hopeful",
+  "kit": "d_shop",
+  "t": "Una empresa japonesa vendió su diseño con licencia, y ese dinero le permitió montar su propia fábrica."
+ },
+ {
+  "cap": 3,
+  "emo": "excited",
+  "kit": "d_shop",
+  "t": "En 1993 salió a la venta la primera aspiradora Dyson."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "b_fax",
+  "t": "Sara Blakely vendía máquinas de fax de puerta en puerta."
+ },
+ {
+  "cap": 4,
+  "emo": "hopeful",
+  "kit": "b_fax",
+  "t": "Se le ocurrió una idea para la ropa interior y puso todos sus ahorros: *5.000* dólares."
+ },
+ {
+  "cap": 4,
+  "emo": "sad",
+  "kit": "b_mill",
+  "t": "Los dueños de las fábricas de medias pensaban que era una pérdida de tiempo."
+ },
+ {
+  "cap": 4,
+  "emo": "hopeful",
+  "kit": "b_mill",
+  "t": "Ella siguió insistiendo hasta que encontró quien le fabricara un prototipo."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "b_neiman",
+  "t": "Su primera gran cuenta fue Neiman Marcus: le dieron diez minutos si pagaba su propio viaje a Dallas."
+ },
+ {
+  "cap": 4,
+  "emo": "excited",
+  "kit": "b_neiman",
+  "t": "Hizo una demostración en un baño... y aceptaron venderlo en siete tiendas."
+ },
+ {
+  "cap": 4,
+  "emo": "excited",
+  "kit": "b_oprah",
+  "t": "En el año 2000, Oprah Winfrey incluyó Spanx entre sus productos favoritos."
+ },
+ {
+  "cap": 4,
+  "emo": "warm",
+  "kit": "b_oprah",
+  "t": "Y nunca aceptó dinero de inversores, según cuenta Fortune."
+ },
+ {
+  "cap": 5,
+  "emo": "warm",
+  "kit": "h_taller",
+  "t": "Soichiro Honda era mecánico y soñaba con fabricar piezas para Toyota."
+ },
+ {
+  "cap": 5,
+  "emo": "sad",
+  "kit": "h_taller",
+  "t": "Le presentó sus anillos de pistón... y Toyota los rechazó: no cumplían el estándar."
+ },
+ {
+  "cap": 5,
+  "emo": "tense",
+  "kit": "h_taller",
+  "t": "Podía rendirse. Pero se puso a estudiar cómo hacerlos mejor."
+ },
+ {
+  "cap": 5,
+  "emo": "hopeful",
+  "kit": "h_fabrica",
+  "t": "Con los años, esas piezas sí sirvieron, y Toyota llegó a ser su cliente."
+ },
+ {
+  "cap": 5,
+  "emo": "excited",
+  "kit": "h_fabrica",
+  "t": "Y el 24 de septiembre de 1948 se constituyó *Honda* Motor."
+ },
+ {
+  "cap": 5,
+  "emo": "warm",
+  "kit": "h_moto",
+  "t": "Hoy hay motos y coches Honda en todo el mundo."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "cierre2",
+  "t": "Cinco historias distintas. Y un mismo patrón."
+ },
+ {
+  "cap": 6,
+  "emo": "mysterious",
+  "kit": "cierre2",
+  "t": "A todos les dijeron *no*. A todos les cerraron la puerta."
+ },
+ {
+  "cap": 6,
+  "emo": "hopeful",
+  "kit": "cierre2",
+  "t": "Pero ninguno trató el no como el final."
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "cierre2",
+  "t": "Lo trataron como información: «así no», o «todavía no»."
+ },
+ {
+  "cap": 6,
+  "emo": "hopeful",
+  "kit": "cierre2",
+  "t": "Y la próxima vez que oigas un no, recuerda: *27*, *5.127*, *cinco mil dólares*."
+ },
+ {
+  "cap": 6,
+  "emo": "softly",
+  "kit": "cierre2",
+  "t": "Cuéntame en los comentarios: ¿a qué *no* no le vas a hacer caso?"
+ },
+ {
+  "cap": 6,
+  "emo": "warm",
+  "kit": "cierre2",
+  "t": "Suscríbete, y nos vemos en la próxima historia."
+ }
+]
