@@ -144,6 +144,88 @@ def torso_ab(y):
     return 16.4 * s, 12.4 * s
 
 
+
+# ---------------------------------------------------------------- soft hat (SDF ray-march)
+def sd_ell(p, c, r):
+    q = (p - np.asarray(c, float)) / np.asarray(r, float)
+    k0 = np.linalg.norm(q, axis=-1)
+    k1 = np.linalg.norm(q / np.asarray(r, float), axis=-1)
+    return k0 * (k0 - 1.0) / np.maximum(k1, 1e-6)
+
+
+def smin(a, b, k):
+    h = np.clip(0.5 + 0.5 * (b - a) / k, 0, 1)
+    return b * (1 - h) + a * h - k * h * (1 - h)
+
+
+def smax(a, b, k):
+    return -smin(-a, -b, k)
+
+
+VIS_A = math.radians(16)          # visor tilt (front edge down)
+CROWN_C = np.array([0, 22.5, 13.0]); CROWN_R = np.array([16.0, 12.8, 15.5])
+TOP_D = np.array([0, -0.74, 0.67]); TOP_D = TOP_D / np.linalg.norm(TOP_D)
+
+
+def hat_parts(p):
+    x, y, z = p[..., 0], p[..., 1], p[..., 2]
+    dome = sd_ell(p, (0, 35.5, -1.0), (27.5, 25.0, 26.5))
+    dome = smax(dome, y - 41.0, 2.0)
+    flaps = np.minimum(sd_ell(p, (-21.8, 51.5, -1.5), (5.6, 12.0, 8.6)),
+                       sd_ell(p, (21.8, 51.5, -1.5), (5.6, 12.0, 8.6)))
+    cyan = smin(dome, flaps, 4.0)
+    crown = sd_ell(p, CROWN_C, CROWN_R)
+    q = p - np.array([0, 32.0, 24.0])
+    ca, sa = math.cos(VIS_A), math.sin(VIS_A)
+    qy = q[..., 1] * ca - q[..., 2] * sa
+    qz = q[..., 1] * sa + q[..., 2] * ca
+    qx = q[..., 0]
+    qy = qy - 0.7 * np.sin(qx * 0.42 + 0.4) * np.clip(qz / 13 + 0.6, 0, 1)
+    vis = sd_ell(np.stack([qx, qy, qz], -1), (0, 0, 0), (23.5, 2.3, 13.0))
+    vis = smax(vis, -qz - 2.0, 1.0)          # only the front part of the plate
+    return cyan, crown, vis
+
+
+def hat_sdf(p):
+    cyan, crown, vis = hat_parts(p)
+    return np.minimum(np.minimum(cyan, crown), vis)
+
+
+def march_hat(o, d):
+    c = np.array([0, 40.0, 4.0]); R = 42.0
+    oc = o - c
+    b = (oc * d).sum(-1)
+    cc = (oc * oc).sum(-1) - R * R
+    disc = b * b - cc
+    ok = disc > 0
+    sq = np.sqrt(np.where(ok, disc, 0))
+    t = np.where(ok, -b - sq, np.inf)
+    tmax = np.where(ok, -b + sq, -np.inf)
+    t = np.where(ok, t, 0)
+    active = ok.copy()
+    hit = np.zeros_like(ok)
+    for _ in range(220):
+        if not active.any():
+            break
+        p = o + t[..., None] * d
+        dist = hat_sdf(p)
+        newhit = active & (dist < 0.03)
+        hit |= newhit
+        active &= ~newhit
+        t = np.where(active, t + np.maximum(dist * 0.75, 0.02), t)
+        active &= t < tmax
+    return np.where(hit, t, np.inf)
+
+
+def hat_normal(p):
+    e = 0.12
+    n = np.zeros_like(p)
+    for i in range(3):
+        dv = np.zeros(3); dv[i] = e
+        n[..., i] = hat_sdf(p + dv) - hat_sdf(p - dv)
+    return n
+
+
 def render(phi, hop=0.0, arm=25.0):
     with np.errstate(all='ignore'):
         return _render(phi, hop, arm)
@@ -178,16 +260,10 @@ def _render(phi, hop=0.0, arm=25.0):
 
     prims = []
 
-    # helmet shell with face opening
-    t1, t2, M = ellipsoid(o, d, HELM_C, I3, HELM_R)
-    p1 = o + t1[..., None] * d
-    p2 = o + t2[..., None] * d
-    r1 = helm_removed(p1)
-    r2 = helm_removed(p2)
-    th = np.where(np.isfinite(t1) & ~r1, t1, np.where(np.isfinite(t2) & ~r2, t2, np.inf))
-    inner = np.isfinite(t1) & r1
-    commit(th, 0, lambda p: ell_normal(p, HELM_C, M) * np.where(inner, -1, 1)[..., None], inner)
-    prims.append('helm')
+    # soft hat (dome + ear flaps) with pink cap on top
+    th = march_hat(o, d)
+    commit(th, 0, hat_normal)
+    prims.append('hat')
 
     t1, _, M = ellipsoid(o, d, HEAD_C, I3, HEAD_R)
     commit(t1, 1, lambda p: ell_normal(p, HEAD_C, M)); prims.append('head')
@@ -260,12 +336,18 @@ def _render(phi, hop=0.0, arm=25.0):
     x, y, z = PL[..., 0], PL[..., 1], PL[..., 2]
 
     m = pid == 0
-    cap, ring, ball = brim_region(PL)
+    cyan_d, crown_d, vis_d = hat_parts(PL)
+    pinkpart = np.minimum(crown_d, vis_d) < cyan_d
+    q = unit((PL - CROWN_C) / CROWN_R)
+    ang = np.arccos(np.clip((q * TOP_D).sum(-1), -1, 1))
+    oncrown = crown_d <= vis_d
     grp[m] = HELM
-    grp[m & INNER] = HELM_IN
-    grp[m & ~INNER & cap] = CAP
-    grp[m & ~INNER & ring] = RING
-    grp[m & ~INNER & ball] = BALL
+    grp[m & pinkpart] = CAP
+    grp[m & pinkpart & oncrown & (ang < 0.56)] = BALL
+    grp[m & pinkpart & oncrown & (ang >= 0.56) & (ang < 0.70)] = RING
+    part = pid.copy()
+    part[m & pinkpart & oncrown] = 16
+    part[m & pinkpart & ~oncrown] = 17
 
     m = pid == 1
     bang = np.interp(x, BANG_X, BANG_Y)
@@ -306,11 +388,15 @@ def _render(phi, hop=0.0, arm=25.0):
     # shading level 0..4
     lvl = np.full((H, W), 2)
     lvl[inten < 0.40] = 1
-    lvl[inten < 0.03] = 0
+    lvl[inten < -0.32] = 0
     lvl[inten > 0.80] = 3
-    hi_groups = np.isin(grp, [HELM, BALL])
+    hi_groups = np.isin(grp, [BALL])
     lvl[hi_groups & (inten > 0.95)] = 4
     lvl[(grp == HELM_IN)] = np.clip(lvl[grp == HELM_IN] - 1, 0, 2)
+    # soft shadow cast by the hat rim / visor
+    under = np.isin(grp, [FACE_SKIN, HAIR]) & (y < 43.6)
+    lvl[under] = np.clip(lvl[under] - 1, 0, 3)
+    lvl[np.isin(grp, [CAP]) & (nw[..., 1] > 0.35)] = np.minimum(lvl[np.isin(grp, [CAP]) & (nw[..., 1] > 0.35)], 1)
     # neck & v-neck sit in shadow
     lvl[np.isin(grp, [NECK, V_SKIN])] = np.minimum(lvl[np.isin(grp, [NECK, V_SKIN])], 1)
     # cuff top rim + fold line
@@ -327,12 +413,6 @@ def _render(phi, hop=0.0, arm=25.0):
             img[mm & (lvl == L)] = ramp[L]
     # lavender reflected light on the dark side of the sleeves
     img[np.isin(grp, [SL_O, SL_B]) & (lvl == 0) & (nw[..., 0] < 0)] = RAMPS['lav'][2]
-    # glossy crescent on the helmet (screen-space, helmet is a sphere)
-    sx = (xx + 0.5) / K - PIV
-    sy = (yy + 0.5) / K + hop
-    cres = ((((sx + 16) / 8.5) ** 2 + ((sy - 22) / 4.2) ** 2) <= 1) & \
-           ((((sx + 13.5) / 8.5) ** 2 + ((sy - 24.6) / 4.2) ** 2) > 1)
-    img[(grp == HELM) & cres] = RAMPS['cyan'][4]
 
     # ------------------------------------------------------------ lines
     def nb(a, dx, dy, fill):
@@ -348,7 +428,8 @@ def _render(phi, hop=0.0, arm=25.0):
     for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
         dn = nb(depth, dx, dy, np.inf)
         gn = nb(grp, dx, dy, -1)
-        line |= hit & (gn >= 0) & (dn < depth - 2.6 / 1.0)
+        pn = nb(part, dx, dy, -1)
+        line |= hit & (gn >= 0) & (((dn < depth - 2.6) & (pn != part)) | (dn < depth - 9.0))
         for a_, b_ in pair_lines:
             line |= (grp == a_) & (gn == b_)
         soft |= (grp == FACE_SKIN) & (gn == HAIR) & (np.abs(dn - depth) < 2.6)
