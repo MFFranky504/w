@@ -28,7 +28,7 @@ RAMPS = {
     'pink':   ['#c9666d', '#e07f7c', '#f6a196', '#ffbcb1', '#ffd9d0', '#a84f5a'],
     'white':  ['#b9bdd8', '#d5d9ee', '#ffffff', '#ffffff', '#ffffff', '#8f93b8'],
     'hair':   ['#3d2010', '#4f2a15', '#71401f', '#9a5a33', '#b36f42', '#2a1409'],
-    'skin':   ['#c47562', '#e39b78', '#f8c49c', '#ffe0c4', '#fff0e2', '#a8584a'],
+    'skin':   ['#8c4e34', '#b06c45', '#d08f62', '#e3ab7e', '#efc49b', '#6e3624'],
     'orange': ['#9c3712', '#c84b16', '#f2681f', '#ff9447', '#ffb27a', '#6e260c'],
     'blue':   ['#16348a', '#1b45b3', '#2563e8', '#4d8bff', '#7aa8ff', '#0f2468'],
     'navy':   ['#071449', '#0a1d66', '#112d93', '#2448c4', '#3a60d8', '#040a2c'],
@@ -39,8 +39,8 @@ RAMPS = {
 RAMPS = {k: [hexc(c) for c in v] for k, v in RAMPS.items()}
 OL = hexc('#1c1229')
 FACE = {k: hexc(v) for k, v in dict(
-    K='#2b1410', B='#3a1f10', M='#4a1420', m='#7a1f2e', r='#f0707e', T='#ffffff',
-    P='#ff8f8a', p='#ffb3ad', S='#e39b78').items()}
+    K='#2b1410', B='#1e0d07', M='#4a1420', m='#7a1f2e', r='#f0707e', T='#ffffff',
+    P='#e0705f', p='#ec8c78', S='#b06c45').items()}
 
 LIGHT = np.array([-0.5, -0.68, 0.55])
 LIGHT /= np.linalg.norm(LIGHT)
@@ -228,6 +228,106 @@ def hat_normal(p):
     return n
 
 
+
+# ---------------------------------------------------------------- curly hair (SDF)
+HAIR2_C = np.array([0, 46.0, -8.0]); HAIR2_R = np.array([24.0, 17.5, 22.0])
+CURL_F = 2 * math.pi / 6.4
+
+
+def curl_field(p):
+    return (np.sin(p[..., 0] * CURL_F + 0.3) * np.sin(p[..., 1] * CURL_F * 1.12 + 1.1) *
+            np.sin(p[..., 2] * CURL_F + 0.7))
+
+
+def _fringe_centres():
+    out = []
+    for x in (-13.6, -9.4, -5.0, -0.6, 3.8, 8.2, 12.6):
+        y = 40.4 + (0.8 if abs(x) > 10 else 0.0)
+        zz = HEAD_R[2] * math.sqrt(max(0.0, 1 - (x / HEAD_R[0]) ** 2 - ((y - HEAD_C[1]) / HEAD_R[1]) ** 2))
+        out.append((x, y, zz + 0.4))
+    for x in (-16.2, 16.2):
+        y = 45.0
+        zz = HEAD_R[2] * math.sqrt(max(0.0, 1 - (x / HEAD_R[0]) ** 2 - ((y - HEAD_C[1]) / HEAD_R[1]) ** 2))
+        out.append((x, y, zz + 1.0))
+    return np.array(out)
+
+
+FRINGE = _fringe_centres()
+
+
+def _curl_centres(n=150, r=5.0):
+    out = []
+    ga = math.pi * (3 - math.sqrt(5))
+    for i in range(n):
+        uy = 1 - 2 * (i + 0.5) / n
+        rad = math.sqrt(1 - uy * uy)
+        th = ga * i
+        u = np.array([math.cos(th) * rad, uy, math.sin(th) * rad])
+        c = HAIR2_C + HAIR2_R * u * 0.93
+        if c[1] < 36.5:                       # hidden under the hat
+            continue
+        if u[2] > 0.2 and abs(c[0]) < 17.5 and c[1] > 39:   # keep the face clear
+            continue
+        out.append(c)
+    return np.array(out)
+
+
+CURLS = _curl_centres()
+CURL_R = 5.0
+
+
+def hair_sdf(p):
+    core = sd_ell(p, HAIR2_C, HAIR2_R - 3.4)
+    flat = p.reshape(-1, 3)
+    dc = np.sqrt(((flat[:, None, :] - CURLS[None, :, :]) ** 2).sum(-1)).min(1).reshape(p.shape[:-1]) - CURL_R
+    fr = np.full(p.shape[:-1], np.inf)
+    for c in FRINGE:
+        fr = np.minimum(fr, np.linalg.norm(p - c, axis=-1) - 3.1)
+    return np.minimum(smin(core, dc, 0.4), fr)
+
+
+def curl_dist(p):
+    flat = p.reshape(-1, 3)
+    allc = np.concatenate([CURLS, FRINGE])
+    rr = np.concatenate([np.full(len(CURLS), CURL_R), np.full(len(FRINGE), 3.1)])
+    dd = np.sqrt(((flat[:, None, :] - allc[None, :, :]) ** 2).sum(-1)) - rr[None, :]
+    return dd.min(1).reshape(p.shape[:-1]), dd.argmin(1).reshape(p.shape[:-1])
+
+
+def march_sdf(o, d, f, c, R, steps=200, k=0.6):
+    oc = o - c
+    b = (oc * d).sum(-1)
+    cc = (oc * oc).sum(-1) - R * R
+    disc = b * b - cc
+    ok = disc > 0
+    sq = np.sqrt(np.where(ok, disc, 0))
+    t = np.where(ok, -b - sq, 0.0)
+    tmax = np.where(ok, -b + sq, -np.inf)
+    active = ok.copy()
+    hit = np.zeros_like(ok)
+    for _ in range(steps):
+        if not active.any():
+            break
+        idx = np.nonzero(active)
+        p = o[idx] + t[idx][..., None] * d[idx]
+        dist = f(p)
+        nh = dist < 0.03
+        hit[tuple(i[nh] for i in idx)] = True
+        t[idx] = np.where(nh, t[idx], t[idx] + np.maximum(dist * k, 0.02))
+        act = ~nh & (t[idx] < tmax[idx])
+        active[idx] = act
+    return np.where(hit, t, np.inf)
+
+
+def sdf_normal(f, p):
+    e = 0.12
+    n = np.zeros_like(p)
+    for i in range(3):
+        dv = np.zeros(3); dv[i] = e
+        n[..., i] = f(p + dv) - f(p - dv)
+    return n
+
+
 def render(phi, hop=0.0, arm=25.0):
     with np.errstate(all='ignore'):
         return _render(phi, hop, arm)
@@ -269,8 +369,8 @@ def _render(phi, hop=0.0, arm=25.0):
 
     t1, _, M = ellipsoid(o, d, HEAD_C, I3, HEAD_R)
     commit(t1, 1, lambda p: ell_normal(p, HEAD_C, M)); prims.append('head')
-    t1, _, M2 = ellipsoid(o, d, HAIR_C, I3, HAIR_R)
-    commit(t1, 2, lambda p: ell_normal(p, HAIR_C, M2)); prims.append('hair')
+    th = march_sdf(o, d, hair_sdf, np.array([0, 46.0, -4.0]), 30.0)
+    commit(th, 2, lambda p: sdf_normal(hair_sdf, p)); prims.append('hair')
 
     t1, _ = vsection(o, d, 0, -1.5, 6.0, 6.0, 57, 68)
     commit(t1, 3, lambda p: np.stack([p[..., 0], 0 * p[..., 0], p[..., 2] + 1.5], -1)); prims.append('neck')
@@ -360,7 +460,7 @@ def _render(phi, hop=0.0, arm=25.0):
     m = pid == 1
     bang = np.interp(x, BANG_X, BANG_Y)
     lam_h = np.arctan2(x / HEAD_R[0], z / HEAD_R[2])
-    skin = (z > 0) & (np.abs(lam_h) < 1.02) & (y > bang)
+    skin = (z > 0) & (np.abs(lam_h) < 1.02) & (y > 41.2)
     grp[m] = HAIR
     grp[m & skin] = FACE_SKIN
     grp[pid == 2] = HAIR
@@ -402,6 +502,12 @@ def _render(phi, hop=0.0, arm=25.0):
     lvl[emb] = np.clip(lvl[emb], 1, 3)
     lvl[(grp == HELM_IN)] = np.clip(lvl[grp == HELM_IN] - 1, 0, 2)
     # soft shadow cast by the hat rim / visor
+    hm = pid == 2
+    cdist, cidx = curl_dist(np.where(hm[..., None], PL, 0))
+    cdist = np.where(hm, cdist, 0)
+    cidx = np.where(hm, cidx, -1)
+    crev = hm & (cdist > 0.25)
+    lvl[crev] = np.clip(lvl[crev] - 1, 0, 3)
     under = np.isin(grp, [FACE_SKIN, HAIR]) & (y < 43.6)
     lvl[under] = np.clip(lvl[under] - 1, 0, 3)
     lvl[np.isin(grp, [CAP]) & (nw[..., 1] > 0.35)] = np.minimum(lvl[np.isin(grp, [CAP]) & (nw[..., 1] > 0.35)], 1)
@@ -453,6 +559,13 @@ def _render(phi, hop=0.0, arm=25.0):
         img[mm] = RAMPS[rname][5]
     img[soft & ~line] = RAMPS['skin'][1]
     img[emb_edge & ~line] = RAMPS['cyan'][0]
+    # outline each curl so the colochos read clearly
+    cl = np.zeros((H, W), bool)
+    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+        ci = nb(cidx, dx, dy, -1)
+        dn = nb(depth, dx, dy, np.inf)
+        cl |= (cidx >= 0) & (ci >= 0) & (ci != cidx) & ((dn < depth - 0.2) | ((np.abs(dn - depth) <= 0.2) & (ci > cidx)))
+    img[cl & ~line] = RAMPS['hair'][0]
 
     # ------------------------------------------------------------ face sprites
     def place(lx, ly, variants, cmap, only=(FACE_SKIN,), anchor='c'):
@@ -495,7 +608,7 @@ def _render(phi, hop=0.0, arm=25.0):
               (0.32, ["BBB", "B.B"]),
               (0.18, ["B", "B"])]
     for s in (-1, 1):
-        place(s * 7.6, 42.4, brow_v, FACE, only=(FACE_SKIN, HAIR))
+        place(s * 7.6, 42.5, brow_v, FACE, only=(FACE_SKIN, HAIR))
     mouth_v = [(0.82, ["MMMMMMMMMM", "MTTTTTTTTM", "MmmmmmmmmM", ".MmmrrrmM.", "..MrrrrM..", "...MMMM..."]),
                (0.55, ["MMMMMMM", "MTTTTTM", "MmmmmmM", ".MmrrM.", "..MMM.."]),
                (0.30, ["MMMM", "MTTM", "MmrM", ".MM."]),
