@@ -1,0 +1,88 @@
+{
+ "cast": {
+  "young": {
+   "skin": [
+    225,
+    190,
+    160
+   ],
+   "hair": [
+    30,
+    25,
+    22
+   ],
+   "style": "short",
+   "outfit": "tee_blue",
+   "beard": true,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    225,
+    190,
+    160
+   ],
+   "hair": [
+    30,
+    25,
+    22
+   ],
+   "style": "short",
+   "outfit": "blazer",
+   "beard": true,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_sign",
+   "line": 0
+  },
+  {
+   "kit": "e_flop",
+   "line": 1
+  },
+  {
+   "kit": "e_fired",
+   "line": 2
+  },
+  {
+   "kit": "e_write",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.5,
+   "l1": "PERDIÓ Y",
+   "l2": "PERDIÓ"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "OTRA",
+   "l2": "DERROTA"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "PRESIDENTE",
+   "l2": "EN 1860"
+  }
+ ]
+}

@@ -21,3 +21,19 @@ El usuario dejó el canal en manos de Claude esta semana (autorizó todo, 16-nov
 ## Pendiente del usuario (Studio)
 - Borrar el vídeo largo de Cantinflas antiguo (GkMMrDDVPQ8 no; el antiguo es 6RLEjgB3_dc, con las 2 canciones con copyright) cuando el nuevo salga.
 - Pegar los textos de docs/canal/ajustes_studio.md.
+
+
+# Semana 22-28 de noviembre (plan hecho el 20-nov tras el análisis del canal)
+Diagnóstico (20-nov): Shorts planos en ~900-1.400 vistas; 41→44 suscriptores en 3 días; largos 7-101 vistas, Cantinflas retención media 34 s de 5 min (11 %).
+Prueba de 3 formatos de gancho, midiendo vistas a las 24 h: CIFRA (King, Sanders), PREGUNTA (Beethoven, Lucille), CONTRASTE/resultado primero (Lincoln). Voz de los Shorts nuevos: Microsoft Edge es-CO-GonzaloNeural (si el usuario elige otra, VOZ_ID=...).
+| Día | Qué | Post YUP |
+|---|---|---|
+| Sáb 21 | Short Oprah (voz Jorge) | d699e861470207292e59 |
+| Dom 22 | Short Stephen King (CIFRA) | 1ec07e42f6df95897008 |
+| Lun 23 | Short Beethoven (PREGUNTA) | c253ea2c54632ea376fb |
+| Mar 24 | Short Lincoln (CONTRASTE) | 7caeaaa4bdaf73a637c7 |
+| Mié 25 | Short Sanders (CIFRA) | 20126021708a2d6aaf36 |
+| Jue 26 | Short Lucille Ball (PREGUNTA) | 147b81a3a23f892beca0 |
+| Vie 27 | Largo-lista nº2 | por producir |
+| Sáb 28 / Dom 29 | libres: repetir el formato que gane | |
+Fichas: docs/canal/shorts/<n>.json; generar con `python3 -I src/mk_short.py <n>`. Hechos: Lincoln perdió en 1832, 1855 y 1858 (Senado: lo eligen las legislaturas) y fue presidente en 1860; Beethoven casi sordo en el estreno del 7-may-1824 (no dirigía de verdad); Sanders: meme exagerado, solo 1952 Pete Harman (Salt Lake City) y el cheque de 105 $ «según se cuenta»; King: 30 rechazos «según contó», adelanto 2.500 $, bolsillo 400.000 $; Lucille: «no talento» según contó ella.

@@ -1,0 +1,80 @@
+{
+ "titulo": "lincoln",
+ "meta": {
+  "famoso": "Abraham Lincoln"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Perdió elecciones una y otra vez... y llegó a *presidente*.",
+   "tts": "Perdió elecciones una y otra vez... y llegó a presidente.",
+   "gen": "[bold] Perdió elecciones una y otra vez... y llegó a presidente.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "En 1832, Abraham Lincoln perdió su primera elección para la legislatura de Illinois.",
+   "tts": "En mil ochocientos treinta y dos, Eibraham Línkoln perdió su primera elección para la legislatura de Ilinóis.",
+   "gen": "[sad] En mil ochocientos treinta y dos, Eibraham Línkoln perdió su primera elección para la legislatura de Ilinóis.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "En 1855, la legislatura eligió a otro para el Senado.",
+   "tts": "En mil ochocientos cincuenta y cinco, la legislatura eligió a otro para el Senado.",
+   "gen": "[sad] En mil ochocientos cincuenta y cinco, la legislatura eligió a otro para el Senado.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "En 1858 volvió a intentarlo contra Douglas y perdió otra vez.",
+   "tts": "En mil ochocientos cincuenta y ocho volvió a intentarlo contra Dóuglas y perdió otra vez.",
+   "gen": "[sad] En mil ochocientos cincuenta y ocho volvió a intentarlo contra Dóuglas y perdió otra vez.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Pero esos debates lo hicieron famoso en todo el país.",
+   "tts": "Pero esos debates lo hicieron famoso en todo el país.",
+   "gen": "[hopeful] Pero esos debates lo hicieron famoso en todo el país.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "En 1860 fue elegido *presidente*.",
+   "tts": "En mil ochocientos sesenta fue elegido presidente.",
+   "gen": "[excited] En mil ochocientos sesenta fue elegido presidente.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Perder no lo sacó del camino.",
+   "tts": "Perder no lo sacó del camino.",
+   "gen": "[warmly] Perder no lo sacó del camino.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "¿Qué derrota tuya todavía puede ser un paso?",
+   "tts": "¿Qué derrota tuya todavía puede ser un paso?",
+   "gen": "[softly] ¿Qué derrota tuya todavía puede ser un paso?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

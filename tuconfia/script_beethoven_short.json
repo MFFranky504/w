@@ -1,0 +1,80 @@
+{
+ "titulo": "beethoven",
+ "meta": {
+  "famoso": "Ludwig van Beethoven"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "¿Puedes crear algo que *no* puedes oír?",
+   "tts": "¿Puedes crear algo que no puedes oír?",
+   "gen": "[bold] ¿Puedes crear algo que no puedes oír?",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "Ludwig van Beethoven empezó a perder el oído siendo joven.",
+   "tts": "Ludvig van Betóven empezó a perder el oído siendo joven.",
+   "gen": "[sad] Ludvig van Betóven empezó a perder el oído siendo joven.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "Aun así, siguió componiendo.",
+   "tts": "Aun así, siguió componiendo.",
+   "gen": "[sad] Aun así, siguió componiendo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "El 7 de mayo de 1824, en Viena, se estrenó su Novena Sinfonía.",
+   "tts": "El siete de mayo de mil ochocientos veinticuatro, en Viena, se estrenó su Novena Sinfonía.",
+   "gen": "[hopeful] El siete de mayo de mil ochocientos veinticuatro, en Viena, se estrenó su Novena Sinfonía.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Para entonces estaba casi completamente sordo.",
+   "tts": "Para entonces estaba casi completamente sordo.",
+   "gen": "[hopeful] Para entonces estaba casi completamente sordo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Estaba en el escenario, marcando el compás de una orquesta que *no* podía oír.",
+   "tts": "Estaba en el escenario, marcando el compás de una orquesta que no podía oír.",
+   "gen": "[excited] Estaba en el escenario, marcando el compás de una orquesta que no podía oír.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Hoy esa obra sigue sonando en todo el mundo.",
+   "tts": "Hoy esa obra sigue sonando en todo el mundo.",
+   "gen": "[warmly] Hoy esa obra sigue sonando en todo el mundo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "¿Qué dejas de crear por una limitación?",
+   "tts": "¿Qué dejas de crear por una limitación?",
+   "gen": "[softly] ¿Qué dejas de crear por una limitación?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

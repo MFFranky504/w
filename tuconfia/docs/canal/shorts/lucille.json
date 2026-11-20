@@ -1,0 +1,107 @@
+{
+ "famoso": "Lucille Ball",
+ "fonetica": {
+  "Lucille Ball": "Lusíl Bol",
+  "I Love Lucy": "Ai Lov Lúsi",
+  "Lucy": "Lúsi"
+ },
+ "lines": [
+  [
+   "bold",
+   "¿Y si te dicen que no tienes *talento*?"
+  ],
+  [
+   "sad",
+   "Siendo adolescente, Lucille Ball entró a una escuela de actuación en Nueva York."
+  ],
+  [
+   "sad",
+   "Según contó ella, la escuela le dijo que no tenía talento."
+  ],
+  [
+   "sad",
+   "Se cuenta que su mamá recibió una carta: decía que Lucy perdía su tiempo."
+  ],
+  [
+   "hopeful",
+   "Volvió a casa, pero no abandonó el espectáculo."
+  ],
+  [
+   "excited",
+   "En 1951 estrenó «I Love Lucy»."
+  ],
+  [
+   "warmly",
+   "Se volvió una de las grandes figuras de la comedia."
+  ],
+  [
+   "softly",
+   "¿Quién te dijo que no, y qué le vas a responder?"
+  ]
+ ],
+ "cast": {
+  "skin": [
+   240,
+   215,
+   195
+  ],
+  "hair": [
+   170,
+   60,
+   30
+  ],
+  "style": "tab",
+  "outfit": "tee_red",
+  "young_outfit": "tee_red"
+ },
+ "scenes": [
+  {
+   "kit": "e_hook",
+   "line": 0
+  },
+  {
+   "kit": "e_fired",
+   "line": 2
+  },
+  {
+   "kit": "e_flop",
+   "line": 3
+  },
+  {
+   "kit": "e_write",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.4,
+   "l1": "¿SIN",
+   "l2": "TALENTO?"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "«NO TIENE",
+   "l2": "TALENTO»"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "I LOVE",
+   "l2": "LUCY 1951"
+  }
+ ]
+}

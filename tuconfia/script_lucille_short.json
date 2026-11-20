@@ -1,0 +1,80 @@
+{
+ "titulo": "lucille",
+ "meta": {
+  "famoso": "Lucille Ball"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "¿Y si te dicen que no tienes *talento*?",
+   "tts": "¿Y si te dicen que no tienes talento?",
+   "gen": "[bold] ¿Y si te dicen que no tienes talento?",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "Siendo adolescente, Lucille Ball entró a una escuela de actuación en Nueva York.",
+   "tts": "Siendo adolescente, Lusíl Bol entró a una escuela de actuación en Nueva York.",
+   "gen": "[sad] Siendo adolescente, Lusíl Bol entró a una escuela de actuación en Nueva York.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "Según contó ella, la escuela le dijo que no tenía talento.",
+   "tts": "Según contó ella, la escuela le dijo que no tenía talento.",
+   "gen": "[sad] Según contó ella, la escuela le dijo que no tenía talento.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "Se cuenta que su mamá recibió una carta: decía que Lucy perdía su tiempo.",
+   "tts": "Se cuenta que su mamá recibió una carta: decía que Lúsi perdía su tiempo.",
+   "gen": "[sad] Se cuenta que su mamá recibió una carta: decía que Lúsi perdía su tiempo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Volvió a casa, pero no abandonó el espectáculo.",
+   "tts": "Volvió a casa, pero no abandonó el espectáculo.",
+   "gen": "[hopeful] Volvió a casa, pero no abandonó el espectáculo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "En 1951 estrenó «I Love Lucy».",
+   "tts": "En mil novecientos cincuenta y uno estrenó «Ai Lov Lúsi».",
+   "gen": "[excited] En mil novecientos cincuenta y uno estrenó «Ai Lov Lúsi».",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Se volvió una de las grandes figuras de la comedia.",
+   "tts": "Se volvió una de las grandes figuras de la comedia.",
+   "gen": "[warmly] Se volvió una de las grandes figuras de la comedia.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "¿Quién te dijo que no, y qué le vas a responder?",
+   "tts": "¿Quién te dijo que no, y qué le vas a responder?",
+   "gen": "[softly] ¿Quién te dijo que no, y qué le vas a responder?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

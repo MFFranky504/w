@@ -1,0 +1,88 @@
+{
+ "cast": {
+  "young": {
+   "skin": [
+    235,
+    200,
+    175
+   ],
+   "hair": [
+    50,
+    35,
+    30
+   ],
+   "style": "short",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": true,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    235,
+    200,
+    175
+   ],
+   "hair": [
+    50,
+    35,
+    30
+   ],
+   "style": "short",
+   "outfit": "tee_blue",
+   "beard": false,
+   "glasses": true,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_flop",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 2
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 2,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "30 EDITORES",
+   "l2": "DIJERON NO"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "CASI A LA",
+   "l2": "BASURA"
+  },
+  {
+   "scene": 3,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "ADELANTO",
+   "l2": "$2.500"
+  }
+ ]
+}

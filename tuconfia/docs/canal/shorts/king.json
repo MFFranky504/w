@@ -1,0 +1,108 @@
+{
+ "famoso": "Stephen King",
+ "fonetica": {
+  "Stephen King": "Stífen King",
+  "Carrie": "Kéri",
+  "Tabitha": "Tábita",
+  "King": "King"
+ },
+ "lines": [
+  [
+   "bold",
+   "Según contó, *treinta* editoriales rechazaron su primera novela."
+  ],
+  [
+   "sad",
+   "Y antes, él mismo ya había tirado las primeras páginas a la basura."
+  ],
+  [
+   "hopeful",
+   "Su esposa, Tabitha, las sacó y le dijo que siguiera escribiendo."
+  ],
+  [
+   "hopeful",
+   "La novela era «Carrie», y Stephen King todavía no era famoso."
+  ],
+  [
+   "hopeful",
+   "Una editorial le ofreció un adelanto de 2.500 dólares."
+  ],
+  [
+   "excited",
+   "Y los derechos de la edición de bolsillo se vendieron por *400.000* dólares."
+  ],
+  [
+   "warmly",
+   "Lo que casi acabó en la basura empezó su carrera."
+  ],
+  [
+   "softly",
+   "¿Qué proyecto tuyo estás a punto de tirar?"
+  ]
+ ],
+ "cast": {
+  "skin": [
+   235,
+   200,
+   175
+  ],
+  "hair": [
+   50,
+   35,
+   30
+  ],
+  "style": "short",
+  "glasses": true,
+  "outfit": "tee_blue"
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_flop",
+   "line": 1
+  },
+  {
+   "kit": "e_write",
+   "line": 2
+  },
+  {
+   "kit": "e_sign",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 2,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.6,
+   "l1": "30 EDITORES",
+   "l2": "DIJERON NO"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "CASI A LA",
+   "l2": "BASURA"
+  },
+  {
+   "scene": 3,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "ADELANTO",
+   "l2": "$2.500"
+  }
+ ]
+}

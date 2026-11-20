@@ -1,0 +1,80 @@
+{
+ "titulo": "sanders",
+ "meta": {
+  "famoso": "Harland Sanders"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "A los *62* años vendió su primera franquicia de pollo frito.",
+   "tts": "A los sesenta y dos años vendió su primera franquicia de pollo frito.",
+   "gen": "[bold] A los sesenta y dos años vendió su primera franquicia de pollo frito.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "Harland Sanders ya había tenido muchos trabajos y muchos negocios.",
+   "tts": "Járland Sánders ya había tenido muchos trabajos y muchos negocios.",
+   "gen": "[sad] Járland Sánders ya había tenido muchos trabajos y muchos negocios.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "En 1952, su amigo Pete Harman abrió en Salt Lake City el primer restaurante con su receta.",
+   "tts": "En mil novecientos cincuenta y dos, su amigo Pit Járman abrió en Solt Leik Síti el primer restaurante con su receta.",
+   "gen": "[hopeful] En mil novecientos cincuenta y dos, su amigo Pit Járman abrió en Solt Leik Síti el primer restaurante con su receta.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "Años después, según se cuenta, su ingreso era un cheque de 105 dólares al mes.",
+   "tts": "Años después, según se cuenta, su ingreso era un cheque de ciento cinco dólares al mes.",
+   "gen": "[sad] Años después, según se cuenta, su ingreso era un cheque de ciento cinco dólares al mes.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "No se retiró: siguió ofreciendo su receta.",
+   "tts": "No se retiró: siguió ofreciendo su receta.",
+   "gen": "[hopeful] No se retiró: siguió ofreciendo su receta.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Con los años, Kentucky Fried Chicken se volvió una cadena mundial.",
+   "tts": "Con los años, Kentáki Fraid Chíken se volvió una cadena mundial.",
+   "gen": "[excited] Con los años, Kentáki Fraid Chíken se volvió una cadena mundial.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Nunca fue demasiado tarde para empezar de nuevo.",
+   "tts": "Nunca fue demasiado tarde para empezar de nuevo.",
+   "gen": "[warmly] Nunca fue demasiado tarde para empezar de nuevo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "¿Qué dejas para después por tu edad?",
+   "tts": "¿Qué dejas para después por tu edad?",
+   "gen": "[softly] ¿Qué dejas para después por tu edad?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

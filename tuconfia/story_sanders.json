@@ -1,0 +1,88 @@
+{
+ "cast": {
+  "young": {
+   "skin": [
+    230,
+    195,
+    170
+   ],
+   "hair": [
+    235,
+    235,
+    235
+   ],
+   "style": "short",
+   "outfit": "polo",
+   "beard": true,
+   "glasses": true,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    230,
+    195,
+    170
+   ],
+   "hair": [
+    235,
+    235,
+    235
+   ],
+   "style": "short",
+   "outfit": "blazer",
+   "beard": true,
+   "glasses": true,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_sign",
+   "line": 2
+  },
+  {
+   "kit": "e_flop",
+   "line": 3
+  },
+  {
+   "kit": "e_write",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.5,
+   "l1": "62 AÑOS",
+   "l2": "1ª FRANQUICIA"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.5,
+   "l1": "105 DÓLARES",
+   "l2": "AL MES"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "CADENA",
+   "l2": "MUNDIAL"
+  }
+ ]
+}

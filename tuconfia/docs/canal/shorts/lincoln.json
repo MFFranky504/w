@@ -1,0 +1,110 @@
+{
+ "famoso": "Abraham Lincoln",
+ "fonetica": {
+  "Abraham Lincoln": "Eibraham Línkoln",
+  "Lincoln": "Línkoln",
+  "Illinois": "Ilinóis",
+  "Douglas": "Dóuglas",
+  "Senado": "Senado"
+ },
+ "lines": [
+  [
+   "bold",
+   "Perdió elecciones una y otra vez... y llegó a *presidente*."
+  ],
+  [
+   "sad",
+   "En 1832, Abraham Lincoln perdió su primera elección para la legislatura de Illinois."
+  ],
+  [
+   "sad",
+   "En 1855, la legislatura eligió a otro para el Senado."
+  ],
+  [
+   "sad",
+   "En 1858 volvió a intentarlo contra Douglas y perdió otra vez."
+  ],
+  [
+   "hopeful",
+   "Pero esos debates lo hicieron famoso en todo el país."
+  ],
+  [
+   "excited",
+   "En 1860 fue elegido *presidente*."
+  ],
+  [
+   "warmly",
+   "Perder no lo sacó del camino."
+  ],
+  [
+   "softly",
+   "¿Qué derrota tuya todavía puede ser un paso?"
+  ]
+ ],
+ "cast": {
+  "skin": [
+   225,
+   190,
+   160
+  ],
+  "hair": [
+   30,
+   25,
+   22
+  ],
+  "style": "short",
+  "beard": true,
+  "outfit": "blazer",
+  "young_outfit": "tee_blue"
+ },
+ "scenes": [
+  {
+   "kit": "e_sign",
+   "line": 0
+  },
+  {
+   "kit": "e_flop",
+   "line": 1
+  },
+  {
+   "kit": "e_fired",
+   "line": 2
+  },
+  {
+   "kit": "e_write",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.5,
+   "l1": "PERDIÓ Y",
+   "l2": "PERDIÓ"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "OTRA",
+   "l2": "DERROTA"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "PRESIDENTE",
+   "l2": "EN 1860"
+  }
+ ]
+}

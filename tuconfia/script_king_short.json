@@ -1,0 +1,80 @@
+{
+ "titulo": "king",
+ "meta": {
+  "famoso": "Stephen King"
+ },
+ "lines": [
+  {
+   "id": "L1",
+   "rol": "",
+   "t": "Según contó, *treinta* editoriales rechazaron su primera novela.",
+   "tts": "Según contó, treinta editoriales rechazaron su primera novela.",
+   "gen": "[bold] Según contó, treinta editoriales rechazaron su primera novela.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L2",
+   "rol": "",
+   "t": "Y antes, él mismo ya había tirado las primeras páginas a la basura.",
+   "tts": "Y antes, él mismo ya había tirado las primeras páginas a la basura.",
+   "gen": "[sad] Y antes, él mismo ya había tirado las primeras páginas a la basura.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L3",
+   "rol": "",
+   "t": "Su esposa, Tabitha, las sacó y le dijo que siguiera escribiendo.",
+   "tts": "Su esposa, Tábita, las sacó y le dijo que siguiera escribiendo.",
+   "gen": "[hopeful] Su esposa, Tábita, las sacó y le dijo que siguiera escribiendo.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L4",
+   "rol": "",
+   "t": "La novela era «Carrie», y Stephen King todavía no era famoso.",
+   "tts": "La novela era «Kéri», y Stífen King todavía no era famoso.",
+   "gen": "[hopeful] La novela era «Kéri», y Stífen King todavía no era famoso.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L5",
+   "rol": "",
+   "t": "Una editorial le ofreció un adelanto de 2.500 dólares.",
+   "tts": "Una editorial le ofreció un adelanto de dos mil quinientos dólares.",
+   "gen": "[hopeful] Una editorial le ofreció un adelanto de dos mil quinientos dólares.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L6",
+   "rol": "",
+   "t": "Y los derechos de la edición de bolsillo se vendieron por *400.000* dólares.",
+   "tts": "Y los derechos de la edición de bolsillo se vendieron por cuatrocientos mil dólares.",
+   "gen": "[excited] Y los derechos de la edición de bolsillo se vendieron por cuatrocientos mil dólares.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L7",
+   "rol": "",
+   "t": "Lo que casi acabó en la basura empezó su carrera.",
+   "tts": "Lo que casi acabó en la basura empezó su carrera.",
+   "gen": "[warmly] Lo que casi acabó en la basura empezó su carrera.",
+   "p": 0.4,
+   "tag": ""
+  },
+  {
+   "id": "L8",
+   "rol": "",
+   "t": "¿Qué proyecto tuyo estás a punto de tirar?",
+   "tts": "¿Qué proyecto tuyo estás a punto de tirar?",
+   "gen": "[softly] ¿Qué proyecto tuyo estás a punto de tirar?",
+   "p": 0.4,
+   "tag": ""
+  }
+ ]
+}

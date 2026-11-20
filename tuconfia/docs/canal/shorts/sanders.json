@@ -1,0 +1,111 @@
+{
+ "famoso": "Harland Sanders",
+ "fonetica": {
+  "Harland Sanders": "Járland Sánders",
+  "Pete Harman": "Pit Járman",
+  "Salt Lake City": "Solt Leik Síti",
+  "Kentucky Fried Chicken": "Kentáki Fraid Chíken",
+  "Sanders": "Sánders"
+ },
+ "lines": [
+  [
+   "bold",
+   "A los *62* años vendió su primera franquicia de pollo frito."
+  ],
+  [
+   "sad",
+   "Harland Sanders ya había tenido muchos trabajos y muchos negocios."
+  ],
+  [
+   "hopeful",
+   "En 1952, su amigo Pete Harman abrió en Salt Lake City el primer restaurante con su receta."
+  ],
+  [
+   "sad",
+   "Años después, según se cuenta, su ingreso era un cheque de 105 dólares al mes."
+  ],
+  [
+   "hopeful",
+   "No se retiró: siguió ofreciendo su receta."
+  ],
+  [
+   "excited",
+   "Con los años, Kentucky Fried Chicken se volvió una cadena mundial."
+  ],
+  [
+   "warmly",
+   "Nunca fue demasiado tarde para empezar de nuevo."
+  ],
+  [
+   "softly",
+   "¿Qué dejas para después por tu edad?"
+  ]
+ ],
+ "cast": {
+  "skin": [
+   230,
+   195,
+   170
+  ],
+  "hair": [
+   235,
+   235,
+   235
+  ],
+  "style": "short",
+  "beard": true,
+  "glasses": true,
+  "outfit": "blazer",
+  "young_outfit": "polo"
+ },
+ "scenes": [
+  {
+   "kit": "e_fired",
+   "line": 0
+  },
+  {
+   "kit": "e_sign",
+   "line": 2
+  },
+  {
+   "kit": "e_flop",
+   "line": 3
+  },
+  {
+   "kit": "e_write",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.5,
+   "l1": "62 AÑOS",
+   "l2": "1ª FRANQUICIA"
+  },
+  {
+   "scene": 2,
+   "start": 0.3,
+   "end": 2.5,
+   "l1": "105 DÓLARES",
+   "l2": "AL MES"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "CADENA",
+   "l2": "MUNDIAL"
+  }
+ ]
+}

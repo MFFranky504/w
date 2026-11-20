@@ -1,0 +1,88 @@
+{
+ "cast": {
+  "young": {
+   "skin": [
+    240,
+    215,
+    195
+   ],
+   "hair": [
+    170,
+    60,
+    30
+   ],
+   "style": "tab",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": false
+  },
+  "adult": {
+   "skin": [
+    240,
+    215,
+    195
+   ],
+   "hair": [
+    170,
+    60,
+    30
+   ],
+   "style": "tab",
+   "outfit": "tee_red",
+   "beard": false,
+   "glasses": false,
+   "strong": true
+  }
+ },
+ "scenes": [
+  {
+   "kit": "e_hook",
+   "line": 0
+  },
+  {
+   "kit": "e_fired",
+   "line": 2
+  },
+  {
+   "kit": "e_flop",
+   "line": 3
+  },
+  {
+   "kit": "e_write",
+   "line": 4
+  },
+  {
+   "kit": "e_one",
+   "line": 5
+  },
+  {
+   "kit": "close",
+   "line": 7
+  }
+ ],
+ "turn": 3,
+ "hooks": [
+  {
+   "scene": 0,
+   "start": 0.15,
+   "end": 2.4,
+   "l1": "¿SIN",
+   "l2": "TALENTO?"
+  },
+  {
+   "scene": 1,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "«NO TIENE",
+   "l2": "TALENTO»"
+  },
+  {
+   "scene": 4,
+   "start": 0.3,
+   "end": 2.4,
+   "l1": "I LOVE",
+   "l2": "LUCY 1951"
+  }
+ ]
+}
