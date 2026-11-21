@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image
 import pinky as P0
 from pinky import (quad, ellipsoid, ell_normal, vsection, unit, sd_ell, axes_from, hair_sdf,
-                   hair_parts, march_sdf, sdf_normal, torso_ab, HEAD_C, HEAD_R, I3, hexc)
+                   hair_parts, march_sdf, sdf_normal, HEAD_C, HEAD_R, I3, hexc)
 
 K = 0.85
 WU, HU = 104, 124
@@ -33,7 +33,17 @@ for k, v in {
 }.items():
     RAMPS[k] = [hexc(c) for c in v]
 OL = P0.OL
-FACE = P0.FACE
+FACE = dict(P0.FACE)
+FACE.update({k: hexc(v) for k, v in dict(
+    D='#3a1858', I='#6b36ad', L='#a678ea', s='#ffffff', w='#ffffff', p='#1a0b2a',
+    b='#ff9fb2', c='#ffc4cf').items()})
+
+
+def torso_ab(y):
+    s = np.where(y < 71, np.clip(1 - np.clip((71 - y) / 7.0, 0, 1) ** 2.6, 0, 1) ** (1 / 2.6),
+                 1 + (y - 71) * 0.006)
+    return 12.4 * s, 9.6 * s
+
 LIGHT = P0.LIGHT
 
 (FACE_SKIN, HAIR, SKIN, GRAY, OVER, BOOT, YEL, POCKET, WOOD, CANVAS, METAL, PAINT) = range(12)
@@ -103,14 +113,14 @@ def two_bone(S, Hd, l1, l2, pole):
     return S + u * a + p * h
 
 
-PALETTE_C = np.array([-12.5, 77.0, 13.5])
+PALETTE_C = np.array([-10.5, 77.0, 11.5])
 PAL_N = unit(np.array([0.0, -0.78, 0.62]))
 PAL_AX = np.stack([np.array([1.0, 0, 0]), PAL_N, np.cross(np.array([1.0, 0, 0]), PAL_N)])
 PAL_R = np.array([9.0, 0.9, 6.6])
 BLOBS = [((-5.2, -2.6), 'heart'), ((-1.4, -4.0), 'blob_p'), ((2.8, -3.6), 'sun'),
          ((5.8, -1.0), 'blob_b'), ((3.2, 2.6), 'blob_w'), ((-1.0, 1.0), 'grass')]
-SPLATS = [((-4.5, 82.5), 'heart', 1.3), ((5.5, 91.0), 'sun', 1.1), ((-8.0, 98.0), 'blob_b', 1.2),
-          ((3.0, 76.0), 'blob_p', 0.9), ((9.0, 101.0), 'heart', 1.0)]
+SPLATS = [((-3.6, 82.5), 'heart', 1.2), ((4.2, 91.0), 'sun', 1.0), ((-6.0, 98.0), 'blob_b', 1.1),
+          ((2.4, 76.0), 'blob_p', 0.85), ((6.8, 101.0), 'heart', 0.95)]
 
 
 def render(phi, hop=0.0, progress=1.0, dab=(0.0, 0.0)):
@@ -165,9 +175,9 @@ def _render(phi, hop, progress, dab):
         ell(2, (s * 17.4, 47.5, -1.0), I3, (2.6, 4.2, 3.4))
     th = march_sdf(o, d, hair_sdf, np.array([0, 34.0, -3.0]), 40.0)
     commit(th, 0, lambda p: sdf_normal(hair_sdf, p))
-    t1, _ = vsection(o, d, 0, -1.5, 6.0, 6.0, 57, 68)
+    t1, _ = vsection(o, d, 0, -1.2, 4.8, 4.8, 57, 68)
     commit(t1, 3, lambda p: np.stack([p[..., 0], 0 * p[..., 0], p[..., 2] + 1.5], -1))
-    ell(4, (0, 64.2, -2.6), I3, (11.8, 4.0, 10.2))
+    ell(4, (0, 64.2, -2.0), I3, (9.0, 3.6, 7.8))
     a, b = torso_ab(Y)
     t1, _ = vsection(o, d, 0, 0, a, b, 63.4, 88.0)
 
@@ -182,47 +192,47 @@ def _render(phi, hop, progress, dab):
     tip = canvas_point(tip_u, tip_v, off=0.4)
     bdir = unit(T_C * 0.72 - N_C * 0.62 + np.array([0, 0.16, 0]))
     hand = tip - bdir * 14.6
-    S = np.array([12.0, 67.5, 0.0])
+    S = np.array([9.4, 67.5, 0.0])
     E = two_bone(S, hand, 10.8, 10.8, np.array([0.2, 1.0, -0.5]))
-    for (p0, p1, rr) in ((S, E, 4.6), (E, hand, 3.9)):
+    for (p0, p1, rr) in ((S, E, 3.6), (E, hand, 3.0)):
         stick(6, p0, p1, rr)
     uu = unit(hand - E)
-    ell(7, hand - uu * 2.6, axes_from(uu), (1.9, 4.5, 4.5))
-    ell(8, hand + uu * 0.6, I3, (4.3, 4.3, 4.3))
+    ell(7, hand - uu * 2.4, axes_from(uu), (1.7, 3.6, 3.6))
+    ell(8, hand + uu * 0.6, I3, (3.6, 3.6, 3.6))
     stick(11, hand - bdir * 3.0, hand + bdir * 10.0, 1.0)          # wooden handle
     stick(12, hand + bdir * 9.8, hand + bdir * 11.4, 1.2)          # ferrule
     ell(13, hand + bdir * 12.8, axes_from(bdir), (2.0, 1.3, 1.3))   # paint-loaded bristles
 
     # palette arm (character's right, local -x): palette held in front of the belly
-    S2 = np.array([-12.0, 67.5, 0.0])
-    hand2 = np.array([-11.0, 79.5, 9.5])
+    S2 = np.array([-9.4, 67.5, 0.0])
+    hand2 = np.array([-9.0, 79.5, 7.8])
     E2 = two_bone(S2, hand2, 10.5, 10.5, np.array([-0.8, 0.6, -0.3]))
-    for (p0, p1, rr) in ((S2, E2, 4.6), (E2, hand2, 3.9)):
+    for (p0, p1, rr) in ((S2, E2, 3.6), (E2, hand2, 3.0)):
         stick(6, p0, p1, rr)
     uu = unit(hand2 - E2)
-    ell(7, hand2 - uu * 2.6, axes_from(uu), (1.9, 4.5, 4.5))
+    ell(7, hand2 - uu * 2.4, axes_from(uu), (1.7, 3.6, 3.6))
     ell(14, PALETTE_C, PAL_AX, PAL_R)
-    ell(8, hand2 + np.array([0, 1.2, 1.0]), I3, (4.2, 4.2, 4.2))
+    ell(8, hand2 + np.array([0, 1.2, 1.0]), I3, (3.6, 3.6, 3.6))
     ell(8, PALETTE_C + PAL_AX[2] * 3.2 + PAL_AX[0] * -5.0 + PAL_N * 0.9, I3, (1.8, 1.8, 1.8))  # thumb
 
     # overalls + boots
     hp = np.array([0, 87.5, 0.0])
-    t1, _, Mp = ellipsoid(o, d, hp, I3, [15.4, 6.6, 11.6])
+    t1, _, Mp = ellipsoid(o, d, hp, I3, [12.0, 6.2, 9.2])
     commit(t1, 9, lambda p: ell_normal(p, hp, Mp))
     for s in (-1, 1):
-        cxl = s * 7.9
-        aa = 7.0 + (Y - 88) * 0.07
-        t1, _ = vsection(o, d, cxl, 0, aa, 7.0, 87, 103.5)
+        cxl = s * 5.9
+        aa = 5.3 + (Y - 88) * 0.05
+        t1, _ = vsection(o, d, cxl, 0, aa, 5.4, 87, 103.5)
         commit(t1, 9, (lambda cxl: lambda p: np.stack(
-            [(p[..., 0] - cxl) / (7.0 + (p[..., 1] - 88) * 0.07) ** 2, 0 * p[..., 0], p[..., 2] / 49.0], -1))(cxl))
-        t1, _ = vsection(o, d, s * 8.2, 0, 7.6, 7.6, 100.5, 107.5)
+            [(p[..., 0] - cxl) / (5.3 + (p[..., 1] - 88) * 0.05) ** 2, 0 * p[..., 0], p[..., 2] / 29.2], -1))(cxl))
+        t1, _ = vsection(o, d, s * 6.2, 0, 6.0, 6.0, 100.5, 107.5)
         commit(t1, 10, (lambda cx: lambda p: np.stack(
-            [(p[..., 0] - cx) / 57.8, 0 * p[..., 0], p[..., 2] / 57.8], -1))(s * 8.2))
-        ell(10, (s * 8.2, 107.8, 2.8), I3, (7.0, 4.4, 9.2))
+            [(p[..., 0] - cx) / 36.0, 0 * p[..., 0], p[..., 2] / 36.0], -1))(s * 6.2))
+        ell(10, (s * 6.3, 107.9, 2.6), I3, (5.6, 4.2, 8.2))
 
     # ---------------- easel + canvas
-    top = cf(0, 42.5, -2.2)
-    for foot in (cf(-13.0, 112, 3.8), cf(13.0, 112, 3.8), cf(0, 112, -15.0)):
+    top = cf(0, 42.5, -4.0)
+    for foot in (cf(-13.0, 112, 2.5), cf(13.0, 112, 2.5), cf(0, 112, -16.0)):
         stick(15, top, foot, 1.25)
     bx(15, cf(0, 76.9, 1.9), AX_C, (18.5, 1.0, 2.6))                # ledge
     bx(15, cf(0, 47.2, 0.2), AX_C, (2.2, 1.6, 1.7))                 # top clamp
@@ -261,16 +271,16 @@ def _render(phi, hop, progress, dab):
     m = pid == 5
     ax_ = np.abs(x)
     front = z > 0
-    bib = front & (ax_ < 9.6) & (y > 70.2)
-    strap = (np.abs(ax_ - 7.6) < 2.3) & (y < 71.5) & front
-    back_strap = ~front & (np.abs(ax_ - 6.6 + (y - 66) * 0.12) < 2.1) & (y < 80)
-    back_panel = ~front & (ax_ < 10) & (y > 78)
+    bib = front & (ax_ < 7.4) & (y > 70.2)
+    strap = (np.abs(ax_ - 5.8) < 1.8) & (y < 71.5) & front
+    back_strap = ~front & (np.abs(ax_ - 5.0 + (y - 66) * 0.10) < 1.7) & (y < 80)
+    back_panel = ~front & (ax_ < 7.8) & (y > 78)
     over = bib | strap | back_strap | back_panel | (y > 80.5)
     grp[m] = GRAY
     grp[m & over] = OVER
-    button = front & ((((x - 7.6) ** 2 + (y - 71.4) ** 2) < 2.2) | (((x + 7.6) ** 2 + (y - 71.4) ** 2) < 2.2))
+    button = front & ((((x - 5.8) ** 2 + (y - 71.4) ** 2) < 1.9) | (((x + 5.8) ** 2 + (y - 71.4) ** 2) < 1.9))
     grp[m & button] = YEL
-    pocket = front & (ax_ < 4.4) & (y > 73.4) & (y < 78.4)
+    pocket = front & (ax_ < 3.4) & (y > 73.6) & (y < 78.0)
     grp[m & pocket & ~button] = POCKET
     part[m & over] = 50
     # paint splats on the overalls (front)
@@ -415,12 +425,16 @@ def _render(phi, hop, progress, dab):
                 if 0 <= X_ < W and 0 <= Y_ < H and grp[Y_, X_] in only:
                     img[Y_, X_] = cmap[ch]
 
-    eye_v = [(0.80, ["..KKK..", ".KLLLK.", "KWWWWWK", "KWWWPPK", "KWWWPPK", "KWWWWWK", ".KWWWK.", "..KKK.."]),
-             (0.55, [".KKK.", "KLLLK", "KWWPK", "KWWPK", "KWWWK", ".KKK."]),
-             (0.30, [".K.", "KLK", "KPK", "KWK", ".K."]),
-             (0.16, ["K", "P", "K"])]
+    core = ["KsWWDDDK", "KsWWDpDK", "KsDDppDK", "KsIDppIK", "KsIIIIwK", ".sILLLI.", "..KLLLK.", "...KKK.."]
+    eye_l = [(0.80, ["KKKKKKK.", "KKDDDDKK"] + core),
+             (0.55, ["KKKKKK", "KWWDDK", "KWDpDK", "KIppIK", "KIIIwK", ".LLLL.", "..KK.."]),
+             (0.30, ["KKKK", "KWDK", "KDpK", "KIIK", ".LL."]),
+             (0.16, ["KK", "KD", "KI"])]
+    eye_r = [(0.80, [".KKKKKKK", "KKDDDDKK"] + core)] + eye_l[1:]
+    place(-7.2, 47.4, eye_l, FACE)
+    place(7.2, 47.4, eye_r, FACE)
     for s in (-1, 1):
-        place(s * 7.0, 46.4, eye_v, FACE)
+        place(s * 11.6, 52.6, [(0.7, [".bcb.", "bbbbb"]), (0.4, ["bcb", "bbb"]), (0.2, ["b", "b"])], FACE)
     place(0.6, 52.4, [(0.75, [".nn.", "n..n"]), (0.45, ["nn", "n."]), (0.2, ["n"])], FACE)
     place(1.4, 56.0, [(0.75, [".....M", "M...M.", ".MMM.."]), (0.45, ["...M", "MMM."]), (0.2, ["MM"])], FACE)
 
