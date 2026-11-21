@@ -119,13 +119,26 @@ PAL_AX = np.stack([np.array([1.0, 0, 0]), PAL_N, np.cross(np.array([1.0, 0, 0]),
 PAL_R = np.array([9.0, 0.9, 6.6])
 BLOBS = [((-5.2, -2.6), 'heart'), ((-1.4, -4.0), 'blob_p'), ((2.8, -3.6), 'sun'),
          ((5.8, -1.0), 'blob_b'), ((3.2, 2.6), 'blob_w'), ((-1.0, 1.0), 'grass')]
-SPLATS = [((-3.6, 82.5), 'heart', 1.2), ((4.2, 91.0), 'sun', 1.0), ((-6.0, 98.0), 'blob_b', 1.1),
-          ((2.4, 76.0), 'blob_p', 0.85), ((6.8, 101.0), 'heart', 0.95)]
+SPLATS = [((-3.6, 82.5), 'heart', 1.2), ((5.0, 91.5), 'sun', 0.9), ((-6.8, 97.0), 'blob_b', 0.9),
+          ((2.4, 76.0), 'blob_p', 0.85), ((7.2, 101.5), 'heart', 0.85)]
 
 
 def render(phi, hop=0.0, progress=1.0, dab=(0.0, 0.0)):
     with np.errstate(all='ignore'):
         return _render(phi, hop, progress, dab)
+
+
+BODY_SHIFT = 7.0                  # neck/torso/arms move up by this much
+LEG_N0, LEG_N1 = 81.0, 100.0      # legs: new (world) y range ...
+LEG_O0, LEG_O1 = 88.0, 100.0      # ... taken from this model y range (longer legs)
+S_HEAD = 0.85                     # smaller head + hair
+NECK_OLD = 61.0
+NECK_NEW = NECK_OLD - BODY_SHIFT
+
+
+def body_y(yn):
+    return np.where(yn < LEG_N0, yn + BODY_SHIFT,
+                    np.where(yn < LEG_N1, LEG_O0 + (yn - LEG_N0) * (LEG_O1 - LEG_O0) / (LEG_N1 - LEG_N0), yn))
 
 
 def _render(phi, hop, progress, dab):
@@ -135,7 +148,13 @@ def _render(phi, hop, progress, dab):
     Z0 = 300.0
     o = np.stack([Xu * cphi - Z0 * sphi + XC, Yu, Xu * sphi + Z0 * cphi], -1)
     d = np.broadcast_to(np.array([sphi, 0.0, -cphi]), o.shape)
-    Y = o[..., 1]
+    o_w = o
+    o_b = o.copy()
+    o_b[..., 1] = body_y(o[..., 1])
+    o_h = (o - np.array([0, NECK_NEW, 0])) / S_HEAD + np.array([0, NECK_OLD, 0])
+    d_h = d / S_HEAD
+    R = {'o': o_b, 'd': d}
+    Y = o_b[..., 1]
 
     depth = np.full((H, W), np.inf)
     pid = np.full((H, W), -1)
@@ -147,7 +166,7 @@ def _render(phi, hop, progress, dab):
         m = t < depth
         if not m.any():
             return
-        p = o + t[..., None] * d
+        p = R['o'] + t[..., None] * R['d']
         n = nfun(p)
         depth[m] = t[m]
         pid[m] = k
@@ -157,7 +176,7 @@ def _render(phi, hop, progress, dab):
 
     def ell(k, c, ax, r):
         c = np.asarray(c, float)
-        t1, _, M = ellipsoid(o, d, c, ax, r)
+        t1, _, M = ellipsoid(R['o'], R['d'], c, ax, r)
         commit(t1, k, lambda p: ell_normal(p, c, M))
 
     def stick(k, p0, p1, r):
@@ -166,15 +185,19 @@ def _render(phi, hop, progress, dab):
         ell(k, (p0 + p1) / 2, axes_from(uu), (np.linalg.norm(p1 - p0) / 2 + 0.6, r, r))
 
     def bx(k, c, ax, hs):
-        t, n, axis, sgn = box(o, d, np.asarray(c, float), ax, np.asarray(hs, float))
+        t, n, axis, sgn = box(R['o'], R['d'], np.asarray(c, float), ax, np.asarray(hs, float))
         commit(t, k, lambda p: n, aux=axis * 2 + (sgn > 0))
 
-    # ---------------- character (same model as pinky.py)
+    # ---------------- head group (scaled down, sits on the raised neck)
+    R['o'], R['d'] = o_h, d_h
     ell(1, HEAD_C, I3, HEAD_R)
     for s in (-1, 1):
         ell(2, (s * 17.4, 47.5, -1.0), I3, (2.6, 4.2, 3.4))
-    th = march_sdf(o, d, hair_sdf, np.array([0, 34.0, -3.0]), 40.0)
+    th = march_sdf(o_h, d, hair_sdf, np.array([0, 34.0, -3.0]), 40.0) * S_HEAD
     commit(th, 0, lambda p: sdf_normal(hair_sdf, p))
+    # ---------------- body group (raised torso, longer legs)
+    R['o'], R['d'] = o_b, d
+    o, d = o_b, d
     t1, _ = vsection(o, d, 0, -1.2, 4.8, 4.8, 57, 68)
     commit(t1, 3, lambda p: np.stack([p[..., 0], 0 * p[..., 0], p[..., 2] + 1.5], -1))
     ell(4, (0, 64.2, -2.0), I3, (9.0, 3.6, 7.8))
@@ -189,7 +212,7 @@ def _render(phi, hop, progress, dab):
 
     # brush arm (character's left, local +x): hand follows the brush tip
     tip_u, tip_v = dab
-    tip = canvas_point(tip_u, tip_v, off=0.4)
+    tip = canvas_point(tip_u, tip_v, off=0.4) + np.array([0, BODY_SHIFT, 0])
     bdir = unit(T_C * 0.72 - N_C * 0.62 + np.array([0, 0.16, 0]))
     hand = tip - bdir * 14.6
     S = np.array([9.4, 67.5, 0.0])
@@ -216,21 +239,23 @@ def _render(phi, hop, progress, dab):
     ell(8, PALETTE_C + PAL_AX[2] * 3.2 + PAL_AX[0] * -5.0 + PAL_N * 0.9, I3, (1.8, 1.8, 1.8))  # thumb
 
     # overalls + boots
-    hp = np.array([0, 87.5, 0.0])
-    t1, _, Mp = ellipsoid(o, d, hp, I3, [12.0, 6.2, 9.2])
+    hp = np.array([0, 86.8, 0.0])
+    t1, _, Mp = ellipsoid(o, d, hp, I3, [11.6, 5.6, 9.0])
     commit(t1, 9, lambda p: ell_normal(p, hp, Mp))
     for s in (-1, 1):
-        cxl = s * 5.9
-        aa = 5.3 + (Y - 88) * 0.05
-        t1, _ = vsection(o, d, cxl, 0, aa, 5.4, 87, 103.5)
+        cxl = s * 6.4
+        aa = 4.6 + (Y - 88) * 0.04
+        t1, _ = vsection(o, d, cxl, 0, aa, 4.8, 87, 103.5)
         commit(t1, 9, (lambda cxl: lambda p: np.stack(
-            [(p[..., 0] - cxl) / (5.3 + (p[..., 1] - 88) * 0.05) ** 2, 0 * p[..., 0], p[..., 2] / 29.2], -1))(cxl))
-        t1, _ = vsection(o, d, s * 6.2, 0, 6.0, 6.0, 100.5, 107.5)
+            [(p[..., 0] - cxl) / (4.6 + (p[..., 1] - 88) * 0.04) ** 2, 0 * p[..., 0], p[..., 2] / 23.0], -1))(cxl))
+        t1, _ = vsection(o, d, s * 6.5, 0, 5.0, 5.0, 100.5, 107.5)
         commit(t1, 10, (lambda cx: lambda p: np.stack(
-            [(p[..., 0] - cx) / 36.0, 0 * p[..., 0], p[..., 2] / 36.0], -1))(s * 6.2))
-        ell(10, (s * 6.3, 107.9, 2.6), I3, (5.6, 4.2, 8.2))
+            [(p[..., 0] - cx) / 25.0, 0 * p[..., 0], p[..., 2] / 25.0], -1))(s * 6.5))
+        ell(10, (s * 6.6, 108.2, 2.4), I3, (4.6, 3.8, 7.0))
 
-    # ---------------- easel + canvas
+    # ---------------- easel + canvas (world space)
+    R['o'], R['d'] = o_w, d
+    o = o_w
     top = cf(0, 42.5, -4.0)
     for foot in (cf(-13.0, 112, 2.5), cf(13.0, 112, 2.5), cf(0, 112, -16.0)):
         stick(15, top, foot, 1.25)
@@ -411,9 +436,10 @@ def _render(phi, hop, progress, dab):
                 break
         if rows is None:
             return
-        wx = (lx - XC) * cphi + lz * sphi
+        Xw, Yw, Zw = lx * S_HEAD, NECK_NEW + (ly - NECK_OLD) * S_HEAD, lz * S_HEAD
+        wx = (Xw - XC) * cphi + Zw * sphi
         px_ = (wx + PIV) * K
-        py_ = (ly - hop) * K
+        py_ = (Yw - hop) * K
         h_, w_ = len(rows), len(rows[0])
         x0 = int(round(px_ - w_ / 2))
         y0 = int(round(py_ - h_ / 2))
