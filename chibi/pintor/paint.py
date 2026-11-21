@@ -451,14 +451,14 @@ def _render(phi, hop, progress, dab):
                 if 0 <= X_ < W and 0 <= Y_ < H and grp[Y_, X_] in only:
                     img[Y_, X_] = cmap[ch]
 
-    core = ["KsWWDDDK", "KsWWDpDK", "KsDDppDK", "KsIDppIK", "KsIIIIwK", ".sILLLI.", "..KLLLK.", "...KKK.."]
-    eye_l = [(0.80, ["KKKKKKK.", "KKDDDDKK"] + core),
-             (0.55, ["KKKKKK", "KWWDDK", "KWDpDK", "KIppIK", "KIIIwK", ".LLLL.", "..KK.."]),
-             (0.30, ["KKKK", "KWDK", "KDpK", "KIIK", ".LL."]),
+    core = ["KWWDDK", "KWDpDK", "KIppIK", "KIIIwK", ".LLLL.", "..KK.."]
+    eye_l = [(0.80, ["KKKKK.", "KKDDKK"] + core),
+             (0.55, ["KKKKK", "KWDDK", "KDpDK", "KIIwK", ".LLL."]),
+             (0.30, ["KKK", "KWK", "KpK", "KIK", ".L."]),
              (0.16, ["KK", "KD", "KI"])]
-    eye_r = [(0.80, [".KKKKKKK", "KKDDDDKK"] + core)] + eye_l[1:]
-    place(-7.2, 47.4, eye_l, FACE)
-    place(7.2, 47.4, eye_r, FACE)
+    eye_r = [(0.80, [".KKKKK", "KKDDKK"] + core)] + eye_l[1:]
+    place(-7.0, 47.6, eye_l, FACE)
+    place(7.0, 47.6, eye_r, FACE)
     for s in (-1, 1):
         place(s * 11.6, 52.6, [(0.7, [".bcb.", "bbbbb"]), (0.4, ["bcb", "bbb"]), (0.2, ["b", "b"])], FACE)
     place(0.6, 52.4, [(0.75, [".nn.", "n..n"]), (0.45, ["nn", "n."]), (0.2, ["n"])], FACE)
